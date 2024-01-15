@@ -10,6 +10,7 @@ import NanoPage from "./pages/dashboard/nano/NanoPage";
 import UsersAndRolesPage from "./pages/dashboard/users-and-roles/UsersAndRolesPage";
 import SettingsPage from "./pages/dashboard/settings/SettingsPage";
 import UserProfilePage from "./pages/dashboard/user-profile/UserProfilePage";
+import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
 
 export const router = createBrowserRouter([
     {

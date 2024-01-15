@@ -1,6 +1,7 @@
 import React from "react";
 
 export interface DashboardLayoutConfig {
+    sideBarOpen: boolean;
 }
 
 export interface DashboardLayoutConfigureContextProps {

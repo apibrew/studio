@@ -1,31 +1,22 @@
 import {Icon, List, ListItem, ListItemButton, Typography, useTheme} from "@mui/material";
 import {MenuItem, menuItems} from "../menu";
-import {useMatches, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import React from "react";
 
-export function AsideBar() {
+export interface AsideBarProps {
+    open: boolean
+    activeItem: MenuItem
+}
+
+export function AsideBar(props: AsideBarProps) {
     const navigate = useNavigate()
 
     const theme = useTheme()
 
     const items = menuItems
 
-    const matches = useMatches()
-
-    let activeItem: MenuItem | null = null
-
     const isActive = (path: MenuItem) => {
-        return activeItem === path
-    }
-
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i]
-        if (item.delimiter) {
-            continue
-        }
-        if (matches.some(match => match.pathname.startsWith(item.path))) {
-            activeItem = item
-        }
+        return props.activeItem === path
     }
 
     return <>
@@ -38,7 +29,7 @@ export function AsideBar() {
                             backgroundColor: isActive(item) ? '#D2E6FAFF' : 'transparent',
                             color: isActive(item) ? 'white' : theme.palette.text.primary,
                             borderRadius: '3px',
-                            padding: '10px 20px',
+                            padding: props.open ? '10px 20px' : '3px',
                             '&:hover': {
                                 backgroundColor: 'rgb(205, 230, 235)',
                                 color: 'white'
@@ -51,9 +42,9 @@ export function AsideBar() {
                             color: 'rgb(60, 120, 160)',
                             marginRight: 1
                         }}>{item.icon}</Icon>
-                        <Typography sx={{
+                        {props.open && <Typography sx={{
                             color: theme.palette.text.primary,
-                        }}>{item.title}</Typography>
+                        }}>{item.title}</Typography>}
                     </ListItemButton>
                 </>}
             </ListItem>)}

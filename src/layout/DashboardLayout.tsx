@@ -1,10 +1,12 @@
 import React from "react";
-import {Box, Stack, Theme, Typography, useMediaQuery} from "@mui/material";
+import {Box, IconButton, Stack, Theme, Typography, useMediaQuery} from "@mui/material";
 import {DashboardLayoutConfig, DashboardLayoutConfigureContext} from "../context/DashboardLayoutConfig";
 import Button from "@mui/material/Button";
-import {Feedback, Help} from "@mui/icons-material";
+import {Feedback, Help, MenuRounded} from "@mui/icons-material";
 import {Breadcrumbs} from "../components/Breadcrumbs";
 import {AsideBar} from "../components/AsideBar";
+import {useActiveMenuItem} from "../hooks/active-menu-item";
+import {useNavigate} from "react-router-dom";
 
 export interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -12,10 +14,15 @@ export interface DashboardLayoutProps {
 
 export function DashboardLayout(props: DashboardLayoutProps) {
     const [config, setConfig] = React.useState<DashboardLayoutConfig>({
-        breadcrumbs: []
+        sideBarOpen: true,
     });
 
+    const activeItem = useActiveMenuItem()
+    const navigate = useNavigate()
+
     const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+
+    const sideBarOpen = config.sideBarOpen && !activeItem.secondSideBar
 
     return <>
         <Box id='dashboard-layout'
@@ -33,7 +40,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                      display: 'flex',
                      flexDirection: 'column',
                      borderRight: '1px solid #e6e8ec',
-                     width: '230px',
+                     width: sideBarOpen ? '230px' : '61px',
                      overflow: 'hidden'
                  }}
             >
@@ -41,18 +48,45 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                      sx={{
                          height: '31px',
                          padding: '8px 16px',
-                         borderBottom: '1px solid #e6e8ec'
+                         borderBottom: '1px solid #e6e8ec',
+                         flexDirection: 'row',
+                         display: 'flex'
                      }}>
-                    <Typography sx={{
-                        padding: '4px',
+                    {sideBarOpen && <Typography sx={{
                         fontSize: '21px',
                         fontWeight: 'bold'
                     }}>
                         ApiBrew Studio
-                    </Typography>
+                    </Typography>}
+                    <Box flexGrow={1}/>
+                    <IconButton onClick={() => {
+                        if (!sideBarOpen && activeItem.secondSideBar) {
+                            navigate('/dashboard')
+                        }
+                        setConfig({
+                            ...config,
+                            sideBarOpen: !sideBarOpen,
+                        })
+                    }}
+                                sx={{
+                                    padding: '0px'
+                                }}>
+                        <MenuRounded/>
+                    </IconButton>
                 </Box>
-                <AsideBar/>
+                <AsideBar activeItem={activeItem}
+                          open={sideBarOpen}/>
             </Box>
+            {activeItem.secondSideBar && <Box id='second-left-bar'
+                                              sx={{
+                                                  display: 'flex',
+                                                  flexDirection: 'column',
+                                                  borderRight: '1px solid #e6e8ec',
+                                                  width: '230px',
+                                                  overflow: 'hidden'
+                                              }}>
+                {activeItem.secondSideBar}
+            </Box>}
             <Box sx={{
                 flexGrow: 1,
             }}>

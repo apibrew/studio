@@ -1,10 +1,12 @@
 import React from "react";
 import {Dataset, FunctionsTwoTone, Group, Home, Logout, Person, Settings} from "@mui/icons-material";
+import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
 
 export interface MenuItem {
     title: string;
     icon?: React.ReactNode;
     path: string;
+    secondSideBar?: React.ReactNode;
     delimiter?: boolean;
 }
 
@@ -17,6 +19,7 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Resources',
         path: '/dashboard/resources',
+        secondSideBar: <ResourceSelectorPanel/>,
         icon: <Dataset/>
     },
     {
