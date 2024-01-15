@@ -1,28 +1,21 @@
 import * as React from "react";
 import {createRoot} from "react-dom/client";
-import {createBrowserRouter, Link, RouterProvider,} from "react-router-dom";
-import Button from "@mui/material/Button";
+import {RouterProvider,} from "react-router-dom";
+import {RootLayout} from "./layout/RootLayout";
+import './index.css'
 
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: (
-            <div>
-                <h1>Hello World</h1>
-                <Link to="about">About Us</Link>
-            </div>
-        ),
-    },
-    {
-        path: "about",
-        element: <div>
-            <Link to="/">Home</Link>
-            <Button variant='contained'>aaa</Button>
-            About
-        </div>,
-    },
-]);
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import {router} from "./router";
+import {ThemeProvider} from "@mui/material";
+import {theme} from "./theme";
 
 createRoot(document.getElementById("root")!).render(
-    <RouterProvider router={router}/>
+    <RootLayout>
+        <ThemeProvider theme={theme}>
+            <RouterProvider router={router}/>
+        </ThemeProvider>
+    </RootLayout>
 );
