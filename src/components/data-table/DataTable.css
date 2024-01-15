@@ -1,0 +1,5 @@
+/*.data-table*/
+
+.data-table td, .data-table th {
+    padding: 3px !important;
+}

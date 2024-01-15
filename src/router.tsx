@@ -43,6 +43,13 @@ export const router = createBrowserRouter([
                 }
             },
             {
+                path: "resources/:namespace/:resource",
+                element: <ResourcesPage/>,
+                handle: {
+                    breadcrumb: 'Resources'
+                }
+            },
+            {
                 path: "nano",
                 element: <NanoPage/>,
                 handle: {

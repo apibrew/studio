@@ -89,6 +89,8 @@ export function DashboardLayout(props: DashboardLayoutProps) {
             </Box>}
             <Box sx={{
                 flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'column',
             }}>
                 <Box id='top-bar'
                      sx={{
@@ -120,8 +122,10 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                 <Box id='content'
                      sx={{
                          flex: 1,
+                         display: 'flex',
+                         flexDirection: 'column',
                          flexGrow: 1,
-                         padding: 3,
+                         maxHeight: '100%',
                      }}>
                     <DashboardLayoutConfigureContext.Provider value={{
                         get(): DashboardLayoutConfig {

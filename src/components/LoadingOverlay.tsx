@@ -8,9 +8,8 @@ export function LoadingOverlay() {
         textAlign: 'center',
         verticalAlign: 'middle',
         alignContent: 'center',
+        justifyContent: 'center',
     }}>
-        <CircularProgress sx={{
-            marginTop: '50%'
-        }}/>
+        <CircularProgress sx={{}}/>
     </Box>
 }

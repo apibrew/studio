@@ -1,6 +1,7 @@
 import {
     Box,
-    FormControl, Icon,
+    FormControl,
+    Icon,
     InputLabel,
     List,
     ListItem,
@@ -14,10 +15,13 @@ import {Namespace, Resource, useRecords} from "@apibrew/react";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {RemoveRedEye, TableChart} from "@mui/icons-material";
+import {TableChart} from "@mui/icons-material";
+import {useNavigate, useParams} from "react-router-dom";
 
 export function ResourceSelectorPanel() {
-    const [resource, setResource] = useState<Resource>()
+    const params = useParams()
+    const navigate = useNavigate()
+
     const [namespace, setNamespace] = useState<Namespace>({
         name: 'default'
     } as Namespace)
@@ -66,18 +70,27 @@ export function ResourceSelectorPanel() {
                 </Select>
             </FormControl>
             <List>
-                {resources.map(resource => <ListItem disablePadding value={resource.name}>
-                    <ListItemButton sx={{
-                        padding: 0,
-                    }}>
-                        <Icon sx={{
-                            marginRight: 0.6
-                        }}>
-                            <TableChart color='secondary' fontSize='small'/>
-                        </Icon>
-                        <Typography color='primary'>{resource.name}</Typography>
-                    </ListItemButton>
-                </ListItem>)}
+                {resources.map(resource => {
+                    const isActive = params.resource === resource.name
+
+                    return <ListItem disablePadding value={resource.name}>
+                        <ListItemButton sx={{
+                            padding: 0,
+                            borderRadius: '3px',
+                            backgroundColor: isActive ? '#D2E6FAFF' : 'transparent',
+                        }}
+                                        onClick={() => {
+                                            navigate(`/dashboard/resources/${namespace.name}/${resource.name}`)
+                                        }}>
+                            <Icon sx={{
+                                marginRight: 0.6
+                            }}>
+                                <TableChart color='secondary' fontSize='small'/>
+                            </Icon>
+                            <Typography color='primary'>{resource.name}</Typography>
+                        </ListItemButton>
+                    </ListItem>
+                })}
             </List>
         </Box>}
     </>;

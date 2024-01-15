@@ -4,7 +4,7 @@ export default function NanoPage() {
 
     return <>
         <Typography variant="h1">
-            Welcome to ApiBrew Studio!
+            {/*Welcome to ApiBrew Studio!*/}
         </Typography>
     </>
 }
