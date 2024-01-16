@@ -1,7 +1,6 @@
 import {Box, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from "@mui/material";
 import React, {useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
-import Button from "@mui/material/Button";
 import {PropertyCell} from "./PropertyCell";
 import {isSpecialProperty} from "../../util/property";
 import {ExpandMore} from "@mui/icons-material";
