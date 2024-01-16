@@ -6,6 +6,7 @@ import {PropertyCell} from "./PropertyCell";
 import {isSpecialProperty} from "../../util/property";
 import {ExpandMore} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
+import {TableResize} from "./TableResize";
 
 export interface DataTableTableProps {
     resource: Resource
@@ -14,18 +15,32 @@ export interface DataTableTableProps {
 }
 
 export function DataTableTable(props: DataTableTableProps) {
-
     const [properties, setProperties] = useState(
-        Object.keys(props.resource.properties)
-            .filter(item => !isSpecialProperty(props.resource.properties[item]))
+        [
+            'id',
+            ...Object.keys(props.resource.properties)
+                .filter(item => !isSpecialProperty(props.resource.properties[item]))
+        ]
     )
+    const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
 
     const tableDnd = useMemo(() => {
         return new TableDnd(props.resource, properties)
     }, [props.resource])
 
+    const tableResize = useMemo(() => {
+        return new TableResize(props.resource, properties)
+    }, [props.resource])
+
     tableDnd.onReorderProperties(updatedProperties => {
         setProperties(updatedProperties)
+    })
+
+    tableResize.onResize((property, width) => {
+        setColumnWidths({
+            ...columnWidths,
+            [property]: width
+        })
     })
 
 
@@ -38,10 +53,7 @@ export function DataTableTable(props: DataTableTableProps) {
                 <TableCell width='10px'>
                     <Checkbox size='small'/>
                 </TableCell>
-                <TableCell sx={{
-                    minWidth: '80px'
-                }}>Id</TableCell>
-                {properties.map(property => (
+                {properties.map((property, index) => (
                     <TableCell className='property-th draggable-cell'
                                draggable
                                property={property}
@@ -51,8 +63,10 @@ export function DataTableTable(props: DataTableTableProps) {
                                onDragEnd={tableDnd.onDragEnd.bind(tableDnd)}
                                onDragOver={tableDnd.onDragOver.bind(tableDnd)}
                                onDrop={tableDnd.onDrop.bind(tableDnd)}
+                               width={columnWidths[property] ? columnWidths[property] + 'px' : 'auto'}
                                key={property}>
                         <Box display='flex'>
+                            {index > 0 && tableResize.renderResizeDiv(properties[index - 1])}
                             <Box className='property-name'>
                                 {property}
                             </Box>
@@ -75,13 +89,6 @@ export function DataTableTable(props: DataTableTableProps) {
                     </TableCell>
                     <TableCell>
                         <Checkbox size='small'/>
-                    </TableCell>
-                    <TableCell>
-                        <Tooltip title={record.id}>
-                            <Button variant='text' onClick={() => {
-                                console.log(record)
-                            }}>{record.id.substring(0, 8)}</Button>
-                        </Tooltip>
                     </TableCell>
                     {properties.map(property => (
                         <PropertyCell property={props.resource.properties[property]}

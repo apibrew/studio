@@ -73,7 +73,9 @@ export function ResourceSelectorPanel() {
                 {resources.map(resource => {
                     const isActive = params.resource === resource.name
 
-                    return <ListItem disablePadding value={resource.name}>
+                    return <ListItem key={resource.name}
+                                     disablePadding
+                                     value={resource.name}>
                         <ListItemButton sx={{
                             padding: 0,
                             borderRadius: '3px',

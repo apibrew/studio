@@ -1,8 +1,9 @@
-import {Icon, IconButton, TableCell, Typography} from "@mui/material";
+import {Icon, IconButton, TableCell, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {UnfoldMore} from "@mui/icons-material";
+import Button from "@mui/material/Button";
 
 export interface PropertyCellProps {
     property: Property
@@ -41,6 +42,13 @@ export function PropertyCell(props: PropertyCellProps) {
                 viewMore = true
             }
             break;
+        case Type.UUID:
+            return <TableCell>
+                <Tooltip title={value}>
+                    <Button variant='text' onClick={() => {
+                    }}>{value.substring(0, 8)}</Button>
+                </Tooltip>
+            </TableCell>
     }
 
     return <TableCell>

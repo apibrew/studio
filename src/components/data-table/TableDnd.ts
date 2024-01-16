@@ -1,5 +1,6 @@
 import React, {DragEvent} from "react";
 import {Resource} from "@apibrew/react";
+import {getTargetColumn} from "./util";
 
 export class TableDnd {
     private ec: {
@@ -46,21 +47,7 @@ export class TableDnd {
     }
 
     private getTarget(e: React.DragEvent<Element>) {
-        let el: HTMLElement = e.nativeEvent.target as HTMLElement
-
-        while (true) {
-            if (!el) {
-                break
-            }
-
-            if (el.classList.contains('property-th')) {
-                return el
-            }
-
-            el = el.parentElement as HTMLElement
-        }
-
-        return undefined
+        return getTargetColumn(e)
     }
 
     onDragOver(e: DragEvent) {
@@ -68,14 +55,12 @@ export class TableDnd {
     }
 
     onDragEnter(e: DragEvent) {
-        console.log("drag enter", this.ec);
         const target = this.getTarget(e)
         const column = this.locateColumn(e)
 
         this.ec[column]++;
 
         if (!target) {
-            console.log("no target")
             return
         }
 
@@ -83,13 +68,11 @@ export class TableDnd {
     }
 
     onDragLeave(e: DragEvent) {
-        console.log("drag leave", this.ec);
         const target = this.getTarget(e)
         const column = this.locateColumn(e)
         this.ec[column]--;
 
         if (!target) {
-            console.log("no target")
             return
         }
 
