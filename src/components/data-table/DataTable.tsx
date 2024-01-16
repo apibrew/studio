@@ -1,8 +1,8 @@
 import {fromResource, Resource, useRepository} from "@apibrew/react";
 import React, {useEffect, useState} from "react";
-import {Box, Popover, Stack, TablePagination} from "@mui/material";
+import {Box, Popover, Stack, TablePagination, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Add, Api, Code, Domain, EditOff, FilterList, Refresh, Remove, Schema} from "@mui/icons-material";
+import {Add, Api, Code, DataArray, Domain, EditOff, FilterList, Refresh, Remove, Schema} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {LoadingOverlay} from "../LoadingOverlay";
 import './DataTable.scss'
@@ -79,19 +79,31 @@ export function DataTable(props: DataTableProps) {
                 </Button>
                 <Button color='secondary'
                         size='small'>
-                    <Schema fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Schema</span>
-                </Button>
-                <Button color='secondary'
-                        size='small'>
                     <Api fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Api Doc</span>
                 </Button>
-                <Button color='secondary'
-                        size='small'>
-                    <EditOff fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Inline edit</span>
-                </Button>
+                <ToggleButtonGroup value={1}>
+                    <ToggleButton color='secondary'
+                                  value={1}
+                                  size='small'>
+                        <EditOff fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Inline edit</span>
+                    </ToggleButton>
+                </ToggleButtonGroup>
+                <ToggleButtonGroup value={'data'}>
+                    <ToggleButton color='secondary'
+                                  value={'data'}
+                                  size='small'>
+                        <DataArray fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Data</span>
+                    </ToggleButton>
+                    <ToggleButton color='secondary'
+                                  value={'schema'}
+                                  size='small'>
+                        <Schema fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Schema</span>
+                    </ToggleButton>
+                </ToggleButtonGroup>
             </Stack>
         </Box>
         <Popover
