@@ -1,0 +1,35 @@
+/*.data-table*/
+
+.data-table {
+  width: calc(100vw - 300px);
+  height: calc(100vh - 150px);
+  overflow: auto;
+
+  td, th {
+    padding: 0 7px !important;
+    white-space: nowrap;
+    border: 1px solid #ddd;
+  }
+
+  .property-name {
+    padding-top: 7px;
+  }
+
+  .property-th {
+    .property-actions {
+      margin-right: -7px;
+    }
+
+    &.draggable-cell {
+      cursor: pointer;
+    }
+
+    &.dragging {
+      background-color: #d7d7eb;
+    }
+
+    &.drag-over {
+        background-color: #cdd7ff;
+    }
+  }
+}

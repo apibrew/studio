@@ -43,11 +43,7 @@ export function PropertyCell(props: PropertyCellProps) {
             break;
     }
 
-    return <TableCell style={{
-        maxWidth: '200px',
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-    }}>
+    return <TableCell>
         {value}
         {viewMore && <IconButton>
             <Icon fontSize='small'>
