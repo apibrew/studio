@@ -8,6 +8,8 @@ import {LoadingOverlay} from "../LoadingOverlay";
 import './DataTable.scss'
 import {Filters} from "./Filters";
 import {useQueryListParams} from "../../hooks/use-query-list-params";
+import {useConfirmation} from "../modal/use-confirmation";
+import toast from "react-hot-toast";
 
 export interface DataTableProps {
     resource: Resource
@@ -23,12 +25,43 @@ export function DataTable(props: DataTableProps) {
     const [refreshIndex, setRefreshIndex] = useState<number>(0)
     const [listParams, setListParams] = useQueryListParams(defaultListParams)
     const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement>()
+    const confirmation = useConfirmation()
 
     const [records, setRecords] = useState<any[]>()
     const [total, setTotal] = useState<number>(0)
+    const [selectedItems, setSelectedItems] = useState<string[]>([])
 
     function refresh() {
         setRefreshIndex(refreshIndex + 1)
+        toast("Refreshed")
+    }
+
+    function handleDelete() {
+        const deleteFn = async function (): Promise<unknown> {
+            for (const id of selectedItems) {
+                await repository.delete(id)
+            }
+
+            return
+        }
+        confirmation.open({
+            kind: 'confirm',
+            message: 'Are you sure you want to delete these records?',
+            buttonMessage: 'Delete',
+            onConfirm: () => {
+                toast.promise(
+                    deleteFn(),
+                    {
+                        loading: 'Deleting records...',
+                        success: 'Records deleted',
+                        error: 'Failed to delete records'
+                    })
+                    .then(() => {
+                        setSelectedItems([])
+                        refresh()
+                    })
+            }
+        })
     }
 
     useEffect(() => {
@@ -42,6 +75,7 @@ export function DataTable(props: DataTableProps) {
     const filterCount = listParams.query ? listParams.query.and ? listParams.query.and.length : 1 : 0
 
     return <>
+        {confirmation.render()}
         <Box display='flex' p={1}>
             <Stack direction='row' spacing={1}>
                 <Button size='small' onClick={() => {
@@ -57,18 +91,24 @@ export function DataTable(props: DataTableProps) {
                     <span style={{marginLeft: '3px'}}>Filter</span>
                     {listParams.query && <span style={{marginLeft: '3px'}}>({filterCount})</span>}
                 </Button>
-                <Button color='success' size='small'>
-                    <Add fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Insert</span>
-                </Button>
-                <Button color='warning' size='small'>
-                    <Domain fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Yaml</span>
-                </Button>
-                <Button color='error' size='small'>
-                    <Remove fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Delete</span>
-                </Button>
+                {selectedItems.length === 0 && <>
+                    <Button color='success' size='small'>
+                        <Add fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Insert</span>
+                    </Button>
+                </>}
+                {selectedItems.length > 0 && <>
+                    <Button color='warning' size='small'>
+                        <Domain fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Yaml</span>
+                    </Button>
+                    <Button color='error' size='small' onClick={() => {
+                        handleDelete()
+                    }}>
+                        <Remove fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Delete</span>
+                    </Button>
+                </>}
             </Stack>
             <Box flexGrow={1}/>
             <Stack direction='row' spacing={1}>
@@ -131,7 +171,11 @@ export function DataTable(props: DataTableProps) {
                      }}/>
         </Popover>
         <Box className='data-table'>
-            {records && <DataTableTable offset={listParams.offset ?? 0} resource={props.resource} records={records}/>}
+            {records && <DataTableTable offset={listParams.offset ?? 0}
+                                        selectedItems={selectedItems}
+                                        setSelectedItems={setSelectedItems}
+                                        resource={props.resource}
+                                        records={records}/>}
             {!records && <LoadingOverlay/>}
         </Box>
         <Box flexGrow={1}/>

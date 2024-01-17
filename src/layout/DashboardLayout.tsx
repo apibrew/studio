@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, IconButton, Stack, Theme, Typography, useMediaQuery} from "@mui/material";
+import {Box, IconButton, Stack, Typography} from "@mui/material";
 import {DashboardLayoutConfig, DashboardLayoutConfigureContext} from "../context/DashboardLayoutConfig";
 import Button from "@mui/material/Button";
 import {Feedback, Help, MenuRounded} from "@mui/icons-material";
@@ -19,8 +19,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
 
     const activeItem = useActiveMenuItem()
     const navigate = useNavigate()
-
-    const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
     const sideBarOpen = config.sideBarOpen && !activeItem.secondSideBar
 

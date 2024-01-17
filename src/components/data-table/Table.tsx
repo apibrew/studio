@@ -1,4 +1,4 @@
-import {Box, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from "@mui/material";
+import {Box, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, {useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
 import {PropertyCell} from "./PropertyCell";
@@ -11,6 +11,8 @@ export interface DataTableTableProps {
     resource: Resource
     records: any[]
     offset: number
+    selectedItems: string[]
+    setSelectedItems: (selectedItems: string[]) => void
 }
 
 export function DataTableTable(props: DataTableTableProps) {
@@ -22,6 +24,7 @@ export function DataTableTable(props: DataTableTableProps) {
         ]
     )
     const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
+    const [tableWidth, setTableWidth] = useState<number>(1000)
 
     const tableDnd = useMemo(() => {
         return new TableDnd(props.resource, properties)
@@ -40,17 +43,36 @@ export function DataTableTable(props: DataTableTableProps) {
             ...columnWidths,
             [property]: width
         })
+
+        // setTableWidth(Object.values(columnWidths).reduce((acc, item) => acc + item, 0))
     })
 
+    const selectionIdMap = useMemo<{ [key: string]: boolean }>(() => {
+        return props.selectedItems.reduce((acc, item) => {
+            acc[item] = true
+            return acc
+        }, {} as any)
+    }, [props.selectedItems])
 
-    return <Table size='small'>
+    return <Table className='data-table-table' size='small' style={{
+        // width: tableWidth + 'px'
+    }}>
         <TableHead>
             <TableRow>
                 <TableCell width='10px'>
                     #
                 </TableCell>
                 <TableCell width='10px'>
-                    <Checkbox size='small'/>
+                    <Checkbox checked={props.selectedItems.length === props.records.length}
+                              indeterminate={props.selectedItems.length > 0 && props.selectedItems.length < props.records.length}
+                              onChange={() => {
+                                  if (props.selectedItems.length === props.records.length) {
+                                      props.setSelectedItems([])
+                                  } else {
+                                      props.setSelectedItems(props.records.map(item => item.id))
+                                  }
+                              }}
+                              size='small'/>
                 </TableCell>
                 {properties.map((property, index) => (
                     <TableCell className='property-th draggable-cell'
@@ -87,7 +109,15 @@ export function DataTableTable(props: DataTableTableProps) {
                         {props.offset + index + 1}
                     </TableCell>
                     <TableCell>
-                        <Checkbox size='small'/>
+                        <Checkbox checked={Boolean(selectionIdMap[record.id])}
+                                  onChange={() => {
+                                      if (selectionIdMap[record.id]) {
+                                          props.setSelectedItems(props.selectedItems.filter(item => item !== record.id))
+                                      } else {
+                                          props.setSelectedItems([...props.selectedItems, record.id])
+                                      }
+                                  }}
+                                  size='small'/>
                     </TableCell>
                     {properties.map(property => (
                         <PropertyCell property={props.resource.properties[property]}

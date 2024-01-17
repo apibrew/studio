@@ -29,11 +29,11 @@ export function Breadcrumbs() {
 
     return <>
         {breadcrumbs.map((breadcrumb, index) => {
-            const isLast = index == breadcrumbs.length - 1
+            const isLast = index === breadcrumbs.length - 1
             const isLink = !isLast && breadcrumb.link
 
             return <React.Fragment key={index}>
-                {index != 0 && <Typography style={{
+                {index !== 0 && <Typography style={{
                     padding: '4px',
                     margin: '0 5px',
                     color: 'rgb(150, 150, 150)',
