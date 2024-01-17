@@ -15,13 +15,13 @@ export function PropertyCellInner(props: PropertyCellInnerProps) {
     let value = props.updated || props.value
     let viewMore = false
 
-    if (props.value === undefined) {
+    if (value === undefined) {
         return <Typography color='lightgrey'>Null</Typography>
     }
 
     switch (props.property.type) {
         case Type.BOOL:
-            value = props.value ? 'true' : 'false'
+            value = value ? 'true' : 'false'
             break;
         case Type.STRING:
             if (value.length > 40) {
@@ -34,7 +34,7 @@ export function PropertyCellInner(props: PropertyCellInnerProps) {
         case Type.REFERENCE:
         case Type.STRUCT:
         case Type.OBJECT:
-            value = JSON.stringify(props.value)
+            value = JSON.stringify(value)
 
             if (value.length > 40) {
                 value = value.substring(0, 20) + '...'

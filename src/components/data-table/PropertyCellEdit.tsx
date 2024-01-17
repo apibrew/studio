@@ -14,7 +14,7 @@ export function PropertyCellEdit(props: PropertyCellEditProps) {
 
     switch (props.property.type) {
         case Type.STRING:
-            return <input value={updated}
+            return <input value={updated || ''}
                           autoFocus
                           className='property-edit-input'
                           onChange={e => {

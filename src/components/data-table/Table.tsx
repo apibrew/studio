@@ -92,6 +92,10 @@ export function DataTableTable(props: DataTableTableProps) {
                             {index > 0 && tableResize.renderResizeDiv(properties[index - 1])}
                             <Box className='property-name'>
                                 {property}
+                                {props.inlineMode && props.resource.properties[property].required && <span style={{
+                                    marginLeft: '1px',
+                                    color: 'red'
+                                }}>*</span>}
                             </Box>
                             <Box flexGrow={1}/>
                             <Box className='property-actions'>
@@ -119,10 +123,16 @@ export function DataTableTable(props: DataTableTableProps) {
                                  }}
                                  index={props.offset + index + 1}
                                  onUpdate={(updated) => {
-                                     props.setUpdates({
-                                         ...props.updates,
-                                         [record.id]: updated
-                                     })
+                                     if (updated) {
+                                         props.setUpdates({
+                                             ...props.updates,
+                                             [record.id]: updated
+                                         })
+                                     } else {
+                                         const newUpdates = {...props.updates}
+                                         delete newUpdates[record.id]
+                                         props.setUpdates(newUpdates)
+                                     }
                                  }}
                                  updated={props.updates[record.id] ?? {}}
                                  record={record}/>

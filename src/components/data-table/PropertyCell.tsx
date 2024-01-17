@@ -24,6 +24,9 @@ export function PropertyCell(props: PropertyCellProps) {
             setInlineEdit(false)
         }}
         onDoubleClick={() => {
+            if (props.property.immutable) {
+                return
+            }
             setInlineEdit(true)
         }}>
         {!inlineEdit && <PropertyCellInner {...props}/>}

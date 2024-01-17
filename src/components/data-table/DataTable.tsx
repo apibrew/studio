@@ -70,10 +70,17 @@ export function DataTable(props: DataTableProps) {
         let sc = 0
         for (const id of Object.keys(updates)) {
             try {
-                await repository.update({
-                    ...updates[id],
-                    id: id
-                })
+                if (id === 'new') {
+                    await repository.create({
+                        ...updates[id],
+                        id: undefined
+                    })
+                } else {
+                    await repository.update({
+                        ...updates[id],
+                        id: id
+                    })
+                }
                 sc++;
                 delete (updates[id])
                 setUpdates({...updates})
@@ -85,7 +92,7 @@ export function DataTable(props: DataTableProps) {
         }
 
         if (isSuccess) {
-            toast('Records saved')
+            toast.success('Records saved')
             setUpdates({})
             refresh()
         } else if (sc > 0) {
@@ -94,12 +101,22 @@ export function DataTable(props: DataTableProps) {
     }
 
     useEffect(() => {
+        if (Object.keys(updates).length > 0) {
+            toast.error('Please save the new record first')
+            return
+        }
         setRecords(undefined)
         repository.list(listParams).then(resp => {
             setRecords(resp.content)
             setTotal(resp.total)
         })
     }, [props.resource, listParams, refreshIndex]);
+
+    useEffect(() => {
+        if (records?.some(item => item.id === 'new') && updates['new'] === undefined) {
+            setRecords(records.filter(item => item.id !== 'new'))
+        }
+    }, [updates]);
 
     const filterCount = listParams.query ? listParams.query.and ? listParams.query.and.length : 1 : 0
 
@@ -123,9 +140,24 @@ export function DataTable(props: DataTableProps) {
                     {listParams.query && <span style={{marginLeft: '3px'}}>({filterCount})</span>}
                 </Button>
                 {selectedItems.length === 0 && <>
-                    <Button color='success' size='small'>
+                    <Button color='success'
+                            size='small'
+                            onClick={() => {
+                                if (updates['new']) {
+                                    toast.error('Please save the new record first')
+                                    return
+                                }
+
+                                setRecords([{
+                                    id: 'new',
+                                }, ...records!])
+                                setUpdates({
+                                    ...updates,
+                                    new: {}
+                                })
+                            }}>
                         <Add fontSize='small'/>
-                        <span style={{marginLeft: '3px'}}>Insert</span>
+                        <span style={{marginLeft: '3px'}}>Add</span>
                     </Button>
                 </>}
                 {selectedItems.length > 0 && <>
