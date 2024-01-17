@@ -17,6 +17,8 @@
   }
 
   .property-th {
+    width: 200px;
+
     .property-actions {
       margin-right: -7px;
     }
@@ -38,5 +40,21 @@
       margin-left: -14px;
       cursor: col-resize;
     }
+  }
+
+  .property-edit-input {
+    padding: 5px 5px 5px 0;
+    background: azure;
+    border: 1px solid blanchedalmond;
+    width: 100%;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 14px;
+    color: rgb(30, 60, 80)
+  }
+}
+
+.action-bar {
+  button {
+    height: 22px;
   }
 }

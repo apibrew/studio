@@ -25,7 +25,9 @@ export function DataTable(props: DataTableProps) {
     const [refreshIndex, setRefreshIndex] = useState<number>(0)
     const [listParams, setListParams] = useQueryListParams(defaultListParams)
     const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement>()
+    const [inlineMode, setInlineMode] = useState<boolean>(true)
     const confirmation = useConfirmation()
+    const [updates, setUpdates] = useState<{ [key: string]: any }>({})
 
     const [records, setRecords] = useState<any[]>()
     const [total, setTotal] = useState<number>(0)
@@ -33,7 +35,6 @@ export function DataTable(props: DataTableProps) {
 
     function refresh() {
         setRefreshIndex(refreshIndex + 1)
-        toast("Refreshed")
     }
 
     function handleDelete() {
@@ -64,6 +65,34 @@ export function DataTable(props: DataTableProps) {
         })
     }
 
+    async function handleSave() {
+        let isSuccess = true
+        let sc = 0
+        for (const id of Object.keys(updates)) {
+            try {
+                await repository.update({
+                    ...updates[id],
+                    id: id
+                })
+                sc++;
+                delete (updates[id])
+                setUpdates({...updates})
+            } catch (e: any) {
+                isSuccess = false
+                console.log(e)
+                toast.error('Failed to save record: ' + e.message)
+            }
+        }
+
+        if (isSuccess) {
+            toast('Records saved')
+            setUpdates({})
+            refresh()
+        } else if (sc > 0) {
+            toast.error('Records partially saved')
+        }
+    }
+
     useEffect(() => {
         setRecords(undefined)
         repository.list(listParams).then(resp => {
@@ -74,9 +103,11 @@ export function DataTable(props: DataTableProps) {
 
     const filterCount = listParams.query ? listParams.query.and ? listParams.query.and.length : 1 : 0
 
+    console.log('updates', updates)
+
     return <>
         {confirmation.render()}
-        <Box display='flex' p={1}>
+        <Box className='action-bar' display='flex' p={1}>
             <Stack direction='row' spacing={1}>
                 <Button size='small' onClick={() => {
                     refresh()
@@ -109,6 +140,28 @@ export function DataTable(props: DataTableProps) {
                         <span style={{marginLeft: '3px'}}>Delete</span>
                     </Button>
                 </>}
+                {Object.keys(updates).length > 0 && <>
+                    <Button
+                        style={{
+                            marginLeft: '40px'
+                        }}
+                        onClick={() => {
+                            handleSave()
+                        }}
+                        color='success'
+                        size='small'>
+                        <Domain fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Save</span>
+                        <span style={{marginLeft: '3px'}}>({Object.keys(updates).length})</span>
+                    </Button>
+                    <Button color='warning' size='small'
+                            onClick={() => {
+                                setUpdates({})
+                            }}>
+                        <Remove fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Revert</span>
+                    </Button>
+                </>}
             </Stack>
             <Box flexGrow={1}/>
             <Stack direction='row' spacing={1}>
@@ -123,11 +176,14 @@ export function DataTable(props: DataTableProps) {
                     <span style={{marginLeft: '3px'}}>Api Doc</span>
                 </Button>
                 <ToggleButtonGroup value={1}>
-                    <ToggleButton color='secondary'
+                    <ToggleButton color={inlineMode ? 'info' : 'error'}
                                   value={1}
+                                  onClick={() => {
+                                      setInlineMode(!inlineMode)
+                                  }}
                                   size='small'>
                         <EditOff fontSize='small'/>
-                        <span style={{marginLeft: '3px'}}>Inline edit</span>
+                        <span style={{marginLeft: '3px'}}>Inline [{inlineMode ? 'on' : 'off'}]</span>
                     </ToggleButton>
                 </ToggleButtonGroup>
                 <ToggleButtonGroup value={'data'}>
@@ -172,16 +228,21 @@ export function DataTable(props: DataTableProps) {
         </Popover>
         <Box className='data-table'>
             {records && <DataTableTable offset={listParams.offset ?? 0}
+                                        inlineMode={inlineMode}
                                         selectedItems={selectedItems}
                                         setSelectedItems={setSelectedItems}
                                         resource={props.resource}
+                                        updates={updates}
+                                        setUpdates={setUpdates}
                                         records={records}/>}
             {!records && <LoadingOverlay/>}
         </Box>
         <Box flexGrow={1}/>
         <TablePagination component="div"
                          count={total}
-                         page={listParams.offset! / listParams.limit!}
+                         showFirstButton={true}
+                         showLastButton={true}
+                         page={Math.ceil(listParams.offset! / listParams.limit!)}
                          rowsPerPage={listParams.limit!}
                          onRowsPerPageChange={(event) => {
                              setListParams({

@@ -7,7 +7,7 @@ export interface RootLayoutProps {
 
 export function RootLayout(props: RootLayoutProps) {
     return <>
-        <Toaster/>
+        <Toaster position='bottom-right'/>
         {props.children}
     </>
 }

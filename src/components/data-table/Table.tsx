@@ -1,16 +1,19 @@
 import {Box, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, {useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
-import {PropertyCell} from "./PropertyCell";
 import {isSpecialProperty} from "../../util/property";
 import {ExpandMore} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
+import {TableRecordLine} from "./TableRecordLine";
 
 export interface DataTableTableProps {
     resource: Resource
     records: any[]
+    updates: { [key: string]: any }
+    setUpdates: (updates: { [key: string]: any }) => void
     offset: number
+    inlineMode: boolean
     selectedItems: string[]
     setSelectedItems: (selectedItems: string[]) => void
 }
@@ -24,7 +27,6 @@ export function DataTableTable(props: DataTableTableProps) {
         ]
     )
     const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
-    const [tableWidth, setTableWidth] = useState<number>(1000)
 
     const tableDnd = useMemo(() => {
         return new TableDnd(props.resource, properties)
@@ -104,27 +106,26 @@ export function DataTableTable(props: DataTableTableProps) {
         </TableHead>
         <TableBody>
             {props.records.map((record, index) => (
-                <TableRow key={record.id}>
-                    <TableCell>
-                        {props.offset + index + 1}
-                    </TableCell>
-                    <TableCell>
-                        <Checkbox checked={Boolean(selectionIdMap[record.id])}
-                                  onChange={() => {
-                                      if (selectionIdMap[record.id]) {
-                                          props.setSelectedItems(props.selectedItems.filter(item => item !== record.id))
-                                      } else {
-                                          props.setSelectedItems([...props.selectedItems, record.id])
-                                      }
-                                  }}
-                                  size='small'/>
-                    </TableCell>
-                    {properties.map(property => (
-                        <PropertyCell property={props.resource.properties[property]}
-                                      value={record[property]}
-                                      key={property}/>
-                    ))}
-                </TableRow>
+                <TableRecordLine key={record.id}
+                                 resource={props.resource}
+                                 selected={Boolean(selectionIdMap[record.id])}
+                                 properties={properties}
+                                 onSelected={selected => {
+                                     if (!selected) {
+                                         props.setSelectedItems(props.selectedItems.filter(item => item !== record.id))
+                                     } else {
+                                         props.setSelectedItems([...props.selectedItems, record.id])
+                                     }
+                                 }}
+                                 index={props.offset + index + 1}
+                                 onUpdate={(updated) => {
+                                     props.setUpdates({
+                                         ...props.updates,
+                                         [record.id]: updated
+                                     })
+                                 }}
+                                 updated={props.updates[record.id] ?? {}}
+                                 record={record}/>
             ))}
         </TableBody>
     </Table>
