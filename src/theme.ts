@@ -13,7 +13,10 @@ export const theme = createTheme({
         text: {
             primary: '#1E3C50FF',
             secondary: '#0a1414',
-        }
+        },
+        background: {
+            default: '#f5f5f5', // your desired backdrop color
+        },
     },
     components: {
         MuiButton: {

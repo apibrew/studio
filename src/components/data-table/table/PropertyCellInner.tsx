@@ -1,9 +1,8 @@
-import {Icon, IconButton, Tooltip, Typography} from "@mui/material";
+import {Tooltip, Typography} from "@mui/material";
 import {Type} from "@apibrew/client/model/resource";
-import Button from "@mui/material/Button";
-import {UnfoldMore} from "@mui/icons-material";
 import React from "react";
 import {Property} from "@apibrew/client/model";
+import toast from "react-hot-toast";
 
 export interface PropertyCellInnerProps {
     property: Property
@@ -13,7 +12,6 @@ export interface PropertyCellInnerProps {
 
 export function PropertyCellInner(props: PropertyCellInnerProps) {
     let value = props.updated || props.value
-    let viewMore = false
 
     if (value === undefined) {
         return <Typography color='lightgrey'>Null</Typography>
@@ -25,8 +23,7 @@ export function PropertyCellInner(props: PropertyCellInnerProps) {
             break;
         case Type.STRING:
             if (value.length > 40) {
-                value = value.substring(0, 20) + '...'
-                viewMore = true
+                value = value.substring(0, 40) + '...'
             }
             break;
         case Type.LIST:
@@ -37,23 +34,20 @@ export function PropertyCellInner(props: PropertyCellInnerProps) {
             value = JSON.stringify(value)
 
             if (value.length > 40) {
-                value = value.substring(0, 20) + '...'
-                viewMore = true
+                value = value.substring(0, 40) + '...'
             }
             break;
         case Type.UUID:
             return <Tooltip title={value}>
-                <Button variant='text' onClick={() => {
-                }}>{value.substring(0, 8)}</Button>
+                <Typography className='cell-text cell-hand'
+                            onClick={() => {
+                                navigator.clipboard.writeText(value)
+                                toast.success('Copied to clipboard')
+                            }}>{value.substring(0, 8)}</Typography>
             </Tooltip>
     }
 
     return <>
-        {value}
-        {viewMore && <IconButton>
-            <Icon fontSize='small'>
-                <UnfoldMore/>
-            </Icon>
-        </IconButton>}
+        <Typography className='cell-text'>{value}</Typography>
     </>
 }

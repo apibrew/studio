@@ -3,13 +3,14 @@ import React, {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Add, Api, Code, DataArray, Domain, EditOff, FilterList, Refresh, Remove, Schema} from "@mui/icons-material";
-import {DataTableTable} from "./Table";
+import {DataTableTable} from "./table/Table";
 import {LoadingOverlay} from "../LoadingOverlay";
 import './DataTable.scss'
 import {Filters} from "./Filters";
 import {useQueryListParams} from "../../hooks/use-query-list-params";
 import {useConfirmation} from "../modal/use-confirmation";
 import toast from "react-hot-toast";
+import {ApiDocModal} from "../api-doc/ApiDocModal";
 
 export interface DataTableProps {
     resource: Resource
@@ -32,6 +33,7 @@ export function DataTable(props: DataTableProps) {
     const [records, setRecords] = useState<any[]>()
     const [total, setTotal] = useState<number>(0)
     const [selectedItems, setSelectedItems] = useState<string[]>([])
+    const [apiDocOpen, setApiDocOpen] = useState<boolean>(false)
 
     function refresh() {
         setRefreshIndex(refreshIndex + 1)
@@ -124,6 +126,11 @@ export function DataTable(props: DataTableProps) {
 
     return <>
         {confirmation.render()}
+        <ApiDocModal open={apiDocOpen}
+                     onClose={() => {
+                         setApiDocOpen(false)
+                     }}
+                     resource={props.resource}/>
         <Box className='action-bar' display='flex' p={1}>
             <Stack direction='row' spacing={1}>
                 <Button size='small' onClick={() => {
@@ -203,7 +210,10 @@ export function DataTable(props: DataTableProps) {
                     <span style={{marginLeft: '3px'}}>Nano code</span>
                 </Button>
                 <Button color='secondary'
-                        size='small'>
+                        size='small'
+                        onClick={() => {
+                            setApiDocOpen(true)
+                        }}>
                     <Api fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Api Doc</span>
                 </Button>
@@ -264,6 +274,7 @@ export function DataTable(props: DataTableProps) {
                                         selectedItems={selectedItems}
                                         setSelectedItems={setSelectedItems}
                                         resource={props.resource}
+                                        schema={props.resource}
                                         updates={updates}
                                         setUpdates={setUpdates}
                                         records={records}/>}

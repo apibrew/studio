@@ -1,4 +1,4 @@
-import {Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {Resource, useClient} from "@apibrew/react";
 import {useEffect, useState} from "react";
@@ -31,6 +31,8 @@ export default function ResourcesPage() {
     }
 
     return <>
-        <DataTable resource={resource}/>
+        <Box m={1}>
+            <DataTable resource={resource}/>
+        </Box>
     </>
 }

@@ -1,5 +1,6 @@
 import {Resource} from "@apibrew/react";
 import React from "react";
+import {Schema} from "../../../types/schema";
 
 export class TableResize {
     private property: string = '';
@@ -7,7 +8,7 @@ export class TableResize {
     private width: number = 0;
     private onResizeListener: (property: string, width: number) => void = () => void 0;
 
-    constructor(private resource: Resource, private properties: string[]) {
+    constructor(private resource: Schema, private properties: string[]) {
         this.onMouseMove = this.onMouseMove.bind(this)
         this.onMouseUp = this.onMouseUp.bind(this)
     }
@@ -29,7 +30,8 @@ export class TableResize {
             return
         }
 
-        this.width = target.clientWidth - 15
+        console.log(target.clientWidth)
+        this.width = target.clientWidth
 
         e.preventDefault()
 
@@ -43,7 +45,8 @@ export class TableResize {
     }
 
     onMouseMove(e: MouseEvent) {
-        this.onResizeListener(this.property, this.width + e.clientX - this.startX)
+        const newWidth = this.width + e.clientX - this.startX
+        this.onResizeListener(this.property, Math.max(100, newWidth))
     }
 
     onResize(listener: (property: string, width: number) => void) {

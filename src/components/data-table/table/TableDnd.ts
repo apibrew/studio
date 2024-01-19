@@ -1,6 +1,6 @@
 import React, {DragEvent} from "react";
-import {Resource} from "@apibrew/react";
 import {getTargetColumn} from "./util";
+import {Schema} from "../../../types/schema";
 
 export class TableDnd {
     private ec: {
@@ -8,7 +8,7 @@ export class TableDnd {
     };
     private onReorderPropertiesListener?: (updatedProperties: string[]) => void;
 
-    constructor(private resource: Resource, private properties: string[]) {
+    constructor(private resource: Schema, private properties: string[]) {
         this.ec = {}
 
         this.reset()

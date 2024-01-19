@@ -10,6 +10,10 @@ export function getPropertyOrder(property: Property): number {
     return parseInt(getAnnotation(property.annotations as any, 'Order', '0'));
 }
 
+export function hasComplexStructure(property: Property): boolean {
+    return property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT;
+}
+
 export function isComparableProperty(property: Property): boolean {
     if (property.type === Type.INT32 || property.type === Type.INT64 || property.type === Type.FLOAT32 || property.type === Type.FLOAT64) {
         return true
