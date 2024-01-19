@@ -3,7 +3,7 @@ import React, {ReactNode, useState} from "react";
 import {Property} from "@apibrew/client/model";
 import {PropertyCellInner} from "./PropertyCellInner";
 import {PropertyCellEdit} from "./PropertyCellEdit";
-import {PropertyExpand} from "./PropertyExpand";
+import {RecordExpand} from "./RecordExpand";
 import {Resource} from "@apibrew/react";
 import toast from "react-hot-toast";
 

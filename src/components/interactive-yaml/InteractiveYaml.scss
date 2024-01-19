@@ -1,0 +1,31 @@
+.interactive-yaml {
+
+  * {
+    font-family: monospace;
+  }
+
+  .property-line {
+    line-height: normal;
+  }
+
+  .property-key {
+    color: rgb(70, 70, 100);
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 5px;
+    line-height: normal;
+  }
+
+  .property-value {
+    font-size: 14px;
+  }
+
+  .unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}

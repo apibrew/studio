@@ -5,7 +5,7 @@ import {Entity} from "@apibrew/client";
 import {Resource} from "@apibrew/react";
 import {Add, DeleteForever, Remove} from "@mui/icons-material";
 import {Schema} from "../../../types/schema";
-import {PropertyExpand} from "./PropertyExpand";
+import {RecordExpand} from "./RecordExpand";
 
 export interface TableRecordLineProps {
     index: number
@@ -70,11 +70,11 @@ export function TableRecordLine(props: TableRecordLineProps) {
             <Box width='50px'></Box>
         </Box>
         <Box className='row-expand'>
-            <Collapse in={props.expanded}>
-                <PropertyExpand resource={props.resource}
-                                value={props.record}
-                                updated={props.updated}
-                                onUpdate={props.onUpdate}/>
+            <Collapse in={true || props.expanded}>
+                <RecordExpand resource={props.resource}
+                              value={props.record}
+                              updated={props.updated}
+                              onUpdate={props.onUpdate}/>
             </Collapse>
         </Box>
     </>
