@@ -6,8 +6,6 @@ import {ReferenceValue} from "./ReferenceValue";
 import {ListValue} from "./ListValue";
 import {StructValue} from "./StructValue";
 import {ObjectValue} from "./ObjectValue";
-import {IconButton} from "@mui/material";
-import {Edit} from "@mui/icons-material";
 import React from "react";
 import {isSpecialProperty} from "../../util/property";
 
@@ -15,6 +13,9 @@ export interface PropertyValueProps {
     resource: Resource
     property: Property
     value: any
+    path: string
+    depth: number
+    isInline?: boolean
     onChange: (updated: any) => void
 }
 
@@ -25,10 +26,11 @@ function propertyValueSwitch(props: PropertyValueProps) {
         case Type.INT64:
         case Type.FLOAT32:
         case Type.FLOAT64:
-        case Type.BOOL:
         case Type.ENUM:
         case Type.UUID:
             return props.value
+        case Type.BOOL:
+            return props.value ? 'true' : 'false'
         case Type.OBJECT:
             return <ObjectValue {...props}/>
         case Type.REFERENCE:
@@ -43,6 +45,9 @@ function propertyValueSwitch(props: PropertyValueProps) {
             return <StructValue resource={props.resource}
                                 schema={subSchema}
                                 value={props.value}
+                                path={props.path}
+                                depth={props.depth + 1}
+                                isInline={props.isInline}
                                 onChange={(updated) => {
                                     props.onChange(updated)
                                 }}/>
@@ -123,6 +128,9 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
             return <StructValue resource={props.resource}
                                 schema={subSchema}
                                 value={props.value}
+                                path={props.path}
+                                isInline={props.isInline}
+                                depth={props.depth + 1}
                                 onChange={(updated) => {
                                     props.onChange(updated)
                                 }}/>
@@ -132,22 +140,46 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
 }
 
 export function PropertyValue(props: PropertyValueProps) {
-    const [editMode, setEditMode] = React.useState<boolean>(false)
-    const editModeAllowed = !isSpecialProperty(props.property) && !props.property.immutable && props.property.type !== Type.LIST
+    const [editMode, setEditMode] = React.useState<boolean>(props.value === null)
+    let editModeAllowed = true
+
+    if (isSpecialProperty(props.property)) {
+        editModeAllowed = false
+    }
+
+    if (props.property.immutable) {
+        editModeAllowed = false
+    }
+
+    if (props.property.type === Type.LIST) {
+        editModeAllowed = false
+    }
+
+    if (props.property.type === Type.STRUCT && props.value !== undefined) {
+        editModeAllowed = false
+    }
 
     return <>
         {!editMode && propertyValueSwitch(props)}
-        {editMode && propertyEditValueSwitch(props, setEditMode)}
-        {editModeAllowed && <IconButton size='small'
-                                        onClick={() => {
-                                            if (editMode && props.value === undefined) {
-                                                props.onChange(null)
-                                            }
-                                            setEditMode(!editMode)
-                                        }}>
-            {!editMode && <Edit fontSize='small'/>}
-            {/*{editMode && <Save fontSize='small'/>}*/}
-        </IconButton>}
+        {editMode && propertyEditValueSwitch(props, (editMode) => {
+            if (props.value !== null) {
+                setEditMode(editMode)
+            }
+        })}
+        {editModeAllowed && <span
+            className='unselectable cell-hand'
+            style={{
+                marginLeft: '5px',
+                color: 'red'
+            }}
+            onClick={() => {
+                if (props.value === undefined) {
+                    props.onChange(null)
+                }
+                setEditMode(!editMode)
+            }}>
+            (edit)
+        </span>}
     </>
 
 }

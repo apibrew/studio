@@ -1,15 +1,17 @@
 import {PropertyValue} from "./PropertyValue";
-import {Box, IconButton} from "@mui/material";
 import React, {useMemo} from "react";
 import {Resource} from "@apibrew/react";
 import {Schema} from "../../types/schema";
 import {Type} from "@apibrew/client/model/resource";
-import {Edit, EditOff, ZoomOut} from "@mui/icons-material";
+import {leftSpace} from "./util";
 
 export interface StructValueProps {
     resource: Resource
     schema: Schema
     value: any
+    isInline?: boolean
+    path: string
+    depth: number
     onChange: (updated: any) => void
 }
 
@@ -21,18 +23,26 @@ export function StructValue(props: StructValueProps) {
     }, [props.schema])
 
     if (props.value === undefined) {
-        return <></>
+        return <span
+            itemRef={props.path}
+            property={JSON.stringify(props.value) + ''}
+            style={{
+                color: 'red'
+            }}>undefined</span>
     }
 
     const value = props.value || {}
 
-    return <Box>
-        {properties.map(item => {
+    return <span itemRef={props.path}
+                 property={JSON.stringify(props.value)}>
+        {properties.map((item, index) => {
             const property = props.schema.properties[item]
             let propertyValue = <PropertyValue
                 resource={props.resource}
                 property={property}
                 value={value[item]}
+                depth={props.depth + 1}
+                path={`${props.path}.${item}`}
                 onChange={updated => {
                     props.onChange({
                         ...value,
@@ -43,16 +53,21 @@ export function StructValue(props: StructValueProps) {
             const isSub = (value[item] !== undefined) && (property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT || property.type === Type.REFERENCE || property.type === Type.OBJECT)
 
             return <>
-                <Box key={item}
-                     display='flex'
-                     flexDirection='row'>
+                <span>
+                {(!props.isInline || index > 0) && leftSpace(props.depth)}
+                    <span key={item}
+                          style={{
+                              whiteSpace: 'nowrap'
+                          }}>
                     <span className='property-key'>{item}: </span>
-                    {!isSub && propertyValue}
-                </Box>
-                {isSub && <Box marginLeft='15px'>
-                    {propertyValue}
-                </Box>}
+                        {!isSub && propertyValue}
+                    </span>
+                    {isSub && <div>
+                        {propertyValue}
+                    </div>}
+                </span>
+                <div/>
             </>
         })}
-    </Box>
+    </span>
 }

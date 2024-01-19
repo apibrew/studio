@@ -1,32 +1,32 @@
 import {PropertyValue, PropertyValueProps} from "./PropertyValue";
-import {Box, IconButton} from "@mui/material";
-import {Add} from "@mui/icons-material";
+import {leftSpace} from "./util";
 
 export function ListValue(props: PropertyValueProps) {
     const arr = props.value as [] || []
 
-    return <Box>
-        {arr.map((item, index) => <Box display='flex'>
-            <span style={{
-                marginLeft: '5px',
-                marginRight: '5px'
-            }}>
+    return <div>
+        {arr.map((item, index) => <div>
+            {leftSpace(props.depth)}
+            <span>
                 <span className='cell-hand unselectable'
                       style={{
-                          marginRight: '5px'
+                          color: 'red'
                       }}
                       onClick={() => {
                           props.onChange([
                               ...arr.slice(0, index),
                               ...arr.slice(index + 1)
                           ])
-                      }}>x</span>
-                <span>-</span>
+                      }}>x&nbsp;</span>
+                <span>-&nbsp;</span>
             </span>
-            <Box>
+            <span>
                 <PropertyValue resource={props.resource}
                                property={props.property.item}
                                value={item}
+                               path={`${props.path}[${index}]`}
+                               depth={props.depth + 2}
+                               isInline={true}
                                onChange={(updated) => {
                                    props.onChange([
                                        ...arr.slice(0, index),
@@ -34,17 +34,18 @@ export function ListValue(props: PropertyValueProps) {
                                        ...arr.slice(index + 1)
                                    ])
                                }}/>
-            </Box>
-        </Box>)}
-        <IconButton
+            </span>
+        </div>)}
+        <span className='unselectable'>{leftSpace(props.depth)}</span>
+        <span
+            className='unselectable cell-hand'
             onClick={() => {
-                props.onChange([...arr, undefined])
+                props.onChange([...arr, null])
             }}
-            size='small'
-            sx={{
-                marginLeft: '-5px'
+            style={{
+                color: 'green'
             }}>
-            <Add fontSize='small'/>
-        </IconButton>
-    </Box>
+            +
+        </span>
+    </div>
 }
