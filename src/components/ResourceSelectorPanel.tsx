@@ -2,6 +2,7 @@ import {
     Box,
     FormControl,
     Icon,
+    IconButton,
     InputLabel,
     List,
     ListItem,
@@ -15,26 +16,38 @@ import {Namespace, Resource, useRecords} from "@apibrew/react";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {TableChart} from "@mui/icons-material";
+import {MoreVert, TableChart} from "@mui/icons-material";
 import {useNavigate, useParams} from "react-router-dom";
+import {useDrawer} from "../hooks/use-drawer";
+import {NamespaceDrawer} from "./namespace-drawer/NamespaceDrawer";
+import Button from "@mui/material/Button";
+import {ResourceDrawer} from "./resource-drawer/ResourceDrawer";
 
 export function ResourceSelectorPanel() {
     const params = useParams()
     const navigate = useNavigate()
+    const drawer = useDrawer()
 
     const [namespace, setNamespace] = useState<Namespace>({
         name: 'default'
     } as Namespace)
 
-    const namespacesAll = useRecords<Namespace>(NamespaceEntityInfo)
-    const resourcesAll = useRecords<Resource>(ResourceEntityInfo)
+    const [wi, setWi] = useState<number>(0)
 
-    const namespaces = namespacesAll ? namespacesAll.filter(item => item.name !== 'nano') : undefined
+    const namespacesAll = useRecords<Namespace>(NamespaceEntityInfo, {
+        limit: 1000,
+    }, wi)
+    const resourcesAll = useRecords<Resource>(ResourceEntityInfo, {
+        limit: 1000,
+    }, wi)
+
+    const namespaces = namespacesAll ? namespacesAll.filter(item => item.name !== 'nano' && item.name !== 'testing') : undefined
     const resources = resourcesAll ? resourcesAll.filter(item => item.namespace.name === namespace.name) : undefined
 
     const loaded = namespaces && resources
 
     return <>
+        {drawer.render()}
         <Box id='left-top-bar'
              sx={{
                  height: '31px',
@@ -63,13 +76,29 @@ export function ResourceSelectorPanel() {
                 <Select fullWidth
                         value={namespace.name}
                         onChange={(event) => {
-                            setNamespace(namespaces.find(item => item.name === event.target.value)!)
+                            if (event.target.value === 'create') {
+                                drawer.open(
+                                    <NamespaceDrawer new={true}
+                                                     onClose={() => {
+                                                         drawer.close()
+                                                         setWi(wi + 1)
+                                                     }}
+                                                     namespace={{
+                                                         name: 'new-namespace'
+                                                     } as Namespace}/>
+                                )
+                            } else {
+                                setNamespace(namespaces.find(item => item.name === event.target.value)!)
+                            }
                         }}
                         size='small'>
                     {namespaces.map(item => <MenuItem key={item.name} value={item.name}>{item.name}</MenuItem>)}
+                    <MenuItem value='create'>(create)</MenuItem>
                 </Select>
             </FormControl>
-            <List>
+            <List style={{
+                width: '108%',
+            }}>
                 {resources.map(resource => {
                     const isActive = params.resource === resource.name
 
@@ -89,11 +118,45 @@ export function ResourceSelectorPanel() {
                             }}>
                                 <TableChart color='secondary' fontSize='small'/>
                             </Icon>
-                            <Typography color='primary'>{resource.name}</Typography>
+                            <Typography color='primary' flexGrow={1} overflow={'hidden'}>{resource.name}</Typography>
+                            <IconButton
+                                size='small'
+                                onClick={(e) => {
+                                    e.stopPropagation()
+
+                                    drawer.open(
+                                        <ResourceDrawer new={false}
+                                                        onClose={() => {
+                                                            drawer.close()
+                                                            setWi(wi + 1)
+                                                        }}
+                                                        resource={resource}/>
+                                    )
+                                }}>
+                                <MoreVert/>
+                            </IconButton>
                         </ListItemButton>
                     </ListItem>
                 })}
             </List>
+            <Box textAlign='center'>
+                <Button
+                    size='small'
+                    onClick={() => {
+                        drawer.open(
+                            <ResourceDrawer new={true}
+                                            onClose={() => {
+                                                drawer.close()
+                                                setWi(wi + 1)
+                                            }}
+                                            resource={{
+                                                name: 'NewResource1'
+                                            } as Resource}/>
+                        )
+                    }}>
+                    Create resource
+                </Button>
+            </Box>
         </Box>}
     </>;
 }

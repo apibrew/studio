@@ -6,12 +6,43 @@ export function isSpecialProperty(property: Property): boolean {
     return isAnnotationEnabled(property.annotations as any, 'SpecialProperty');
 }
 
-export function getPropertyOrder(property: Property): number {
-    return parseInt(getAnnotation(property.annotations as any, 'Order', '0'));
+export function getPropertyOrder(name: string, property: Property): number {
+    const order = parseInt(getAnnotation(property.annotations as any, 'Order', '0'));
+
+    if (order !== 0) {
+        return order
+    }
+
+    if (name === 'id') {
+        return -2
+    }
+
+    if (isSpecialProperty(property)) {
+        return 1000
+    }
+
+    if (hasComplexStructure(property)) {
+        return 1000
+    }
+
+    return 0;
 }
 
 export function hasComplexStructure(property: Property): boolean {
     return property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT;
+}
+
+export function sortedProperties(properties: { [key: string]: Property }): string[] {
+    const propertyNames = Object.keys(properties)
+
+    return propertyNames.sort((a, b) => {
+        const aProperty = properties[a]
+        const bProperty = properties[b]
+        const aOrder = getPropertyOrder(a, aProperty)
+        const bOrder = getPropertyOrder(b, bProperty)
+
+        return aOrder - bOrder
+    })
 }
 
 export function isComparableProperty(property: Property): boolean {
@@ -62,7 +93,7 @@ export function makeProperties(properties: { [key: string]: Property }) {
         .map(item => {
             return {name: item[0], property: item[1]}
         })
-        .sort((a, b) => getPropertyOrder(a.property) - getPropertyOrder(b.property))
+        .sort((a, b) => getPropertyOrder(a.name, a.property) - getPropertyOrder(a.name, b.property))
         .map((item, index) => {
             if (!item.property.annotations) {
                 item.property.annotations = {}
@@ -72,6 +103,6 @@ export function makeProperties(properties: { [key: string]: Property }) {
 
             return item
         })
-        .sort((a, b) => getPropertyOrder(a.property) - getPropertyOrder(b.property))
+        .sort((a, b) => getPropertyOrder(a.name, a.property) - getPropertyOrder(a.name, b.property))
 }
 

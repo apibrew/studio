@@ -5,7 +5,7 @@ import {Add, ExpandMore, Remove} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";
-import {isSpecialProperty} from "../../../util/property";
+import {isSpecialProperty, sortedProperties} from "../../../util/property";
 
 import './Table.scss'
 import {Schema} from "../../../types/schema";
@@ -30,7 +30,7 @@ export function DataTableTable(props: DataTableTableProps) {
     const [expandedRecords, setExpandedRecords] = useState<{ [key: string]: boolean }>({} as any)
 
     useEffect(() => {
-        const newProperties = Object.keys(props.schema.properties).filter(property => !isSpecialProperty(props.schema.properties[property]))
+        const newProperties = sortedProperties(props.schema.properties).filter(property => !isSpecialProperty(props.schema.properties[property]))
 
         if (props.schema.properties.id) {
             newProperties.unshift('id')

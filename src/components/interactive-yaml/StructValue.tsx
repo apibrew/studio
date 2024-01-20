@@ -4,6 +4,7 @@ import {Resource} from "@apibrew/react";
 import {Schema} from "../../types/schema";
 import {Type} from "@apibrew/client/model/resource";
 import {leftSpace} from "./util";
+import {sortedProperties} from "../../util/property";
 
 export interface StructValueProps {
     resource: Resource
@@ -16,11 +17,7 @@ export interface StructValueProps {
 }
 
 export function StructValue(props: StructValueProps) {
-    const properties = useMemo(() => {
-        const properties = Object.keys(props.schema.properties)
-
-        return properties
-    }, [props.schema])
+    const properties = useMemo(() => sortedProperties(props.schema.properties), [props.schema])
 
     if (props.value === undefined) {
         return <span
@@ -52,6 +49,22 @@ export function StructValue(props: StructValueProps) {
 
             const isSub = (value[item] !== undefined) && (property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT || property.type === Type.REFERENCE)
 
+            let propertyKeySuffix = ''
+
+            switch (property.type) {
+                case Type.LIST:
+                    const length = (value[item] || []).length
+                    propertyKeySuffix = `[${length}]`
+                    break
+                case Type.MAP:
+                    propertyKeySuffix = '<>'
+                    break
+                case Type.STRUCT:
+                    propertyKeySuffix = '{}'
+                    break
+            }
+
+
             return <>
                 <span>
                 {(!props.isInline || index > 0) && leftSpace(props.depth)}
@@ -59,7 +72,8 @@ export function StructValue(props: StructValueProps) {
                           style={{
                               whiteSpace: 'nowrap'
                           }}>
-                    <span className='property-key'>{item}: </span>
+                    <span className='property-key'>{item}<span
+                        className='unselectable'>{propertyKeySuffix}</span>: </span>
                         {!isSub && propertyValue}
                     </span>
                     {isSub && <div>

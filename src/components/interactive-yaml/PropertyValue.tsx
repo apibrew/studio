@@ -46,7 +46,7 @@ function propertyValueSwitch(props: PropertyValueProps) {
                                 schema={subSchema}
                                 value={props.value}
                                 path={props.path}
-                                depth={props.depth + 1}
+                                depth={props.depth}
                                 isInline={props.isInline}
                                 onChange={(updated) => {
                                     props.onChange(updated)
@@ -108,7 +108,6 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
                               setEditMode(false)
                           }}
                           style={{
-                              width: '300px'
                           }}
                           checked={props.value}
                           onChange={event => {
@@ -130,7 +129,7 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
                                 value={props.value}
                                 path={props.path}
                                 isInline={props.isInline}
-                                depth={props.depth + 1}
+                                depth={props.depth}
                                 onChange={(updated) => {
                                     props.onChange(updated)
                                 }}/>
