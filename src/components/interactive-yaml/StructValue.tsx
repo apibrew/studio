@@ -17,7 +17,7 @@ export interface StructValueProps {
 }
 
 export function StructValue(props: StructValueProps) {
-    const properties = useMemo(() => sortedProperties(props.schema.properties), [props.schema])
+    const properties = useMemo(() => sortedProperties(props.schema.properties), [props.schema.properties])
 
     if (props.value === undefined) {
         return <span
@@ -65,7 +65,7 @@ export function StructValue(props: StructValueProps) {
             }
 
 
-            return <>
+            return <React.Fragment key={item}>
                 <span>
                 {(!props.isInline || index > 0) && leftSpace(props.depth)}
                     <span key={item}
@@ -81,7 +81,7 @@ export function StructValue(props: StructValueProps) {
                     </div>}
                 </span>
                 <div/>
-            </>
+            </React.Fragment>
         })}
     </span>
 }

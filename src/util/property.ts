@@ -38,6 +38,11 @@ export function sortedProperties(properties: { [key: string]: Property }): strin
     return propertyNames.sort((a, b) => {
         const aProperty = properties[a]
         const bProperty = properties[b]
+
+        if (!aProperty || !bProperty) {
+            return 0
+        }
+
         const aOrder = getPropertyOrder(a, aProperty)
         const bOrder = getPropertyOrder(b, bProperty)
 

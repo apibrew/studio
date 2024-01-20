@@ -1,7 +1,7 @@
 import {Box, Checkbox, IconButton, Tooltip} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
-import {Add, ExpandMore, Remove} from "@mui/icons-material";
+import {Add, ExpandMore, MoreVert, Remove} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";
@@ -20,6 +20,8 @@ export interface DataTableTableProps {
     inlineMode: boolean
     selectedItems: string[]
     setSelectedItems: (selectedItems: string[]) => void
+    onAddColumnClick: () => void
+    onEditColumnClick: (property: string) => void
 }
 
 export function DataTableTable(props: DataTableTableProps) {
@@ -157,8 +159,12 @@ export function DataTableTable(props: DataTableTableProps) {
                             </Box>
                             <Box flexGrow={1}/>
                             <Box className='property-actions'>
-                                <IconButton>
-                                    <ExpandMore/>
+                                <IconButton
+                                    size='small'
+                                    onClick={() => {
+                                        props.onEditColumnClick(property)
+                                    }}>
+                                    <MoreVert/>
                                 </IconButton>
                             </Box>
                         </Box>
@@ -167,7 +173,11 @@ export function DataTableTable(props: DataTableTableProps) {
                 </Box>
             })}
             <Box width='50px' className='cell header-cell'>
-                <IconButton>
+                <IconButton
+                    size='small'
+                    onClick={() => {
+                        props.onAddColumnClick()
+                    }}>
                     <Add/>
                 </IconButton>
             </Box>
@@ -190,16 +200,16 @@ export function DataTableTable(props: DataTableTableProps) {
                                  index={props.offset + index + 1}
                                  expanded={Boolean(expandedRecords[record.id])}
                                  onExpanded={expanded => {
-                                        if (expanded) {
-                                            setExpandedRecords({
-                                                ...expandedRecords,
-                                                [record.id]: true
-                                            })
-                                        } else {
-                                            const newExpandedRecords = {...expandedRecords}
-                                            delete newExpandedRecords[record.id]
-                                            setExpandedRecords(newExpandedRecords)
-                                        }
+                                     if (expanded) {
+                                         setExpandedRecords({
+                                             ...expandedRecords,
+                                             [record.id]: true
+                                         })
+                                     } else {
+                                         const newExpandedRecords = {...expandedRecords}
+                                         delete newExpandedRecords[record.id]
+                                         setExpandedRecords(newExpandedRecords)
+                                     }
                                  }}
                                  onUpdate={(updated) => {
                                      if (updated) {

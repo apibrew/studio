@@ -11,6 +11,8 @@ import {useQueryListParams} from "../../hooks/use-query-list-params";
 import {useConfirmation} from "../modal/use-confirmation";
 import toast from "react-hot-toast";
 import {ApiDocModal} from "../api-doc/ApiDocModal";
+import {useDrawer} from "../../hooks/use-drawer";
+import {ColumnDrawer} from "./column-drawer/ColumnDrawer";
 
 export interface DataTableProps {
     resource: Resource
@@ -22,7 +24,8 @@ const defaultListParams = {
 }
 
 export function DataTable(props: DataTableProps) {
-    const repository = useRepository(fromResource(props.resource))
+    const [resource, setResource] = useState<Resource>(props.resource)
+    const repository = useRepository(fromResource(resource))
     const [refreshIndex, setRefreshIndex] = useState<number>(0)
     const [listParams, setListParams] = useQueryListParams(defaultListParams)
     const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement>()
@@ -34,8 +37,10 @@ export function DataTable(props: DataTableProps) {
     const [total, setTotal] = useState<number>(0)
     const [selectedItems, setSelectedItems] = useState<string[]>([])
     const [apiDocOpen, setApiDocOpen] = useState<boolean>(false)
+    const drawer = useDrawer()
 
     function refresh() {
+        setRecords(undefined)
         setRefreshIndex(refreshIndex + 1)
     }
 
@@ -102,35 +107,61 @@ export function DataTable(props: DataTableProps) {
         }
     }
 
+    function handleAddColumnClick() {
+        drawer.open(
+            <ColumnDrawer new={true}
+                          property={'new'}
+                          onUpdateResource={setResource}
+                          onClose={() => {
+                              drawer.close()
+                              refresh()
+                          }}
+                          resource={resource}/>
+        )
+    }
+
+    function handleEditColumnClick(property: string) {
+        drawer.open(
+            <ColumnDrawer new={false}
+                          property={property}
+                          onUpdateResource={setResource}
+                          onClose={() => {
+                              drawer.close()
+                              refresh()
+                          }}
+                          resource={resource}/>
+        )
+    }
+
     useEffect(() => {
         if (Object.keys(updates).length > 0) {
             toast.error('Please save the new record first')
             return
         }
         setRecords(undefined)
-        repository.list(listParams).then(resp => {
-            setRecords(resp.content)
-            setTotal(resp.total)
-        })
-    }, [props.resource, listParams, refreshIndex]);
+        repository.list(listParams)
+            .then(resp => {
+                setRecords(resp.content)
+                setTotal(resp.total)
+            })
+    }, [listParams, refreshIndex]);
 
     useEffect(() => {
         if (records?.some(item => item.id === 'new') && updates['new'] === undefined) {
             setRecords(records.filter(item => item.id !== 'new'))
         }
-    }, [updates]);
+    }, [updates, refreshIndex]);
 
     const filterCount = listParams.query ? listParams.query.and ? listParams.query.and.length : 1 : 0
 
-    console.log('updates', updates)
-
     return <>
+        {drawer.render()}
         {confirmation.render()}
         <ApiDocModal open={apiDocOpen}
                      onClose={() => {
                          setApiDocOpen(false)
                      }}
-                     resource={props.resource}/>
+                     resource={resource}/>
         <Box className='action-bar' display='flex' p={1}>
             <Stack direction='row' spacing={1}>
                 <Button size='small' onClick={() => {
@@ -257,7 +288,7 @@ export function DataTable(props: DataTableProps) {
                 horizontal: 'left',
             }}
         >
-            <Filters resource={props.resource}
+            <Filters resource={resource}
                      query={listParams.query}
                      onApply={query => {
                          setListParams({
@@ -269,15 +300,19 @@ export function DataTable(props: DataTableProps) {
                      }}/>
         </Popover>
         <Box className='data-table'>
-            {records && <DataTableTable offset={listParams.offset ?? 0}
-                                        inlineMode={inlineMode}
-                                        selectedItems={selectedItems}
-                                        setSelectedItems={setSelectedItems}
-                                        resource={props.resource}
-                                        schema={props.resource}
-                                        updates={updates}
-                                        setUpdates={setUpdates}
-                                        records={records}/>}
+            {records && <DataTableTable
+                offset={listParams.offset ?? 0}
+                inlineMode={inlineMode}
+                selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
+                resource={resource}
+                schema={resource}
+                updates={updates}
+                setUpdates={setUpdates}
+                records={records}
+                onAddColumnClick={handleAddColumnClick}
+                onEditColumnClick={handleEditColumnClick}
+            />}
             {!records && <LoadingOverlay/>}
         </Box>
         <Box flexGrow={1}/>
