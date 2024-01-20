@@ -25,7 +25,7 @@ export function ListValue(props: PropertyValueProps) {
                                property={props.property.item}
                                value={item}
                                path={`${props.path}[${index}]`}
-                               depth={props.depth + 2}
+                               depth={props.depth + 3}
                                isInline={true}
                                onChange={(updated) => {
                                    props.onChange([

@@ -50,7 +50,7 @@ export function StructValue(props: StructValueProps) {
                     })
                 }}/>
 
-            const isSub = (value[item] !== undefined) && (property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT || property.type === Type.REFERENCE || property.type === Type.OBJECT)
+            const isSub = (value[item] !== undefined) && (property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT || property.type === Type.REFERENCE)
 
             return <>
                 <span>

@@ -70,7 +70,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
             <Box width='50px'></Box>
         </Box>
         <Box className='row-expand'>
-            <Collapse in={true || props.expanded}>
+            <Collapse in={props.expanded}>
                 <RecordExpand resource={props.resource}
                               value={props.record}
                               updated={props.updated}
