@@ -17,7 +17,6 @@ export interface DataTableTableProps {
     updates: { [key: string]: any }
     setUpdates: (updates: { [key: string]: any }) => void
     offset: number
-    inlineMode: boolean
     selectedItems: string[]
     setSelectedItems: (selectedItems: string[]) => void
     onAddColumnClick: () => void
@@ -152,7 +151,7 @@ export function DataTableTable(props: DataTableTableProps) {
                         <Box className='cell-inner'>
                             <Box className='property-name'>
                                 {property}
-                                {props.inlineMode && props.schema.properties[property].required && <span style={{
+                                {props.schema.properties[property].required && <span style={{
                                     marginLeft: '1px',
                                     color: 'red'
                                 }}>*</span>}

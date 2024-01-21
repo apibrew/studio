@@ -3,7 +3,7 @@ import {useMemo, useState} from "react";
 import {Add, Remove} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {PairExpression, Resource} from "@apibrew/react";
-import {isComparableProperty} from "../../util/property";
+import {isComparableProperty} from "../../../util/property";
 import {BooleanExpression} from "@apibrew/client/model/permission";
 
 export interface Filter {
