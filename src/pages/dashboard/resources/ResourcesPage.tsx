@@ -31,7 +31,9 @@ export default function ResourcesPage() {
     }
 
     return <>
-        <Box m={1}>
+        <Box display='flex'
+             height='100%'
+             flexDirection='column'>
             <DataTable resource={resource}/>
         </Box>
     </>

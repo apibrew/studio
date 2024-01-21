@@ -22,7 +22,7 @@ export function getPropertyOrder(name: string, property: Property): number {
     }
 
     if (hasComplexStructure(property)) {
-        return 1000
+        return 100
     }
 
     return 0;

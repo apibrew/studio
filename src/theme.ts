@@ -74,6 +74,7 @@ export const theme = createTheme({
         MuiTable: {
             defaultProps: {
                 size: 'small',
+                padding: 'normal',
             },
         },
         MuiTextField: {

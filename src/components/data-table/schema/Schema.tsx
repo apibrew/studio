@@ -7,7 +7,7 @@ import {SubType} from "@apibrew/client/model/resource-action";
 import Button from "@mui/material/Button";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {Add, Delete, Remove} from "@mui/icons-material";
+import {Delete} from "@mui/icons-material";
 
 export interface SchemaProps {
     resource: Resource
@@ -34,7 +34,7 @@ export function SchemaTable(props: SchemaProps) {
         })
     }
 
-    return <Box m={1}>
+    return <Box>
         <Table size='small'>
             <TableHead>
                 <TableRow>
@@ -62,12 +62,12 @@ export function SchemaTable(props: SchemaProps) {
                             index={index}
                             resource={props.resource}
                             propertyName={propertyName}
-                            setPropertyName={(propertyName) => {
+                            setPropertyName={(updatedPropertyName) => {
                                 const property = props.resource.properties[propertyName]
                                 if (property) {
                                     delete props.resource.properties[propertyName]
-                                    props.resource.properties[propertyName] = property
                                 }
+                                props.resource.properties[updatedPropertyName] = property
                                 props.setResource({
                                     ...props.resource,
                                     properties: {
@@ -94,18 +94,18 @@ export function SchemaTable(props: SchemaProps) {
                     return (<>
                         <TableCell colSpan={7}>
                             <IconButton color='error'
-                                    style={{
-                                        marginLeft: '15px'
-                                    }}
-                                    size='small'
-                                    onClick={() => {
-                                        props.setResource({
-                                            ...props.resource,
-                                            types: props.resource.types?.filter((t) => {
-                                                return t.name !== type.name
+                                        style={{
+                                            marginLeft: '15px'
+                                        }}
+                                        size='small'
+                                        onClick={() => {
+                                            props.setResource({
+                                                ...props.resource,
+                                                types: props.resource.types?.filter((t) => {
+                                                    return t.name !== type.name
+                                                })
                                             })
-                                        })
-                                    }}>
+                                        }}>
                                 <Delete/>
                             </IconButton>
                             <TextField
@@ -153,12 +153,13 @@ export function SchemaTable(props: SchemaProps) {
                                     index={index}
                                     resource={props.resource}
                                     propertyName={propertyName}
-                                    setPropertyName={(propertyName) => {
+                                    setPropertyName={(updatedPropertyName) => {
                                         const property = type.properties[propertyName]
                                         if (property) {
                                             delete type.properties[propertyName]
-                                            type.properties[propertyName] = property
                                         }
+
+                                        type.properties[updatedPropertyName] = property
 
                                         updateType(type.name, (type) => {
                                             return {

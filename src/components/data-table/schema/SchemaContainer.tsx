@@ -45,7 +45,7 @@ export function SchemaContainer(props: SchemaContainerProps) {
         })
     }
 
-    return <>
+    return <Box display='flex' flexDirection='column' height='100%' overflow='auto'>
         {drawer.render()}
         {confirmation.render()}
         <Box className='action-bar' display='flex' p={1}>
@@ -104,5 +104,5 @@ export function SchemaContainer(props: SchemaContainerProps) {
             setResource={setResource}
             onTriggerUpdate={refresh}
         />
-    </>
+    </Box>
 }

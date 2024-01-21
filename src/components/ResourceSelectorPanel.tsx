@@ -181,19 +181,19 @@ export function ResourceSelectorPanel() {
                 )
                 setResourceContextAnchorEl(undefined)
             }}>Update Resource</MenuItem>
-            <MenuItem onClick={() => {
-                drawer.open(
-                    <SubTypesDrawer
-                        onClose={() => {
-                            drawer.close()
-                            setWi(wi + 1)
-                        }}
-                        resource={selectedResource!}/>
-                )
-                setResourceContextAnchorEl(undefined)
-            }}>Sub Types</MenuItem>
-            <MenuItem onClick={() => {
-            }}>Indexes</MenuItem>
+            {/*<MenuItem onClick={() => {*/}
+            {/*    drawer.open(*/}
+            {/*        <SubTypesDrawer*/}
+            {/*            onClose={() => {*/}
+            {/*                drawer.close()*/}
+            {/*                setWi(wi + 1)*/}
+            {/*            }}*/}
+            {/*            resource={selectedResource!}/>*/}
+            {/*    )*/}
+            {/*    setResourceContextAnchorEl(undefined)*/}
+            {/*}}>Sub Types</MenuItem>*/}
+            {/*<MenuItem onClick={() => {*/}
+            {/*}}>Indexes</MenuItem>*/}
         </Menu>}
     </>;
 }
