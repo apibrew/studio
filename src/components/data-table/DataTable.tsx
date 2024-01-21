@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import {ApiDocModal} from "../api-doc/ApiDocModal";
 import {useDrawer} from "../../hooks/use-drawer";
 import {ColumnDrawer} from "./column-drawer/ColumnDrawer";
+import {Type} from "@apibrew/client/model/resource";
+import {Property} from "@apibrew/client/model";
 
 export interface DataTableProps {
     resource: Resource
@@ -110,7 +112,10 @@ export function DataTable(props: DataTableProps) {
     function handleAddColumnClick() {
         drawer.open(
             <ColumnDrawer new={true}
-                          property={'new'}
+                          propertyName={'new'}
+                          property={{
+                              type: Type.STRING
+                          } as Property}
                           onUpdateResource={setResource}
                           onClose={() => {
                               drawer.close()
@@ -123,7 +128,8 @@ export function DataTable(props: DataTableProps) {
     function handleEditColumnClick(property: string) {
         drawer.open(
             <ColumnDrawer new={false}
-                          property={property}
+                          propertyName={property}
+                          property={resource.properties[property]}
                           onUpdateResource={setResource}
                           onClose={() => {
                               drawer.close()

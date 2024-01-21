@@ -1,11 +1,11 @@
 import {Resource, useRepository} from "@apibrew/react";
 import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
-import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import React from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Property} from "@apibrew/client/model";
-import {PropertyForm} from "../../property-form/PropertyForm";
+import {useConfirmation} from "../modal/use-confirmation";
+import {PropertyForm} from "../property-form/PropertyForm";
 
 export interface ColumnDrawerProps {
     resource: Resource
@@ -16,7 +16,7 @@ export interface ColumnDrawerProps {
     onClose: () => void
 }
 
-export function ColumnDrawer(props: ColumnDrawerProps) {
+export function PropertyDrawer(props: ColumnDrawerProps) {
     const [propertyName, setPropertyName] = React.useState<string>(props.propertyName)
     const [property, setProperty] = React.useState<Property>(props.property)
 

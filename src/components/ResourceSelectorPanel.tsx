@@ -7,6 +7,7 @@ import {
     List,
     ListItem,
     ListItemButton,
+    Menu,
     MenuItem,
     Select,
     Typography
@@ -22,6 +23,7 @@ import {useDrawer} from "../hooks/use-drawer";
 import {NamespaceDrawer} from "./namespace-drawer/NamespaceDrawer";
 import Button from "@mui/material/Button";
 import {ResourceDrawer} from "./resource-drawer/ResourceDrawer";
+import {SubTypesDrawer} from "./sub-types-drawer/SubTypesDrawer";
 
 export function ResourceSelectorPanel() {
     const params = useParams()
@@ -31,6 +33,9 @@ export function ResourceSelectorPanel() {
     const [namespace, setNamespace] = useState<Namespace>({
         name: 'default'
     } as Namespace)
+
+    const [resourceContextAnchorEl, setResourceContextAnchorEl] = React.useState<HTMLElement>();
+    const [selectedResource, setSelectedResource] = React.useState<Resource>()
 
     const [wi, setWi] = useState<number>(0)
 
@@ -123,15 +128,8 @@ export function ResourceSelectorPanel() {
                                 size='small'
                                 onClick={(e) => {
                                     e.stopPropagation()
-
-                                    drawer.open(
-                                        <ResourceDrawer new={false}
-                                                        onClose={() => {
-                                                            drawer.close()
-                                                            setWi(wi + 1)
-                                                        }}
-                                                        resource={resource}/>
-                                    )
+                                    setResourceContextAnchorEl(e.currentTarget)
+                                    setSelectedResource(resource)
                                 }}>
                                 <MoreVert/>
                             </IconButton>
@@ -158,5 +156,44 @@ export function ResourceSelectorPanel() {
                 </Button>
             </Box>
         </Box>}
+
+
+        {resourceContextAnchorEl && <Menu
+            id="basic-menu"
+            anchorEl={resourceContextAnchorEl}
+            open={Boolean(resourceContextAnchorEl)}
+            onClose={() => {
+                setResourceContextAnchorEl(undefined)
+            }}
+            MenuListProps={{
+                'aria-labelledby': 'basic-button',
+            }}
+        >
+            <MenuItem onClick={() => {
+                drawer.open(
+                    <ResourceDrawer
+                        new={false}
+                        onClose={() => {
+                            drawer.close()
+                            setWi(wi + 1)
+                        }}
+                        resource={selectedResource!}/>
+                )
+                setResourceContextAnchorEl(undefined)
+            }}>Update Resource</MenuItem>
+            <MenuItem onClick={() => {
+                drawer.open(
+                    <SubTypesDrawer
+                        onClose={() => {
+                            drawer.close()
+                            setWi(wi + 1)
+                        }}
+                        resource={selectedResource!}/>
+                )
+                setResourceContextAnchorEl(undefined)
+            }}>Sub Types</MenuItem>
+            <MenuItem onClick={() => {
+            }}>Indexes</MenuItem>
+        </Menu>}
     </>;
 }
