@@ -11,9 +11,24 @@ export interface PropertyExtrasProps {
     resource: Resource
     property: Property
     onChange: (updated: Property) => void
+    disableHelperText?: boolean
 }
 
 export function PropertyExtras(props: PropertyExtrasProps) {
+    const propertySx = {
+        width: '100%',
+        padding: 0,
+        margin: 0,
+        '& .MuiInputBase-input': {
+            padding: '3px',
+            margin: 0,
+        },
+        '& .MuiSelect-select': {
+            padding: '3px',
+            margin: 0,
+        }
+    }
+
     useEffect(() => {
         if (props.property.type === Type.LIST) {
             if (props.property.item === undefined) {
@@ -35,9 +50,9 @@ export function PropertyExtras(props: PropertyExtrasProps) {
             }
             return <>
                 <Box marginLeft={1} border={'1 px solid black'}>
-                    <Typography>Item:</Typography>
                     <FormControl fullWidth>
                         <PropertyTypeDropdown
+                            sx={propertySx}
                             value={props.property.item?.type}
                             label='Type'
                             title='Type'
@@ -55,6 +70,7 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                     <PropertyExtras
                         resource={props.resource}
                         property={props.property.item}
+                        disableHelperText={props.disableHelperText}
                         onChange={item => {
                             props.onChange({
                                 ...props.property,
@@ -67,13 +83,13 @@ export function PropertyExtras(props: PropertyExtrasProps) {
         case Type.STRUCT:
             return <>
                 <Box marginLeft={1} border={'1 px solid black'}>
-                    <Typography>Sub Type:</Typography>
                     <FormControl fullWidth>
                         <Select
                             value={props.property.typeRef}
                             label='Sub Type'
                             title='Sub Type'
                             variant='filled'
+                            sx={propertySx}
                             onChange={(event) => {
                                 props.onChange({
                                     ...props.property,
@@ -84,26 +100,25 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                                 <MenuItem key={type.name} value={type.name}>{type.name}</MenuItem>
                             ))}
                         </Select>
-                        <FormHelperText>
+                        {!props.disableHelperText && <FormHelperText>
                             <Typography variant='caption'>
                                 For creating a new type, you need to go to the types of resource from the left menu.
                             </Typography>
-                        </FormHelperText>
+                        </FormHelperText>}
                     </FormControl>
                 </Box>
             </>
         case Type.ENUM:
             return <>
                 <Box marginLeft={1} border={'1 px solid black'}>
-                    <Typography>Enum Values:</Typography>
-
                     <Autocomplete
+                        sx={propertySx}
                         value={props.property.enumValues || []}
                         multiple={true}
                         onChange={(event, newValue) => {
-                           props.onChange({
-                                 ...props.property,
-                                 enumValues: newValue
+                            props.onChange({
+                                ...props.property,
+                                enumValues: newValue
                             })
                         }}
                         selectOnFocus
@@ -112,15 +127,16 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                         options={[]}
                         freeSolo
                         renderInput={(params) => (
-                            <TextField {...params} label="Type enum Value" />
+                            <TextField sx={propertySx} {...params} label="Type enum Value"/>
                         )}
                     />
 
-                    <FormHelperText>
+                    {!props.disableHelperText && <FormHelperText>
                         <Typography variant='caption'>
-                            All Enum Values must be unique, uppercase, alphanumeric, and start with a letter. It can also contain underscores. (e.g. MY_ENUM_VALUE)
+                            All Enum Values must be unique, uppercase, alphanumeric, and start with a letter. It can
+                            also contain underscores. (e.g. MY_ENUM_VALUE)
                         </Typography>
-                    </FormHelperText>
+                    </FormHelperText>}
                 </Box>
             </>
     }

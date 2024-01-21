@@ -24,7 +24,85 @@ export const theme = createTheme({
                 size: 'small',
                 variant: 'contained',
                 color: 'primary',
-            }
-        }
-    }
+            },
+        },
+        MuiFilledInput: {
+            defaultProps: {
+                margin: 'dense',
+            },
+        },
+        MuiFormControl: {
+            defaultProps: {
+                margin: 'dense',
+            },
+        },
+        MuiFormHelperText: {
+            defaultProps: {
+                margin: 'dense',
+            },
+        },
+        MuiIconButton: {
+            defaultProps: {
+                size: 'small',
+            },
+        },
+        MuiInputBase: {
+            defaultProps: {
+                margin: 'dense',
+            },
+        },
+        MuiInputLabel: {
+            defaultProps: {
+                margin: 'dense',
+            },
+        },
+        MuiListItem: {
+            defaultProps: {
+                dense: true,
+            },
+        },
+        MuiOutlinedInput: {
+            defaultProps: {
+                margin: 'dense',
+            },
+        },
+        MuiFab: {
+            defaultProps: {
+                size: 'small',
+            },
+        },
+        MuiTable: {
+            defaultProps: {
+                size: 'small',
+            },
+        },
+        MuiTextField: {
+            defaultProps: {
+                margin: 'dense',
+                style: {
+                    padding: '3px',
+                    margin: 0,
+                }
+            },
+        },
+        MuiToolbar: {
+            defaultProps: {
+                variant: 'dense',
+            },
+        },
+    },
 });
+
+const inputSx = {
+    width: '100%',
+    padding: 0,
+    margin: 0,
+    '& .MuiInputBase-input': {
+        padding: '3px',
+        margin: 0,
+    },
+    '& .MuiSelect-select': {
+        padding: '3px',
+        margin: 0,
+    }
+}

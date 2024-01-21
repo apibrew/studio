@@ -3,9 +3,12 @@ import {isSpecialProperty} from "../../../util/property";
 import {Property} from "@apibrew/client/model";
 import {PropertyTypeDropdown} from "../../PropertyTypeDropdown";
 import {Type} from "@apibrew/client/model/resource";
+import {PropertyExtras} from "../../property-form/PropertyExtras";
+import {Resource} from "@apibrew/react";
 
 export interface SchemaPropertyProps {
     index: number
+    resource: Resource
     propertyName: string
     setPropertyName: (propertyName: string) => void
     property: Property
@@ -13,12 +16,27 @@ export interface SchemaPropertyProps {
 }
 
 export function SchemaProperty(props: SchemaPropertyProps) {
+    const propertySx = {
+        width: '100%',
+        padding: 0,
+        margin: 0,
+        '& .MuiInputBase-input': {
+            padding: '3px',
+            margin: 0,
+        },
+        '& .MuiSelect-select': {
+            padding: '3px',
+            margin: 0,
+        }
+    }
+
     return (
         <TableRow>
             <TableCell>{props.index + 1}</TableCell>
             <TableCell>
                 <TextField
                     size='small'
+                    sx={propertySx}
                     value={props.propertyName}
                     disabled={isSpecialProperty(props.property)}
                     onChange={(event) => {
@@ -28,6 +46,10 @@ export function SchemaProperty(props: SchemaPropertyProps) {
             </TableCell>
             <TableCell>
                 <PropertyTypeDropdown
+                    sx={{
+                        ...propertySx,
+                        width: '130px'
+                    }}
                     value={props.property.type}
                     disabled={isSpecialProperty(props.property)}
                     onChange={(event) => {
@@ -39,7 +61,14 @@ export function SchemaProperty(props: SchemaPropertyProps) {
                 />
             </TableCell>
             <TableCell>
+                <PropertyExtras resource={props.resource}
+                                property={props.property}
+                                disableHelperText={true}
+                                onChange={props.onChange}/>
+            </TableCell>
+            <TableCell>
                 <Checkbox
+                    sx={propertySx}
                     size='small'
                     checked={props.property.required}
                     disabled={isSpecialProperty(props.property)}
@@ -51,6 +80,7 @@ export function SchemaProperty(props: SchemaPropertyProps) {
             </TableCell>
             <TableCell>
                 <Checkbox
+                    sx={propertySx}
                     size='small'
                     checked={props.property.immutable}
                     disabled={isSpecialProperty(props.property)}
@@ -62,6 +92,7 @@ export function SchemaProperty(props: SchemaPropertyProps) {
             </TableCell>
             <TableCell>
                 <Checkbox
+                    sx={propertySx}
                     size='small'
                     checked={props.property.unique}
                     disabled={isSpecialProperty(props.property)}
