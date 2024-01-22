@@ -3,6 +3,7 @@ import {Type} from "@apibrew/client/model/resource";
 import toast from "react-hot-toast";
 import React from "react";
 import {Property} from "@apibrew/client/model";
+import {label} from "../../util/record";
 
 export interface PropertyValueViewProps {
     property: Property
@@ -18,7 +19,7 @@ export function PropertyValueView(props: PropertyValueViewProps) {
 
     switch (props.property.type) {
         case Type.BOOL:
-            value = value ? 'true' : 'false'
+            value = value ? 'T' : 'F'
             break;
         case Type.STRING:
             if (value.length > 40) {
@@ -28,6 +29,8 @@ export function PropertyValueView(props: PropertyValueViewProps) {
         case Type.LIST:
         case Type.MAP:
         case Type.REFERENCE:
+            value = label(value)
+            break;
         case Type.STRUCT:
         case Type.OBJECT:
             value = JSON.stringify(value)

@@ -1,6 +1,6 @@
 import {fromResource, Resource, useRepository} from "@apibrew/react";
 import React, {useEffect, useState} from "react";
-import {Box, FormControlLabel, Popover, Stack, Switch, TablePagination} from "@mui/material";
+import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Add, Domain, FilterList, Refresh, Remove} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
@@ -143,7 +143,19 @@ export function TableContainer(props: TableContainerProps) {
             return
         }
         setRecords(undefined)
-        repository.list(listParams)
+
+        const resolveReferences: string[] = []
+
+        for (const property of Object.keys(resource.properties)) {
+            if (resource.properties[property].type === Type.REFERENCE) {
+                resolveReferences.push(`$.${property}`)
+            }
+        }
+
+        repository.list({
+            ...listParams,
+            resolveReferences: resolveReferences
+        })
             .then(resp => {
                 setRecords(resp.content)
                 setTotal(resp.total)

@@ -32,7 +32,7 @@ export function PropertyCell(props: PropertyCellProps) {
             flexBasis: props.width
         }}
         onBlur={() => {
-            setInlineEdit(false)
+            // setInlineEdit(false)
         }}
         onDoubleClick={() => {
             if (isComplex) {
