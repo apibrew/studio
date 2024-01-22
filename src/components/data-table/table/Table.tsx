@@ -67,11 +67,11 @@ export function DataTableTable(props: DataTableTableProps) {
 
     const tableDnd = useMemo(() => {
         return new TableDnd(props.schema, properties)
-    }, [props.schema])
+    }, [props.schema, properties])
 
     const tableResize = useMemo(() => {
         return new TableResize(props.schema, properties)
-    }, [props.schema])
+    }, [props.schema, properties])
 
     tableDnd.onReorderProperties(updatedProperties => {
         setProperties(updatedProperties)

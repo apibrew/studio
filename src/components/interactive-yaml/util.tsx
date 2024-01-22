@@ -4,8 +4,9 @@ export function leftSpace(depth: number): React.ReactNode {
     const arr = new Array(depth)
 
     return <>
-        {arr.fill(<span style={{
-            color: 'rgba(0, 0, 0, 0.24)'
-        }}>&nbsp;-|</span>)}
+        {arr.map((item, index) => <span key={index}
+                        style={{
+                            color: 'rgba(0, 0, 0, 0.24)'
+                        }}>&nbsp;-|</span>)}
     </>
 }

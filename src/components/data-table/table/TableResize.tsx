@@ -30,7 +30,6 @@ export class TableResize {
             return
         }
 
-        console.log(target.clientWidth)
         this.width = target.clientWidth
 
         e.preventDefault()

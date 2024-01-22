@@ -5,7 +5,7 @@ export function ListValue(props: PropertyValueProps) {
     const arr = props.value as [] || []
 
     return <div>
-        {arr.map((item, index) => <div>
+        {arr.map((item, index) => <div key={index}>
             {leftSpace(props.depth)}
             <span>
                 <span className='cell-hand unselectable'
