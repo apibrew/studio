@@ -9,10 +9,12 @@ import {isSpecialProperty, sortedProperties} from "../../../util/property";
 
 import './Table.scss'
 import {Schema} from "../../../types/schema";
+import {ensureGivenPropertiesOrder} from "../../../util/resource";
 
 export interface DataTableTableProps {
     resource: Resource
     schema: Schema
+    updateSchema: (schema: Schema) => void
     records: any[]
     updates: { [key: string]: any }
     setUpdates: (updates: { [key: string]: any }) => void
@@ -74,7 +76,8 @@ export function DataTableTable(props: DataTableTableProps) {
     }, [props.schema, properties])
 
     tableDnd.onReorderProperties(updatedProperties => {
-        setProperties(updatedProperties)
+        ensureGivenPropertiesOrder(props.schema, updatedProperties)
+        props.updateSchema(props.schema)
     })
 
     tableResize.onResize((property, width) => {

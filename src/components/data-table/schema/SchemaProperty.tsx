@@ -1,10 +1,12 @@
-import {Checkbox, TableCell, TableRow, TextField} from "@mui/material";
+import {Checkbox, IconButton, TableCell, TableRow, TextField} from "@mui/material";
 import {isSpecialProperty} from "../../../util/property";
 import {Property} from "@apibrew/client/model";
 import {PropertyTypeDropdown} from "../../PropertyTypeDropdown";
 import {Type} from "@apibrew/client/model/resource";
 import {PropertyExtras} from "../../property-form/PropertyExtras";
 import {Resource} from "@apibrew/react";
+import {Remove} from "@mui/icons-material";
+import {ReactNode} from "react";
 
 export interface SchemaPropertyProps {
     index: number
@@ -13,6 +15,7 @@ export interface SchemaPropertyProps {
     setPropertyName: (propertyName: string) => void
     property: Property
     onChange: (property: Property) => void
+    actions: ReactNode
 }
 
 export function SchemaProperty(props: SchemaPropertyProps) {
@@ -73,9 +76,10 @@ export function SchemaProperty(props: SchemaPropertyProps) {
                     checked={props.property.required}
                     disabled={isSpecialProperty(props.property)}
                     onClick={() => {
-                        // props.property.required = !props.property.required
-                        // props.setResource(props.resource)
-                        // props.onTriggerUpdate()
+                        props.onChange({
+                            ...props.property,
+                            required: !props.property.required
+                        })
                     }}/>
             </TableCell>
             <TableCell>
@@ -85,9 +89,10 @@ export function SchemaProperty(props: SchemaPropertyProps) {
                     checked={props.property.immutable}
                     disabled={isSpecialProperty(props.property)}
                     onClick={() => {
-                        // property.immutable = !property.immutable
-                        // props.setResource(props.resource)
-                        // props.onTriggerUpdate()
+                        props.onChange({
+                            ...props.property,
+                            immutable: !props.property.immutable
+                        })
                     }}/>
             </TableCell>
             <TableCell>
@@ -97,12 +102,15 @@ export function SchemaProperty(props: SchemaPropertyProps) {
                     checked={props.property.unique}
                     disabled={isSpecialProperty(props.property)}
                     onClick={() => {
-                        // property.unique = !property.unique
-                        // props.setResource(props.resource)
-                        // props.onTriggerUpdate()
+                        props.onChange({
+                            ...props.property,
+                            unique: !props.property.unique
+                        })
                     }}/>
             </TableCell>
-            <TableCell></TableCell>
+            <TableCell>
+                {props.actions}
+            </TableCell>
         </TableRow>
     )
 }

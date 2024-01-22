@@ -1,13 +1,12 @@
 import {Resource} from "@apibrew/react";
 import {Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow, TextField} from "@mui/material";
-import {sortedProperties} from "../../../util/property";
-import {SchemaProperty} from "./SchemaProperty";
 import React from "react";
 import {SubType} from "@apibrew/client/model/resource-action";
 import Button from "@mui/material/Button";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {Delete} from "@mui/icons-material";
+import {SchemaProperties} from "./SchemaProperties";
 
 export interface SchemaProps {
     resource: Resource
@@ -16,8 +15,6 @@ export interface SchemaProps {
 }
 
 export function SchemaTable(props: SchemaProps) {
-    const properties = sortedProperties(props.resource.properties)
-
     function updateType(typeName: string, updateFn: (type: SubType) => Partial<SubType>) {
         props.setResource({
             ...props.resource,
@@ -50,47 +47,22 @@ export function SchemaTable(props: SchemaProps) {
             </TableHead>
             <TableBody>
                 <TableRow>
-                    <TableCell colSpan={6}>
+                    <TableCell colSpan={7}>
                         <b>Properties:</b>
                     </TableCell>
                     <TableCell></TableCell>
                 </TableRow>
-                {properties.map((propertyName, index) => {
-                    const property = props.resource.properties[propertyName]
-                    return (
-                        <SchemaProperty
-                            index={index}
-                            resource={props.resource}
-                            propertyName={propertyName}
-                            setPropertyName={(updatedPropertyName) => {
-                                const property = props.resource.properties[propertyName]
-                                if (property) {
-                                    delete props.resource.properties[propertyName]
-                                }
-                                props.resource.properties[updatedPropertyName] = property
-                                props.setResource({
-                                    ...props.resource,
-                                    properties: {
-                                        ...props.resource.properties
-                                    }
-                                })
-                            }}
-                            property={property}
-                            onChange={(property) => {
-                                props.setResource({
-                                    ...props.resource,
-                                    properties: {
-                                        ...props.resource.properties,
-                                        [propertyName]: property
-                                    }
-                                })
-                            }}
-                        />
-                    )
-                })}
+                <SchemaProperties
+                    resource={props.resource}
+                    schema={props.resource}
+                    setSchema={schema => {
+                        console.log('updated Schema', schema)
+                        props.setResource({
+                            ...props.resource,
+                            properties: schema.properties
+                        })
+                    }}/>
                 {props.resource.types && props.resource.types.map((type, index) => {
-                    const properties = sortedProperties(type.properties)
-
                     return (<>
                         <TableCell colSpan={7}>
                             <IconButton color='error'
@@ -145,44 +117,19 @@ export function SchemaTable(props: SchemaProps) {
                             </Button>
                         </TableCell>
 
-                        {properties.map((propertyName, index) => {
-                            const property = type.properties[propertyName]
-
-                            return (
-                                <SchemaProperty
-                                    index={index}
-                                    resource={props.resource}
-                                    propertyName={propertyName}
-                                    setPropertyName={(updatedPropertyName) => {
-                                        const property = type.properties[propertyName]
-                                        if (property) {
-                                            delete type.properties[propertyName]
+                        <SchemaProperties
+                            resource={props.resource}
+                            schema={type}
+                            setSchema={schema => {
+                                console.log('updated Schema', schema)
+                                updateType(type.name, (type) => {
+                                    return {
+                                        properties: {
+                                            ...schema.properties
                                         }
-
-                                        type.properties[updatedPropertyName] = property
-
-                                        updateType(type.name, (type) => {
-                                            return {
-                                                properties: {
-                                                    ...type.properties
-                                                }
-                                            }
-                                        })
-                                    }}
-                                    property={property}
-                                    onChange={(property) => {
-                                        updateType(type.name, (type) => {
-                                            return {
-                                                properties: {
-                                                    ...type.properties,
-                                                    [propertyName]: property
-                                                }
-                                            }
-                                        })
-                                    }}
-                                />
-                            )
-                        })}
+                                    }
+                                })
+                            }}/>
                     </>)
                 })}
             </TableBody>

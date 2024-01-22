@@ -11,7 +11,7 @@ import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer";
 import {ColumnDrawer} from "../column-drawer/ColumnDrawer";
-import {Type} from "@apibrew/client/model/resource";
+import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Property} from "@apibrew/client/model";
 
 export interface TableContainerProps {
@@ -26,6 +26,7 @@ const defaultListParams = {
 
 export function TableContainer(props: TableContainerProps) {
     const [resource, setResource] = useState<Resource>(props.resource)
+    const resourceRepository = useRepository(ResourceEntityInfo)
     const repository = useRepository(fromResource(resource))
     const [refreshIndex, setRefreshIndex] = useState<number>(0)
     const [listParams, setListParams] = useQueryListParams(defaultListParams)
@@ -278,6 +279,11 @@ export function TableContainer(props: TableContainerProps) {
                 setSelectedItems={setSelectedItems}
                 resource={resource}
                 schema={resource}
+                updateSchema={resource => {
+                    setResource(resource as Resource)
+                    resourceRepository.update(resource as Resource)
+                    refresh()
+                }}
                 updates={updates}
                 setUpdates={setUpdates}
                 records={records}
