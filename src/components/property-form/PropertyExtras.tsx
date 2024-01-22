@@ -6,6 +6,7 @@ import React, {useEffect} from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown";
+import {ResourceSelect} from "../ResourceSelect";
 
 export interface PropertyExtrasProps {
     resource: Resource
@@ -49,7 +50,9 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                 return <>Loading...</>
             }
             return <>
-                <Box marginLeft={1} border={'1 px solid black'}>
+                <Box marginLeft={1}
+                     display='flex'
+                     border={'1 px solid black'}>
                     <FormControl fullWidth>
                         <PropertyTypeDropdown
                             sx={propertySx}
@@ -139,6 +142,26 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                     </FormHelperText>}
                 </Box>
             </>
+        case Type.REFERENCE:
+            return <Box marginLeft={1}
+                        display='flex'
+                        border={'1 px solid black'}>
+                <FormControl fullWidth>
+                    <ResourceSelect
+                        sx={propertySx}
+                        value={props.property.reference}
+                        label='Resource'
+                        title='Resource'
+                        variant='filled'
+                        onChange={(event) => {
+                            props.onChange({
+                                ...props.property,
+                                reference: event.target.value
+                            })
+                        }}/>
+                </FormControl>
+            </Box>
+
     }
 
     return <>

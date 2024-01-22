@@ -1,17 +1,16 @@
 import {Tooltip, Typography} from "@mui/material";
 import {Type} from "@apibrew/client/model/resource";
+import toast from "react-hot-toast";
 import React from "react";
 import {Property} from "@apibrew/client/model";
-import toast from "react-hot-toast";
 
-export interface PropertyCellInnerProps {
+export interface PropertyValueViewProps {
     property: Property
     value: any
-    updated: any
 }
 
-export function PropertyCellInner(props: PropertyCellInnerProps) {
-    let value = props.updated || props.value
+export function PropertyValueView(props: PropertyValueViewProps) {
+    let value = props.value
 
     if (value === undefined) {
         return <Typography color='lightgrey'>Null</Typography>

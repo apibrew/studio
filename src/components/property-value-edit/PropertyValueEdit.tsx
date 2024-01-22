@@ -2,14 +2,13 @@ import React from "react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 
-export interface PropertyCellEditProps {
+export interface PropertyValueEditProps {
     property: Property
     value: any
-    updated: any
-    onUpdate: (updated: any) => void
+    onChange: (value: any) => void
 }
 
-export function PropertyCellEdit(props: PropertyCellEditProps) {
+export function PropertyValueEdit(props: PropertyValueEditProps) {
     const [updated, setUpdated] = React.useState<any>(props.value)
 
     switch (props.property.type) {
@@ -19,7 +18,7 @@ export function PropertyCellEdit(props: PropertyCellEditProps) {
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.checked)
-                              props.onUpdate(e.target.checked)
+                              props.onChange(e.target.checked)
                           }}/>
         case Type.INT32:
         case Type.INT64:
@@ -28,7 +27,7 @@ export function PropertyCellEdit(props: PropertyCellEditProps) {
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(parseInt(e.target.value))
-                              props.onUpdate(parseInt(e.target.value))
+                              props.onChange(parseInt(e.target.value))
                           }}/>
         case Type.FLOAT32:
         case Type.FLOAT64:
@@ -37,7 +36,7 @@ export function PropertyCellEdit(props: PropertyCellEditProps) {
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(parseFloat(e.target.value))
-                              props.onUpdate(parseFloat(e.target.value))
+                              props.onChange(parseFloat(e.target.value))
                           }}/>
         case Type.STRING:
             return <input value={updated || ''}
@@ -45,7 +44,7 @@ export function PropertyCellEdit(props: PropertyCellEditProps) {
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.value)
-                              props.onUpdate(e.target.value)
+                              props.onChange(e.target.value)
                           }}/>
     }
 

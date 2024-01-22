@@ -1,11 +1,10 @@
 import {Box} from "@mui/material";
-import React, {ReactNode, useState} from "react";
+import React, {useState} from "react";
 import {Property} from "@apibrew/client/model";
-import {PropertyCellInner} from "./PropertyCellInner";
-import {PropertyCellEdit} from "./PropertyCellEdit";
-import {RecordExpand} from "./RecordExpand";
 import {Resource} from "@apibrew/react";
 import toast from "react-hot-toast";
+import {PropertyValueView} from "../../property-value-view/PropertyValueView";
+import {PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit";
 
 export interface PropertyCellProps {
     resource: Resource
@@ -46,8 +45,15 @@ export function PropertyCell(props: PropertyCellProps) {
             }
         }}>
         <Box className='cell-inner'>
-            {!inlineEdit && <PropertyCellInner {...props}/>}
-            {inlineEdit && <PropertyCellEdit {...props}/>}
+            {!inlineEdit && <PropertyValueView
+                property={props.property}
+                value={props.updated || props.value}
+            />}
+            {inlineEdit && <PropertyValueEdit
+                property={props.property}
+                value={props.updated || props.value}
+                onChange={props.onUpdate}
+            />}
         </Box>
     </Box>
 }

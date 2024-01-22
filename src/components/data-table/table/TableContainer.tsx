@@ -1,6 +1,6 @@
 import {fromResource, Resource, useRepository} from "@apibrew/react";
 import React, {useEffect, useState} from "react";
-import {Box, Popover, Stack, TablePagination} from "@mui/material";
+import {Box, FormControlLabel, Popover, Stack, Switch, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Add, Domain, FilterList, Refresh, Remove} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
@@ -259,7 +259,7 @@ export function TableContainer(props: TableContainerProps) {
                          refresh()
                      }}/>
         </Popover>
-        <Box className='data-table'>
+        <Box className='data-table' marginLeft={2}>
             {records && <DataTableTable
                 offset={listParams.offset ?? 0}
                 selectedItems={selectedItems}
