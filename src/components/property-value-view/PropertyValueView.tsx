@@ -27,17 +27,17 @@ export function PropertyValueView(props: PropertyValueViewProps) {
             }
             break;
         case Type.LIST:
-        case Type.MAP:
-        case Type.REFERENCE:
-            value = label(value)
+            value = value.map((item: any) => label(item)).join('; ')
             break;
+        case Type.MAP:
+            value = Object.keys(value).map((item: string) => {
+                return `${item}: ${label(value[item])}`
+            }).join(';')
+            break;
+        case Type.REFERENCE:
         case Type.STRUCT:
         case Type.OBJECT:
-            value = JSON.stringify(value)
-
-            if (value.length > 40) {
-                value = value.substring(0, 40) + '...'
-            }
+            value = label(value)
             break;
         case Type.UUID:
             return <Tooltip title={value}>

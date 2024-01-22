@@ -23,7 +23,9 @@ export function PropertyCell(props: PropertyCellProps) {
 
     const edited = props.updated !== undefined && props.updated !== props.value
 
-    const isComplex = props.property.type === 'LIST' || props.property.type === 'MAP' || props.property.type === 'STRUCT'
+    const isComplex = (
+        props.property.type === 'LIST' && props.property.item?.type !== 'STRING'
+    ) || props.property.type === 'MAP' || props.property.type === 'STRUCT'
 
     return <Box
         className='cell body-cell'
@@ -53,6 +55,9 @@ export function PropertyCell(props: PropertyCellProps) {
                 property={props.property}
                 value={props.updated || props.value}
                 onChange={props.onUpdate}
+                onForceClose={() => {
+                    setInlineEdit(false)
+                }}
             />}
         </Box>
     </Box>

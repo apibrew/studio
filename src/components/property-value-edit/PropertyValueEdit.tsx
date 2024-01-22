@@ -2,11 +2,13 @@ import React from "react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
+import {TagInput} from "../TagInput";
 
 export interface PropertyValueEditProps {
     property: Property
     value: any
     onChange: (value: any) => void
+    onForceClose: () => void
 }
 
 export function PropertyValueEdit(props: PropertyValueEditProps) {
@@ -71,6 +73,38 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onBlur={e => {
                               props.onChange(e.target.value)
                           }}/>
+        case Type.TIME:
+            return <input type='time' value={updated || ''}
+                          autoFocus
+                          className='property-edit-input'
+                          onChange={e => {
+                              setUpdated(e.target.value)
+                          }}
+                          onBlur={e => {
+                              let value = e.target.value
+
+                              if (value.length === 5) {
+                                  value = value + ':00'
+                              }
+
+                              props.onChange(value)
+                          }}/>
+        case Type.TIMESTAMP:
+            return <input type='datetime-local' value={updated || ''}
+                          autoFocus
+                          className='property-edit-input'
+                          onChange={e => {
+                              setUpdated(e.target.value)
+                          }}
+                          onBlur={e => {
+                              let value = e.target.value
+
+                                if (value.length === 16) {
+                                    value = value + ':00Z'
+                                }
+
+                                props.onChange(value)
+                          }}/>
         case Type.ENUM:
             return <select value={updated || ''}
                            autoFocus
@@ -89,6 +123,18 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                     return <option key={i} value={v}>{v}</option>
                 })}
             </select>
+        case Type.LIST:
+            return <TagInput
+                autoOpen={true}
+                value={updated || []}
+                onChange={e => {
+                    setUpdated(e)
+                    props.onChange(e)
+                }}
+                onClose={() => {
+                    props.onForceClose()
+                }}
+                inputPros={{}}/>
         case Type.REFERENCE:
             return <ReferenceValueSelector
                 value={updated}

@@ -3,10 +3,9 @@ import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {Box, FormControl, FormHelperText, MenuItem, Select, Typography} from "@mui/material";
 import React, {useEffect} from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown";
 import {ResourceSelect} from "../ResourceSelect";
+import {TagInput} from "../TagInput";
 
 export interface PropertyExtrasProps {
     resource: Resource
@@ -113,34 +112,17 @@ export function PropertyExtras(props: PropertyExtrasProps) {
             </>
         case Type.ENUM:
             return <>
-                <Box marginLeft={1} border={'1 px solid black'}>
-                    <Autocomplete
-                        sx={propertySx}
-                        value={props.property.enumValues || []}
-                        multiple={true}
-                        onChange={(event, newValue) => {
-                            props.onChange({
-                                ...props.property,
-                                enumValues: newValue
-                            })
-                        }}
-                        selectOnFocus
-                        clearOnBlur
-                        handleHomeEndKeys
-                        options={[]}
-                        freeSolo
-                        renderInput={(params) => (
-                            <TextField sx={propertySx} {...params} label="Type enum Value"/>
-                        )}
-                    />
-
-                    {!props.disableHelperText && <FormHelperText>
-                        <Typography variant='caption'>
-                            All Enum Values must be unique, uppercase, alphanumeric, and start with a letter. It can
-                            also contain underscores. (e.g. MY_ENUM_VALUE)
-                        </Typography>
-                    </FormHelperText>}
-                </Box>
+                <TagInput
+                    value={props.property.enumValues || []}
+                    onChange={(newValue: any) => {
+                        props.onChange({
+                            ...props.property,
+                            enumValues: newValue as any
+                        })
+                    }}
+                    inputPros={{
+                    }}
+                />
             </>
         case Type.REFERENCE:
             return <Box marginLeft={1}
