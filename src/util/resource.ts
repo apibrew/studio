@@ -12,6 +12,10 @@ export function ensureResourcePropertiesOrder(resource: Resource): boolean {
         for (let i = 0; i < resource.types.length; i++) {
             const type = resource.types[i]
 
+            if (type.name === 'AuditData') {
+                continue
+            }
+
             updated ||= ensurePropertiesOrder(type)
         }
     }
@@ -22,7 +26,7 @@ export function ensureResourcePropertiesOrder(resource: Resource): boolean {
 export function ensurePropertiesOrder(schema: Schema): boolean {
     const properties = sortedProperties(schema.properties)
 
-   return ensureGivenPropertiesOrder(schema, properties)
+    return ensureGivenPropertiesOrder(schema, properties)
 }
 
 export function ensureGivenPropertiesOrder(schema: Schema, properties: string[]): boolean {
@@ -35,6 +39,8 @@ export function ensureGivenPropertiesOrder(schema: Schema, properties: string[])
 
         if (order !== i) {
             updated = true
+
+            console.log(`Updating order of ${properties[i]} from ${order} to ${i}`)
 
             property.annotations = {
                 ...property.annotations || {},

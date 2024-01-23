@@ -14,7 +14,7 @@ export interface PropertyCellProps {
     updated: any
     onUpdate: (updated: any) => void
     width: number
-    record: any
+    new?: boolean
 
 }
 
@@ -40,7 +40,7 @@ export function PropertyCell(props: PropertyCellProps) {
             if (isComplex) {
                 toast.error('Cannot edit complex types, please expand the row to edit')
             } else {
-                if (props.property.immutable) {
+                if (!props.new && props.property.immutable) {
                     return
                 }
                 setInlineEdit(true)

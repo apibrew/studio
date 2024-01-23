@@ -1,10 +1,12 @@
 
 .data-table {
+  flex-grow: 1;
   * {
     box-sizing: border-box;
   }
 
   .data-table-table {
+    flex-grow: 1;
     box-shadow: 0px 8px 26px 0px #DDD;
   }
 

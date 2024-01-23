@@ -55,7 +55,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
                     width={props.columnWidths[property]}
                     propertyName={property}
                     property={props.schema.properties[property]}
-                    record={props.record}
+                    new={props.record['id'] === 'new'}
                     value={props.record[property]}
                     onUpdate={value => {
                         console.log('updated', property, value)

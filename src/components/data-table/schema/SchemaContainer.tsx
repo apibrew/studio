@@ -45,7 +45,7 @@ export function SchemaContainer(props: SchemaContainerProps) {
         })
     }
 
-    return <Box m={1} display='flex' flexDirection='column' height='100%' overflow='auto'>
+    return <Box display='flex' flexDirection='column' height='100%' overflow='auto'>
         {drawer.render()}
         {confirmation.render()}
         <Box className='action-bar' display='flex' p={1}>

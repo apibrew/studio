@@ -1,7 +1,7 @@
 import {Box, Checkbox, IconButton, Tooltip} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
-import {Add, ExpandMore, MoreVert, Remove} from "@mui/icons-material";
+import {Add, MoreVert, Remove} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";
@@ -184,50 +184,52 @@ export function DataTableTable(props: DataTableTableProps) {
                 </IconButton>
             </Box>
         </Box>
-        <Box display='flex' flexDirection='column'>
-            {props.records.map((record, index) => (
-                <TableRecordLine key={record.id}
-                                 columnWidths={columnWidths}
-                                 resource={props.resource}
-                                 schema={props.schema}
-                                 selected={Boolean(selectionIdMap[record.id])}
-                                 properties={properties}
-                                 onSelected={selected => {
-                                     if (!selected) {
-                                         props.setSelectedItems(props.selectedItems.filter(item => item !== record.id))
-                                     } else {
-                                         props.setSelectedItems([...props.selectedItems, record.id])
-                                     }
-                                 }}
-                                 index={props.offset + index + 1}
-                                 expanded={Boolean(expandedRecords[record.id])}
-                                 onExpanded={expanded => {
-                                     if (expanded) {
-                                         setExpandedRecords({
-                                             ...expandedRecords,
-                                             [record.id]: true
-                                         })
-                                     } else {
-                                         const newExpandedRecords = {...expandedRecords}
-                                         delete newExpandedRecords[record.id]
-                                         setExpandedRecords(newExpandedRecords)
-                                     }
-                                 }}
-                                 onUpdate={(updated) => {
-                                     if (updated) {
-                                         props.setUpdates({
-                                             ...props.updates,
-                                             [record.id]: updated
-                                         })
-                                     } else {
-                                         const newUpdates = {...props.updates}
-                                         delete newUpdates[record.id]
-                                         props.setUpdates(newUpdates)
-                                     }
-                                 }}
-                                 updated={props.updates[record.id] ?? {}}
-                                 record={record}/>
-            ))}
+        <Box display='flex' flexGrow={1} height='1px' flexDirection='column'>
+            <Box overflow='scroll'>
+                {props.records.map((record, index) => (
+                    <TableRecordLine key={record.id}
+                                     columnWidths={columnWidths}
+                                     resource={props.resource}
+                                     schema={props.schema}
+                                     selected={Boolean(selectionIdMap[record.id])}
+                                     properties={properties}
+                                     onSelected={selected => {
+                                         if (!selected) {
+                                             props.setSelectedItems(props.selectedItems.filter(item => item !== record.id))
+                                         } else {
+                                             props.setSelectedItems([...props.selectedItems, record.id])
+                                         }
+                                     }}
+                                     index={props.offset + index + 1}
+                                     expanded={Boolean(expandedRecords[record.id])}
+                                     onExpanded={expanded => {
+                                         if (expanded) {
+                                             setExpandedRecords({
+                                                 ...expandedRecords,
+                                                 [record.id]: true
+                                             })
+                                         } else {
+                                             const newExpandedRecords = {...expandedRecords}
+                                             delete newExpandedRecords[record.id]
+                                             setExpandedRecords(newExpandedRecords)
+                                         }
+                                     }}
+                                     onUpdate={(updated) => {
+                                         if (updated) {
+                                             props.setUpdates({
+                                                 ...props.updates,
+                                                 [record.id]: updated
+                                             })
+                                         } else {
+                                             const newUpdates = {...props.updates}
+                                             delete newUpdates[record.id]
+                                             props.setUpdates(newUpdates)
+                                         }
+                                     }}
+                                     updated={props.updates[record.id] ?? {}}
+                                     record={record}/>
+                ))}
+            </Box>
         </Box>
     </Box>
 }

@@ -8,7 +8,7 @@ export interface PropertyValueEditProps {
     property: Property
     value: any
     onChange: (value: any) => void
-    onForceClose: () => void
+    onForceClose?: () => void
 }
 
 export function PropertyValueEdit(props: PropertyValueEditProps) {
@@ -132,7 +132,9 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                     props.onChange(e)
                 }}
                 onClose={() => {
-                    props.onForceClose()
+                    if (props.onForceClose) {
+                        props.onForceClose()
+                    }
                 }}
                 inputPros={{}}/>
         case Type.REFERENCE:

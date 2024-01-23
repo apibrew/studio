@@ -31,23 +31,23 @@ export function SchemaTable(props: SchemaProps) {
         })
     }
 
-    return <Box>
+    return <Box m={1}>
         <Table size='small'>
             <TableHead>
                 <TableRow>
                     <TableCell size='small'>#</TableCell>
-                    <TableCell>Property Name</TableCell>
-                    <TableCell>Property Type</TableCell>
-                    <TableCell>Type Info</TableCell>
-                    <TableCell width='20px'>Required</TableCell>
-                    <TableCell width='20px'>Immutable</TableCell>
-                    <TableCell width='20px'>Unique</TableCell>
+                    <TableCell sx={{
+                        minWidth: '200px'
+                    }}>Property Name</TableCell>
+                    <TableCell width='20px'>Type</TableCell>
+                    <TableCell width='20px'>Modifiers</TableCell>
+                    <TableCell>Values</TableCell>
                     <TableCell width='200px'>Actions</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 <TableRow>
-                    <TableCell colSpan={7}>
+                    <TableCell colSpan={5}>
                         <b>Properties:</b>
                     </TableCell>
                     <TableCell></TableCell>
@@ -64,7 +64,7 @@ export function SchemaTable(props: SchemaProps) {
                     }}/>
                 {props.resource.types && props.resource.types.map((type, index) => {
                     return (<>
-                        <TableCell colSpan={7}>
+                        <TableCell colSpan={5}>
                             <IconButton color='error'
                                         style={{
                                             marginLeft: '15px'

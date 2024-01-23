@@ -198,9 +198,19 @@ export function TableContainer(props: TableContainerProps) {
                                     return
                                 }
 
-                                setRecords([{
+                                const newRecord: any = {
                                     id: 'new',
-                                }, ...records!])
+                                }
+
+                                for (const propertyName of Object.keys(resource.properties)) {
+                                    const property = resource.properties[propertyName]
+
+                                    if (property.defaultValue) {
+                                        newRecord[propertyName] = property.defaultValue
+                                    }
+                                }
+
+                                setRecords([newRecord, ...records!])
                                 setUpdates({
                                     ...updates,
                                     new: {}
@@ -272,7 +282,7 @@ export function TableContainer(props: TableContainerProps) {
                          refresh()
                      }}/>
         </Popover>
-        <Box className='data-table' marginLeft={2}>
+        <Box display='flex' flexGrow={1} className='data-table' marginLeft={2}>
             {records && <DataTableTable
                 offset={listParams.offset ?? 0}
                 selectedItems={selectedItems}
@@ -292,7 +302,6 @@ export function TableContainer(props: TableContainerProps) {
             />}
             {!records && <LoadingOverlay/>}
         </Box>
-        <Box flexGrow={1}/>
         <TablePagination component="div"
                          count={total}
                          showFirstButton={true}

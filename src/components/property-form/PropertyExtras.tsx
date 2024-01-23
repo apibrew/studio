@@ -1,7 +1,7 @@
 import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {Box, FormControl, FormHelperText, MenuItem, Select, Typography} from "@mui/material";
+import {Box, FormControl, FormHelperText, MenuItem, Select, Stack, Typography} from "@mui/material";
 import React, {useEffect} from "react";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown";
 import {ResourceSelect} from "../ResourceSelect";
@@ -49,16 +49,16 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                 return <>Loading...</>
             }
             return <>
-                <Box marginLeft={1}
-                     display='flex'
-                     border={'1 px solid black'}>
+                <Stack
+                    display='flex'
+                    border='1 px solid black'>
                     <FormControl fullWidth>
                         <PropertyTypeDropdown
                             sx={propertySx}
                             value={props.property.item?.type}
                             label='Type'
                             title='Type'
-                            variant='filled'
+                            variant='outlined'
                             onChange={(event) => {
                                 props.onChange({
                                     ...props.property,
@@ -80,17 +80,17 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                             })
                         }}
                     />
-                </Box>
+                </Stack>
             </>
         case Type.STRUCT:
             return <>
-                <Box marginLeft={1} border={'1 px solid black'}>
+                <Box border={'1 px solid black'}>
                     <FormControl fullWidth>
                         <Select
                             value={props.property.typeRef}
                             label='Sub Type'
                             title='Sub Type'
-                            variant='filled'
+                            variant='outlined'
                             sx={propertySx}
                             onChange={(event) => {
                                 props.onChange({
@@ -120,21 +120,20 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                             enumValues: newValue as any
                         })
                     }}
-                    inputPros={{
-                    }}
+                    inputPros={{}}
                 />
             </>
         case Type.REFERENCE:
-            return <Box marginLeft={1}
-                        display='flex'
-                        border={'1 px solid black'}>
+            return <Box
+                display='flex'
+                border={'1 px solid black'}>
                 <FormControl fullWidth>
                     <ResourceSelect
                         sx={propertySx}
                         value={props.property.reference}
                         label='Resource'
                         title='Resource'
-                        variant='filled'
+                        variant='outlined'
                         onChange={(event) => {
                             props.onChange({
                                 ...props.property,
