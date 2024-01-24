@@ -23,7 +23,6 @@ import {useDrawer} from "../hooks/use-drawer";
 import {NamespaceDrawer} from "./namespace-drawer/NamespaceDrawer";
 import Button from "@mui/material/Button";
 import {ResourceDrawer} from "./resource-drawer/ResourceDrawer";
-import {SubTypesDrawer} from "./sub-types-drawer/SubTypesDrawer";
 
 export function ResourceSelectorPanel() {
     const params = useParams()
@@ -181,19 +180,6 @@ export function ResourceSelectorPanel() {
                 )
                 setResourceContextAnchorEl(undefined)
             }}>Update Resource</MenuItem>
-            {/*<MenuItem onClick={() => {*/}
-            {/*    drawer.open(*/}
-            {/*        <SubTypesDrawer*/}
-            {/*            onClose={() => {*/}
-            {/*                drawer.close()*/}
-            {/*                setWi(wi + 1)*/}
-            {/*            }}*/}
-            {/*            resource={selectedResource!}/>*/}
-            {/*    )*/}
-            {/*    setResourceContextAnchorEl(undefined)*/}
-            {/*}}>Sub Types</MenuItem>*/}
-            {/*<MenuItem onClick={() => {*/}
-            {/*}}>Indexes</MenuItem>*/}
         </Menu>}
     </>;
 }

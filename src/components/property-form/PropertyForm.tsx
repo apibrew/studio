@@ -47,7 +47,7 @@ export function PropertyForm(props: PropertyFormProps) {
                 onChange={props.onChange}/>}
             <FormControl fullWidth>
                 <TextField
-                    value={props.property.title}
+                    value={props.property.title || ''}
                     label='Title'
                     variant='filled'
                     onChange={(event) => {
