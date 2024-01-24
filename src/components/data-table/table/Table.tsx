@@ -102,7 +102,7 @@ export function DataTableTable(props: DataTableTableProps) {
 
     if (properties.length === 0) return <></>
 
-    return <Box className='data-table-table' display='flex' flexDirection='column'>
+    return <Box className='data-table-table' display='flex' flexDirection='column' width='1px' overflow='scroll'>
         <Box display='block' minWidth={Math.max(500, 200 * properties.length + 85)} width={(tableWidth + 85) + 'px'}>
             <Box display='flex' flexDirection='row' className='row row-header'>
                 <Box width='75px' className='cell header-cell'>

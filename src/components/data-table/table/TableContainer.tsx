@@ -220,7 +220,7 @@ export function TableContainer(props: TableContainerProps) {
                         <span style={{marginLeft: '3px'}}>Add</span>
                     </Button>
                 </>}
-                {selectedItems.length > 0 && <>
+                {!resource.immutable && selectedItems.length > 0 && <>
                     <Button color='warning' size='small'>
                         <Domain fontSize='small'/>
                         <span style={{marginLeft: '3px'}}>Yaml</span>

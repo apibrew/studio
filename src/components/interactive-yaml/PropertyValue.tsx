@@ -8,6 +8,9 @@ import {StructValue} from "./StructValue";
 import {ObjectValue} from "./ObjectValue";
 import React from "react";
 import {isSpecialProperty} from "../../util/property";
+import {PropertyValueView} from "../property-value-view/PropertyValueView";
+import {PropertyValueEdit} from "../property-value-edit/PropertyValueEdit";
+import {MapValue} from "./MapValue";
 
 export interface PropertyValueProps {
     resource: Resource
@@ -29,7 +32,7 @@ function propertyValueSwitch(props: PropertyValueProps) {
         case Type.FLOAT64:
         case Type.ENUM:
         case Type.UUID:
-            return props.value
+            return <PropertyValueView property={props.property} value={props.value}/>
         case Type.BOOL:
             return props.value ? 'true' : 'false'
         case Type.OBJECT:
@@ -62,64 +65,24 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
     switch (props.property.type) {
         case Type.INT32:
         case Type.INT64:
-            return <input type='number'
-                          autoFocus
-                          onBlur={() => {
-                              setEditMode(false)
-                          }}
-                          style={{
-                              width: '300px'
-                          }}
-                          value={props.value || 0}
-                          onChange={event => {
-                              props.onChange(parseInt(event.target.value))
-                          }}/>
         case Type.FLOAT32:
         case Type.FLOAT64:
-            return <input type='number'
-                          autoFocus
-                          onBlur={() => {
-                              setEditMode(false)
-                          }}
-                          style={{
-                              width: '300px'
-                          }}
-                          value={props.value || 0}
-                          onChange={event => {
-                              props.onChange(parseFloat(event.target.value))
-                          }}/>
         case Type.STRING:
         case Type.ENUM:
         case Type.UUID:
-            return <input type='text'
-                          autoFocus
-                          onBlur={() => {
-                              setEditMode(false)
-                          }}
-                          style={{
-                              width: '300px'
-                          }}
-                          value={props.value}
-                          onChange={event => {
-                              props.onChange(event.target.value)
-                          }}/>
+        case Type.DATE:
+        case Type.TIME:
+        case Type.TIMESTAMP:
         case Type.BOOL:
-            return <input type='checkbox'
-                          autoFocus
-                          onBlur={() => {
-                              setEditMode(false)
-                          }}
-                          style={{}}
-                          checked={props.value}
-                          onChange={event => {
-                              props.onChange(event.target.checked)
-                          }}/>
+            return <PropertyValueEdit property={props.property} value={props.value} onChange={props.onChange}/>
         case Type.OBJECT:
             return <ObjectValue {...props}/>
         case Type.REFERENCE:
             return <ReferenceValue {...props}/>
         case Type.LIST:
             return <ListValue {...props}/>
+        case Type.MAP:
+            return <MapValue {...props}/>
         case Type.STRUCT:
             const subSchema = props.resource.types?.find(item => item.name === props.property.typeRef) as Schema
 
