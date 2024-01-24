@@ -12,6 +12,7 @@ import {isSpecialProperty} from "../../util/property";
 export interface PropertyValueProps {
     resource: Resource
     property: Property
+    new: boolean
     value: any
     path: string
     depth: number
@@ -43,6 +44,7 @@ function propertyValueSwitch(props: PropertyValueProps) {
             if (!subSchema) throw new Error(`Could not find schema for ${props.property.typeRef}`)
 
             return <StructValue resource={props.resource}
+                                new={props.new}
                                 schema={subSchema}
                                 value={props.value}
                                 path={props.path}
@@ -107,8 +109,7 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
                           onBlur={() => {
                               setEditMode(false)
                           }}
-                          style={{
-                          }}
+                          style={{}}
                           checked={props.value}
                           onChange={event => {
                               props.onChange(event.target.checked)
@@ -125,6 +126,7 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
             if (!subSchema) throw new Error(`Could not find schema for ${props.property.typeRef}`)
 
             return <StructValue resource={props.resource}
+                                new={props.new}
                                 schema={subSchema}
                                 value={props.value}
                                 path={props.path}
@@ -139,15 +141,21 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
 }
 
 export function PropertyValue(props: PropertyValueProps) {
-    const [editMode, setEditMode] = React.useState<boolean>(props.value === null)
+    const [editMode, setEditMode] = React.useState<boolean>(props.new || props.value === null)
     let editModeAllowed = true
 
     if (isSpecialProperty(props.property)) {
         editModeAllowed = false
     }
 
-    if (props.property.immutable) {
-        editModeAllowed = false
+    if (!props.new) {
+        if (props.property.immutable) {
+            editModeAllowed = false
+        }
+
+        if (props.resource.immutable) {
+            editModeAllowed = false
+        }
     }
 
     if (props.property.type === Type.LIST) {
@@ -161,11 +169,11 @@ export function PropertyValue(props: PropertyValueProps) {
     return <>
         {!editMode && propertyValueSwitch(props)}
         {editMode && propertyEditValueSwitch(props, (editMode) => {
-            if (props.value !== null) {
+            if (!props.new && props.value !== null) {
                 setEditMode(editMode)
             }
         })}
-        {editModeAllowed && <span
+        {!props.new && editModeAllowed && <span
             className='unselectable cell-hand'
             style={{
                 marginLeft: '5px',

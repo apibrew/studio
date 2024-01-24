@@ -9,6 +9,7 @@ import {sortedProperties} from "../../util/property";
 export interface StructValueProps {
     resource: Resource
     schema: Schema
+    new: boolean
     value: any
     isInline?: boolean
     path: string
@@ -35,6 +36,7 @@ export function StructValue(props: StructValueProps) {
         {properties.map((item, index) => {
             const property = props.schema.properties[item]
             let propertyValue = <PropertyValue
+                new={props.new}
                 resource={props.resource}
                 property={property}
                 value={value[item]}

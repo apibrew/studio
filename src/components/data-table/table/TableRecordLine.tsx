@@ -10,6 +10,7 @@ import {RecordExpand} from "./RecordExpand";
 export interface TableRecordLineProps {
     index: number
     resource: Resource
+    new: boolean
     schema: Schema
     properties: string[]
     record: Entity & any
@@ -58,7 +59,6 @@ export function TableRecordLine(props: TableRecordLineProps) {
                     new={props.record['id'] === 'new'}
                     value={props.record[property]}
                     onUpdate={value => {
-                        console.log('updated', property, value)
                         props.onUpdate({
                             ...props.updated,
                             [property]: value
@@ -72,6 +72,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
         <Box className='row-expand'>
             <Collapse in={props.expanded}>
                 <RecordExpand resource={props.resource}
+                              new={props.new}
                               value={props.record}
                               updated={props.updated}
                               onUpdate={props.onUpdate}/>

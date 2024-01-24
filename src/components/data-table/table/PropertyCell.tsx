@@ -40,7 +40,7 @@ export function PropertyCell(props: PropertyCellProps) {
             if (isComplex) {
                 toast.error('Cannot edit complex types, please expand the row to edit')
             } else {
-                if (!props.new && props.property.immutable) {
+                if (!props.new && (props.property.immutable || props.resource.immutable)) {
                     return
                 }
                 setInlineEdit(true)

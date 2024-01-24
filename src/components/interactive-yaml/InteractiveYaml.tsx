@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 export interface InteractiveYamlProps {
     resource: Resource
     schema: Schema
+    new: boolean
     value: any
     onChange: (updated: any) => void
 }
@@ -22,6 +23,7 @@ export function InteractiveYaml(props: InteractiveYamlProps) {
                  display='flex'
                  flexDirection='column'>
                 <StructValue
+                    new={props.new}
                     resource={props.resource}
                     schema={props.schema}
                     value={props.value}

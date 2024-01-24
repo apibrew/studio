@@ -22,6 +22,7 @@ export function ListValue(props: PropertyValueProps) {
             </span>
             <span>
                 <PropertyValue resource={props.resource}
+                               new={props.new}
                                property={props.property.item}
                                value={item}
                                path={`${props.path}[${index}]`}

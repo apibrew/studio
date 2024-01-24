@@ -4,6 +4,7 @@ import {InteractiveYaml} from "../../interactive-yaml/InteractiveYaml";
 
 export interface RecordExpandProps {
     resource: Resource
+    new:boolean
     value: any
     updated: any
     onUpdate: (updated: any) => void
@@ -17,6 +18,7 @@ export function RecordExpand(props: RecordExpandProps) {
 
     return <Box>
         <InteractiveYaml
+            new={props.new}
             resource={props.resource}
             schema={props.resource}
             value={value}

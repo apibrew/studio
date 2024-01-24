@@ -100,8 +100,10 @@ export function DataTableTable(props: DataTableTableProps) {
         return Object.keys(expandedRecords).length === props.records.length
     }, [props.records, expandedRecords])
 
+    if (properties.length === 0) return <></>
+
     return <Box className='data-table-table' display='flex' flexDirection='column'>
-        <Box display='block' width={(tableWidth + 85) + 'px'}>
+        <Box display='block' minWidth={Math.max(500, 200 * properties.length + 85)} width={(tableWidth + 85) + 'px'}>
             <Box display='flex' flexDirection='row' className='row row-header'>
                 <Box width='75px' className='cell header-cell'>
                     <Box className='cell-inner'>
@@ -189,6 +191,7 @@ export function DataTableTable(props: DataTableTableProps) {
                 <Box display='flex' flexDirection='column'>
                     {props.records.map((record, index) => (
                         <TableRecordLine key={record.id}
+                                         new={record.id === 'new'}
                                          columnWidths={columnWidths}
                                          resource={props.resource}
                                          schema={props.schema}
