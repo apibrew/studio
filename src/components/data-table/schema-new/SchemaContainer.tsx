@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer";
 import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Property} from "@apibrew/client/model";
-import {SchemaTable} from "../schema/Schema";
+import {SchemaTable} from "./Schema";
 import {SubType} from "@apibrew/client/model/resource-action";
 
 export interface SchemaContainerProps {

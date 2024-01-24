@@ -8,6 +8,7 @@ import {Api, Code, DataArray, Schema} from "@mui/icons-material";
 import {Stack, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {ApiDocModal} from "../api-doc/ApiDocModal";
 import {SchemaContainer} from "./schema/SchemaContainer";
+import {SchemaContainer as SchemaContainerNew} from "./schema-new/SchemaContainer";
 
 export interface DataTableProps {
     resource: Resource
@@ -15,7 +16,7 @@ export interface DataTableProps {
 
 export function DataTable(props: DataTableProps) {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [mode, setMode] = useState<'data' | 'schema'>(searchParams.get('mode') === 'schema' ? 'schema' : 'data')
+    const [mode, setMode] = useState<'data' | 'schema' | 'schema-new'>(searchParams.get('mode') === 'schema-new' ? 'schema-new' : 'data')
     const [apiDocOpen, setApiDocOpen] = useState<boolean>(false)
 
     const commonButtons = (
@@ -60,6 +61,19 @@ export function DataTable(props: DataTableProps) {
                     <Schema fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Schema</span>
                 </ToggleButton>
+                <ToggleButton color='secondary'
+                              value={'schema-new'}
+                              onClick={() => {
+                                  setMode('schema-new')
+                                  setSearchParams({
+                                      ...searchParams,
+                                      mode: 'schema-new'
+                                  })
+                              }}
+                              size='small'>
+                    <Schema fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Schema-new</span>
+                </ToggleButton>
             </ToggleButtonGroup>
         </Stack>
     )
@@ -75,6 +89,10 @@ export function DataTable(props: DataTableProps) {
             commonButtons={commonButtons}
         />}
         {mode === 'schema' && <SchemaContainer
+            resource={props.resource}
+            commonButtons={commonButtons}
+        />}
+        {mode === 'schema-new' && <SchemaContainerNew
             resource={props.resource}
             commonButtons={commonButtons}
         />}

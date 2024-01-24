@@ -282,7 +282,7 @@ export function TableContainer(props: TableContainerProps) {
                          refresh()
                      }}/>
         </Popover>
-        <Box display='flex' flexGrow={1} className='data-table' marginLeft={2}>
+        <Box display='flex' flexGrow={1} className='data-table' marginLeft={2} style={{overflow: 'auto', height: '1px'}}>
             {records && <DataTableTable
                 offset={listParams.offset ?? 0}
                 selectedItems={selectedItems}

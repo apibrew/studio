@@ -3,14 +3,13 @@ import IndexPage from "./pages/IndexPage";
 import DashboardIndexPage from "./pages/dashboard/index/IndexPage";
 import {DashboardPage} from "./pages/dashboard";
 import * as React from "react";
-import TestPage from "./pages/dashboard/test/TestPage";
 import LogoutPage from "./pages/logout/LogoutPage";
 import ResourcesPage from "./pages/dashboard/resources/ResourcesPage";
 import NanoPage from "./pages/dashboard/nano/NanoPage";
 import UsersAndRolesPage from "./pages/dashboard/users-and-roles/UsersAndRolesPage";
 import SettingsPage from "./pages/dashboard/settings/SettingsPage";
 import UserProfilePage from "./pages/dashboard/user-profile/UserProfilePage";
-import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
+import TestPage from "./pages/TestPage";
 
 export const router = createBrowserRouter([
     {

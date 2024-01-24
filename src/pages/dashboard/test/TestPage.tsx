@@ -4,7 +4,7 @@ import {useMatches} from "react-router-dom";
 export default function TestPage() {
     return <>
         <Typography variant="h1">
-            {/*Welcome to ApiBrew Studio!*/}
+            Welcome to ApiBrew Studio!
         </Typography>
     </>
 }

@@ -1,5 +1,6 @@
 {
-  "name": "hello-world",  "version": "1.0.0",
+  "name": "hello-world",
+  "version": "1.0.0",
   "description": "hello world application on Electron.js",
   "main": "main.js",
   "scripts": {
@@ -7,5 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "lorem-ipsum": "^2.0.8"
+  }
 }
