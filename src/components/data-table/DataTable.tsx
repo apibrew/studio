@@ -48,19 +48,19 @@ export function DataTable(props: DataTableProps) {
                     <DataArray fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Data</span>
                 </ToggleButton>
-                <ToggleButton color='secondary'
-                              value={'schema'}
-                              onClick={() => {
-                                  setMode('schema')
-                                  setSearchParams({
-                                      ...searchParams,
-                                      mode: 'schema'
-                                  })
-                              }}
-                              size='small'>
-                    <Schema fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Schema</span>
-                </ToggleButton>
+                {/*<ToggleButton color='secondary'*/}
+                {/*              value={'schema'}*/}
+                {/*              onClick={() => {*/}
+                {/*                  setMode('schema')*/}
+                {/*                  setSearchParams({*/}
+                {/*                      ...searchParams,*/}
+                {/*                      mode: 'schema'*/}
+                {/*                  })*/}
+                {/*              }}*/}
+                {/*              size='small'>*/}
+                {/*    <Schema fontSize='small'/>*/}
+                {/*    <span style={{marginLeft: '3px'}}>Schema</span>*/}
+                {/*</ToggleButton>*/}
                 <ToggleButton color='secondary'
                               value={'schema-new'}
                               onClick={() => {
@@ -72,7 +72,7 @@ export function DataTable(props: DataTableProps) {
                               }}
                               size='small'>
                     <Schema fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Schema-new</span>
+                    <span style={{marginLeft: '3px'}}>Schema</span>
                 </ToggleButton>
             </ToggleButtonGroup>
         </Stack>

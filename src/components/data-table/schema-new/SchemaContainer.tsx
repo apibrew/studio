@@ -48,39 +48,6 @@ export function SchemaContainer(props: SchemaContainerProps) {
         {confirmation.render()}
         <Box className='action-bar' display='flex' p={1}>
             <Stack direction='row' spacing={1}>
-                <Button color='success'
-                        size='small'
-                        onClick={() => {
-                            setResource({
-                                ...resource,
-                                properties: {
-                                    ...resource.properties,
-                                    [`new-property-${Math.floor(Math.random() * 1000000)}`]: {
-                                        type: Type.STRING
-                                    } as Property
-                                }
-                            })
-                        }}>
-                    <Add fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Add</span>
-                </Button>
-                <Button color='success'
-                        size='small'
-                        onClick={() => {
-                            setResource({
-                                ...resource,
-                                types: [
-                                    ...(resource.types || []),
-                                    {
-                                        name: 'new',
-                                        properties: {}
-                                    } as SubType
-                                ]
-                            })
-                        }}>
-                    <Add fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Add Type</span>
-                </Button>
                 <Button
                     style={{
                         marginLeft: '40px'

@@ -1,5 +1,5 @@
 export type Annotations = {
-    [key: string]: string | undefined;
+    [key: string]: string;
 }
 
 export const isAnnotationEnabled = (annotations: Annotations | undefined, annotation: string): boolean => {

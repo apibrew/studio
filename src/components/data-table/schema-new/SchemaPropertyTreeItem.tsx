@@ -1,8 +1,9 @@
 import {TreeItem} from "@mui/x-tree-view";
-import {ShoppingCartTwoTone} from "@mui/icons-material";
+import {ArrowDownward, ArrowUpward, Remove, ShoppingCartTwoTone} from "@mui/icons-material";
 import React from "react";
 import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
+import {IconButton} from "@mui/material";
 
 export interface SchemaPropertyTreeItemProps {
     resource: Resource
@@ -10,12 +11,21 @@ export interface SchemaPropertyTreeItemProps {
     path: string
     propertyName: string
     onClick: () => void
+    onRemove: () => void
+    onMoveUp: () => void
+    onMoveDown: () => void
+    isFirstChild: boolean
+    isLastChild: boolean
 }
 
 export function SchemaPropertyTreeItem(props: SchemaPropertyTreeItemProps) {
     let label = props.propertyName
 
     label += ': ' + props.property.type.toLowerCase() + ''
+
+    if (props.property.type === 'STRUCT') {
+        label += '[' + props.property.typeRef + ']'
+    }
 
     let alt: string[] = []
 
@@ -40,6 +50,33 @@ export function SchemaPropertyTreeItem(props: SchemaPropertyTreeItemProps) {
             onClick={props.onClick}
             icon={<ShoppingCartTwoTone/>}
             nodeId={props.path + '.' + props.propertyName}
-            label={label}/>
+
+            label={<>
+                <span style={{
+                    display: 'inline-block',
+                    minWidth: props.path !== '$' ? '400px' : '416px'
+                }}>{label}</span>
+                <IconButton disabled={props.isFirstChild} onClick={(e) => {
+                    e.stopPropagation()
+
+                    props.onMoveUp()
+                }} color='primary' size='small'>
+                    <ArrowUpward fontSize='small'/>
+                </IconButton>
+                <IconButton disabled={props.isLastChild} onClick={(e) => {
+                    e.stopPropagation()
+
+                    props.onMoveDown()
+                }} color='primary' size='small'>
+                    <ArrowDownward fontSize='small'/>
+                </IconButton>
+                <IconButton onClick={(e) => {
+                    e.stopPropagation()
+
+                    props.onRemove()
+                }} color='error' size='small'>
+                    <Remove fontSize='small'/>
+                </IconButton>
+            </>}/>
     )
 }

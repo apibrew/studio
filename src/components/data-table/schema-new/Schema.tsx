@@ -1,14 +1,17 @@
-import {resource, Resource} from "@apibrew/react";
-import {Box, Card, CardContent, CardHeader} from "@mui/material";
+import {Resource} from "@apibrew/react";
+import {Box, Card, CardContent, CardHeader, IconButton} from "@mui/material";
 import React, {useMemo} from "react";
 import {SubType} from "@apibrew/client/model/resource-action";
-import {ChevronRight, DatasetLinked, ExpandMore, ShoppingBag} from "@mui/icons-material";
+import {Add, ChevronRight, DatasetLinked, ExpandMore, Remove, ShoppingBag} from "@mui/icons-material";
 import {TreeItem, TreeView} from "@mui/x-tree-view";
-import {sortedProperties} from "../../../util/property";
+import {getPropertyOrder, sortedProperties} from "../../../util/property";
 import {PropertyForm} from "../../property-form/PropertyForm";
 import {SchemaPropertyTreeItem} from "./SchemaPropertyTreeItem";
 import {ResourceForm} from "../../resource-form/ResourceForm";
 import {SubTypesForm} from "../../sub-types-form/SubTypesForm";
+import {Type} from "@apibrew/client/model/resource";
+import {Property} from "@apibrew/client/model";
+import {Schema} from "../../../types/schema";
 
 enum SelectionType {
     PROPERTY,
@@ -39,6 +42,32 @@ export function SchemaTable(props: SchemaProps) {
         })
     }
 
+    function moveProperty(properties: string[], index: number, schema: Schema, setSchema: (schema: Schema) => void, propertyName: string, property: Property, dist: number) {
+        const prevPropertyName = properties[index + dist]
+        const prevProperty = schema.properties[prevPropertyName]
+
+        setSchema({
+            ...schema,
+            properties: {
+                ...schema.properties,
+                [propertyName]: {
+                    ...property,
+                    annotations: {
+                        ...property.annotations,
+                        Order: getPropertyOrder(prevPropertyName, prevProperty) + ''
+                    }
+                },
+                [prevPropertyName]: {
+                    ...prevProperty,
+                    annotations: {
+                        ...prevProperty.annotations,
+                        Order: getPropertyOrder(propertyName, property) + ''
+                    }
+                }
+            } as any
+        })
+    }
+
     const properties = useMemo(() => sortedProperties(props.resource.properties), [props.resource.properties])
 
     const [selectionType, setSelectionType] = React.useState<SelectionType>()
@@ -46,11 +75,13 @@ export function SchemaTable(props: SchemaProps) {
     const [selectedTypeIndex, setSelectedTypeIndex] = React.useState<number>()
     const selectedType = props.resource.types![selectedTypeIndex as any]
 
+    const typeNames = props.resource.types?.map(item => 'type-' + item.name) ?? []
+
     return <Box m={1} display='flex' flexDirection='row'>
         <Box flex={1}>
             <TreeView
                 aria-label="file system navigator"
-                expanded={['resource', 'properties', 'types', 'ResidentialData', 'indexes']}
+                expanded={['resource', 'properties', 'types', 'ResidentialData', 'indexes', ...typeNames]}
                 defaultCollapseIcon={<ExpandMore/>}
                 defaultExpandIcon={<ChevronRight/>}
             >
@@ -71,13 +102,60 @@ export function SchemaTable(props: SchemaProps) {
                         }}
                         icon={<ShoppingBag/>}
                         nodeId="properties"
-                        label="Properties">
-                        {properties.map((propertyName) => (
+                        label={<>
+                            <span style={{
+                                display: 'inline-block',
+                                minWidth: '433px'
+                            }}>Properties</span>
+                            <IconButton
+                                onClick={() => {
+                                    props.setResource({
+                                        ...props.resource,
+                                        properties: {
+                                            ...props.resource.properties,
+                                            [`new-property-${Math.floor(Math.random() * 100)}`]: {
+                                                type: Type.STRING
+                                            } as Property
+                                        }
+                                    })
+                                }}
+                                color='success'
+                                size='small'>
+                                <Add fontSize='small'/>
+                            </IconButton>
+                        </>}>
+                        {properties.map((propertyName, index) => (
                             <SchemaPropertyTreeItem
                                 resource={props.resource}
                                 property={props.resource.properties[propertyName]}
                                 path={'$'}
                                 propertyName={propertyName}
+                                isFirstChild={index === 0}
+                                isLastChild={index === properties.length - 1}
+                                onMoveUp={() => {
+                                    moveProperty(properties, properties.indexOf(propertyName), props.resource, schema => {
+                                        props.setResource({
+                                            ...props.resource,
+                                            ...schema
+                                        })
+                                    }, propertyName, props.resource.properties[propertyName], -1);
+                                }}
+                                onMoveDown={() => {
+                                    moveProperty(properties, properties.indexOf(propertyName), props.resource, schema => {
+                                        props.setResource({
+                                            ...props.resource,
+                                            ...schema
+                                        })
+                                    }, propertyName, props.resource.properties[propertyName], 1);
+                                }}
+                                onRemove={() => {
+                                    const newProperties = {...props.resource.properties}
+                                    delete newProperties[propertyName]
+                                    props.setResource({
+                                        ...props.resource,
+                                        properties: newProperties
+                                    })
+                                }}
                                 onClick={() => {
                                     setSelectionType(SelectionType.PROPERTY)
                                     setSelectedItem(propertyName)
@@ -88,26 +166,106 @@ export function SchemaTable(props: SchemaProps) {
                     <TreeItem
                         icon={<ShoppingBag/>}
                         nodeId="types"
-                        label="Types">
+                        onClick={() => {
+                            setSelectionType(undefined)
+                            setSelectedItem(undefined)
+                            setSelectedTypeIndex(undefined)
+                        }}
+                        label={<>
+                            <span style={{
+                                display: 'inline-block',
+                                minWidth: '433px'
+                            }}>Types</span>
+                            <IconButton onClick={() => {
+                                props.setResource({
+                                    ...props.resource,
+                                    types: [
+                                        ...(props.resource.types || []),
+                                        {
+                                            name: `new-type-${Math.floor(Math.random() * 100)}`,
+                                            properties: {}
+                                        } as SubType
+                                    ]
+                                })
+                            }} color='success' size='small'>
+                                <Add fontSize='small'/>
+                            </IconButton>
+                        </>}>
                         {props.resource.types?.map((type, index) => {
                             const properties = sortedProperties(type.properties)
                             return (
                                 <TreeItem
                                     icon={<ShoppingBag/>}
-                                    nodeId={'ResidentialData'}
-                                    label={"Type: " + type.name}
+
+                                    nodeId={'type-' + type.name}
+                                    label={<>
+                                        <span style={{
+                                            display: 'inline-block',
+                                            width: '416px'
+                                        }}>Type: {type.name}</span>
+                                        <IconButton
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                updateType(type.name, {
+                                                    properties: {
+                                                        ...type.properties,
+                                                        [`new-property-${Math.floor(Math.random() * 100)}`]: {
+                                                            type: Type.STRING
+                                                        } as Property
+                                                    }
+                                                })
+                                            }}
+                                            color='success'
+                                            size='small'>
+                                            <Add fontSize='small'/>
+                                        </IconButton>
+                                        <IconButton onClick={(e) => {
+                                            e.stopPropagation()
+
+                                            const newTypes = [...props.resource.types!]
+
+                                            newTypes.splice(index, 1)
+
+                                            props.setResource({
+                                                ...props.resource,
+                                                types: newTypes
+                                            })
+                                        }} color='error' size='small'>
+                                            <Remove fontSize='small'/>
+                                        </IconButton>
+                                    </>}
+
                                     onClick={() => {
                                         setSelectionType(SelectionType.TYPE)
                                         setSelectedItem(type.name)
                                         setSelectedTypeIndex(undefined)
                                     }}>
-                                    {properties.map((propertyName) => {
+                                    {properties.map((propertyName, index) => {
                                         return (
                                             <SchemaPropertyTreeItem
                                                 resource={props.resource}
                                                 property={type.properties[propertyName]}
-                                                path={'$'}
+                                                path={'$.' + type.name}
                                                 propertyName={propertyName}
+                                                isFirstChild={index === 0}
+                                                isLastChild={index === properties.length - 1}
+                                                onMoveUp={() => {
+                                                    moveProperty(properties, properties.indexOf(propertyName), type, schema => {
+                                                        updateType(type.name, schema)
+                                                    }, propertyName, type.properties[propertyName], -1);
+                                                }}
+                                                onMoveDown={() => {
+                                                    moveProperty(properties, properties.indexOf(propertyName), type, schema => {
+                                                        updateType(type.name, schema)
+                                                    }, propertyName, type.properties[propertyName], 1);
+                                                }}
+                                                onRemove={() => {
+                                                    const newProperties = {...type.properties}
+                                                    delete newProperties[propertyName]
+                                                    updateType(type.name, {
+                                                        properties: newProperties
+                                                    })
+                                                }}
                                                 onClick={() => {
                                                     setSelectionType(SelectionType.PROPERTY)
                                                     setSelectedItem(propertyName)
@@ -119,20 +277,29 @@ export function SchemaTable(props: SchemaProps) {
                             )
                         })}
                     </TreeItem>
-                    <TreeItem
-                        icon={<ShoppingBag/>}
-                        nodeId="indexes"
-                        label="Indexes">
-                        {props.resource.indexes?.map((index, idx) => {
-                            return (
-                                <TreeItem
-                                    icon={<ShoppingBag/>}
-                                    nodeId={'index-' + idx}
-                                    label={index.properties.map(item => item.name).join(', ') + (index.unique ? ' (unique)' : '')}>
-                                </TreeItem>
-                            )
-                        })}
-                    </TreeItem>
+                    {/*<TreeItem*/}
+                    {/*    icon={<ShoppingBag/>}*/}
+                    {/*    nodeId="indexes"*/}
+                    {/*    label={<>*/}
+                    {/*        <span style={{*/}
+                    {/*            display: 'inline-block',*/}
+                    {/*            minWidth: '433px'*/}
+                    {/*        }}>Indexes</span>*/}
+                    {/*        <IconButton color='success' size='small'>*/}
+                    {/*            <Add fontSize='small'/>*/}
+                    {/*        </IconButton>*/}
+                    {/*    </>}*/}
+                    {/*>*/}
+                    {/*    {props.resource.indexes?.map((index, idx) => {*/}
+                    {/*        return (*/}
+                    {/*            <TreeItem*/}
+                    {/*                icon={<ShoppingBag/>}*/}
+                    {/*                nodeId={'index-' + idx}*/}
+                    {/*                label={index.properties.map(item => item.name).join(', ') + (index.unique ? ' (unique)' : '')}>*/}
+                    {/*            </TreeItem>*/}
+                    {/*        )*/}
+                    {/*    })}*/}
+                    {/*</TreeItem>*/}
                 </TreeItem>
             </TreeView>
         </Box>
@@ -210,16 +377,28 @@ export function SchemaTable(props: SchemaProps) {
                 </Card>
             </>}
             {selectionType === SelectionType.RESOURCE && <>
-                <ResourceForm resource={props.resource} onChange={props.setResource}/>
+                <Card>
+                    <CardHeader
+                        title='Edit Resource details'/>
+                    <CardContent>
+                        <ResourceForm resource={props.resource} onChange={props.setResource}/>
+                    </CardContent>
+                </Card>
             </>}
             {selectionType === SelectionType.TYPE && selectedItem && <>
-                <SubTypesForm subType={props.resource.types?.find(item => item.name === selectedItem)!}
-                              onChange={updated => {
-                                  updateType(selectedItem, updated)
-                                  if (updated.name) {
-                                      setSelectedItem(updated.name)
-                                  }
-                              }}/>
+                <Card>
+                    <CardHeader
+                        title={'Edit Type: ' +  selectedItem}/>
+                    <CardContent>
+                        <SubTypesForm subType={props.resource.types?.find(item => item.name === selectedItem)!}
+                                      onChange={updated => {
+                                          updateType(selectedItem, updated)
+                                          if (updated.name) {
+                                              setSelectedItem(updated.name)
+                                          }
+                                      }}/>
+                    </CardContent>
+                </Card>
             </>}
         </Box>
     </Box>

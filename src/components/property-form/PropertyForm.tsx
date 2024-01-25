@@ -59,7 +59,7 @@ export function PropertyForm(props: PropertyFormProps) {
             </FormControl>
             <FormControl fullWidth>
                 <TextField
-                    value={props.property.description}
+                    value={props.property.description ?? ''}
                     label='Description'
                     variant='filled'
                     onChange={(event) => {
@@ -76,7 +76,7 @@ export function PropertyForm(props: PropertyFormProps) {
                         sx={{
                             display: 'inline-block'
                         }}
-                        checked={props.property.required}
+                        checked={Boolean(props.property.required)}
                         onChange={(event) => {
                             props.onChange({
                                 ...props.property,
@@ -90,7 +90,7 @@ export function PropertyForm(props: PropertyFormProps) {
                         sx={{
                             display: 'inline-block'
                         }}
-                        checked={props.property.immutable}
+                        checked={Boolean(props.property.immutable)}
                         onChange={(event) => {
                             props.onChange({
                                 ...props.property,
@@ -104,7 +104,7 @@ export function PropertyForm(props: PropertyFormProps) {
                         sx={{
                             display: 'inline-block'
                         }}
-                        checked={props.property.unique}
+                        checked={Boolean(props.property.unique)}
                         onChange={(event) => {
                             props.onChange({
                                 ...props.property,

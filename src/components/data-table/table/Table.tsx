@@ -10,6 +10,7 @@ import {isSpecialProperty, sortedProperties} from "../../../util/property";
 import './Table.scss'
 import {Schema} from "../../../types/schema";
 import {ensureGivenPropertiesOrder} from "../../../util/resource";
+import {Type} from "@apibrew/client/model/resource";
 
 export interface DataTableTableProps {
     resource: Resource
@@ -47,11 +48,33 @@ export function DataTableTable(props: DataTableTableProps) {
         let modifiedWidth = columnWidths
         properties.forEach(property => {
             if (!columnWidths[property]) {
-                let defaultWidth = 250
+                let defaultWidth = 200
 
                 if (property === 'id') {
                     defaultWidth = 100
                 }
+
+                const propertyType = props.resource.properties[property].type
+
+                switch (propertyType) {
+                    case Type.INT32:
+                    case Type.INT64:
+                    case Type.FLOAT32:
+                    case Type.FLOAT64:
+                    case Type.STRUCT:
+                    case Type.BOOL:
+                    case Type.OBJECT:
+                    case Type.ENUM:
+                        defaultWidth = 100
+                        break;
+                    case Type.DATE:
+                    case Type.TIME:
+                    case Type.TIMESTAMP:
+                        defaultWidth = 150
+                        break;
+                }
+
+                console.log(propertyType, defaultWidth)
 
                 modifiedWidth = {
                     ...modifiedWidth,
@@ -103,7 +126,7 @@ export function DataTableTable(props: DataTableTableProps) {
     if (properties.length === 0) return <></>
 
     return <Box className='data-table-table' display='flex' flexDirection='column' width='1px' overflow='scroll'>
-        <Box display='block' minWidth={Math.max(500, 200 * properties.length + 85)} width={(tableWidth + 85) + 'px'}>
+        <Box display='block' minWidth={Math.max(500, 100 * properties.length + 85)} width={(tableWidth + 85) + 'px'}>
             <Box display='flex' flexDirection='row' className='row row-header'>
                 <Box width='75px' className='cell header-cell'>
                     <Box className='cell-inner'>
