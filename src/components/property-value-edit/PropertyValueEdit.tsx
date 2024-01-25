@@ -149,5 +149,5 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
             />
     }
 
-    return <></>
+    return <>not allowed</>
 }

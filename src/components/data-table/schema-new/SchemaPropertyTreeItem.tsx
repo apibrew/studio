@@ -1,5 +1,5 @@
 import {TreeItem} from "@mui/x-tree-view";
-import {ArrowDownward, ArrowUpward, Remove, ShoppingCartTwoTone} from "@mui/icons-material";
+import {ArrowDownward, ArrowUpward, ListAlt, Remove, ShoppingCartTwoTone} from "@mui/icons-material";
 import React from "react";
 import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
@@ -48,7 +48,7 @@ export function SchemaPropertyTreeItem(props: SchemaPropertyTreeItemProps) {
     return (
         <TreeItem
             onClick={props.onClick}
-            icon={<ShoppingCartTwoTone/>}
+            icon={<ListAlt/>}
             nodeId={props.path + '.' + props.propertyName}
 
             label={<>

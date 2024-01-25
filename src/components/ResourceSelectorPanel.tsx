@@ -74,7 +74,7 @@ export function ResourceSelectorPanel() {
         }}>
             <FormControl fullWidth
                          size='small'
-                         variant={'filled'}
+                         variant='outlined'
             >
                 <InputLabel>Namespace</InputLabel>
                 <Select fullWidth

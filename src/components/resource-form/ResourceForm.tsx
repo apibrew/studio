@@ -23,9 +23,10 @@ export function ResourceForm(props: ResourceFormProps) {
         <Stack spacing={2}>
             <FormControl fullWidth>
                 <TextField
+                    size='small'
                     value={props.resource.name}
                     label='Name'
-                    variant='filled'
+                    variant='outlined'
                     onChange={(event) => {
                         props.onChange({
                             ...props.resource,
@@ -38,9 +39,10 @@ export function ResourceForm(props: ResourceFormProps) {
             </FormControl>
             <FormControl fullWidth>
                 <TextField
+                    size='small'
                     value={props.resource.title}
                     label='Title'
-                    variant='filled'
+                    variant='outlined'
                     onChange={(event) => {
                         props.onChange({
                             ...props.resource,
@@ -53,9 +55,12 @@ export function ResourceForm(props: ResourceFormProps) {
             </FormControl>
             <FormControl fullWidth>
                 <TextField
+                    size='small'
                     value={props.resource.description}
+                    multiline={true}
+                    rows={3}
                     label='Description'
-                    variant='filled'
+                    variant='outlined'
                     onChange={(event) => {
                         props.onChange({
                             ...props.resource,
@@ -90,9 +95,10 @@ export function ResourceForm(props: ResourceFormProps) {
                     </FormControl>
                     <FormControl fullWidth>
                         <TextField
+                            size='small'
                             value={props.resource.catalog ?? ''}
                             label='Catalog'
-                            variant='filled'
+                            variant='outlined'
                             onChange={(event) => {
                                 props.onChange({
                                     ...props.resource,
@@ -108,9 +114,10 @@ export function ResourceForm(props: ResourceFormProps) {
                     </FormControl>
                     <FormControl fullWidth>
                         <TextField
+                            size='small'
                             value={props.resource.entity ?? ''}
                             label='Entity'
-                            variant='filled'
+                            variant='outlined'
                             onChange={(event) => {
                                 props.onChange({
                                     ...props.resource,
@@ -128,6 +135,7 @@ export function ResourceForm(props: ResourceFormProps) {
                     <FormControl>
                         <FormLabel>Immutable</FormLabel>
                         <Checkbox
+                            size='small'
                             sx={{
                                 display: 'inline-block'
                             }}
@@ -146,6 +154,7 @@ export function ResourceForm(props: ResourceFormProps) {
                     <FormControl>
                         <FormLabel>Virtual</FormLabel>
                         <Checkbox
+                            size='small'
                             sx={{
                                 display: 'inline-block'
                             }}

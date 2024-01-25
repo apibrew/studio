@@ -13,7 +13,7 @@ export function NamespaceForm(props: NamespaceFormProps) {
                 <TextField
                     value={props.namespace.name}
                     label='Name'
-                    variant='filled'
+                    variant='outlined'
                     onChange={(event) => {
                         props.onChange({
                             ...props.namespace,
@@ -25,7 +25,7 @@ export function NamespaceForm(props: NamespaceFormProps) {
                 <TextField
                     value={props.namespace.description}
                     label='Description'
-                    variant='filled'
+                    variant='outlined'
                     onChange={(event) => {
                         props.onChange({
                             ...props.namespace,

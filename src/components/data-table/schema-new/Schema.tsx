@@ -2,7 +2,17 @@ import {Resource} from "@apibrew/react";
 import {Box, Card, CardContent, CardHeader, IconButton} from "@mui/material";
 import React, {useMemo} from "react";
 import {SubType} from "@apibrew/client/model/resource-action";
-import {Add, ChevronRight, DatasetLinked, ExpandMore, Remove, ShoppingBag} from "@mui/icons-material";
+import {
+    AccountTree,
+    Add,
+    ChevronRight,
+    DatasetLinked,
+    ExpandMore,
+    Remove,
+    SchemaRounded,
+    ShoppingBag,
+    TableChart
+} from "@mui/icons-material";
 import {TreeItem, TreeView} from "@mui/x-tree-view";
 import {getPropertyOrder, sortedProperties} from "../../../util/property";
 import {PropertyForm} from "../../property-form/PropertyForm";
@@ -86,7 +96,7 @@ export function SchemaTable(props: SchemaProps) {
                 defaultExpandIcon={<ChevronRight/>}
             >
                 <TreeItem
-                    icon={<DatasetLinked/>}
+                    icon={<TableChart/>}
                     nodeId="resource"
                     onClick={() => {
                         setSelectionType(SelectionType.RESOURCE)
@@ -100,7 +110,7 @@ export function SchemaTable(props: SchemaProps) {
                             setSelectedItem(undefined)
                             setSelectedTypeIndex(undefined)
                         }}
-                        icon={<ShoppingBag/>}
+                        icon={<SchemaRounded/>}
                         nodeId="properties"
                         label={<>
                             <span style={{
@@ -164,7 +174,7 @@ export function SchemaTable(props: SchemaProps) {
                         ))}
                     </TreeItem>
                     <TreeItem
-                        icon={<ShoppingBag/>}
+                        icon={<AccountTree/>}
                         nodeId="types"
                         onClick={() => {
                             setSelectionType(undefined)
@@ -195,7 +205,7 @@ export function SchemaTable(props: SchemaProps) {
                             const properties = sortedProperties(type.properties)
                             return (
                                 <TreeItem
-                                    icon={<ShoppingBag/>}
+                                    icon={<AccountTree/>}
 
                                     nodeId={'type-' + type.name}
                                     label={<>

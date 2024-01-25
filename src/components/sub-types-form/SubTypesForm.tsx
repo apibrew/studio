@@ -12,9 +12,10 @@ export function SubTypesForm(props: ResourceFormProps) {
     return (
         <Stack spacing={2}>
             <TextField
+                size='small'
                 fullWidth
                 label='Name'
-                variant='filled'
+                variant='outlined'
                 value={props.subType.name ?? ''}
                 onChange={(event) => {
                     props.onChange({
@@ -24,9 +25,10 @@ export function SubTypesForm(props: ResourceFormProps) {
                 }}/>
             <br/>
             <TextField
+                size='small'
                 fullWidth
                 label='Title'
-                variant='filled'
+                variant='outlined'
                 value={props.subType.title ?? ''}
                 onChange={(event) => {
                     props.onChange({
@@ -36,9 +38,12 @@ export function SubTypesForm(props: ResourceFormProps) {
                 }}/>
             <br/>
             <TextField
+                size='small'
                 fullWidth
+                multiline={true}
+                rows={3}
                 label='Description'
-                variant='filled'
+                variant='outlined'
                 value={props.subType.description ?? ''}
                 onChange={(event) => {
                     props.onChange({

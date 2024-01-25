@@ -81,7 +81,7 @@ export function SchemaTable(props: SchemaProps) {
                                 <Delete/>
                             </IconButton>
                             <TextField
-                                variant={'filled'}
+                                variant='outlined'
                                 label='Type:'
                                 value={type.name}
                                 size='small'
