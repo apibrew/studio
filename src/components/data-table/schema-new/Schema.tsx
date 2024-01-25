@@ -83,7 +83,7 @@ export function SchemaTable(props: SchemaProps) {
     const [selectionType, setSelectionType] = React.useState<SelectionType>()
     const [selectedItem, setSelectedItem] = React.useState<string>()
     const [selectedTypeIndex, setSelectedTypeIndex] = React.useState<number>()
-    const selectedType = props.resource.types![selectedTypeIndex as any]
+    const selectedType = props.resource.types ? props.resource.types![selectedTypeIndex as any] : undefined
 
     const typeNames = props.resource.types?.map(item => 'type-' + item.name) ?? []
 
@@ -165,6 +165,9 @@ export function SchemaTable(props: SchemaProps) {
                                         ...props.resource,
                                         properties: newProperties
                                     })
+
+                                    setSelectedItem(undefined)
+                                    setSelectionType(undefined)
                                 }}
                                 onClick={() => {
                                     setSelectionType(SelectionType.PROPERTY)
@@ -202,7 +205,7 @@ export function SchemaTable(props: SchemaProps) {
                             </IconButton>
                         </>}>
                         {props.resource.types?.map((type, index) => {
-                            const properties = sortedProperties(type.properties)
+                            const properties = sortedProperties(type.properties || {})
                             return (
                                 <TreeItem
                                     icon={<AccountTree/>}
@@ -232,7 +235,7 @@ export function SchemaTable(props: SchemaProps) {
                                         <IconButton onClick={(e) => {
                                             e.stopPropagation()
 
-                                            const newTypes = [...props.resource.types!]
+                                            const newTypes = [...props.resource.types || []]
 
                                             newTypes.splice(index, 1)
 
@@ -240,6 +243,8 @@ export function SchemaTable(props: SchemaProps) {
                                                 ...props.resource,
                                                 types: newTypes
                                             })
+                                            setSelectedItem(undefined)
+                                            setSelectionType(undefined)
                                         }} color='error' size='small'>
                                             <Remove fontSize='small'/>
                                         </IconButton>
@@ -275,6 +280,9 @@ export function SchemaTable(props: SchemaProps) {
                                                     updateType(type.name, {
                                                         properties: newProperties
                                                     })
+
+                                                    setSelectedItem(undefined)
+                                                    setSelectionType(undefined)
                                                 }}
                                                 onClick={() => {
                                                     setSelectionType(SelectionType.PROPERTY)

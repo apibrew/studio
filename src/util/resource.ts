@@ -24,7 +24,7 @@ export function ensureResourcePropertiesOrder(resource: Resource): boolean {
 }
 
 export function ensurePropertiesOrder(schema: Schema): boolean {
-    const properties = sortedProperties(schema.properties)
+    const properties = sortedProperties(schema.properties || {})
 
     return ensureGivenPropertiesOrder(schema, properties)
 }
