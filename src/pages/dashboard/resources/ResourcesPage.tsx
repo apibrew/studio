@@ -48,7 +48,9 @@ export default function ResourcesPage() {
         <Box display='flex'
              height='100%'
              flexDirection='column'>
-            <DataTable resource={resource}/>
+            <DataTable reloadResource={() => {
+                setWi(wi + 1)
+            }} resource={resource}/>
         </Box>
     </>
 }

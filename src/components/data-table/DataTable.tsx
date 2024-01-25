@@ -7,11 +7,11 @@ import Button from "@mui/material/Button";
 import {Api, Code, DataArray, Schema} from "@mui/icons-material";
 import {Stack, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {ApiDocModal} from "../api-doc/ApiDocModal";
-import {SchemaContainer} from "./schema/SchemaContainer";
 import {SchemaContainer as SchemaContainerNew} from "./schema-new/SchemaContainer";
 
 export interface DataTableProps {
     resource: Resource
+    reloadResource?: () => void
 }
 
 export function DataTable(props: DataTableProps) {
@@ -43,6 +43,7 @@ export function DataTable(props: DataTableProps) {
                                       ...searchParams,
                                       mode: 'data'
                                   })
+                                  props.reloadResource?.()
                               }}
                               size='small'>
                     <DataArray fontSize='small'/>
@@ -69,6 +70,7 @@ export function DataTable(props: DataTableProps) {
                                       ...searchParams,
                                       mode: 'schema-new'
                                   })
+                                  props.reloadResource?.()
                               }}
                               size='small'>
                     <Schema fontSize='small'/>
@@ -88,10 +90,10 @@ export function DataTable(props: DataTableProps) {
             resource={props.resource}
             commonButtons={commonButtons}
         />}
-        {mode === 'schema' && <SchemaContainer
-            resource={props.resource}
-            commonButtons={commonButtons}
-        />}
+        {/*{mode === 'schema' && <SchemaContainer*/}
+        {/*    resource={props.resource}*/}
+        {/*    commonButtons={commonButtons}*/}
+        {/*/>}*/}
         {mode === 'schema-new' && <SchemaContainerNew
             resource={props.resource}
             commonButtons={commonButtons}
