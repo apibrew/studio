@@ -1,8 +1,8 @@
-import {Resource, useRepository} from "@apibrew/react";
+import {Resource, useClient, useRepository} from "@apibrew/react";
 import React, {useState} from "react";
-import {Box, Stack} from "@mui/material";
+import {Box, IconButton, Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Add, Domain} from "@mui/icons-material";
+import {Add, Domain, Save, UpdateSharp} from "@mui/icons-material";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer";
@@ -18,7 +18,7 @@ export interface SchemaContainerProps {
 
 export function SchemaContainer(props: SchemaContainerProps) {
     const [resource, setResource] = useState<Resource>(props.resource)
-    const resourceRepository = useRepository(ResourceEntityInfo)
+    const client = useClient()
     const confirmation = useConfirmation()
     const drawer = useDrawer()
 
@@ -26,13 +26,13 @@ export function SchemaContainer(props: SchemaContainerProps) {
 
     }
 
-    function handleUpdateResource(updatedResource: Resource) {
+    function handleUpdateResource(updatedResource: Resource, force?: boolean) {
         confirmation.open({
             kind: 'confirm',
-            message: 'Are you sure you want to update this resource?',
+            message: 'Are you sure you want to update this resource?' + (force ? ' This will force migrate the resource' : ''),
             buttonMessage: 'Update',
             onConfirm: () => {
-                toast.promise(resourceRepository.update(updatedResource), {
+                toast.promise(client.updateResource(updatedResource, force), {
                     loading: 'Updating Resource...',
                     success: 'Resource updated',
                     error: 'Failed to update Resource'
@@ -57,8 +57,20 @@ export function SchemaContainer(props: SchemaContainerProps) {
                     }}
                     color='success'
                     size='small'>
-                    <Domain fontSize='small'/>
+                    <Save fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Save</span>
+                </Button>
+                <Button
+                    style={{
+                        marginLeft: '40px'
+                    }}
+                    onClick={() => {
+                        handleUpdateResource(resource, true)
+                    }}
+                    color='warning'
+                    size='small'>
+                    <UpdateSharp fontSize='small'/>
+                    <span style={{marginLeft: '5px'}}>Force Migrate</span>
                 </Button>
             </Stack>
             <Box flexGrow={1}/>

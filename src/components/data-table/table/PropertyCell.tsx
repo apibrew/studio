@@ -52,6 +52,7 @@ export function PropertyCell(props: PropertyCellProps) {
                 value={props.updated || props.value}
             />}
             {inlineEdit && <PropertyValueEdit
+                autoOpen={true}
                 property={props.property}
                 value={props.updated || props.value}
                 onChange={props.onUpdate}

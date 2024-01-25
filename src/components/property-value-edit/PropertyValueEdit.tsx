@@ -9,6 +9,7 @@ export interface PropertyValueEditProps {
     value: any
     onChange: (value: any) => void
     onForceClose?: () => void
+    autoOpen?: boolean
 }
 
 export function PropertyValueEdit(props: PropertyValueEditProps) {
@@ -125,7 +126,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
             </select>
         case Type.LIST:
             return <TagInput
-                autoOpen={true}
+                autoOpen={Boolean(props.autoOpen)}
                 value={updated || []}
                 onChange={e => {
                     setUpdated(e)

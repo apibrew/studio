@@ -74,7 +74,7 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
         case Type.TIME:
         case Type.TIMESTAMP:
         case Type.BOOL:
-            return <PropertyValueEdit property={props.property} value={props.value} onChange={props.onChange}/>
+            return <PropertyValueEdit autoOpen={true} property={props.property} value={props.value} onChange={props.onChange}/>
         case Type.OBJECT:
             return <ObjectValue {...props}/>
         case Type.REFERENCE:

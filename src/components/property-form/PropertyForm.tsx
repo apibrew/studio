@@ -53,7 +53,9 @@ export function PropertyForm(props: PropertyFormProps) {
                     onChange={(event) => {
                         props.onChange({
                             ...props.property,
-                            type: event.target.value as Type
+                            type: event.target.value as Type,
+                            defaultValue: undefined as any,
+                            exampleValue: undefined as any,
                         })
                     }}/>
             </FormControl>
@@ -95,6 +97,9 @@ export function PropertyForm(props: PropertyFormProps) {
                     property={props.property}
                     value={props.property.defaultValue}
                     onChange={value => {
+                        if (!value) {
+                            value = undefined
+                        }
                         props.onChange({
                             ...props.property,
                             defaultValue: value
@@ -107,6 +112,9 @@ export function PropertyForm(props: PropertyFormProps) {
                     property={props.property}
                     value={props.property.exampleValue}
                     onChange={value => {
+                        if (!value) {
+                            value = undefined
+                        }
                         props.onChange({
                             ...props.property,
                             exampleValue: value
