@@ -2,9 +2,11 @@ import {Resource} from "@apibrew/react";
 import {
     Accordion,
     AccordionDetails,
-    AccordionSummary, Checkbox,
+    AccordionSummary,
+    Checkbox,
     FormControl,
-    FormHelperText, FormLabel,
+    FormHelperText,
+    FormLabel,
     Stack,
     TextField,
     Typography
@@ -12,6 +14,7 @@ import {
 import {AnnotationsForm} from "../AnnotationsForm";
 import React from "react";
 import {ArrowDownward} from "@mui/icons-material";
+import {ReferenceValueSelector} from "../ReferenceValueSelector";
 
 export interface ResourceFormProps {
     resource: Resource
@@ -31,6 +34,21 @@ export function ResourceForm(props: ResourceFormProps) {
                         props.onChange({
                             ...props.resource,
                             name: event.target.value
+                        })
+                    }}/>
+                <FormHelperText>
+                    The name of the resource.
+                </FormHelperText>
+            </FormControl>
+            <FormControl fullWidth>
+                <ReferenceValueSelector
+                    required={true}
+                    reference={'system/Namespace'}
+                    value={props.resource.namespace}
+                    onChange={namespace => {
+                        props.onChange({
+                            ...props.resource,
+                            namespace: namespace,
                         })
                     }}/>
                 <FormHelperText>

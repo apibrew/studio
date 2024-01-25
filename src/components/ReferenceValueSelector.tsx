@@ -28,9 +28,26 @@ export function ReferenceValueSelector(props: ReferenceValueSelectorProps) {
         return <LoadingOverlay/>
     }
 
+    const selected = records.find(record => {
+        if (props.value) {
+            for (const key in props.value) {
+                if (typeof props.value[key] === 'object') {
+                    continue
+                }
+                if (props.value[key] !== record[key]) {
+                    return false
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    })
+
     return <Select
         {...props as any}
-        value={props.value?.id || ''}
+        value={selected?.id || ''}
         onChange={e => {
             props.onChange({
                 id: e.target.value,

@@ -34,7 +34,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
         })
     }
 
-    const [Resource, setResource] = React.useState<Resource>(props.resource)
+    const [resource, setResource] = React.useState<Resource>(props.resource)
     return (
         <>
             {confirmation.render()}
@@ -43,7 +43,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
                     <CardHeader title={props.new ? 'New resource' : 'Update resource: ' + props.resource.name}/>
                 </Card>
                 <CardContent>
-                    <ResourceForm resource={Resource} onChange={setResource}/>
+                    <ResourceForm resource={resource} onChange={setResource}/>
                 </CardContent>
                 <CardActions>
                     <Stack direction='row' spacing={1}>
@@ -55,7 +55,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
                                 color='success'
                                 onClick={() => {
                                     if (props.new) {
-                                        toast.promise(client.createResource(Resource, force), {
+                                        toast.promise(client.createResource(resource, force), {
                                             loading: 'Creating Resource...',
                                             success: 'Resource created',
                                             error: 'Failed to create Resource'
@@ -63,7 +63,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
                                             props.onClose()
                                         })
                                     } else {
-                                        toast.promise(client.updateResource(Resource, force), {
+                                        toast.promise(client.updateResource(resource, force), {
                                             loading: 'Updating Resource...',
                                             success: 'Resource updated',
                                             error: 'Failed to update Resource'

@@ -74,8 +74,6 @@ export function DataTableTable(props: DataTableTableProps) {
                         break;
                 }
 
-                console.log(propertyType, defaultWidth)
-
                 modifiedWidth = {
                     ...modifiedWidth,
                     [property]: defaultWidth

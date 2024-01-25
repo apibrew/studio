@@ -147,7 +147,8 @@ export function ResourceSelectorPanel() {
                                                 setWi(wi + 1)
                                             }}
                                             resource={{
-                                                name: 'NewResource1'
+                                                name: 'NewResource1',
+                                                namespace: namespace
                                             } as Resource}/>
                         )
                     }}>

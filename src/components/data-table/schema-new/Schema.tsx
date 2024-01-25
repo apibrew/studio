@@ -136,6 +136,7 @@ export function SchemaTable(props: SchemaProps) {
                         </>}>
                         {properties.map((propertyName, index) => (
                             <SchemaPropertyTreeItem
+                                key={propertyName}
                                 resource={props.resource}
                                 property={props.resource.properties[propertyName]}
                                 path={'$'}
@@ -209,7 +210,7 @@ export function SchemaTable(props: SchemaProps) {
                             return (
                                 <TreeItem
                                     icon={<AccountTree/>}
-
+                                    key={type.name}
                                     nodeId={'type-' + type.name}
                                     label={<>
                                         <span style={{
@@ -258,6 +259,7 @@ export function SchemaTable(props: SchemaProps) {
                                     {properties.map((propertyName, index) => {
                                         return (
                                             <SchemaPropertyTreeItem
+                                                key={propertyName}
                                                 resource={props.resource}
                                                 property={type.properties[propertyName]}
                                                 path={'$.' + type.name}
