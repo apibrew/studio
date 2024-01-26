@@ -43,6 +43,7 @@ export default function ResourcesPage() {
     }, [resource]);
 
     if (resourceNotFound || !params.namespace || !params.resource) {
+        console.log(process.env)
         return <Typography>
             Please select a resource from the left panel
         </Typography>

@@ -1,10 +1,13 @@
-import {useMatches} from "react-router-dom";
+import {useMatches, useParams} from "react-router-dom";
 import {MenuItem, menuItems} from "../menu";
 
 
-export function useActiveMenuItem(): MenuItem {
+export function useActiveMenuItem(): MenuItem | undefined {
+    const params = useParams()
     const items = menuItems
     const matches = useMatches()
+
+    const connectionName = params['connectionName']
 
     let activeItem: MenuItem | null = null
 
@@ -14,6 +17,9 @@ export function useActiveMenuItem(): MenuItem {
             continue
         }
         if (matches.some(match => match.pathname.startsWith(item.path))) {
+            activeItem = item
+        }
+        if (matches.some(match => match.pathname.startsWith(`/${connectionName}${item.path}`))) {
             activeItem = item
         }
     }

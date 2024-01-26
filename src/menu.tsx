@@ -6,7 +6,8 @@ export interface MenuItem {
     title: string;
     icon?: React.ReactNode;
     path: string;
-    secondSideBar?: React.ReactNode;
+    secondSideBar?: () => React.ReactNode;
+    grow?: boolean;
     delimiter?: boolean;
 }
 
@@ -19,7 +20,7 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Resources',
         path: '/dashboard/resources',
-        secondSideBar: <ResourceSelectorPanel/>,
+        secondSideBar: () => <ResourceSelectorPanel/>,
         icon: <Dataset/>
     },
     {
@@ -35,6 +36,7 @@ export const menuItems: MenuItem[] = [
     {
         title: '',
         path: '',
+        grow: true,
         delimiter: true,
     },
     {

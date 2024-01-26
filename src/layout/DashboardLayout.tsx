@@ -20,7 +20,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
     const activeItem = useActiveMenuItem()
     const navigate = useNavigate()
 
-    const sideBarOpen = config.sideBarOpen && !activeItem.secondSideBar
+    const sideBarOpen = config.sideBarOpen && !activeItem?.secondSideBar
 
     return <>
         <Box id='dashboard-layout'
@@ -58,7 +58,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                     </Typography>}
                     <Box flexGrow={1}/>
                     <IconButton onClick={() => {
-                        if (!sideBarOpen && activeItem.secondSideBar) {
+                        if (!sideBarOpen && activeItem?.secondSideBar) {
                             navigate('/dashboard')
                         }
                         setConfig({
@@ -75,7 +75,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                 <AsideBar activeItem={activeItem}
                           open={sideBarOpen}/>
             </Box>
-            {activeItem.secondSideBar && <Box id='second-left-bar'
+            {activeItem?.secondSideBar && <Box id='second-left-bar'
                                               sx={{
                                                   display: 'flex',
                                                   flexDirection: 'column',
@@ -83,7 +83,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                                                   width: '230px',
                                                   overflow: 'hidden'
                                               }}>
-                {activeItem.secondSideBar}
+                {activeItem.secondSideBar()}
             </Box>}
             <Box sx={{
                 flexGrow: 1,
