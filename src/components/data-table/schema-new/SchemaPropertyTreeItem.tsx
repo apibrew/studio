@@ -27,6 +27,10 @@ export function SchemaPropertyTreeItem(props: SchemaPropertyTreeItemProps) {
         label += '[' + props.property.typeRef + ']'
     }
 
+    if (props.property.type === 'REFERENCE') {
+        label += '[' + props.property.reference + ']'
+    }
+
     let alt: string[] = []
 
     if (props.property.required) {

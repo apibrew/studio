@@ -1,7 +1,7 @@
 import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {Box, FormControl, FormHelperText, MenuItem, Select, Stack, Typography} from "@mui/material";
+import {Box, FormControl, FormHelperText, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
 import React, {useEffect} from "react";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown";
 import {ResourceSelect} from "../ResourceSelect";
@@ -105,6 +105,32 @@ export function PropertyExtras(props: PropertyExtrasProps) {
                         {!props.disableHelperText && <FormHelperText>
                             <Typography variant='caption'>
                                 For creating a new type, you need to go to the types of resource from the left menu.
+                            </Typography>
+                        </FormHelperText>}
+                    </FormControl>
+                </Box>
+            </>
+        case Type.STRING:
+            return <>
+                <Box border={'1 px solid black'}>
+                    <FormControl fullWidth>
+                        <TextField
+                            size='small'
+                            value={props.property.length || 255}
+                            label='Length'
+                            variant='outlined'
+                            type='number'
+                            onChange={(event) => {
+                                if (event.target.value !== '') {
+                                    props.onChange({
+                                        ...props.property,
+                                        length: parseInt(event.target.value)
+                                    })
+                                }
+                            }}/>
+                        {!props.disableHelperText && <FormHelperText>
+                            <Typography variant='caption'>
+
                             </Typography>
                         </FormHelperText>}
                     </FormControl>

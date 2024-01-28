@@ -76,6 +76,7 @@ export function TableContainer(props: TableContainerProps) {
     async function handleSave() {
         let isSuccess = true
         let sc = 0
+        const loadingId = toast.loading('Saving records...')
         for (const id of Object.keys(updates)) {
             try {
                 if (id === 'new') {
@@ -98,6 +99,7 @@ export function TableContainer(props: TableContainerProps) {
                 toast.error('Failed to save record: ' + e.message)
             }
         }
+        toast.dismiss(loadingId)
 
         if (isSuccess) {
             toast.success('Records saved')

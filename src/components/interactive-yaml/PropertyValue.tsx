@@ -7,10 +7,10 @@ import {ListValue} from "./ListValue";
 import {StructValue} from "./StructValue";
 import {ObjectValue} from "./ObjectValue";
 import React from "react";
-import {isSpecialProperty} from "../../util/property";
-import {PropertyValueView} from "../property-value-view/PropertyValueView";
 import {PropertyValueEdit} from "../property-value-edit/PropertyValueEdit";
 import {MapValue} from "./MapValue";
+import toast from "react-hot-toast";
+import {TextField} from "@mui/material";
 
 export interface PropertyValueProps {
     resource: Resource
@@ -23,58 +23,94 @@ export interface PropertyValueProps {
     onChange: (updated: any) => void
 }
 
-function propertyValueSwitch(props: PropertyValueProps) {
+export function PropertyValue(props: PropertyValueProps) {
     switch (props.property.type) {
-        case Type.STRING:
         case Type.INT32:
         case Type.INT64:
         case Type.FLOAT32:
         case Type.FLOAT64:
-        case Type.ENUM:
-        case Type.UUID:
-            return <PropertyValueView property={props.property} value={props.value}/>
         case Type.BOOL:
-            return props.value ? 'true' : 'false'
-        case Type.OBJECT:
-            return <ObjectValue {...props}/>
-        case Type.REFERENCE:
-            return <ReferenceValue {...props}/>
-        case Type.LIST:
-            return <ListValue {...props}/>
-        case Type.STRUCT:
-            const subSchema = props.resource.types?.find(item => item.name === props.property.typeRef) as Schema
-
-            if (!subSchema) throw new Error(`Could not find schema for ${props.property.typeRef}`)
-
-            return <StructValue resource={props.resource}
-                                new={props.new}
-                                schema={subSchema}
-                                value={props.value}
-                                path={props.path}
-                                depth={props.depth}
-                                isInline={props.isInline}
-                                onChange={(updated) => {
-                                    props.onChange(updated)
-                                }}/>
-        default:
-            return <span>Unknown type: {props.property.type}</span>
-    }
-}
-
-function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMode: boolean) => void) {
-    switch (props.property.type) {
-        case Type.INT32:
-        case Type.INT64:
-        case Type.FLOAT32:
-        case Type.FLOAT64:
         case Type.STRING:
-        case Type.ENUM:
         case Type.UUID:
+            return <TextField
+                fullWidth
+                disabled={props.property.immutable}
+                sx={{
+                    margin: 0,
+                    padding: 0,
+                    display: 'inline-block',
+                    verticalAlign: 'bottom',
+                    '& .MuiInput-input': {
+                        padding: 0,
+                        margin: 0,
+                    }
+                }}
+                value={props.value || ''}
+                variant='standard'
+                onChange={e => {
+                    props.onChange(e.target.value)
+                }}
+            />
         case Type.DATE:
+            return <input type='date' value={props.value || ''}
+                          autoFocus
+                          disabled={props.property.immutable}
+                          className='property-edit-input'
+                          onChange={e => {
+                              props.onChange(e.target.value)
+                          }}
+                          onBlur={e => {
+                              props.onChange(e.target.value)
+                          }}/>
         case Type.TIME:
+            return <input type='time' value={props.value || ''}
+                          autoFocus
+                          disabled={props.property.immutable}
+                          className='property-edit-input'
+                          onChange={e => {
+                              props.onChange(e.target.value)
+                          }}
+                          onBlur={e => {
+                              let value = e.target.value
+
+                              if (value.length === 5) {
+                                  value = value + ':00'
+                              }
+
+                              props.onChange(value)
+                          }}/>
         case Type.TIMESTAMP:
-        case Type.BOOL:
-            return <PropertyValueEdit autoOpen={true} property={props.property} value={props.value} onChange={props.onChange}/>
+            return <input type='datetime-local' value={props.value || ''}
+                          autoFocus
+                          disabled={props.property.immutable}
+                          className='property-edit-input'
+                          onChange={e => {
+                              props.onChange(e.target.value)
+                          }}
+                          onBlur={e => {
+                              let value = e.target.value
+
+                              if (value.length === 16) {
+                                  value = value + ':00Z'
+                              }
+
+                              props.onChange(value)
+                          }}/>
+        case Type.ENUM:
+            return <select value={props.value || ''}
+                           disabled={props.property.immutable}
+                           className='property-edit-input'
+                           onChange={e => {
+                               props.onChange(e.target.value)
+                           }}
+                           onBlur={e => {
+                               props.onChange(e.target.value)
+                           }}>
+                <option value={undefined}>---</option>
+                {props.property.enumValues?.map((v, i) => {
+                    return <option key={i} value={v}>{v}</option>
+                })}
+            </select>
         case Type.OBJECT:
             return <ObjectValue {...props}/>
         case Type.REFERENCE:
@@ -101,55 +137,5 @@ function propertyEditValueSwitch(props: PropertyValueProps, setEditMode: (editMo
         default:
             return <span>Unknown type: {props.property.type}</span>
     }
-}
-
-export function PropertyValue(props: PropertyValueProps) {
-    const [editMode, setEditMode] = React.useState<boolean>(props.new || props.value === null)
-    let editModeAllowed = true
-
-    if (isSpecialProperty(props.property)) {
-        editModeAllowed = false
-    }
-
-    if (!props.new) {
-        if (props.property.immutable) {
-            editModeAllowed = false
-        }
-
-        if (props.resource.immutable) {
-            editModeAllowed = false
-        }
-    }
-
-    if (props.property.type === Type.LIST) {
-        editModeAllowed = false
-    }
-
-    if (props.property.type === Type.STRUCT && props.value !== undefined) {
-        editModeAllowed = false
-    }
-
-    return <>
-        {!editMode && propertyValueSwitch(props)}
-        {editMode && propertyEditValueSwitch(props, (editMode) => {
-            if (!props.new && props.value !== null) {
-                setEditMode(editMode)
-            }
-        })}
-        {!props.new && editModeAllowed && <span
-            className='unselectable cell-hand'
-            style={{
-                marginLeft: '5px',
-                color: 'red'
-            }}
-            onClick={() => {
-                if (props.value === undefined) {
-                    props.onChange(null)
-                }
-                setEditMode(!editMode)
-            }}>
-            (edit)
-        </span>}
-    </>
 
 }

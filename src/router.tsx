@@ -5,12 +5,16 @@ import {DashboardPage} from "./pages/dashboard";
 import * as React from "react";
 import LogoutPage from "./pages/logout/LogoutPage";
 import ResourcesPage from "./pages/dashboard/resources/ResourcesPage";
-import NanoPage from "./pages/dashboard/nano/NanoPage";
+import NanoList from "./pages/dashboard/nano/NanoList";
 import UsersAndRolesPage from "./pages/dashboard/users-and-roles/UsersAndRolesPage";
 import SettingsPage from "./pages/dashboard/settings/SettingsPage";
 import UserProfilePage from "./pages/dashboard/user-profile/UserProfilePage";
 import TestPage from "./pages/TestPage";
 import {ConnectionsPage} from "./pages/connections/ConnectionsPage";
+import {NanoEdit} from "./pages/dashboard/nano/NanoEdit";
+import {NanoNew} from "./pages/dashboard/nano/NanoNew";
+import {NanoPage} from "./pages/dashboard/nano";
+import {NanoPlayGround} from "./pages/dashboard/nano/NanoPlayGround";
 
 const dashboardChildren = [
     {
@@ -39,7 +43,37 @@ const dashboardChildren = [
         element: <NanoPage/>,
         handle: {
             breadcrumb: 'Nano Code'
-        }
+        },
+        children: [
+            {
+                path: "",
+                element: <NanoList/>,
+                handle: {
+                    breadcrumb: 'List'
+                },
+            },
+            {
+                path: "new",
+                element: <NanoNew/>,
+                handle: {
+                    breadcrumb: 'New'
+                }
+            },
+            {
+                path: "playground",
+                element: <NanoPlayGround/>,
+                handle: {
+                    breadcrumb: 'PlayGround'
+                }
+            },
+            {
+                path: ":id",
+                element: <NanoEdit/>,
+                handle: {
+                    breadcrumb: 'Edit'
+                }
+            },
+        ]
     },
     {
         path: "users-and-roles",
@@ -104,7 +138,5 @@ export const router = createBrowserRouter([
 ]);
 
 export function Router() {
-
-
     return <RouterProvider router={router}/>
 }

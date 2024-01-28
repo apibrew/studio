@@ -17,7 +17,7 @@ import {Property} from "@apibrew/client/model";
 import {Resource} from "@apibrew/react";
 import {PropertyExtras} from "./PropertyExtras";
 import {ArrowDownward} from "@mui/icons-material";
-import {AnnotationsForm} from "../AnnotationsForm";
+import {AnnotationsForm} from "../annotations-form/AnnotationsForm";
 import {PropertyValueEdit} from "../property-value-edit/PropertyValueEdit";
 
 export interface PropertyFormProps {

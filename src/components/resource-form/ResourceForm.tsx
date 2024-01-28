@@ -11,7 +11,7 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {AnnotationsForm} from "../AnnotationsForm";
+import {AnnotationsForm} from "../annotations-form/AnnotationsForm";
 import React from "react";
 import {ArrowDownward} from "@mui/icons-material";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";

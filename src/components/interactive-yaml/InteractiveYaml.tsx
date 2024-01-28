@@ -50,9 +50,5 @@ export function InteractiveYaml(props: InteractiveYamlProps) {
                         }}>copy</Button>
             </Box>
         </Box>
-        {/*<hr/>*/}
-        {/*<pre>*/}
-        {/*    {dump(props.value)}*/}
-        {/*</pre>*/}
     </>
 }

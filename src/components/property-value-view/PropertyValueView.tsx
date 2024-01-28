@@ -4,17 +4,20 @@ import toast from "react-hot-toast";
 import React from "react";
 import {Property} from "@apibrew/client/model";
 import {label} from "../../util/record";
+import {SxProps} from "@mui/system";
+import {Theme} from "@mui/material/styles";
 
 export interface PropertyValueViewProps {
     property: Property
     value: any
+    sx?: SxProps<Theme>;
 }
 
 export function PropertyValueView(props: PropertyValueViewProps) {
     let value = props.value
 
     if (value === undefined) {
-        return <Typography color='lightgrey'>Null</Typography>
+        return <Typography sx={props.sx} color='lightgrey'>Null</Typography>
     }
 
     switch (props.property.type) {
@@ -42,6 +45,7 @@ export function PropertyValueView(props: PropertyValueViewProps) {
         case Type.UUID:
             return <Tooltip title={value}>
                 <Typography className='cell-text cell-hand'
+                            sx={props.sx}
                             onClick={() => {
                                 navigator.clipboard.writeText(value)
                                 toast.success('Copied to clipboard')
@@ -50,6 +54,6 @@ export function PropertyValueView(props: PropertyValueViewProps) {
     }
 
     return <>
-        <Typography className='cell-text'>{value}</Typography>
+        <Typography sx={props.sx} className='cell-text'>{value}</Typography>
     </>
 }

@@ -3,7 +3,6 @@ import React, {useMemo} from "react";
 import {Resource} from "@apibrew/react";
 import {Schema} from "../../types/schema";
 import {Type} from "@apibrew/client/model/resource";
-import {leftSpace} from "./util";
 import {sortedProperties} from "../../util/property";
 
 export interface StructValueProps {
@@ -31,8 +30,11 @@ export function StructValue(props: StructValueProps) {
 
     const value = props.value || {}
 
-    return <span itemRef={props.path}
-                 property={JSON.stringify(props.value)}>
+    return <div
+        style={{
+            display: 'inline-block'
+        }}
+        itemRef={props.path}>
         {properties.map((item, index) => {
             const property = props.schema.properties[item]
             let propertyValue = <PropertyValue
@@ -49,7 +51,7 @@ export function StructValue(props: StructValueProps) {
                     })
                 }}/>
 
-            const isSub = (value[item] !== undefined) && (property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT || property.type === Type.REFERENCE)
+            const isSub = (value[item] !== undefined) && (property.type === Type.LIST || property.type === Type.MAP || property.type === Type.STRUCT)
 
             let propertyKeySuffix = ''
 
@@ -67,9 +69,10 @@ export function StructValue(props: StructValueProps) {
             }
 
 
-            return <React.Fragment key={item}>
+            return <div
+                className='property-line'
+                key={item}>
                 <span>
-                {(!props.isInline || index > 0) && leftSpace(props.depth)}
                     <span key={item}
                           style={{
                               whiteSpace: 'nowrap'
@@ -82,8 +85,7 @@ export function StructValue(props: StructValueProps) {
                         {propertyValue}
                     </div>}
                 </span>
-                <div/>
-            </React.Fragment>
+            </div>
         })}
-    </span>
+    </div>
 }

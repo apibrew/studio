@@ -64,9 +64,9 @@ export function DataTableTable(props: DataTableTableProps) {
                     case Type.STRUCT:
                     case Type.BOOL:
                     case Type.OBJECT:
-                    case Type.ENUM:
                         defaultWidth = 100
                         break;
+                    case Type.ENUM:
                     case Type.DATE:
                     case Type.TIME:
                     case Type.TIMESTAMP:

@@ -6,13 +6,15 @@
   }
 
   .property-line {
-    line-height: normal;
+    //border-bottom: 1px solid rgb(180, 180, 180);
+    //border-left: 1px solid rgb(180, 180, 180);
+    //height: 25px;
   }
 
   .property-key {
     color: rgb(70, 70, 100);
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
     line-height: normal;
   }
 
@@ -28,4 +30,16 @@
     -ms-user-select: none;
     user-select: none;
   }
+
+  .property-edit-input {
+    padding: 0!important;
+    background: transparent;
+    border: none;
+    width: 200px!important;;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    color: rgb(30, 60, 80)
+  }
+
+  line-height: 21px;
 }

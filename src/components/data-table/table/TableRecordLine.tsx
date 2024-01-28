@@ -36,7 +36,11 @@ export function TableRecordLine(props: TableRecordLineProps) {
                                           }}
                                           onChange={() => props.onSelected(!props.selected)}
                                           size='small'/>}
-                    {edited && <IconButton onClick={() => {
+                    {edited && <IconButton size='small' sx={{
+                        padding: 0,
+                        marginLeft: '-1px',
+                        marginRight: '-2px',
+                    }} onClick={() => {
                         props.onUpdate(undefined)
                     }}>
                         <DeleteForever/>

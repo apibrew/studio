@@ -28,6 +28,7 @@ export function ResourceSelectorPanel() {
     const params = useParams()
     const navigate = useNavigate()
     const drawer = useDrawer()
+    const connectionName = params['connectionName']
 
     const [namespace, setNamespace] = useState<Namespace>({
         name: 'default'
@@ -115,7 +116,8 @@ export function ResourceSelectorPanel() {
                             backgroundColor: isActive ? '#D2E6FAFF' : 'transparent',
                         }}
                                         onClick={() => {
-                                            navigate(`/dashboard/resources/${namespace.name}/${resource.name}`)
+                                            const url = (connectionName ? `/${connectionName}` : ``) + `/dashboard/resources/${namespace.name}/${resource.name}`
+                                            navigate(url)
                                         }}>
                             <Icon sx={{
                                 marginRight: 0.6

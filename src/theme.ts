@@ -79,6 +79,8 @@ export const theme = createTheme({
         },
         MuiTextField: {
             defaultProps: {
+                size: 'small',
+                color: 'primary',
                 margin: 'dense',
                 style: {
                     padding: '3px',

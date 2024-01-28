@@ -4,7 +4,6 @@ import {Resource, useClient} from "@apibrew/react";
 import {useEffect, useState} from "react";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {DataTable} from "../../../components/data-table/DataTable";
-import {ensurePropertiesOrder, ensureResourcePropertiesOrder} from "../../../util/resource";
 import toast from "react-hot-toast";
 
 export default function ResourcesPage() {
@@ -31,26 +30,17 @@ export default function ResourcesPage() {
         }
     }, [client, params.namespace, params.resource, wi]);
 
-    useEffect(() => {
-        if (resource) {
-            if (ensureResourcePropertiesOrder(resource)) {
-                client.updateResource(resource)
-                    .then(() => {
-                        setWi(wi + 1)
-                    })
-            }
-        }
-    }, [resource]);
-
     if (resourceNotFound || !params.namespace || !params.resource) {
         console.log(process.env)
-        return <Typography>
-            Please select a resource from the left panel
-        </Typography>
+        return <Box m={1}>
+            <Typography>
+                Please select a resource from the left panel
+            </Typography>
+        </Box>
     }
 
     if (!resource) {
-        return <LoadingOverlay/>
+        return <></>
     }
 
     return <>

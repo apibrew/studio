@@ -8,7 +8,6 @@ export interface PropertyValueEditProps {
     property: Property
     value: any
     onChange: (value: any) => void
-    onForceClose?: () => void
     autoOpen?: boolean
 }
 
@@ -22,7 +21,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               width: '25px',
                           }}
                           checked={updated}
-                          autoFocus
+                          autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.checked)
@@ -33,7 +32,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.INT32:
         case Type.INT64:
             return <input type='number' value={updated || ''}
-                          autoFocus
+                          autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.value)
@@ -45,7 +44,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.FLOAT32:
         case Type.FLOAT64:
             return <input type='number' value={updated || ''}
-                          autoFocus
+                          autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.value)
@@ -56,7 +55,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           }}/>
         case Type.STRING:
             return <input value={updated || ''}
-                          autoFocus
+                          autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.value)
@@ -66,7 +65,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           }}/>
         case Type.DATE:
             return <input type='date' value={updated || ''}
-                          autoFocus
+                          autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.value)
@@ -76,7 +75,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           }}/>
         case Type.TIME:
             return <input type='time' value={updated || ''}
-                          autoFocus
+                          autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.value)
@@ -92,7 +91,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           }}/>
         case Type.TIMESTAMP:
             return <input type='datetime-local' value={updated || ''}
-                          autoFocus
+                          autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               setUpdated(e.target.value)
@@ -100,15 +99,15 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onBlur={e => {
                               let value = e.target.value
 
-                                if (value.length === 16) {
-                                    value = value + ':00Z'
-                                }
+                              if (value.length === 16) {
+                                  value = value + ':00Z'
+                              }
 
-                                props.onChange(value)
+                              props.onChange(value)
                           }}/>
         case Type.ENUM:
             return <select value={updated || ''}
-                           autoFocus
+                           autoFocus={Boolean(props.autoOpen)}
                            style={{
                                height: '30px',
                            }}
@@ -130,25 +129,38 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                 value={updated || []}
                 onChange={e => {
                     setUpdated(e)
-                    props.onChange(e)
                 }}
                 onClose={() => {
-                    if (props.onForceClose) {
-                        props.onForceClose()
-                    }
+                    props.onChange(updated)
                 }}
                 inputPros={{}}/>
         case Type.REFERENCE:
+            if (!props.property.reference) {
+                return <>Reference is not specified yet</>
+            }
             return <ReferenceValueSelector
+                autoFocus={Boolean(props.autoOpen)}
+                sx={{
+                    margin: 0,
+                    padding: 0,
+                    display: 'inline-block',
+                    verticalAlign: 'text-bottom',
+                    '& .MuiSelect-select': {
+                        padding: 0,
+                        margin: 0,
+                    }
+                }}
                 value={updated}
                 onChange={e => {
                     setUpdated(e)
-                    props.onChange(e)
+                }}
+                onBlur={() => {
+                    props.onChange(updated)
                 }}
                 reference={props.property.reference}
                 required={props.property.required}
             />
     }
 
-    return <>not allowed</>
+    return <></>
 }

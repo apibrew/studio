@@ -5,6 +5,9 @@ import {Resource} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {PropertyValueView} from "../../property-value-view/PropertyValueView";
 import {PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit";
+import {useDrawer} from "../../../hooks/use-drawer";
+import {isAnnotationEnabled} from "../../../util/annotation";
+import {NanoDrawer} from "../../nano-drawer/NanoDrawer";
 
 export interface PropertyCellProps {
     resource: Resource
@@ -20,12 +23,13 @@ export interface PropertyCellProps {
 
 export function PropertyCell(props: PropertyCellProps) {
     const [inlineEdit, setInlineEdit] = useState<boolean>(false)
+    const drawer = useDrawer()
 
     const edited = props.updated !== undefined && props.updated !== props.value
 
     const isComplex = (
         props.property.type === 'LIST' && props.property.item?.type !== 'STRING'
-    ) || props.property.type === 'MAP' || props.property.type === 'STRUCT'
+    ) || props.property.type === 'MAP' || props.property.type === 'STRUCT' || props.property.type === 'OBJECT'
 
     return <Box
         className='cell body-cell'
@@ -43,9 +47,25 @@ export function PropertyCell(props: PropertyCellProps) {
                 if (!props.new && (props.property.immutable || props.resource.immutable)) {
                     return
                 }
+
+                if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
+                    drawer.open(<NanoDrawer
+                        code={props.updated || props.value}
+                        onClose={() => {
+                            drawer.close()
+                        }}
+                        onChange={updated => {
+                            if (JSON.stringify(updated) !== JSON.stringify(props.value)) {
+                                props.onUpdate(updated)
+                            }
+                        }}/>)
+                    return
+                }
+
                 setInlineEdit(true)
             }
         }}>
+        {drawer.render()}
         <Box className='cell-inner'>
             {!inlineEdit && <PropertyValueView
                 property={props.property}
@@ -55,8 +75,10 @@ export function PropertyCell(props: PropertyCellProps) {
                 autoOpen={true}
                 property={props.property}
                 value={props.updated || props.value}
-                onChange={props.onUpdate}
-                onForceClose={() => {
+                onChange={value => {
+                    if (JSON.stringify(value) !== JSON.stringify(props.value)) {
+                        props.onUpdate(value)
+                    }
                     setInlineEdit(false)
                 }}
             />}

@@ -12,8 +12,6 @@ export function DashboardPage() {
     const params = useParams()
     const connectionName = params['connectionName']
 
-    console.log('params', params)
-
     const [client, setClient] = React.useState<Client>()
 
     React.useEffect(() => {

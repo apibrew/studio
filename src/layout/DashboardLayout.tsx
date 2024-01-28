@@ -20,7 +20,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
     const activeItem = useActiveMenuItem()
     const navigate = useNavigate()
 
-    const sideBarOpen = config.sideBarOpen && !activeItem?.secondSideBar
+    const sideBarOpen = false && config.sideBarOpen && !activeItem?.secondSideBar
 
     return <>
         <Box id='dashboard-layout'

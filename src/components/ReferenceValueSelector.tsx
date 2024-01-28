@@ -2,8 +2,9 @@ import {MenuItem, Select} from "@mui/material";
 import {fromResource, Resource, useRecords} from "@apibrew/react";
 import {LoadingOverlay} from "./LoadingOverlay";
 import {label} from "../util/record";
+import {SelectProps} from "@mui/material/Select/Select";
 
-export interface ReferenceValueSelectorProps {
+export interface ReferenceValueSelectorProps extends SelectProps<any> {
     required: boolean
     reference: string
     value: any
@@ -45,13 +46,14 @@ export function ReferenceValueSelector(props: ReferenceValueSelectorProps) {
         return false;
     })
 
+    const byId = (id: string) => records.find(record => record.id === id)
+
     return <Select
+        size='small'
         {...props as any}
         value={selected?.id || ''}
         onChange={e => {
-            props.onChange({
-                id: e.target.value,
-            })
+            props.onChange(byId(e.target.value as string))
         }}
     >
         {records.map(record => (
