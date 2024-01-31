@@ -3,9 +3,9 @@ import {NanoCodeTemplate} from "./abs";
 import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
 import {Program} from 'acorn'
-import {applyUseResourceModifier, checkUseResourceModifierAlreadyApplied} from "../modifiers/validate-property";
 import {Resource} from "@apibrew/react";
 import {Box, TextField} from "@mui/material";
+import {applyValidatePropertyModifier, checkValidatePropertyAlreadyApplied} from "../modifiers/validate-property";
 
 export interface RenderParamsProps {
     type?: string
@@ -110,13 +110,29 @@ export class ValidateProperty implements NanoCodeTemplate {
             return false
         }
 
-        // check import from ast
+        if (!this.property) {
+            toast.error('Property is required')
+            return false
+        }
 
-        if (checkUseResourceModifierAlreadyApplied(ast, {
+        if (!this.operator) {
+            toast.error('Operator is required')
+            return false
+        }
+
+        if (!this.value) {
+            toast.error('Value is required')
+            return false
+        }
+
+        if (checkValidatePropertyAlreadyApplied(ast, {
             resource: this.resource!,
             namespace: this.namespace!,
+            propertyName: this.property!,
+            operator: this.operator!,
+            value: this.value!,
         })) {
-            toast.error('Resource already imported')
+            toast.error('Rule already imported')
             return false
         }
 
@@ -124,9 +140,13 @@ export class ValidateProperty implements NanoCodeTemplate {
     }
 
     apply(ast: Program): void {
-        applyUseResourceModifier(ast, {
+        applyValidatePropertyModifier(ast, {
             resource: this.resource!,
             namespace: this.namespace!,
+            propertyName: this.property!,
+            operator: this.operator!,
+            value: this.value!,
+            errorMessage: this.errorMessage!,
         })
     }
 

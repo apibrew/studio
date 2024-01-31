@@ -50,7 +50,7 @@ export const locateResourceVariable = (ast: Program, options: UseResourceModifie
     return undefined
 }
 
-export const applyUseResourceModifier: CodeModifierFunction<UseResourceModifierOptions> = (ast, options) => {
+export const applyUseResourceModifier: CodeModifierFunction<UseResourceModifierOptions> = (ast, options): string => {
     let resourceArgument = options.namespace + '/' + options.resource
 
     if (options.namespace === 'default') {
@@ -83,6 +83,8 @@ export const applyUseResourceModifier: CodeModifierFunction<UseResourceModifierO
             }
         ]
     } as Statement)
+
+    return resourceArgument
 }
 
 export const checkUseResourceModifierAlreadyApplied: CodeModifierCheckFunction<UseResourceModifierOptions> = (ast, options) => {
