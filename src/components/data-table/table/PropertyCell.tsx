@@ -7,7 +7,7 @@ import {PropertyValueView} from "../../property-value-view/PropertyValueView";
 import {PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit";
 import {useDrawer} from "../../../hooks/use-drawer";
 import {isAnnotationEnabled} from "../../../util/annotation";
-import {NanoDrawer} from "../../nano-drawer/NanoDrawer";
+import {PropertyNanoDrawer} from "../../property-nano-drawer/PropertyNanoDrawer";
 
 export interface PropertyCellProps {
     resource: Resource
@@ -49,7 +49,7 @@ export function PropertyCell(props: PropertyCellProps) {
                 }
 
                 if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
-                    drawer.open(<NanoDrawer
+                    drawer.open(<PropertyNanoDrawer
                         code={props.updated || props.value}
                         onClose={() => {
                             drawer.close()

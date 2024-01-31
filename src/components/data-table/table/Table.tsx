@@ -1,7 +1,15 @@
 import {Box, Checkbox, IconButton, Tooltip} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
-import {Add, MoreVert, Remove} from "@mui/icons-material";
+import {
+    Add,
+    ArrowCircleDown,
+    ArrowCircleUp,
+    ArrowDownward,
+    ArrowDownwardOutlined,
+    MoreVert,
+    Remove
+} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";

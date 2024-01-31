@@ -1,15 +1,25 @@
-import {Box, Grid, TextField} from "@mui/material";
+import {Box, Grid, MenuItem, Select, TextField} from "@mui/material";
 import {Code} from "@apibrew/client/nano/model/code";
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import {useMemo} from "react";
+import React, {useMemo, useState} from "react";
+import {UseResource} from "./templates/use-resource";
+import Button from "@mui/material/Button";
+import {Resource} from "@apibrew/react";
 
 export interface NanoFormProps {
+    resource?: Resource
     code: Code
     onChange: (code: Code) => void
     inline?: boolean
 }
 
 export function NanoForm(props: NanoFormProps) {
+    const templates = useMemo(() => {
+        return [
+            new UseResource(props.resource ? (props.resource?.namespace.name + '/' + props.resource?.name) : undefined)
+        ]
+    }, [props.resource])
+
     const lineCount = useMemo(() => props.code.content.split("\n").length, [props.code.content]);
     // create array
     const linesArr = useMemo(
@@ -17,6 +27,12 @@ export function NanoForm(props: NanoFormProps) {
             Array.from({length: lineCount}, (_, i) => i + 1),
         [lineCount]
     );
+
+    const [selectedTemplate, setSelectedTemplate] = useState<string>()
+
+    const template = useMemo(() => {
+        return templates.find(t => t.label === selectedTemplate)
+    }, [selectedTemplate, templates])
 
     return <>
         <Grid container>
@@ -71,6 +87,33 @@ export function NanoForm(props: NanoFormProps) {
                         variant='outlined'
                     />}
                 </Box>
+                <Box m={1}>
+                    Template: <Select
+                    size='small'
+                    sx={{
+                        width: '200px',
+                        marginRight: '20px'
+                    }}
+                    value={selectedTemplate ?? ''}
+                    onChange={e => {
+                        setSelectedTemplate(e.target.value as string)
+                    }}>
+                    <MenuItem>---</MenuItem>
+                    {templates.map(t => <MenuItem value={t.label}>{t.label}</MenuItem>)}
+                </Select>
+                </Box>
+                {template && <Box m={1}>
+                    <Box>
+                        {template.renderParams()}
+                    </Box>
+                    <Box marginTop='20px'>
+                        <Button onClick={() => {
+                            if (template.apply(props.code, props.onChange)) {
+                                setSelectedTemplate(undefined)
+                            }
+                        }}>Apply Template</Button>
+                    </Box>
+                </Box>}
             </Grid>
         </Grid>
     </>

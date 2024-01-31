@@ -101,6 +101,7 @@ properties:
       - NOT_STARTED
       - RUNNING
       - FINISHED
+      - FAILED
     defaultValue: NOT_STARTED
   run:
     title: Start
@@ -108,6 +109,18 @@ properties:
     type: BOOL
     required: true
     defaultValue: false
+  output:
+    title: Output of script execution
+    description: Run the script
+    type: OBJECT
+  context:
+    title: Output of script execution
+    description: Run the script
+    type: OBJECT
+  error:
+    title: Output of script execution
+    description: Run the script
+    type: OBJECT
 indexes:
   - properties:
     - name: playground

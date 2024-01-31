@@ -29,6 +29,14 @@ function prepareListRecordParamsFromQuerySearch(searchParams: URLSearchParams): 
         }
     }
 
+    if (searchParams.has("sorting")) {
+        const sorting = JSON.parse(searchParams.get("sorting")!)
+
+        if (sorting) {
+            result.sorting = sorting
+        }
+    }
+
     return result
 }
 
@@ -45,6 +53,10 @@ function prepareQuerySearchFromListRecordParams(params: ListRecordParams): URLSe
 
     if (params.query) {
         result.query = JSON.stringify(params.query)
+    }
+
+    if (params.sorting) {
+        result.sorting = JSON.stringify(params.sorting)
     }
 
     return result

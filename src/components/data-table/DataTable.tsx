@@ -8,6 +8,8 @@ import {Api, Code, DataArray, Schema} from "@mui/icons-material";
 import {Stack, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {ApiDocModal} from "../api-doc/ApiDocModal";
 import {SchemaContainer as SchemaContainerNew} from "./schema-new/SchemaContainer";
+import {useDrawer} from "../../hooks/use-drawer";
+import {ResourceNanoDrawer} from "../resource-nano-drawer/ResourceNanoDrawer";
 
 export interface DataTableProps {
     resource: Resource
@@ -15,6 +17,7 @@ export interface DataTableProps {
 }
 
 export function DataTable(props: DataTableProps) {
+    const drawer = useDrawer()
     const [searchParams, setSearchParams] = useSearchParams();
     const [mode, setMode] = useState<'data' | 'schema' | 'schema-new'>(searchParams.get('mode') === 'schema-new' ? 'schema-new' : 'data')
     const [apiDocOpen, setApiDocOpen] = useState<boolean>(false)
@@ -22,7 +25,14 @@ export function DataTable(props: DataTableProps) {
     const commonButtons = (
         <Stack direction='row' spacing={1}>
             <Button color='secondary'
-                    size='small'>
+                    size='small'
+                    onClick={() => {
+                        drawer.open(
+                            <ResourceNanoDrawer
+                                resource={props.resource}
+                                onClose={drawer.close}/>
+                        )
+                    }}>
                 <Code fontSize='small'/>
                 <span style={{marginLeft: '3px'}}>Nano code</span>
             </Button>
@@ -81,6 +91,7 @@ export function DataTable(props: DataTableProps) {
     )
 
     return <>
+        {drawer.render()}
         <ApiDocModal open={apiDocOpen}
                      onClose={() => {
                          setApiDocOpen(false)

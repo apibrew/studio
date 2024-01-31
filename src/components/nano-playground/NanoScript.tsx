@@ -4,13 +4,18 @@ import {PlayArrow, Remove} from "@mui/icons-material";
 import React, {useMemo} from "react";
 import {Box, IconButton, Stack} from "@mui/material";
 import {useRepository} from "@apibrew/react";
+import {useConfirmation} from "../modal/use-confirmation";
+import toast from "react-hot-toast";
 
 export interface NanoScriptProps {
     script: Script
     onRemove: () => void
+    onOutput: (output: any) => void
+    onError: (error: any) => void
 }
 
 export function NanoScript(props: NanoScriptProps) {
+    const confirmation = useConfirmation()
     const scriptRepository = useRepository<Script>(ScriptEntityInfo)
     const [script, setScript] = React.useState<Script>(props.script)
 
@@ -22,9 +27,31 @@ export function NanoScript(props: NanoScriptProps) {
         [lineCount]
     );
 
+    function handleDelete() {
+        confirmation.open({
+            kind: 'confirm',
+            message: 'Are you sure you want to delete these records?',
+            buttonMessage: 'Delete',
+            onConfirm: () => {
+                toast.promise(
+                    scriptRepository.delete(script.id),
+                    {
+                        loading: 'Deleting line...',
+                        success: 'deleted',
+                        error: 'Failed to delete records'
+                    })
+                    .then(() => {
+                        props.onRemove()
+                    })
+            }
+        })
+    }
+
     return <>
-        <Box display='flex'>
+        {confirmation.render()}
+        <Box display='flex' flexGrow={1}>
             <Box
+                width='100%'
                 marginRight={1}
                 display='flex'>
                 <Box sx={{
@@ -58,7 +85,7 @@ export function NanoScript(props: NanoScriptProps) {
                     rows={30}
                     padding={15}
                     style={{
-                        width: '800px',
+                        width: '100%',
                         minHeight: '100px',
                         // backgroundColor: "#f5f5f5",
                         fontSize: '16px',
@@ -69,8 +96,7 @@ export function NanoScript(props: NanoScriptProps) {
             <Stack>
                 <IconButton
                     onClick={() => {
-                        scriptRepository.delete(script.id)
-                        props.onRemove()
+                        handleDelete()
                     }}
                     size='small'>
                     <Remove/>
@@ -80,6 +106,11 @@ export function NanoScript(props: NanoScriptProps) {
                         scriptRepository.update({
                             ...script,
                             run: true
+                        }).then(script => {
+                            props.onOutput(JSON.parse(script.output as any))
+                            props.onError(script.error)
+                        }, err => {
+                            props.onError(err.message)
                         })
                     }}
                     size='small'>

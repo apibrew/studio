@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apibrew/client": "^1.1.48",
+    "@apibrew/client": "^1.1.52",
     "@apibrew/react": "^1.0.64",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -20,6 +20,7 @@
     "@types/react-dom": "^18.2.18",
     "@uiw/react-textarea-code-editor": "^3.0.2",
     "js-yaml": "^4.1.0",
+    "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dotenv": "^0.1.3",

@@ -3,13 +3,13 @@ import React from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Code} from "@apibrew/client/nano/model/code";
 
-export interface NanoDrawerProps {
+export interface PropertyNanoDrawerProps {
     code: string;
     onChange: (code: string) => void;
     onClose: () => void;
 }
 
-export function NanoDrawer(props: NanoDrawerProps) {
+export function PropertyNanoDrawer(props: PropertyNanoDrawerProps) {
 
     const [code, setCode] = React.useState<Code>({
         name: '',

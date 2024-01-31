@@ -1,11 +1,12 @@
 import {PlayGround, PlayGroundEntityInfo} from "../../model/play-ground";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useRepository} from "@apibrew/react";
 import {Script, ScriptEntityInfo} from "../../model/script";
-import {Box, Grid, IconButton, Stack, Typography} from "@mui/material";
+import {Box, Card, CardContent, CardHeader, Drawer, IconButton, Stack, Typography} from "@mui/material";
 import {LoadingOverlay} from "../LoadingOverlay";
 import {Add} from "@mui/icons-material";
 import {NanoScript} from "./NanoScript";
+import {NanoResultView} from "./NanoResultView";
 
 export interface NanoPlayGround {
     playground: PlayGround
@@ -17,6 +18,9 @@ export function NanoPlayGroundComponent(props: NanoPlayGround) {
     const scriptRepository = useRepository<Script>(ScriptEntityInfo)
 
     const [scripts, setScripts] = React.useState<Script[]>()
+
+    const [output, setOutput] = useState<any>()
+    const [error, setError] = useState<any>()
 
     useEffect(() => {
         async function loadScripts() {
@@ -86,50 +90,64 @@ export function NanoPlayGroundComponent(props: NanoPlayGround) {
     }
 
     return <>
-        <Grid container>
-            <Grid item xs={12} md={6}>
-                <Box>
-                    <Stack
-                        m={1}
-                        spacing={3}>
-                        {scripts.map((script, index) => (
-                            <NanoScript
-                                key={script.order}
-                                script={script}
-                                onRemove={() => {
-                                    setScripts(scripts.filter(s => s.order !== script.order))
-                                }}
-                            />
-                        ))}
-                        <Box display='flex' textAlign='center'>
-                            <IconButton
-                                onClick={() => {
-                                    const newScript = {
-                                        order: scripts.length,
-                                        playground: playground,
-                                        content: '  '
-                                    } as Script
+        <Box>
+            <Stack
+                m={1}
+                spacing={3}>
+                {scripts.map((script, index) => (
+                    <NanoScript
+                        key={script.order}
+                        script={script}
+                        onRemove={() => {
+                            setScripts(scripts.filter(s => s.order !== script.order))
+                        }}
+                        onOutput={setOutput}
+                        onError={setError}
+                    />
+                ))}
+                <Box display='flex' textAlign='center'>
+                    <IconButton
+                        onClick={() => {
+                            const newScript = {
+                                order: scripts.length,
+                                playground: playground,
+                                content: '  '
+                            } as Script
 
-                                    scriptRepository.create(newScript).then(createdScript => {
-                                        console.log('createdScript', createdScript)
-                                        setScripts([
-                                            ...scripts,
-                                            createdScript
-                                        ])
-                                    })
-                                }}
-                                size='small'>
-                                <Add/>
-                            </IconButton>
-                        </Box>
-                    </Stack>
+                            scriptRepository.create(newScript).then(createdScript => {
+                                console.log('createdScript', createdScript)
+                                setScripts([
+                                    ...scripts,
+                                    createdScript
+                                ])
+                            })
+                        }}
+                        size='small'>
+                        <Add/>
+                    </IconButton>
                 </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Box>
-                    <Typography variant='h6'>Output:</Typography>
-                </Box>
-            </Grid>
-        </Grid>
+            </Stack>
+        </Box>
+
+        <Drawer
+            variant='persistent'
+            hideBackdrop={true}
+            anchor='bottom'
+            open={true}>
+           <Card>
+               <CardHeader title='Result'/>
+               <CardContent>
+                   <Box flexGrow={1}>
+                       <Box overflow='auto' height='200px'>
+                           <NanoResultView result={output}/>
+                       </Box>
+                       {error && <Box overflow='auto'>
+                           <Typography variant='h6'>Error:</Typography>
+                           {JSON.stringify(error)}
+                       </Box>}
+                   </Box>
+               </CardContent>
+           </Card>
+        </Drawer>
     </>
 }

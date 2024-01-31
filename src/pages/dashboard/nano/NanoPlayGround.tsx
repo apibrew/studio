@@ -1,13 +1,14 @@
 import {NanoPlayGroundComponent} from "../../../components/nano-playground/NanoPlayGround";
-import {Box, MenuItem, Select, TextField} from "@mui/material";
+import {Box, IconButton, MenuItem, Select, TextField} from "@mui/material";
 import React, {useEffect} from "react";
-import {PlayGround, PlayGroundEntityInfo, PlayGroundResource} from "../../../model/play-ground";
+import {PlayGround, PlayGroundEntityInfo, PlayGroundResource, State} from "../../../model/play-ground";
 import {Namespace, Resource, useClient} from "@apibrew/react";
 import {ScriptResource} from "../../../model/script";
 import toast from "react-hot-toast";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {ensureResource} from "../../../logic/ensure-resource";
+import {PlayArrow, Refresh, Star, Stop} from "@mui/icons-material";
 
 export function NanoPlayGround() {
     const [items, setItems] = React.useState<PlayGround[]>()
@@ -54,7 +55,7 @@ export function NanoPlayGround() {
 
 
     return <>
-        <Box m={1}>
+        <Box display='flex' flexDirection='column' m={1}>
             <Box display='flex'>
                 <Select
                     sx={{
@@ -73,6 +74,9 @@ export function NanoPlayGround() {
                     ))}
                 </Select>
                 <TextField
+                    sx={{
+                        marginRight: '20px'
+                    }}
                     size='small'
                     disabled={!selected}
                     value={selected?.name ?? ''}
@@ -91,8 +95,70 @@ export function NanoPlayGround() {
                         })
                     }}
                 />
+                {selected?.state === State.RUNNING && <>
+                    <IconButton
+                        onClick={() => {
+                            toast.promise(client.updateRecord(PlayGroundEntityInfo, {
+                                ...selected!,
+                                run: false
+                            }), {
+                                loading: 'Stopping PlayGround...',
+                                success: 'Stopped PlayGround',
+                                error: 'Failed to stop PlayGround'
+                            }).then(response => {
+                                setSelected(response)
+                            })
+                        }}
+                        color='primary'
+                        size='medium'>
+                        <Stop fontSize='large'/>
+                    </IconButton>
+                    <IconButton
+                        onClick={() => {
+                            toast.promise(client.updateRecord(PlayGroundEntityInfo, {
+                                ...selected!,
+                                run: false
+                            }).then((response) => {
+                                return client.updateRecord(PlayGroundEntityInfo, {
+                                    ...response,
+                                    run: true
+                                })
+                            }), {
+                                loading: 'Restarting PlayGround...',
+                                success: 'Restarted PlayGround',
+                                error: 'Failed to restart PlayGround'
+                            }).then(response => {
+                                setSelected(response)
+                            })
+                        }}
+                        color='primary'
+                        size='medium'>
+                        <Refresh fontSize='large'/>
+                    </IconButton>
+                </>}
+
+                {selected?.state !== State.RUNNING && <>
+                    <IconButton
+                        onClick={() => {
+                            toast.promise(client.updateRecord(PlayGroundEntityInfo, {
+                                ...selected!,
+                                run: true
+                            }), {
+                                loading: 'Starting PlayGround...',
+                                success: 'Started PlayGround',
+                                error: 'Failed to start PlayGround'
+                            }).then(response => {
+                                setSelected(response)
+                            })
+                        }}
+                        color='primary'
+                        size='medium'>
+                        <PlayArrow fontSize='large'/>
+                    </IconButton>
+                </>}
+
             </Box>
-            <Box>
+            <Box flexGrow={1}>
                 {!selected && <LoadingOverlay/>}
                 {selected && <NanoPlayGroundComponent playground={selected}/>}
             </Box>
