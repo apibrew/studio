@@ -1,19 +1,18 @@
-import {Code} from "@apibrew/client/nano/model/code";
 import React from "react";
 import {NanoCodeTemplate} from "./abs";
 import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
-import * as babel from '@babel/core';
-
-import * as parser from "@babel/parser";
-import generate from "@babel/generator";
+import {Program} from 'acorn'
+import {applyUseResourceModifier, checkUseResourceModifierAlreadyApplied} from "../modifiers/use-resource";
+import {Resource} from "@apibrew/react";
 
 export interface RenderParamsProps {
-    onChange: (resource: string) => void
+    type?: string
+    onChange: (type: string) => void
 }
 
 function RenderParams(props: RenderParamsProps) {
-    const [resource, setResource] = React.useState<string>()
+    const [resource, setResource] = React.useState<string>(props.type || '')
 
     return <>
         <span>Resource:</span>
@@ -29,52 +28,55 @@ function RenderParams(props: RenderParamsProps) {
 }
 
 export class UseResource implements NanoCodeTemplate {
+    namespace?: string;
+    resource?: string;
 
-    constructor(resource?: string) {
-        this.resource = resource
+    constructor(resource?: Resource) {
+        if (resource) {
+            this.applyType(resource.namespace.name + '/' + resource.name)
+        }
     }
 
-    label: string = 'Use Resource';
-    private resource?: string;
-
-    apply(code: Code, updateCode: (code: Code) => void): boolean {
-        const ast = parser.parse(code.content);
-
+    check(ast: Program): boolean {
         if (!this.resource) {
             toast.error('Resource is required')
             return false
-
         }
-        const resourceName = this.resource.startsWith('default/') ? this.resource.substring(8) : this.resource
-        const varName = resourceName.replace('/', '')
 
-        const line = `const ${varName} = resource('${resourceName}')`
+        // check import from ast
 
-        if (code.content.indexOf(line) >= 0) {
-            toast.error('Resource already used')
+        if (checkUseResourceModifierAlreadyApplied(ast, {
+            resource: this.resource!,
+            namespace: this.namespace!,
+        })) {
+            toast.error('Resource already imported')
             return false
         }
-
-        babel.traverse(ast, {
-            enter(path) {
-                // Your logic to modify the AST based on certain conditions
-            }
-        });
-
-        const output = generate(ast);
-
-        updateCode({
-            ...code,
-            content: output.code,
-        } as Code)
 
         return true
     }
 
-    renderParams() {
-        return <RenderParams onChange={resource => {
-            this.resource = resource
-        }}/>
+    label: string = 'Use Resource';
+
+    apply(ast: Program): void {
+        applyUseResourceModifier(ast, {
+            resource: this.resource!,
+            namespace: this.namespace!,
+        })
     }
 
+    renderParams() {
+        return <RenderParams
+            type={this.namespace ? this.namespace + '/' + this.resource : undefined}
+            onChange={type => {
+                this.applyType(type)
+            }}/>
+    }
+
+    private applyType(type: string) {
+        const [namespace, resource] = type!.split('/')
+
+        this.namespace = namespace
+        this.resource = resource
+    }
 }

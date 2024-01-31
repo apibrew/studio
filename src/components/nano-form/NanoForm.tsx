@@ -5,6 +5,11 @@ import React, {useMemo, useState} from "react";
 import {UseResource} from "./templates/use-resource";
 import Button from "@mui/material/Button";
 import {Resource} from "@apibrew/react";
+import {Parser} from "acorn";
+import * as astring from "astring";
+import {GENERATOR} from "astring";
+import * as estraverse from "estraverse";
+import {ValidateProperty} from "./templates/validate-property";
 
 export interface NanoFormProps {
     resource?: Resource
@@ -16,7 +21,8 @@ export interface NanoFormProps {
 export function NanoForm(props: NanoFormProps) {
     const templates = useMemo(() => {
         return [
-            new UseResource(props.resource ? (props.resource?.namespace.name + '/' + props.resource?.name) : undefined)
+            new UseResource(props.resource),
+            new ValidateProperty(props.resource)
         ]
     }, [props.resource])
 
@@ -34,6 +40,44 @@ export function NanoForm(props: NanoFormProps) {
         return templates.find(t => t.label === selectedTemplate)
     }, [selectedTemplate, templates])
 
+    function handleApplyTemplate() {
+        if (!template) {
+            return
+        }
+
+        const parser = Parser.extend()
+
+        const ast = parser.parse(props.code.content, {
+            ecmaVersion: 2020,
+            locations: true
+        })
+
+        if (!template.check(ast)) {
+            return
+        }
+
+        template.apply(ast)
+
+        insertEmptyStatements(ast)
+
+        const generated = astring.generate(ast, {
+            comments: true,
+            generator: {
+                ...GENERATOR,
+                EmptyStatement(node, state) {
+                    console.log('EmptyStatement', node)
+                }
+            }
+        })
+
+        props.onChange({
+            ...props.code,
+            content: generated
+        })
+
+        setSelectedTemplate(undefined)
+    }
+
     return <>
         <Grid container>
             <Grid item xs={12} md={8}>
@@ -49,7 +93,7 @@ export function NanoForm(props: NanoFormProps) {
                         color: 'rgb(100,100,200)',
                         fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospac',
                     }}>
-                        {linesArr.map(ln => <div>{ln}</div>)}
+                        {linesArr.map(ln => <div key={ln}>{ln}</div>)}
                     </Box>
                     <Box flexGrow={1}>
                         <CodeEditor
@@ -99,7 +143,7 @@ export function NanoForm(props: NanoFormProps) {
                         setSelectedTemplate(e.target.value as string)
                     }}>
                     <MenuItem>---</MenuItem>
-                    {templates.map(t => <MenuItem value={t.label}>{t.label}</MenuItem>)}
+                    {templates.map(t => <MenuItem key={t.label} value={t.label}>{t.label}</MenuItem>)}
                 </Select>
                 </Box>
                 {template && <Box m={1}>
@@ -108,13 +152,29 @@ export function NanoForm(props: NanoFormProps) {
                     </Box>
                     <Box marginTop='20px'>
                         <Button onClick={() => {
-                            if (template.apply(props.code, props.onChange)) {
-                                setSelectedTemplate(undefined)
-                            }
+                            handleApplyTemplate()
                         }}>Apply Template</Button>
                     </Box>
                 </Box>}
             </Grid>
         </Grid>
     </>
+}
+
+
+function insertEmptyStatements(ast: any) {
+    let lastLine = 0;
+    estraverse.traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type !== 'Program' && parent?.type === 'Program') {
+                const currentLine = node.loc?.start.line ?? 0;
+                if (currentLine - lastLine > 1) {
+                    // Insert an empty statement in the parent body
+                    const index = parent.body.indexOf(node as any);
+                    parent.body.splice(index, 0, {type: "EmptyStatement"});
+                }
+                lastLine = node.loc?.end.line || 0;
+            }
+        }
+    });
 }

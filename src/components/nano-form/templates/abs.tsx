@@ -1,12 +1,14 @@
 import {ReactNode} from "react";
-import {Code} from "@apibrew/client/nano/model/code";
+import {Program} from "acorn";
 
 export interface NanoCodeTemplate {
     label: string;
 
     renderParams(): ReactNode
 
-    apply(code: Code, updateCode: (code: Code) => void): void
+    check(ast: Program): boolean
+
+    apply(ast: Program): void
 }
 
 export interface NanoCodeTemplateConstructor {
