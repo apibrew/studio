@@ -5,22 +5,25 @@ import toast from "react-hot-toast";
 import {Program} from 'acorn'
 import {applyUseResourceModifier, checkUseResourceModifierAlreadyApplied} from "../modifiers/use-resource";
 import {Resource} from "@apibrew/react";
+import { FormLabel } from "@mui/material";
 
 export interface RenderParamsProps {
-    type?: string
-    onChange: (type: string) => void
+    resource: Resource | undefined
+    onChange: (resource: Resource | undefined) => void
 }
 
 function RenderParams(props: RenderParamsProps) {
-    const [resource, setResource] = React.useState<string>(props.type || '')
+    const [resource, setResource] = React.useState<Resource | undefined>(props.resource)
+
+    const value = resource ? (resource.namespace.name + '/' + resource.name) : undefined
 
     return <>
-        <span>Resource:</span>
+        <FormLabel>Resource:</FormLabel>
         <ResourceSelect
-            value={resource}
-            onChange={e => {
-                setResource(e.target.value as string)
-                props.onChange(e.target.value as string)
+            value={value}
+            onChange={(e, resource) => {
+                setResource(resource)
+                props.onChange(resource)
             }}
             fullWidth
             size='small'/>
@@ -28,13 +31,10 @@ function RenderParams(props: RenderParamsProps) {
 }
 
 export class UseResource implements NanoCodeTemplate {
-    namespace?: string;
-    resource?: string;
+    resource?: Resource
 
     constructor(resource?: Resource) {
-        if (resource) {
-            this.applyType(resource.namespace.name + '/' + resource.name)
-        }
+        this.resource = resource
     }
 
     check(ast: Program): boolean {
@@ -46,8 +46,8 @@ export class UseResource implements NanoCodeTemplate {
         // check import from ast
 
         if (checkUseResourceModifierAlreadyApplied(ast, {
-            resource: this.resource!,
-            namespace: this.namespace!,
+            resource: this.resource.name!,
+            namespace: this.resource.namespace.name!,
         })) {
             toast.error('Resource already imported')
             return false
@@ -60,23 +60,17 @@ export class UseResource implements NanoCodeTemplate {
 
     apply(ast: Program): void {
         applyUseResourceModifier(ast, {
-            resource: this.resource!,
-            namespace: this.namespace!,
+            resource: this.resource!.name,
+            namespace: this.resource!.namespace.name,
         })
     }
 
     renderParams() {
         return <RenderParams
-            type={this.namespace ? this.namespace + '/' + this.resource : undefined}
-            onChange={type => {
-                this.applyType(type)
+            // type={this.resource ? (this.resource.namespace.name + '/' + this.resource.name) : undefined}
+            resource={this.resource}
+            onChange={resource => {
+                this.resource = resource
             }}/>
-    }
-
-    private applyType(type: string) {
-        const [namespace, resource] = type!.split('/')
-
-        this.namespace = namespace
-        this.resource = resource
     }
 }

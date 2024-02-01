@@ -13,6 +13,7 @@ import {declareFunction, declareFunctionResult} from "./common";
 import {astMatcher} from "./matcher";
 import {validateMethodStatement} from "./statements";
 import {resourceItemVarName} from "./names";
+import {Type} from "@apibrew/client/model/resource";
 
 export interface ValidatePropertyModifierOptions {
     /**
@@ -24,6 +25,7 @@ export interface ValidatePropertyModifierOptions {
     operator: string;
     value: string;
     errorMessage?: string;
+    propertyType: Type;
 }
 
 
@@ -31,8 +33,8 @@ export const applyValidatePropertyModifier: CodeModifierFunction<ValidatePropert
     let resourceVarName = declareUseResourceModifier(ast, options)
     const itemVarName = resourceItemVarName(options.resource)
 
-    const beforeUpdateHandler = declareResourceHandlerMethod(ast, resourceVarName, 'beforeUpdate', options.resource)
-    const beforeCreateHandler = declareResourceHandlerMethod(ast, resourceVarName, 'beforeCreate', options.resource)
+    const beforeUpdateHandler = declareResourceHandlerMethod(ast, resourceVarName, 'beforeUpdate', itemVarName)
+    const beforeCreateHandler = declareResourceHandlerMethod(ast, resourceVarName, 'beforeCreate', itemVarName)
 
     declareValidateMethodCall(beforeUpdateHandler, itemVarName, options)
     declareValidateMethodCall(beforeCreateHandler, itemVarName, options)
@@ -60,6 +62,20 @@ function declareValidateMethodCall(beforeUpdateHandler: ensureResourceHandlerRes
 function declareValidateMethodBody(beforeUpdateHandler: declareFunctionResult, itemVarName: string, options: ValidatePropertyModifierOptions) {
     const functionAst = beforeUpdateHandler.statement as FunctionDeclaration
 
+    let valueRaw = JSON.stringify(options.value)
+
+    switch (options.propertyType) {
+        case Type.BOOL:
+            valueRaw = valueRaw === 'true' ? 'true' : 'false'
+            break;
+        case Type.INT32:
+        case Type.INT64:
+        case Type.FLOAT32:
+        case Type.FLOAT64:
+            valueRaw = options.value
+            break;
+    }
+
     const statement: Statement = {
         "type": "IfStatement",
         "test": {
@@ -79,6 +95,7 @@ function declareValidateMethodBody(beforeUpdateHandler: declareFunctionResult, i
             "right": {
                 "type": "Literal",
                 "value": options.value,
+                "raw": valueRaw
             }
         },
         "consequent": {
@@ -95,7 +112,7 @@ function declareValidateMethodBody(beforeUpdateHandler: declareFunctionResult, i
                         "arguments": [
                             {
                                 "type": "Literal",
-                                "value": options.errorMessage,
+                                "value": options.errorMessage + ": " + valueRaw,
                             }
                         ]
                     }

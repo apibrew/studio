@@ -4,106 +4,130 @@ import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
 import {Program} from 'acorn'
 import {Resource} from "@apibrew/react";
-import {Box, TextField} from "@mui/material";
+import {Box, FormLabel, MenuItem, Select, TextField} from "@mui/material";
 import {applyValidatePropertyModifier, checkValidatePropertyAlreadyApplied} from "../modifiers/validate-property";
+import {sortedProperties} from "../../../util/property";
 
 export interface RenderParamsProps {
-    type?: string
+    resource: Resource | undefined
     property?: string
     operator?: string
     value?: string
     errorMessage?: string
-    onTypeChange: (type: string) => void
-    onPropertyChange: (property: string) => void
-    onOperatorChange: (operator: string) => void
-    onValueChange: (value: string) => void
-    onErrorMessageChange: (errorMessage: string) => void
+    onResourceChange: (resource: Resource | undefined) => void
+    onPropertyChange: (property: string | undefined) => void
+    onOperatorChange: (operator: string | undefined) => void
+    onValueChange: (value: string | undefined) => void
+    onErrorMessageChange: (errorMessage: string | undefined) => void
 }
 
 function RenderParams(props: RenderParamsProps) {
-    const [resource, setResource] = React.useState<string | undefined>(props.type)
+    const [resource, setResource] = React.useState<Resource | undefined>(props.resource)
     const [property, setProperty] = React.useState<string | undefined>(props.property)
     const [operator, setOperator] = React.useState<string | undefined>(props.operator)
     const [value, setValue] = React.useState<string | undefined>(props.value)
     const [errorMessage, setErrorMessage] = React.useState<string | undefined>(props.errorMessage)
 
+    const resourceValue = resource ? (resource.namespace.name + '/' + resource.name) : undefined
+
+    const properties = resource ? sortedProperties(resource.properties) : []
+
+    const propertyDetails = resource?.properties[property || '']
     return <>
         <Box>
-            <div>Resource:</div>
+            <FormLabel>Resource:</FormLabel>
             <ResourceSelect
-                value={resource}
-                onChange={e => {
-                    setResource(e.target.value as string)
-                    props.onTypeChange(e.target.value as string)
+                value={resourceValue}
+                onChange={(e, resource) => {
+                    setResource(resource)
+                    props.onResourceChange(resource)
+
+                    setProperty(undefined)
+                    setOperator(undefined)
+                    setValue(undefined)
+                    setErrorMessage(undefined)
+                    props.onPropertyChange(undefined)
+                    props.onOperatorChange(undefined)
+                    props.onValueChange(undefined)
+                    props.onErrorMessageChange(undefined)
                 }}
                 fullWidth
                 size='small'/>
         </Box>
-        <Box marginTop={2}>
-            <div>Property:</div>
-            <TextField
-                size='small'
-                value={property}
-                onChange={e => {
-                    setProperty(e.target.value)
-                    props.onPropertyChange(e.target.value)
-                }}
-            />
-        </Box>
-        <Box marginTop={2}>
-            <div>Operator:</div>
-            <TextField
-                size='small'
-                value={operator}
-                onChange={e => {
-                    setOperator(e.target.value)
-                    props.onOperatorChange(e.target.value)
-                }}
-            />
-        </Box>
-        <Box marginTop={2}>
-            <div>Value:</div>
-            <TextField
-                size='small'
-                value={value}
-                onChange={e => {
-                    setValue(e.target.value)
-                    props.onValueChange(e.target.value)
-                }}
-            />
-        </Box>
+        {resource && <>
+            <Box marginTop={2}>
+                <FormLabel>Property:</FormLabel>
+                <Select
+                    size='small'
+                    fullWidth
+                    value={property}
+                    onChange={e => {
+                        setProperty(e.target.value)
+                        props.onPropertyChange(e.target.value)
+                    }}
+                >
+                    {properties.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
+                </Select>
+            </Box>
+            <Box marginTop={2}>
+                <FormLabel>Operator:</FormLabel>
+                <Select
+                    size='small'
+                    fullWidth
+                    value={operator}
+                    onChange={e => {
+                        setOperator(e.target.value)
+                        props.onOperatorChange(e.target.value)
+                    }}
+                >
+                    <MenuItem value='=='>=</MenuItem>
+                    <MenuItem value='!='>!=</MenuItem>
+                    <MenuItem value='>'>&gt;</MenuItem>
+                    <MenuItem value='>='>&gt;=</MenuItem>
+                    <MenuItem value='<'>&lt;</MenuItem>
+                    <MenuItem value='<='>&lt;=</MenuItem>
+                </Select>
+            </Box>
+            <Box marginTop={2}>
+                <FormLabel>Value:</FormLabel>
+                <TextField
+                    fullWidth
+                    size='small'
+                    value={value}
+                    onChange={e => {
+                        setValue(e.target.value)
+                        props.onValueChange(e.target.value)
+                    }}
+                />
+            </Box>
 
-        <Box marginTop={2}>
-            <div>Error Message:</div>
-            <TextField
-                size='small'
-                value={errorMessage}
-                onChange={e => {
-                    setErrorMessage(e.target.value)
-                    props.onErrorMessageChange(e.target.value)
-                }}
-            />
-        </Box>
-
+            <Box marginTop={2}>
+                <FormLabel>Error Message:</FormLabel>
+                <TextField
+                    fullWidth
+                    size='small'
+                    value={errorMessage}
+                    onChange={e => {
+                        setErrorMessage(e.target.value)
+                        props.onErrorMessageChange(e.target.value)
+                    }}
+                />
+            </Box>
+        </>}
     </>
 }
 
 export class ValidateProperty implements NanoCodeTemplate {
     label: string = 'Validate Property';
 
-    namespace?: string;
-    resource?: string;
+    resource?: Resource
     property?: string;
     operator?: string;
     value?: string;
     errorMessage?: string;
 
     constructor(resource?: Resource) {
-        if (resource) {
-            this.applyType(resource.namespace.name + '/' + resource.name)
-        }
-
-        console.log('ValidateProperty constructed', resource)
+        this.resource = resource
     }
 
     check(ast: Program): boolean {
@@ -127,12 +151,17 @@ export class ValidateProperty implements NanoCodeTemplate {
             return false
         }
 
+        if (!this.errorMessage) {
+            this.errorMessage = 'Invalid value'
+        }
+
         if (checkValidatePropertyAlreadyApplied(ast, {
-            resource: this.resource!,
-            namespace: this.namespace!,
+            resource: this.resource.name!,
+            namespace: this.resource.namespace.name!,
             propertyName: this.property!,
             operator: this.operator!,
             value: this.value!,
+            propertyType: this.resource?.properties[this.property!]?.type!,
         })) {
             toast.error('Rule already imported')
             return false
@@ -143,25 +172,26 @@ export class ValidateProperty implements NanoCodeTemplate {
 
     apply(ast: Program): void {
         applyValidatePropertyModifier(ast, {
-            resource: this.resource!,
-            namespace: this.namespace!,
+            resource: this.resource?.name!,
+            namespace: this.resource?.namespace.name!,
             propertyName: this.property!,
             operator: this.operator!,
             value: this.value!,
             errorMessage: this.errorMessage!,
+            propertyType: this.resource?.properties[this.property!]?.type!,
         })
     }
 
     renderParams() {
         return <RenderParams
-            type={this.namespace ? this.namespace + '/' + this.resource : undefined}
+            resource={this.resource}
             property={this.property}
             operator={this.operator}
             value={this.value}
             errorMessage={this.errorMessage}
 
-            onTypeChange={type => {
-                this.applyType(type)
+            onResourceChange={resource => {
+                this.resource = resource
             }}
             onPropertyChange={property => {
                 this.property = property
@@ -176,12 +206,5 @@ export class ValidateProperty implements NanoCodeTemplate {
                 this.errorMessage = errorMessage
             }}
         />
-    }
-
-    private applyType(type: string) {
-        const [namespace, resource] = type!.split('/')
-
-        this.namespace = namespace
-        this.resource = resource
     }
 }

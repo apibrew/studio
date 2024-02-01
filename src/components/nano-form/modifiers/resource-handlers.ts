@@ -22,8 +22,6 @@ export function declareResourceHandlerMethod(ast: Ast, resourceVarName: string, 
 
     const statement = resourceHandlerMethodStatement(resourceVarName, handlerMethodName, resourceItemVarName)
 
-    // ast.body.push(statement)
-
     appendStatementToSection(ast, statement, 'handlers')
 
     return {
