@@ -5,7 +5,7 @@ import React, {useMemo, useState} from "react";
 import {UseResource} from "./templates/use-resource";
 import Button from "@mui/material/Button";
 import {Resource} from "@apibrew/react";
-import {Parser} from "acorn";
+import {Comment, Parser} from "acorn";
 import * as astring from "astring";
 import {GENERATOR} from "astring";
 import * as estraverse from "estraverse";
@@ -36,6 +36,17 @@ export function NanoForm(props: NanoFormProps) {
 
     const [selectedTemplate, setSelectedTemplate] = useState<string>()
 
+    const ast = useMemo(() => {
+        const parser = Parser.extend()
+        const comments: Comment[] = []
+        const ast = parser.parse(props.code.content, {
+            ecmaVersion: 2020,
+            locations: true,
+            onComment: comments
+        })
+        return ast
+    }, [props.code.content])
+
     const template = useMemo(() => {
         return templates.find(t => t.label === selectedTemplate)
     }, [selectedTemplate, templates])
@@ -47,18 +58,25 @@ export function NanoForm(props: NanoFormProps) {
 
         const parser = Parser.extend()
 
+        const comments: Comment[] = []
+
         const ast = parser.parse(props.code.content, {
             ecmaVersion: 2020,
-            locations: true
+            locations: true,
+            onComment: comments
         })
 
         if (!template.check(ast)) {
             return
         }
 
+        const astAny = ast as any
+
         template.apply(ast)
 
         insertEmptyStatements(ast)
+
+        astAny.comments = comments
 
         const generated = astring.generate(ast, {
             comments: true,
@@ -69,6 +87,8 @@ export function NanoForm(props: NanoFormProps) {
                 }
             }
         })
+
+        console.log('generated', generated, ast)
 
         props.onChange({
             ...props.code,
@@ -116,6 +136,11 @@ export function NanoForm(props: NanoFormProps) {
                     </Box>
                 </Box>
             </Grid>
+            {/*<Grid item xs={12} md={4}>*/}
+            {/*    <pre>*/}
+            {/*        {JSON.stringify(ast, null, 2)}*/}
+            {/*    </pre>*/}
+            {/*</Grid>*/}
             <Grid item xs={12} md={4}>
                 <Box m={1}>
                     {!props.inline && <TextField

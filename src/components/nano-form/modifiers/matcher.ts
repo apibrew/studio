@@ -1,8 +1,10 @@
 import {Statement} from "acorn";
 import {Ast} from "./abs";
+import {type} from "node:os";
 
 export interface AstMatch {
     statement: Statement
+    matchIndex: number
     extracted: { [key: string]: any }
 }
 
@@ -76,6 +78,28 @@ export function matchSpecial<T>(element: T, matcher: any): MatchPart {
         return notMatches()
     } else if (matcher.$any) {
         return matches()
+    } else if (matcher.$concat) {
+        if (typeof element != 'string') {
+            return notMatches()
+        }
+
+        if (typeof matcher.$left == 'string') {
+            if (!element.startsWith(matcher.$left)) {
+                return notMatches()
+            }
+
+            const rem = element.substring(matcher.$left.length)
+
+            return matchAny(rem, matcher.$right)
+        } else {
+            if (!element.endsWith(matcher.$right)) {
+                return notMatches()
+            }
+
+            const rem = element.substring(0, element.length - matcher.$right.length)
+
+            return matchAny(rem, matcher.$left)
+        }
     }
 
     throw new Error('Unknown special matcher: ' + JSON.stringify(matcher))
@@ -108,12 +132,14 @@ export function astMatcher(ast: Ast, statement: Partial<Statement>): AstMatcherR
 
     console.log(ast.body)
 
-    for (const node of ast.body) {
+    for (let i = 0; i < ast.body.length; i++){
+        const node = ast.body[i];
         const matchPart = matchAny(node as Statement, statement)
         console.debug('astMatcher matchPart', matchPart)
         if (matchPart.matches) {
             result.matches.push({
                 statement: node as Statement,
+                matchIndex: i,
                 extracted: matchPart.extracted
             })
         }
@@ -143,4 +169,13 @@ export function any<T>(): T {
         $special: true,
         $any: true
     } as T
+}
+
+export function concat(left: string, right: string): string {
+    return {
+        $special: true,
+        $concat: true,
+        $left: left,
+        $right: right
+    } as any
 }

@@ -3,6 +3,7 @@ import {astMatcher} from "./matcher";
 import {resourceMatcher} from "./matchers";
 import {resourceStatement} from "./statements";
 import {resourceVarName} from "./names";
+import {appendStatementToSection} from "./positions";
 
 export interface UseResourceModifierOptions {
     /**
@@ -23,7 +24,10 @@ export const locateResourceVariable = (ast: Ast, options: UseResourceModifierOpt
 }
 
 export const applyUseResourceModifier: CodeModifierFunction<UseResourceModifierOptions> = (ast, options) => {
-    ast.body.unshift(resourceStatement(options.namespace, options.resource))
+    // ast.body.unshift(resourceStatement(options.namespace, options.resource))
+
+    const statement = resourceStatement(options.namespace, options.resource)
+    appendStatementToSection(ast, statement, 'resources')
 }
 
 export const declareUseResourceModifier: (ast: Ast, options: UseResourceModifierOptions) => string = (ast, options) => {

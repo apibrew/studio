@@ -1,13 +1,14 @@
 import {Program, Statement} from "acorn";
 import {astMatcher, capture} from "./matcher";
 import {Ast} from "./abs";
+import {appendStatementToSection} from "./positions";
 
 export interface declareFunctionResult {
     statement: Statement
     args: string[]
 }
 
-export function declareFunction(ast: Ast, functionName: string, args: string[]): declareFunctionResult {
+export function declareFunction(ast: Ast, functionName: string, args: string[], sectionKey: string): declareFunctionResult {
     const matches = astMatcher(ast, {
         "type": "FunctionDeclaration",
         "id": {
@@ -43,7 +44,8 @@ export function declareFunction(ast: Ast, functionName: string, args: string[]):
         }
     } as Statement
 
-    ast.body.push(statement)
+    // ast.body.push(statement)
+    appendStatementToSection(ast, statement, sectionKey)
 
     return {
         statement: statement,

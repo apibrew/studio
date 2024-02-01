@@ -1,4 +1,4 @@
-import {capture, or} from "./matcher";
+import {capture, concat, or} from "./matcher";
 import {Expression, Identifier, Statement, VariableDeclarator} from "acorn";
 
 export const resourceMatcher = (namespace: string, resource: string) => {
@@ -73,7 +73,7 @@ export const validateMethodMatcher = (resource: string, itemVarName: string) => 
             "type": "CallExpression",
             "callee": {
                 "type": "Identifier",
-                "name": "validate" + resource
+                "name": concat("validate", resource)
             },
             "arguments": [
                 {

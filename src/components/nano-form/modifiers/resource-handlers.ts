@@ -3,6 +3,7 @@ import {astMatcher} from "./matcher";
 import {Ast} from "./abs";
 import {resourceHandlerMethodMatcher} from "./matchers";
 import {resourceHandlerMethodStatement} from "./statements";
+import {appendStatementToSection} from "./positions";
 
 export interface ensureResourceHandlerResult {
     statement: Statement
@@ -21,7 +22,9 @@ export function declareResourceHandlerMethod(ast: Ast, resourceVarName: string, 
 
     const statement = resourceHandlerMethodStatement(resourceVarName, handlerMethodName, resourceItemVarName)
 
-    ast.body.push(statement)
+    // ast.body.push(statement)
+
+    appendStatementToSection(ast, statement, 'handlers')
 
     return {
         statement,

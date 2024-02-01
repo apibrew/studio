@@ -37,7 +37,7 @@ export const applyValidatePropertyModifier: CodeModifierFunction<ValidatePropert
     declareValidateMethodCall(beforeUpdateHandler, itemVarName, options)
     declareValidateMethodCall(beforeCreateHandler, itemVarName, options)
 
-    const validateHandler = declareFunction(ast, 'validate' + options.resource, [itemVarName])
+    const validateHandler = declareFunction(ast, 'validate' + options.resource, [itemVarName], 'validators')
 
     declareValidateMethodBody(validateHandler, itemVarName, options)
 }
