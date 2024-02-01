@@ -107,7 +107,7 @@ export function NanoScript(props: NanoScriptProps) {
                             ...script,
                             run: true
                         }).then(script => {
-                            props.onOutput(JSON.parse(script.output as any))
+                            props.onOutput(script.output ? JSON.parse(script.output as any): '')
                             props.onError(script.error)
                         }, err => {
                             props.onError(err.message)

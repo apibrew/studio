@@ -35,9 +35,9 @@ export function NanoPlayGround() {
             success: 'Loaded PlayGrounds',
             error: 'Failed to load PlayGrounds'
         }).then(async (response) => {
-            setItems(response.content)
+            setItems(response.content || [])
 
-            if (response.content.length > 0) {
+            if (response.content?.length > 0) {
                 setSelected(response.content[0])
             } else {
                 const newPlayGround = {

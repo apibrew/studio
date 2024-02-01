@@ -5,6 +5,10 @@ export interface NanoResultViewProps {
 }
 
 export function NanoResultView(props: NanoResultViewProps) {
+    if (props.result && props.result.content) {
+        return <NanoResultView result={props.result.content}/>
+    }
+
     if (typeof props.result == 'object' && props.result.length) {
         return <ArrayView {...props}/>
     }
@@ -28,6 +32,8 @@ export function ArrayView(props: NanoResultViewProps) {
             }
         }
     }
+
+    keys.sort()
 
     return <>
         <Typography>{arr.length} items</Typography>

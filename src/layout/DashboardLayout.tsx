@@ -20,8 +20,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
     const activeItem = useActiveMenuItem()
     const navigate = useNavigate()
 
-    const sideBarOpen = false && config.sideBarOpen && !activeItem?.secondSideBar
-
     return <>
         <Box id='dashboard-layout'
              sx={{
@@ -38,7 +36,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                      display: 'flex',
                      flexDirection: 'column',
                      borderRight: '1px solid #e6e8ec',
-                     width: sideBarOpen ? '230px' : '61px',
+                     width: '61px',
                      overflow: 'hidden'
                  }}
             >
@@ -50,20 +48,14 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                          flexDirection: 'row',
                          display: 'flex'
                      }}>
-                    {sideBarOpen && <Typography sx={{
-                        fontSize: '21px',
-                        fontWeight: 'bold'
-                    }}>
-                        ApiBrew Studio
-                    </Typography>}
                     <Box flexGrow={1}/>
                     <IconButton onClick={() => {
-                        if (!sideBarOpen && activeItem?.secondSideBar) {
+                        if (activeItem?.secondSideBar) {
                             navigate('/dashboard')
                         }
                         setConfig({
                             ...config,
-                            sideBarOpen: !sideBarOpen,
+
                         })
                     }}
                                 sx={{
@@ -72,8 +64,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                         <MenuRounded/>
                     </IconButton>
                 </Box>
-                <AsideBar activeItem={activeItem}
-                          open={sideBarOpen}/>
+                <AsideBar activeItem={activeItem}/>
             </Box>
             {activeItem?.secondSideBar && <Box id='second-left-bar'
                                               sx={{

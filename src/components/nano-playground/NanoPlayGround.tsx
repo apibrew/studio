@@ -8,11 +8,11 @@ import {Add} from "@mui/icons-material";
 import {NanoScript} from "./NanoScript";
 import {NanoResultView} from "./NanoResultView";
 
-export interface NanoPlayGround {
+export interface NanoPlayGroundProps {
     playground: PlayGround
 }
 
-export function NanoPlayGroundComponent(props: NanoPlayGround) {
+export function NanoPlayGroundComponent(props: NanoPlayGroundProps) {
     const [playground, setPlayground] = React.useState<PlayGround>(props.playground)
     const playgroundRepository = useRepository<PlayGround>(PlayGroundEntityInfo)
     const scriptRepository = useRepository<Script>(ScriptEntityInfo)
@@ -41,14 +41,14 @@ export function NanoPlayGroundComponent(props: NanoPlayGround) {
                     playground: playground.id,
                 }
             }).then(async (response) => {
-                if (response.content.length === 0) {
+                if (response.content?.length === 0) {
                     setScripts([{
                         order: 0,
                         playground: playground,
                         content: ''
                     } as Script])
                 } else {
-                    const list = response.content
+                    const list = response.content || []
 
                     list.sort((a, b) => a.order - b.order)
 

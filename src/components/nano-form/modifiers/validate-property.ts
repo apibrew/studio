@@ -112,7 +112,7 @@ function declareValidateMethodBody(beforeUpdateHandler: declareFunctionResult, i
                         "arguments": [
                             {
                                 "type": "Literal",
-                                "value": options.errorMessage + ": " + valueRaw,
+                                "raw": `"${options.errorMessage}:" + ${itemVarName}.${options.propertyName}`,
                             }
                         ]
                     }

@@ -1,5 +1,5 @@
 import React from "react";
-import {Dataset, FunctionsTwoTone, Group, Home, Logout, Person, Settings} from "@mui/icons-material";
+import {Dataset, FunctionsTwoTone, Group, Home, Logout, Person, Settings, SettingsEthernet} from "@mui/icons-material";
 import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
 
 export interface MenuItem {
@@ -53,5 +53,16 @@ export const menuItems: MenuItem[] = [
         title: 'Logout',
         path: '/logout',
         icon: <Logout/>
+    },
+    {
+        title: '',
+        path: '',
+        grow: true,
+        delimiter: true,
+    },
+    {
+        title: 'Connections',
+        path: '/connections',
+        icon: <SettingsEthernet/>
     }
 ]

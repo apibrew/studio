@@ -36,17 +36,6 @@ export function NanoForm(props: NanoFormProps) {
 
     const [selectedTemplate, setSelectedTemplate] = useState<string>()
 
-    const ast = useMemo(() => {
-        const parser = Parser.extend()
-        const comments: Comment[] = []
-        const ast = parser.parse(props.code.content, {
-            ecmaVersion: 2020,
-            locations: true,
-            onComment: comments
-        })
-        return ast
-    }, [props.code.content])
-
     const template = useMemo(() => {
         return templates.find(t => t.label === selectedTemplate)
     }, [selectedTemplate, templates])

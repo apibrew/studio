@@ -15,6 +15,10 @@ import {NanoEdit} from "./pages/dashboard/nano/NanoEdit";
 import {NanoNew} from "./pages/dashboard/nano/NanoNew";
 import {NanoPage} from "./pages/dashboard/nano";
 import {NanoPlayGround} from "./pages/dashboard/nano/NanoPlayGround";
+import {UsersPage} from "./pages/dashboard/users-and-roles/users/UsersPage";
+import NewUser from "./pages/dashboard/users-and-roles/users/New";
+import EditUser from "./pages/dashboard/users-and-roles/users/Edit";
+import {ListUser} from "./pages/dashboard/users-and-roles/users/List";
 
 const dashboardChildren = [
     {
@@ -80,7 +84,46 @@ const dashboardChildren = [
         element: <UsersAndRolesPage/>,
         handle: {
             breadcrumb: 'Users & Roles'
-        }
+        },
+        children: [
+            {
+                path: "users",
+                element: <UsersPage/>,
+                handle: {
+                    breadcrumb: 'Users'
+                },
+                children: [
+                    {
+                        path: "",
+                        element: <ListUser/>,
+                        handle: {
+                            breadcrumb: 'List'
+                        }
+                    },
+                    {
+                        path: "new",
+                        element: <NewUser/>,
+                        handle: {
+                            breadcrumb: 'New'
+                        }
+                    },
+                    {
+                        path: ":id",
+                        element: <EditUser/>,
+                        handle: {
+                            breadcrumb: 'Edit'
+                        }
+                    }
+                ]
+            },
+            {
+                path: "roles",
+                element: <UsersAndRolesPage/>,
+                handle: {
+                    breadcrumb: 'Roles'
+                }
+            }
+        ]
     },
     {
         path: "settings",
