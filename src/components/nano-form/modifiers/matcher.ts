@@ -1,4 +1,5 @@
-import {Program, Statement} from "acorn";
+import {Statement} from "acorn";
+import {Ast} from "./abs";
 
 export interface AstMatch {
     statement: Statement
@@ -73,6 +74,8 @@ export function matchSpecial<T>(element: T, matcher: any): MatchPart {
         }
 
         return notMatches()
+    } else if (matcher.$any) {
+        return matches()
     }
 
     throw new Error('Unknown special matcher: ' + JSON.stringify(matcher))
@@ -98,10 +101,12 @@ export function matchAny<T>(element: T, matcher: Partial<T>): MatchPart {
     return element === matcher ? matches() : notMatches()
 }
 
-export function astMatcher(ast: Program, statement: Partial<Statement>): AstMatcherResult {
+export function astMatcher(ast: Ast, statement: Partial<Statement>): AstMatcherResult {
     const result = {
         matches: []
     } as AstMatcherResult
+
+    console.log(ast.body)
 
     for (const node of ast.body) {
         const matchPart = matchAny(node as Statement, statement)
@@ -130,5 +135,12 @@ export function or<T>(...options: T[]): T {
     return {
         $special: true,
         $or: options
+    } as T
+}
+
+export function any<T>(): T {
+    return {
+        $special: true,
+        $any: true
     } as T
 }

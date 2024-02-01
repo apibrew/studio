@@ -1,5 +1,21 @@
-import {Program} from "acorn";
+import {BlockStatement, Program, Statement} from "acorn";
 
-export type CodeModifierFunction<T> = (ast: Program, options: T) => void;
+export type Ast = Program | BlockStatement
 
-export type CodeModifierCheckFunction<T> = (ast: Program, options: T) => boolean;
+export type CodeModifierFunction<T> = (ast: Ast, options: T) => void;
+
+export type CodeModifierCheckFunction<T> = (ast: Ast, options: T) => boolean;
+
+export interface SectionOrder {
+    before?: string
+    after?: string
+    first?: boolean
+    last?: boolean
+}
+
+export interface SectionDetails {
+    key: string
+    comment: string
+    matcherStatement: Statement
+    order: SectionOrder
+}

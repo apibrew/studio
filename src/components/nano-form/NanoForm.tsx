@@ -75,7 +75,7 @@ export function NanoForm(props: NanoFormProps) {
             content: generated
         })
 
-        setSelectedTemplate(undefined)
+        // setSelectedTemplate(undefined)
     }
 
     return <>
@@ -91,7 +91,7 @@ export function NanoForm(props: NanoFormProps) {
                         textAlign: 'right',
                         fontSize: '16px',
                         color: 'rgb(100,100,200)',
-                        fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospac',
+                        fontFamily: 'monospace',
                     }}>
                         {linesArr.map(ln => <div key={ln}>{ln}</div>)}
                     </Box>

@@ -102,6 +102,8 @@ export class ValidateProperty implements NanoCodeTemplate {
         if (resource) {
             this.applyType(resource.namespace.name + '/' + resource.name)
         }
+
+        console.log('ValidateProperty constructed', resource)
     }
 
     check(ast: Program): boolean {

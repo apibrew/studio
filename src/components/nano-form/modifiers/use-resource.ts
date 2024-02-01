@@ -1,6 +1,8 @@
-import {CodeModifierCheckFunction, CodeModifierFunction} from "./abs";
-import {Expression, Identifier, Program, Statement, VariableDeclarator} from "acorn";
-import {astMatcher, capture, or} from "./matcher";
+import {Ast, CodeModifierCheckFunction, CodeModifierFunction} from "./abs";
+import {astMatcher} from "./matcher";
+import {resourceMatcher} from "./matchers";
+import {resourceStatement} from "./statements";
+import {resourceVarName} from "./names";
 
 export interface UseResourceModifierOptions {
     /**
@@ -10,38 +12,8 @@ export interface UseResourceModifierOptions {
     resource: string;
 }
 
-export const locateResourceVariable = (ast: Program, options: UseResourceModifierOptions): string | undefined => {
-    let resourceArgument = options.namespace + '/' + options.resource
-
-    if (options.namespace === 'default') {
-        resourceArgument = or(resourceArgument, options.resource)
-    }
-
-    const result = astMatcher(ast, {
-        type: 'VariableDeclaration',
-        declarations: [
-            {
-                type: 'VariableDeclarator',
-                id: {
-                    type: 'Identifier',
-                    name: capture('resourceVariableName')
-                } as Identifier,
-                init: {
-                    type: 'CallExpression',
-                    callee: {
-                        type: 'Identifier',
-                        name: 'resource'
-                    },
-                    arguments: [
-                        {
-                            type: 'Literal',
-                            value: resourceArgument
-                        }
-                    ]
-                } as Expression
-            } as VariableDeclarator
-        ]
-    })
+export const locateResourceVariable = (ast: Ast, options: UseResourceModifierOptions): string | undefined => {
+    const result = astMatcher(ast, resourceMatcher(options.namespace, options.resource))
 
     if (result.matches.length > 0) {
         return result.matches[0].extracted.resourceVariableName
@@ -50,41 +22,20 @@ export const locateResourceVariable = (ast: Program, options: UseResourceModifie
     return undefined
 }
 
-export const applyUseResourceModifier: CodeModifierFunction<UseResourceModifierOptions> = (ast, options): string => {
-    let resourceArgument = options.namespace + '/' + options.resource
+export const applyUseResourceModifier: CodeModifierFunction<UseResourceModifierOptions> = (ast, options) => {
+    ast.body.unshift(resourceStatement(options.namespace, options.resource))
+}
 
-    if (options.namespace === 'default') {
-        resourceArgument = options.resource
+export const declareUseResourceModifier: (ast: Ast, options: UseResourceModifierOptions) => string = (ast, options) => {
+    let result = locateResourceVariable(ast, options)
+
+    if (result) {
+        return result
     }
 
-    ast.body.unshift({
-        type: 'VariableDeclaration',
-        kind: 'const',
-        declarations: [
-            {
-                type: 'VariableDeclarator',
-                id: {
-                    type: 'Identifier',
-                    name: options.resource
-                },
-                init: {
-                    type: 'CallExpression',
-                    callee: {
-                        type: 'Identifier',
-                        name: 'resource'
-                    },
-                    arguments: [
-                        {
-                            type: 'Literal',
-                            value: resourceArgument
-                        }
-                    ]
-                }
-            }
-        ]
-    } as Statement)
+    applyUseResourceModifier(ast, options)
 
-    return resourceArgument
+    return resourceVarName(options.resource)
 }
 
 export const checkUseResourceModifierAlreadyApplied: CodeModifierCheckFunction<UseResourceModifierOptions> = (ast, options) => {
