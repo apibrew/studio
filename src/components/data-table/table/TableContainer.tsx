@@ -167,6 +167,8 @@ export function TableContainer(props: TableContainerProps) {
             .then(resp => {
                 setRecords(resp.content ?? [])
                 setTotal(resp.total)
+            }, err => {
+                toast.error('Failed to load records: ' + err.message)
             })
     }, [listParams, refreshIndex]);
 

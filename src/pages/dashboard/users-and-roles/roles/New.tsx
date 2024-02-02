@@ -3,28 +3,25 @@
 import React, {useState} from "react";
 import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
-import {Permission, User} from "@apibrew/client/model";
-import {UserEntityInfo} from "@apibrew/client/model/user";
+import {Permission, Role} from "@apibrew/client/model";
+import {RoleEntityInfo} from "@apibrew/client/model/role";
 import {useNavigate} from "react-router-dom";
 import {Box, Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import {UserForm} from "../../../../components/user-and-roles/UserForm";
+import {RoleForm} from "../../../../components/user-and-roles/RoleForm";
 
-export default function NewUser() {
+export default function NewRole() {
     const navigate = useNavigate()
-    const repository = useRepository<User>(UserEntityInfo)
-    const [record, setRecord] = useState<User>({
+    const repository = useRepository<Role>(RoleEntityInfo)
+    const [record, setRecord] = useState<Role>({
         permissions: [] as Permission[],
-    } as User)
+    } as Role)
 
     function save() {
-        if (record.password === '') {
-            delete (record.password)
-        }
         toast.promise(repository?.create(record), {
             loading: 'Saving...',
-            success: 'User saved successfully',
-            error: 'Failed to save User'
+            success: 'Role saved successfully',
+            error: 'Failed to save Role'
         }).then((resp) => {
             navigate('../' + resp.id)
         })
@@ -44,6 +41,6 @@ export default function NewUser() {
                 }}
                 color='info'>Cancel</Button>
         </Stack>
-        <UserForm value={record} onChange={setRecord}/>
+        <RoleForm value={record} onChange={setRecord}/>
     </>
 }

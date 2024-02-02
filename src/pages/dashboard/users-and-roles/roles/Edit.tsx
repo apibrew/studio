@@ -1,23 +1,25 @@
 'use client';
 
 import React, {useEffect, useState} from "react";
-import {useRepository} from "@apibrew/react";
+import {useClient, useRepository} from "@apibrew/react";
+import Grid from "@mui/material/Unstable_Grid2";
 import toast from "react-hot-toast";
-import {User} from "@apibrew/client/model";
-import {UserEntityInfo} from "@apibrew/client/model/user";
+import {Role} from "@apibrew/client/model";
+import {RoleEntityInfo} from "@apibrew/client/model/role";
 import {useNavigate, useParams} from "react-router-dom";
-import {Box, Stack} from "@mui/material";
+import {Box, FormControl, FormHelperText, FormLabel, Stack, TextField} from "@mui/material";
+import {PermissionsInput} from "../../../../components/security/PermissionsInput";
 import Button from "@mui/material/Button";
-import {UserForm} from "../../../../components/user-and-roles/UserForm";
+import {RoleForm} from "../../../../components/user-and-roles/RoleForm";
 
-export default function EditUser() {
+export default function EditRole() {
     const navigate = useNavigate()
     const {id} = useParams()
-    const repository = useRepository<User>(UserEntityInfo)
-    const [record, setRecord] = useState<User>({} as User)
+    const repository = useRepository<Role>(RoleEntityInfo)
+    const [record, setRecord] = useState<Role>({} as Role)
 
     async function load() {
-        setRecord({} as User)
+        setRecord({} as Role)
         // NProgress.start()
         const resp = await repository?.get(id as string, ['$.permissions[]'])
         // NProgress.done()
@@ -29,13 +31,10 @@ export default function EditUser() {
     }
 
     async function save() {
-        if (record.password === '') {
-            delete (record.password)
-        }
         toast.promise(repository?.update(record), {
             loading: 'Saving...',
-            success: 'User saved successfully',
-            error: 'Failed to save User'
+            success: 'Role saved successfully',
+            error: 'Failed to save Role'
         }).then((resp) => {
             navigate('../' + resp.id)
         })
@@ -66,6 +65,6 @@ export default function EditUser() {
                 }}
                 color='info'>Cancel</Button>
         </Stack>
-        <UserForm value={record} onChange={setRecord}/>
+        <RoleForm value={record} onChange={setRecord}/>
     </>
 }

@@ -64,8 +64,6 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
             })
     }
 
-    console.log('code', code)
-
     return (
         <>
             <Box width='1400px'>
@@ -76,18 +74,20 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
                     <NanoForm resource={props.resource} inline={true} code={code} onChange={setCode}/>
                 </CardContent>
                 <CardActions>
-                    <Stack direction='row' spacing={1}>
-                        <Button variant='contained'
-                                size='small'
-                                color='success'
-                                onClick={() => {
-                                    handleSave()
-                                }}>Save</Button>
-                        <Button variant='outlined'
-                                size='medium'
-                                color='primary'
-                                onClick={() => props.onClose()}>Close</Button>
-                    </Stack>
+                   <Box marginLeft={5}>
+                       <Stack direction='row' spacing={1}>
+                           <Button variant='contained'
+                                   size='small'
+                                   color='success'
+                                   onClick={() => {
+                                       handleSave()
+                                   }}>Save</Button>
+                           <Button variant='outlined'
+                                   size='medium'
+                                   color='primary'
+                                   onClick={() => props.onClose()}>Close</Button>
+                       </Stack>
+                   </Box>
                 </CardActions>
             </Box>
         </>

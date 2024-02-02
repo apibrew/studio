@@ -62,16 +62,22 @@ function declareValidateMethodCall(beforeUpdateHandler: ensureResourceHandlerRes
 function declareValidateMethodBody(beforeUpdateHandler: declareFunctionResult, itemVarName: string, options: ValidatePropertyModifierOptions) {
     const functionAst = beforeUpdateHandler.statement as FunctionDeclaration
 
+    let value = options.value as any
     let valueRaw = JSON.stringify(options.value)
 
     switch (options.propertyType) {
         case Type.BOOL:
             valueRaw = valueRaw === 'true' ? 'true' : 'false'
+            value = valueRaw === 'true'
             break;
         case Type.INT32:
         case Type.INT64:
+            value = parseInt(options.value)
+            valueRaw = options.value
+            break;
         case Type.FLOAT32:
         case Type.FLOAT64:
+            value = parseFloat(options.value)
             valueRaw = options.value
             break;
     }
@@ -94,7 +100,7 @@ function declareValidateMethodBody(beforeUpdateHandler: declareFunctionResult, i
             "operator": options.operator,
             "right": {
                 "type": "Literal",
-                "value": options.value,
+                "value": value,
                 "raw": valueRaw
             }
         },
@@ -126,6 +132,8 @@ function declareValidateMethodBody(beforeUpdateHandler: declareFunctionResult, i
     if (matches.matches.length > 0) {
         return
     }
+
+    console.log('checking 1', functionAst.body.body, statement)
 
     functionAst.body.body.push(statement)
 }

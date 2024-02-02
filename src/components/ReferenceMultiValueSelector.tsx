@@ -4,14 +4,14 @@ import {LoadingOverlay} from "./LoadingOverlay";
 import {label} from "../util/record";
 import {SelectProps} from "@mui/material/Select/Select";
 
-export interface ReferenceValueSelectorProps extends SelectProps<any> {
+export interface ReferenceMultiValueSelectorProps extends Omit<Omit<SelectProps<any[]>, "value">, "onChange"> {
     required: boolean
     reference: string
-    value: any
-    onChange: (value: any) => void
+    value: any[]
+    onChange: (value: any[]) => void
 }
 
-export function ReferenceValueSelector(props: ReferenceValueSelectorProps) {
+export function ReferenceMultiValueSelector(props: ReferenceMultiValueSelectorProps) {
     const referenceParts = props.reference.split('/')
 
     const namespace = referenceParts.length === 1 ? 'default' : referenceParts[0]
@@ -29,31 +29,34 @@ export function ReferenceValueSelector(props: ReferenceValueSelectorProps) {
         return <LoadingOverlay/>
     }
 
-    const selected = records.find(record => {
-        if (props.value) {
-            for (const key in props.value) {
-                if (typeof props.value[key] === 'object') {
-                    continue
+    const selected = records.filter(record => {
+        return props.value.some(value => {
+            if (value) {
+                for (const key in value) {
+                    if (typeof value[key] === 'object') {
+                        continue
+                    }
+                    if (value[key] !== record[key]) {
+                        return false
+                    }
                 }
-                if (props.value[key] !== record[key]) {
-                    return false
-                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        return false;
-    })
+            return false;
+        })
+    }).map(record => record.id)
 
     const byId = (id: string) => records.find(record => record.id === id)
 
     return <Select
         size='small'
         {...props as any}
-        value={selected?.id || []}
+        value={selected}
         onChange={e => {
-            props.onChange(byId(e.target.value as string))
+            const list = e.target.value as any[]
+            props.onChange(list.map(item => byId(item as string)))
         }}
     >
         {records.map(record => (

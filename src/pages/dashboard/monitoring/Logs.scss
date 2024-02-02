@@ -1,0 +1,37 @@
+.log-item {
+  span {
+    margin-right: 10px;
+  }
+
+  .time {
+    color: #999;
+  }
+
+  &.log-level-debug {
+    .message {
+      color: #999;
+    }
+  }
+
+  &.log-level-info {
+    .message {
+      color: #333;
+    }
+  }
+
+  &.log-level-warning {
+    color: #aa1300;
+  }
+
+  &.log-level-error {
+    .message {
+      color: #f44336;
+    }
+  }
+
+  &.log-level-fatal {
+    .message {
+      color: #f44336;
+    }
+  }
+}

@@ -2,15 +2,16 @@ import {PlayGround} from './play-ground';
 
 export interface Script {
     id: string
-    content: string
     order: number
-    annotations?: { [key: string]: string }
-    error?: object
-    state: State
     output?: object
+    state: State
+    context?: object
+    content: string
+    annotations?: { [key: string]: string }
+    playground: PlayGround
+    error?: object
     contentFormat: ContentFormat
     run: boolean
-    playground: PlayGround
     version: number
 }
 
@@ -66,6 +67,11 @@ export const ScriptResource = {
       ],
       "title": "Content Format",
       "description": "Code content format"
+    },
+    "context": {
+      "type": "OBJECT",
+      "title": "Output of script execution",
+      "description": "Run the script"
     },
     "error": {
       "type": "OBJECT",

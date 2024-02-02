@@ -1,6 +1,17 @@
 import React from "react";
-import {Dataset, FunctionsTwoTone, Group, Home, Logout, Person, Settings, SettingsEthernet} from "@mui/icons-material";
+import {
+    Dataset,
+    FunctionsTwoTone,
+    Group,
+    Home,
+    Logout,
+    Monitor,
+    Person,
+    Settings,
+    SettingsEthernet
+} from "@mui/icons-material";
 import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
+import {ConnectionProvider} from "./connection-provider";
 
 export interface MenuItem {
     title: string;
@@ -9,6 +20,7 @@ export interface MenuItem {
     secondSideBar?: () => React.ReactNode;
     grow?: boolean;
     delimiter?: boolean;
+    conditional?: (connectionProvider: ConnectionProvider) => boolean
 }
 
 export const menuItems: MenuItem[] = [
@@ -40,6 +52,11 @@ export const menuItems: MenuItem[] = [
         delimiter: true,
     },
     {
+        title: 'Monitoring',
+        path: '/dashboard/monitoring',
+        icon: <Monitor/>
+    },
+    {
         title: 'Settings',
         path: '/dashboard/settings',
         icon: <Settings/>
@@ -47,12 +64,14 @@ export const menuItems: MenuItem[] = [
     {
         title: 'User Profile',
         path: '/dashboard/user-profile',
-        icon: <Person/>
+        icon: <Person/>,
+        conditional: (cp) => Boolean(cp.allowUserSwitchConnections)
     },
     {
         title: 'Logout',
         path: '/logout',
-        icon: <Logout/>
+        icon: <Logout/>,
+        conditional: (cp) => Boolean(cp.allowUserSwitchConnections)
     },
     {
         title: '',
@@ -63,6 +82,7 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Connections',
         path: '/connections',
-        icon: <SettingsEthernet/>
+        icon: <SettingsEthernet/>,
+        conditional: (cp) => Boolean(cp.allowManageConnections)
     }
 ]

@@ -1,23 +1,28 @@
-import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import Box from "@mui/material/Box";
 import React from "react";
-import {Code, CodeEntityInfo} from "@apibrew/client/nano/model/code";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
-import {useDataProvider} from "../../../components/data-provider/use-data-provider";
-import {PageLayout} from "../../../layout/PageLayout";
+import {LoadingOverlay} from "../../../../components/LoadingOverlay";
+import {useDataProvider} from "../../../../components/data-provider/use-data-provider";
+import {RoleEntityInfo} from "@apibrew/client/model/role";
+import {Role} from "@apibrew/react";
 
-export default function NanoList() {
-    const data = useDataProvider<Code>(CodeEntityInfo)
+export interface List {
+
+}
+
+export function ListRole() {
+    const data = useDataProvider<Role>(RoleEntityInfo)
     const navigate = useNavigate()
 
     if (data.loading) {
         return <LoadingOverlay/>
     }
 
-    return <>
-        <PageLayout>
-            <Stack direction='row' spacing={1}>
+    return (
+        <Box>
+            <Stack direction='row' spacing={3}>
                 <Button
                     onClick={() => {
                         navigate('new')
@@ -26,17 +31,15 @@ export default function NanoList() {
                 <Box flexGrow={1}/>
                 <Button
                     onClick={() => {
-                        navigate('playground')
+                        navigate('../users')
                     }}
-                    color='info'>PlayGround</Button>
+                    color='info'>Users</Button>
             </Stack>
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell>#</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Version</TableCell>
-                        <TableCell>Language</TableCell>
                         <TableCell>Actions</TableCell>
                     </TableRow>
                 </TableHead>
@@ -45,8 +48,6 @@ export default function NanoList() {
                         <TableRow key={item.id}>
                             <TableCell>{item.id}</TableCell>
                             <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.version}</TableCell>
-                            <TableCell>{item.language}</TableCell>
                             <TableCell>
                                 <Stack direction='row' spacing={1}>
                                     <Button onClick={() => {
@@ -64,6 +65,6 @@ export default function NanoList() {
                 </TableBody>
             </Table>
             {data.renderPagination()}
-        </PageLayout>
-    </>
+        </Box>
+    )
 }

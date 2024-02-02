@@ -1,4 +1,4 @@
-import {Box, Grid, MenuItem, Select, TextField} from "@mui/material";
+import {Box, FormLabel, Grid, MenuItem, Select, TextField} from "@mui/material";
 import {Code} from "@apibrew/client/nano/model/code";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import React, {useMemo, useState} from "react";
@@ -125,51 +125,46 @@ export function NanoForm(props: NanoFormProps) {
                     </Box>
                 </Box>
             </Grid>
-            {/*<Grid item xs={12} md={4}>*/}
-            {/*    <pre>*/}
-            {/*        {JSON.stringify(ast, null, 2)}*/}
-            {/*    </pre>*/}
-            {/*</Grid>*/}
             <Grid item xs={12} md={4}>
-                <Box m={1}>
-                    {!props.inline && <TextField
-                        fullWidth
-                        value={props.code.name ?? ''}
-                        onChange={e => {
-                            props.onChange({
-                                ...props.code,
-                                name: e.target.value
-                            })
-                        }}
-                        label='Name'
-                        variant='outlined'
-                    />}
-                </Box>
-                <Box m={1}>
-                    Template: <Select
-                    size='small'
-                    sx={{
-                        width: '200px',
-                        marginRight: '20px'
-                    }}
-                    value={selectedTemplate ?? ''}
-                    onChange={e => {
-                        setSelectedTemplate(e.target.value as string)
-                    }}>
-                    <MenuItem>---</MenuItem>
-                    {templates.map(t => <MenuItem key={t.label} value={t.label}>{t.label}</MenuItem>)}
-                </Select>
-                </Box>
-                {template && <Box m={1}>
-                    <Box>
-                        {template.renderParams()}
+                <Box marginLeft={2}>
+                    <Box m={1}>
+                        {!props.inline && <TextField
+                            fullWidth
+                            value={props.code.name ?? ''}
+                            onChange={e => {
+                                props.onChange({
+                                    ...props.code,
+                                    name: e.target.value
+                                })
+                            }}
+                            label='Name'
+                            variant='outlined'
+                        />}
                     </Box>
-                    <Box marginTop='20px'>
-                        <Button onClick={() => {
-                            handleApplyTemplate()
-                        }}>Apply Template</Button>
+                    <Box m={1}>
+                        <FormLabel>Templates:</FormLabel>
+                        <Select
+                            size='small'
+                            fullWidth
+                            value={selectedTemplate ?? ''}
+                            onChange={e => {
+                                setSelectedTemplate(e.target.value as string)
+                            }}>
+                            <MenuItem>---</MenuItem>
+                            {templates.map(t => <MenuItem key={t.label} value={t.label}>{t.label}</MenuItem>)}
+                        </Select>
                     </Box>
-                </Box>}
+                    {template && <Box m={1} marginTop={3}>
+                        <Box>
+                            {template.renderParams()}
+                        </Box>
+                        <Box marginTop='20px'>
+                            <Button onClick={() => {
+                                handleApplyTemplate()
+                            }}>Apply Template</Button>
+                        </Box>
+                    </Box>}
+                </Box>
             </Grid>
         </Grid>
     </>

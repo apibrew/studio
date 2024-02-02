@@ -31,7 +31,6 @@ export default function ResourcesPage() {
     }, [client, params.namespace, params.resource, wi]);
 
     if (resourceNotFound || !params.namespace || !params.resource) {
-        console.log(process.env)
         return <Box m={1}>
             <Typography>
                 Please select a resource from the left panel

@@ -1,61 +1,72 @@
-import {Resource, User} from "@apibrew/client/model";
-import {FormInputGroup} from "../record/FormInputGroup";
-import {UserResource} from "@apibrew/client/model/user";
-import Box from "@mui/material/Box";
-import {filterMap} from "../../util/map";
-import {isSpecialProperty, withPropertyOrder} from "../../util/property";
+import Grid from "@mui/material/Unstable_Grid2";
+import {Box, FormControl, FormHelperText, FormLabel, Stack, TextField} from "@mui/material";
 import {PermissionsInput} from "../security/PermissionsInput";
+import React from "react";
+import {User} from "@apibrew/client/model";
+import {ReferenceValueSelector} from "../ReferenceValueSelector";
+import {ReferenceMultiValueSelector} from "../ReferenceMultiValueSelector";
 
 export interface UserFormProps {
-  readOnly: boolean
-  record: User
-  errors: { [key: string]: string }
-  onChange: (record: User) => void
+    value: User
+    onChange: (value: User) => void
 }
 
-const userResource = (UserResource as Resource)
-const systemProperties = filterMap(userResource.properties, (key, property) => isSpecialProperty(property))
-
 export function UserForm(props: UserFormProps) {
-  return <>
-    <FormInputGroup resource={UserResource as Resource}
-                    properties={{
-                      "username": withPropertyOrder(userResource.properties["username"], 0),
-                      "password": withPropertyOrder(userResource.properties["password"], 1),
-                      "roles": withPropertyOrder(userResource.properties["roles"], 2),
-                      "details": withPropertyOrder(userResource.properties["details"], 3),
-                    }}
-                    errors={props.errors}
-                    readOnly={props.readOnly}
-                    depth={0}
-                    value={props.record}
-                    onChange={val => {
-                      props.onChange(val as any)
-                    }}/>
-
-    <hr/>
-    <h3>Permissions</h3>
-    {props.record.permissions && <PermissionsInput mode={'user'}
-                      value={props.record.permissions ? props.record.permissions : []}
-                      onChange={permissions => {
-
-                        props.onChange({...props.record, permissions})
-                      }}/>}
-
-    {props.record.id && <Box>
-      <hr/>
-      <h3>System Properties:</h3>
-      <FormInputGroup resource={userResource}
-                      readOnly={true}
-                      value={props.record}
-                      depth={0}
-                      errors={props.errors}
-                      properties={systemProperties}
-                      onChange={value => {
-                        props.onChange(value as any)
-                      }}
-
-      />
-    </Box>}
-  </>;
+    return (
+        <Grid container>
+            <Grid xs={12} md={4}>
+                <Box m={1}>
+                    <Stack direction='column' spacing={2}>
+                        <FormControl>
+                            <FormLabel>Username</FormLabel>
+                            <TextField
+                                size='small'
+                                variant='outlined'
+                                value={props.value.username ?? ''}
+                                onChange={e => props.onChange({...props.value, username: e.target.value})}
+                            />
+                            <FormHelperText>
+                                The username of the user
+                            </FormHelperText>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Password</FormLabel>
+                            <TextField
+                                size='small'
+                                type='password'
+                                variant='outlined'
+                                value={props.value.password ?? ''}
+                                onChange={e => props.onChange({...props.value, password: e.target.value})}
+                            />
+                            <FormHelperText>
+                                New password for the user
+                            </FormHelperText>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Roles</FormLabel>
+                            <ReferenceMultiValueSelector
+                                required={false}
+                                reference={'system/Role'}
+                                multiple={true}
+                                value={props.value.roles || []}
+                                onChange={roles => {
+                                    props.onChange({...props.value, roles})
+                                }}/>
+                            <FormHelperText>
+                                New password for the user
+                            </FormHelperText>
+                        </FormControl>
+                    </Stack>
+                </Box>
+            </Grid>
+            <Grid xs={12} md={8}>
+                {props.value.permissions && <PermissionsInput
+                    mode={'user'}
+                    value={props.value.permissions}
+                    onChange={permissions => {
+                        props.onChange({...props.value, permissions})
+                    }}/>}
+            </Grid>
+        </Grid>
+    )
 }

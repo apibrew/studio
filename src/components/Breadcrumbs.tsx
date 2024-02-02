@@ -1,6 +1,6 @@
 import React from "react";
 import {Typography, useTheme} from "@mui/material";
-import {Link, useMatches} from "react-router-dom";
+import {Link, useMatches, useParams} from "react-router-dom";
 
 export interface BreadcrumbsProps {
 
@@ -16,6 +16,9 @@ export interface RouterWithBreadcrumb {
 export function Breadcrumbs() {
     const routeMatches = useMatches();
     const theme = useTheme()
+    const params = useParams()
+
+    const connectionName = params['connectionName'] as string
 
     const breadcrumbs = routeMatches
         .map(item => item as RouterWithBreadcrumb)
@@ -26,6 +29,11 @@ export function Breadcrumbs() {
                 link: item.pathname,
             }
         })
+
+    breadcrumbs.unshift({
+        title: connectionName,
+        link: `/${connectionName}/dashboard`
+    })
 
     return <>
         {breadcrumbs.map((breadcrumb, index) => {

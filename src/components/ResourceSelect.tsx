@@ -7,7 +7,8 @@ import * as React from "react";
 import {SelectChangeEvent} from "@mui/material/Select/SelectInput";
 
 export interface ResourceSelectProps extends Omit<SelectProps<string>, "onChange"> {
-    onChange: (event: SelectChangeEvent<string>, resource?: Resource) => void
+    addAny?: boolean
+    onChange: (event: SelectChangeEvent, resource?: Resource) => void
 }
 
 export function ResourceSelect(props: ResourceSelectProps) {
@@ -24,11 +25,16 @@ export function ResourceSelect(props: ResourceSelectProps) {
             {...props as any}
             value={props.value || ''}
             onChange={e => {
+                if (e.target.value === '') {
+                    props.onChange(e as any, undefined)
+                    return
+                }
                 const [namespace, name] = (e.target.value as string).split('/')
                 const resource = resources.find(r => r.namespace.name === namespace && r.name === name)
                 props.onChange(e as any, resource)
             }}
         >
+            {props.addAny && <MenuItem value=''>Any</MenuItem>}
             {namespaces.map((namespace) => {
                 const elements = resources.filter(item => item.namespace.name === namespace)
                     .map(resource => (

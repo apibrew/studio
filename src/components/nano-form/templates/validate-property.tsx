@@ -32,7 +32,6 @@ function RenderParams(props: RenderParamsProps) {
 
     const properties = resource ? sortedProperties(resource.properties) : []
 
-    const propertyDetails = resource?.properties[property || '']
     return <>
         <Box>
             <FormLabel>Resource:</FormLabel>

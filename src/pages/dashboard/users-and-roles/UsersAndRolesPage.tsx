@@ -1,27 +1,14 @@
-import {Tab, Tabs} from "@mui/material";
-import {Outlet, useNavigate} from "react-router-dom";
-import Container from "@mui/material/Container";
+import {Box} from "@mui/material";
+import {Outlet} from "react-router-dom";
 import React from "react";
+import {PageLayout} from "../../../layout/PageLayout";
 
 export default function UsersAndRolesPage() {
-    const navigate = useNavigate()
-
     return (<>
-        <Container maxWidth='xl'>
-            <Tabs
-                value={''}
-                onChange={(e, tab) => {
-                    navigate('users')
-                }}
-                aria-label="wrapped label tabs example"
-            >
-                <Tab value="users"
-                     label="Users"/>
-                <Tab value="roles"
-                     label="Roles"/>
-            </Tabs>
-        </Container>
-
-        <Outlet/>
+        <PageLayout>
+            <Box overflow='auto'>
+                <Outlet/>
+            </Box>
+        </PageLayout>
     </>)
 }

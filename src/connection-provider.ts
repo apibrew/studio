@@ -7,7 +7,9 @@ export interface Connection {
 }
 
 export interface ConnectionProvider {
-    allowManageConnections(): boolean;
+    allowManageConnections?: boolean;
+
+    allowUserSwitchConnections?: boolean;
 
     getConnection(name: string): Promise<Connection | undefined>;
 
@@ -27,11 +29,9 @@ const connectionProviderName = process.env.REACT_APP_CONNECTION_PROVIDER
 let _connectionProvider: ConnectionProvider;
 
 if (connectionProviderName === 'LOCAL_ENV') {
-    console.log(process.env)
     _connectionProvider = {
-        allowManageConnections(): boolean {
-            return true;
-        }, getConnection(): Promise<Connection | undefined> {
+        allowManageConnections: true,
+        getConnection(): Promise<Connection | undefined> {
             return Promise.reject('Not implemented')
         }, getDefaultConnection(): Promise<Connection | undefined> {
             return Promise.resolve({
@@ -79,9 +79,8 @@ if (connectionProviderName === 'LOCAL_ENV') {
             }
             return Promise.resolve(connections);
         },
-        allowManageConnections(): boolean {
-            return true;
-        }, getConnection(name: string): Promise<Connection | undefined> {
+        allowManageConnections: true,
+        getConnection(name: string): Promise<Connection | undefined> {
             const connectionStr = localStorage.getItem('connection_' + name)
 
             if (!connectionStr) {

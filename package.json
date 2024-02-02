@@ -26,7 +26,6 @@
     "escodegen": "^2.1.0",
     "estraverse": "^5.3.0",
     "js-yaml": "^4.1.0",
-    "path-browserify": "^1.0.1",
     "pino": "^8.18.0",
     "prettier": "^3.2.4",
     "react": "^18.2.0",
@@ -67,7 +66,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/escodegen": "^0.0.10",
     "@types/estraverse": "^5.1.7",
     "@types/js-yaml": "^4.0.9"

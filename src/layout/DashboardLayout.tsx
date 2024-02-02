@@ -115,6 +115,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                          flexDirection: 'column',
                          flexGrow: 1,
                          maxHeight: '100%',
+                         overflow: 'auto',
                      }}>
                     <DashboardLayoutConfigureContext.Provider value={{
                         get(): DashboardLayoutConfig {
