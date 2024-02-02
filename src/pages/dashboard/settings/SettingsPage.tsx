@@ -55,7 +55,7 @@ export default function SettingsPage() {
     }
 
     return <>
-        <PageLayout>
+        <PageLayout disableTopMargin={true}>
             <Box display='flex'
                  sx={{
                      borderBottom: 1,

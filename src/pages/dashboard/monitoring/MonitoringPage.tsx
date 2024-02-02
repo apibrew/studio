@@ -20,7 +20,7 @@ export default function MonitoringPage() {
     }
 
     return <>
-        <PageLayout>
+        <PageLayout disableTopMargin={true}>
             <Box display='flex'
                  sx={{
                      borderBottom: 1,
