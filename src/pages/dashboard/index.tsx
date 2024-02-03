@@ -10,12 +10,12 @@ import toast from "react-hot-toast";
 
 export function DashboardPage() {
     const params = useParams()
-    const connectionName = params['connectionName']
+    const connectionName = params['connectionName']!
 
     const [client, setClient] = React.useState<Client>()
 
     React.useEffect(() => {
-        const connection = connectionName ? connectionProvider.getConnection(connectionName) : connectionProvider.getDefaultConnection()
+        const connection = connectionProvider.getConnection(connectionName)
 
         connection.then(connection => {
             if (!connection) {
@@ -25,7 +25,7 @@ export function DashboardPage() {
 
             newClientByServerConfig(connection.serverConfig).then(client => {
                 setClient(client)
-                client.useTokenStorage(new LocalStorageTokenStorage())
+                client.useTokenStorage(new LocalStorageTokenStorage(connection.name))
             }, err => {
                 toast.error(err.message)
 
@@ -33,7 +33,7 @@ export function DashboardPage() {
                 return;
             })
         })
-    }, [])
+    }, [connectionName])
 
     return <>
         <ClientProvider value={client}>

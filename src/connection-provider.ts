@@ -1,4 +1,5 @@
 import {Server} from "@apibrew/client/config";
+import {cloudConnectionProvider} from "./cloud/connection-provider";
 
 export interface Connection {
     name: string
@@ -8,12 +9,11 @@ export interface Connection {
 
 export interface ConnectionProvider {
     allowManageConnections?: boolean;
+    connectionsPageLink?: string;
 
     allowUserSwitchConnections?: boolean;
 
     getConnection(name: string): Promise<Connection | undefined>;
-
-    getDefaultConnection(): Promise<Connection | undefined>;
 
     listConnections?(): Promise<Connection[]>;
 
@@ -33,22 +33,6 @@ if (connectionProviderName === 'LOCAL_ENV') {
         allowManageConnections: true,
         getConnection(): Promise<Connection | undefined> {
             return Promise.reject('Not implemented')
-        }, getDefaultConnection(): Promise<Connection | undefined> {
-            return Promise.resolve({
-                name: 'local',
-                serverConfig: {
-                    name: 'default',
-                    host: process.env.REACT_APP_APBR_HOST || 'localhost',
-                    port: parseInt(process.env.REACT_APP_APBR_PORT || '9009'),
-                    httpPort: (process.env.REACT_APP_APBR_HTTP_PORT ? parseInt(process.env.REACT_APP_APBR_HTTP_PORT || '9009') : undefined) as number,
-                    insecure: process.env.REACT_APP_APBR_INSECURE === 'true',
-                    authentication: {
-                        username: process.env.REACT_APP_APBR_AUTHENTICATION_USERNAME as string,
-                        password: process.env.REACT_APP_APBR_AUTHENTICATION_PASSWORD as string,
-                        token: process.env.REACT_APP_APBR_AUTHENTICATION_TOKEN as string,
-                    }
-                }
-            });
         }
 
     }
@@ -88,11 +72,10 @@ if (connectionProviderName === 'LOCAL_ENV') {
             }
 
             return Promise.resolve(JSON.parse(connectionStr) as Connection);
-        }, getDefaultConnection(): Promise<Connection | undefined> {
-            return Promise.resolve(undefined);
         }
-
     }
+} else if (connectionProviderName === 'WEB_CLOUD') {
+    _connectionProvider = cloudConnectionProvider
 } else {
     console.log('process.env', process.env)
     throw new Error('Unknown connection provider: ' + connectionProviderName)

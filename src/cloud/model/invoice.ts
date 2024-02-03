@@ -1,0 +1,245 @@
+import {Payment} from './payment';
+import {InstancePlan} from './instance-plan';
+import {Instance} from './instance';
+
+export interface Invoice {
+    items: InvoiceItem[]
+    amount: number
+    version: number
+    currency: string
+    paymentDate?: string | Date
+    id: string
+    status: Status
+    payment?: Payment
+    auditData?: AuditData
+    executionStatus: ExecutionStatus
+    user: string
+    notes?: string
+}
+
+export const InvoiceEntityInfo = {
+    namespace: "default",
+    resource: "Invoice",
+    restPath: "invoice",
+}
+
+export interface InvoiceItem {
+    monthCount: number
+    instancePreviousPlanName: string
+    instancePreviousPlanUntil: string | Date
+    plan: InstancePlan
+    instance: Instance
+}
+
+export interface AuditData {
+    updatedOn: string | Date
+    createdBy: string
+    createdOn: string | Date
+    updatedBy: string
+}
+
+export enum Status {
+    PENDING = "PENDING",
+    PAID = "PAID",
+}
+
+export enum ExecutionStatus {
+    PENDING = "PENDING",
+    EXECUTING = "EXECUTING",
+    EXECUTED = "EXECUTED",
+    FAILED = "FAILED",
+}
+
+export const InvoiceResource = {
+  "auditData": {
+    "createdBy": "system",
+    "updatedBy": "system",
+    "createdOn": "2023-11-29T11:44:38Z",
+    "updatedOn": "2024-01-06T13:08:01Z"
+  },
+  "name": "Invoice",
+  "namespace": {
+    "name": "default"
+  },
+  "properties": {
+    "amount": {
+      "type": "INT32",
+      "required": true,
+      "description": "The amount of the payment"
+    },
+    "auditData": {
+      "type": "STRUCT",
+      "typeRef": "AuditData",
+      "exampleValue": {
+        "createdBy": "admin",
+        "createdOn": "2024-01-06T17:08:00+04:00",
+        "updatedBy": "admin",
+        "updatedOn": "2024-01-06T17:08:00+04:00"
+      },
+      "title": "Audit Data",
+      "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
+      "annotations": {
+        "SpecialProperty": "true"
+      }
+    },
+    "currency": {
+      "type": "STRING",
+      "required": true,
+      "description": "The currency of the payment"
+    },
+    "executionStatus": {
+      "type": "ENUM",
+      "required": true,
+      "defaultValue": "PENDING",
+      "enumValues": [
+        "PENDING",
+        "EXECUTING",
+        "EXECUTED",
+        "FAILED"
+      ]
+    },
+    "id": {
+      "type": "UUID",
+      "required": true,
+      "immutable": true,
+      "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
+      "description": "The unique identifier of the resource. It is randomly generated and immutable.",
+      "annotations": {
+        "PrimaryProperty": "true",
+        "SpecialProperty": "true"
+      }
+    },
+    "items": {
+      "type": "LIST",
+      "required": true,
+      "item": {
+        "type": "STRUCT",
+        "typeRef": "InvoiceItem"
+      }
+    },
+    "notes": {
+      "type": "STRING",
+      "length": 1024,
+      "description": "The notes of the payment"
+    },
+    "payment": {
+      "type": "REFERENCE",
+      "reference": "default/Payment",
+      "description": "The payment of the payment"
+    },
+    "paymentDate": {
+      "type": "TIMESTAMP",
+      "description": "The date of the payment"
+    },
+    "status": {
+      "type": "ENUM",
+      "required": true,
+      "defaultValue": "PENDING",
+      "enumValues": [
+        "PENDING",
+        "PAID"
+      ]
+    },
+    "user": {
+      "type": "STRING",
+      "required": true,
+      "description": "The user of the payment"
+    },
+    "version": {
+      "type": "INT32",
+      "required": true,
+      "defaultValue": 1,
+      "exampleValue": 1,
+      "title": "Version",
+      "description": "The version of the resource/record. It is incremented on every update.",
+      "annotations": {
+        "AllowEmptyPrimitive": "true",
+        "SpecialProperty": "true"
+      }
+    }
+  },
+  "types": [
+    {
+      "name": "InvoiceItem",
+      "title": "",
+      "description": "",
+      "properties": {
+        "instance": {
+          "type": "REFERENCE",
+          "required": true,
+          "reference": "default/Instance",
+          "description": "The instance of the payment"
+        },
+        "instancePreviousPlanName": {
+          "type": "STRING"
+        },
+        "instancePreviousPlanUntil": {
+          "type": "TIMESTAMP"
+        },
+        "monthCount": {
+          "type": "INT32",
+          "required": true,
+          "description": "The amount of the payment"
+        },
+        "plan": {
+          "type": "REFERENCE",
+          "required": true,
+          "reference": "default/InstancePlan",
+          "description": "The plan of the payment"
+        }
+      }
+    },
+    {
+      "name": "AuditData",
+      "title": "Audit Data",
+      "description": "Audit Data is a type that represents the audit data of a resource/record. ",
+      "properties": {
+        "createdBy": {
+          "type": "STRING",
+          "immutable": true,
+          "length": 256,
+          "exampleValue": "admin",
+          "title": "Created By",
+          "description": "The user who created the resource/record.",
+          "annotations": {
+            "SpecialProperty": "true"
+          }
+        },
+        "createdOn": {
+          "type": "TIMESTAMP",
+          "immutable": true,
+          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "title": "Created On",
+          "description": "The timestamp when the resource/record was created.",
+          "annotations": {
+            "SpecialProperty": "true"
+          }
+        },
+        "updatedBy": {
+          "type": "STRING",
+          "length": 256,
+          "exampleValue": "admin",
+          "title": "Updated By",
+          "description": "The user who last updated the resource/record.",
+          "annotations": {
+            "SpecialProperty": "true"
+          }
+        },
+        "updatedOn": {
+          "type": "TIMESTAMP",
+          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "title": "Updated On",
+          "description": "The timestamp when the resource/record was last updated.",
+          "annotations": {
+            "SpecialProperty": "true"
+          }
+        }
+      }
+    }
+  ],
+  "annotations": {
+    "EnableAudit": "true",
+    "NormalizedResource": "true"
+  }
+} as unknown
+

@@ -28,6 +28,12 @@ export function ConnectionsPage() {
         loadConnections(setConnections);
     }, [])
 
+    if (connectionProvider.connectionsPageLink) {
+        window.location.href = connectionProvider.connectionsPageLink
+
+        return <LoadingOverlay/>
+    }
+
     return (
         <Container sx={{
             marginTop: '30px'

@@ -11,6 +11,8 @@ import {NanoRoutes} from "./nano";
 import {UserAndRolesRoutes} from "./user-and-roles";
 import {SettingsRoutes} from "./settings";
 import {MonitoringRoutes} from "./monitoring";
+import CloudIndex from '../cloud'
+import {cloudRoutes} from "../cloud/routes";
 
 export const index = createBrowserRouter([
     {
@@ -24,6 +26,11 @@ export const index = createBrowserRouter([
     {
         path: "/logout",
         element: <LogoutPage/>,
+    },
+    {
+        path: "/cloud",
+        element: <CloudIndex/>,
+        children: cloudRoutes,
     },
     {
         path: "/:connectionName/dashboard",
