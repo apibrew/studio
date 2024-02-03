@@ -1,7 +1,6 @@
 import MonitoringPage from "../pages/dashboard/monitoring/MonitoringPage";
 import {AuditPage} from "../pages/dashboard/monitoring/AuditPage";
 import {Outlet} from "react-router-dom";
-import * as React from "react";
 import {LogsPage} from "../pages/dashboard/monitoring/Logs";
 
 export const MonitoringRoutes = {

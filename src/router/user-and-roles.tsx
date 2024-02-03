@@ -7,7 +7,6 @@ import EditUser from "../pages/dashboard/users-and-roles/users/Edit";
 import {ListRole} from "../pages/dashboard/users-and-roles/roles/List";
 import NewRole from "../pages/dashboard/users-and-roles/roles/New";
 import EditRole from "../pages/dashboard/users-and-roles/roles/Edit";
-import * as React from "react";
 
 export const UserAndRolesRoutes = {
     path: "users-and-roles",

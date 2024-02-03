@@ -6,10 +6,9 @@ import {UseResource} from "./templates/use-resource";
 import Button from "@mui/material/Button";
 import {Resource} from "@apibrew/react";
 import {Comment, Parser} from "acorn";
-import * as astring from "astring";
-import {GENERATOR} from "astring";
-import * as estraverse from "estraverse";
+import {generate, GENERATOR} from "astring";
 import {ValidateProperty} from "./templates/validate-property";
+import {traverse} from "estraverse";
 
 export interface NanoFormProps {
     resource?: Resource
@@ -67,7 +66,7 @@ export function NanoForm(props: NanoFormProps) {
 
         astAny.comments = comments
 
-        const generated = astring.generate(ast, {
+        const generated = generate(ast, {
             comments: true,
             generator: {
                 ...GENERATOR,
@@ -173,7 +172,7 @@ export function NanoForm(props: NanoFormProps) {
 
 function insertEmptyStatements(ast: any) {
     let lastLine = 0;
-    estraverse.traverse(ast, {
+    traverse(ast, {
         enter: function (node, parent) {
             if (node.type !== 'Program' && parent?.type === 'Program') {
                 const currentLine = node.loc?.start.line ?? 0;

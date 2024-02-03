@@ -1,7 +1,6 @@
 import SettingsPage from "../pages/dashboard/settings/SettingsPage";
 import {GeneralSettingsPage} from "../pages/dashboard/settings/GeneralSettingsPage";
 import {Outlet} from "react-router-dom";
-import * as React from "react";
 
 export const SettingsRoutes = {
     path: "settings",

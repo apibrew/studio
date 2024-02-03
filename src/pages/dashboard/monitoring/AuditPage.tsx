@@ -1,4 +1,4 @@
-import {AuditLog, Direction, Resource, useRecords} from "@apibrew/react";
+import {AuditLog} from "@apibrew/react";
 import {AuditLogEntityInfo} from "@apibrew/client/model/audit-log";
 import {
     Box,
@@ -20,30 +20,13 @@ import {Search} from "@mui/icons-material";
 import {useModal} from "../../../components/modal/use-modal";
 import {AuditLogViewMore} from "../../../components/audit-log/AuditLogViewMore";
 import {ResourceSelect} from "../../../components/ResourceSelect";
-import {useMemo, useState} from "react";
+import {useDataProvider} from "../../../components/data-provider/use-data-provider";
+import Button from "@mui/material/Button";
 
 export function AuditPage() {
     const modal = useModal()
-    const [resource, setResource] = useState<Resource>()
-    const filters = useMemo<{ [key: string]: string }>(() => {
-        const result: { [key: string]: string } = {}
 
-        if (resource?.id) {
-            result['resource'] = resource.id as string
-        }
-
-        return result
-    }, [resource?.id])
-
-    const auditLogs = useRecords<AuditLog>(AuditLogEntityInfo, {
-        limit: 1000,
-        sorting: [{property: 'time', direction: Direction.DESC}],
-        filters: filters
-    })
-
-    if (!auditLogs) {
-        return <LoadingOverlay/>
-    }
+    const dataProvider = useDataProvider<AuditLog>(AuditLogEntityInfo)
 
     return (
         <Box>
@@ -60,8 +43,28 @@ export function AuditPage() {
                         sx={{
                             width: '150px'
                         }}
-                        value={resource ? resource.namespace.name + '/' + resource.name : undefined}
-                        onChange={(e, resource) => setResource(resource)}/>
+                        value={dataProvider.listParams.filters?.namespace + '/' + dataProvider.listParams.filters?.resource}
+                        onChange={(e) => {
+                            if (!e.target.value) {
+                                dataProvider.updateParams({
+                                    filters: {
+                                        ...dataProvider.listParams.filters,
+                                        namespace: '',
+                                        resource: '',
+                                    }
+                                })
+                                return
+                            }
+                            const [namespace, resource] = e.target.value.split('/')
+                            dataProvider.updateParams({
+                                filters: {
+                                    ...dataProvider.listParams.filters,
+                                    namespace: namespace,
+                                    resource: resource,
+                                }
+                            })
+                        }}
+                    />
                 </Box>
                 <Box>
                     <FormLabel sx={{
@@ -72,54 +75,71 @@ export function AuditPage() {
                         variant='standard'
                         sx={{
                             width: '150px'
+                        }}
+                        value={dataProvider.listParams.filters?.operation || ''}
+                        onChange={e => {
+                            dataProvider.updateParams({
+                                filters: {
+                                    ...dataProvider.listParams.filters,
+                                    operation: e.target.value as string
+                                }
+                            })
                         }}>
-                        <MenuItem>Any</MenuItem>
-                        <MenuItem>Create</MenuItem>
-                        <MenuItem>Update</MenuItem>
-                        <MenuItem>Delete</MenuItem>
-                        <MenuItem>List/Get</MenuItem>
+                        <MenuItem value=''>Any</MenuItem>
+                        <MenuItem value='CREATE'>Create</MenuItem>
+                        <MenuItem value='UPDATE'>Update</MenuItem>
+                        <MenuItem value='DELETE'>Delete</MenuItem>
+                        <MenuItem value='LIST'>List/Get</MenuItem>
                     </Select>
                 </Box>
+                <Box flexGrow={1}/>
+                <Box>
+                    <Button onClick={dataProvider.refresh} variant='contained'>Refresh</Button>
+                </Box>
             </Stack>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>#</TableCell>
-                        <TableCell>Time</TableCell>
-                        <TableCell>Namespace/Resource</TableCell>
-                        <TableCell>Operation</TableCell>
-                        <TableCell>Record Id</TableCell>
-                        <TableCell>Record label</TableCell>
-                        <TableCell></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {auditLogs?.map((auditLog, index) => (
-                        <TableRow key={auditLog.id}>
-                            <TableCell>
-                                {index + 1}
-                            </TableCell>
-                            <TableCell>{auditLog.time?.toString()}</TableCell>
-                            <TableCell>{auditLog.namespace}/{auditLog.resource}</TableCell>
-                            <TableCell>{auditLog.operation}</TableCell>
-                            <TableCell>{auditLog.id}</TableCell>
-                            <TableCell>{label(auditLog.properties)}</TableCell>
-                            <TableCell>
-                                <Tooltip title='View More'>
-                                    <IconButton
-                                        onClick={() => {
-                                            modal.open(<AuditLogViewMore auditLog={auditLog}
-                                                                         onClose={modal.close}/>)
-                                        }}
-                                        size='small'>
-                                        <Search fontSize='small'/>
-                                    </IconButton>
-                                </Tooltip>
-                            </TableCell>
+            {dataProvider.loading && <LoadingOverlay/>}
+            {!dataProvider.loading && <>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>#</TableCell>
+                            <TableCell>Time</TableCell>
+                            <TableCell>Namespace/Resource</TableCell>
+                            <TableCell>Operation</TableCell>
+                            <TableCell>Record Id</TableCell>
+                            <TableCell>Record label</TableCell>
+                            <TableCell></TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {dataProvider.records.map((auditLog, index) => (
+                            <TableRow key={auditLog.id}>
+                                <TableCell>
+                                    {index + 1}
+                                </TableCell>
+                                <TableCell>{auditLog.time?.toString()}</TableCell>
+                                <TableCell>{auditLog.namespace}/{auditLog.resource}</TableCell>
+                                <TableCell>{auditLog.operation}</TableCell>
+                                <TableCell>{auditLog.id}</TableCell>
+                                <TableCell>{label(auditLog.properties)}</TableCell>
+                                <TableCell>
+                                    <Tooltip title='View More'>
+                                        <IconButton
+                                            onClick={() => {
+                                                modal.open(<AuditLogViewMore auditLog={auditLog}
+                                                                             onClose={modal.close}/>)
+                                            }}
+                                            size='small'>
+                                            <Search fontSize='small'/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+                {dataProvider.renderPagination()}
+            </>}
         </Box>
     )
 }

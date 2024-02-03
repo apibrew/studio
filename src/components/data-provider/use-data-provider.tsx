@@ -5,12 +5,14 @@ import {EntityInfo} from "@apibrew/client/entity-info";
 import {ListRecordParams} from "@apibrew/client";
 import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
-import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 
 export interface useDataProviderResult<T> {
     records: T[]
     loading: boolean
     renderPagination: () => React.ReactNode
+    listParams: ListRecordParams
+    updateParams: (params: Partial<ListRecordParams>) => void
+    refresh: () => void
 }
 
 const initParams = {
@@ -24,6 +26,7 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
     const [records, setRecords] = useState<any[]>([])
     const [total, setTotal] = useState<number>()
     const loading = total === undefined
+    const [wi, setWi] = useState(0)
 
     useEffect(() => {
         setRecords([])
@@ -34,9 +37,19 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
         }, err => {
             toast.error(err.message)
         })
-    }, [entityInfo, listParams]);
+    }, [entityInfo, listParams, wi]);
 
     return {
+        updateParams: (params: Partial<ListRecordParams>) => {
+            setListParams({
+                ...listParams,
+                ...params
+            })
+        },
+        refresh: () => {
+            setWi(wi + 1)
+        },
+        listParams,
         records: records || [],
         loading: loading || false,
         renderPagination: () => (

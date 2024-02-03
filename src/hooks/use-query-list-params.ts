@@ -29,6 +29,13 @@ function prepareListRecordParamsFromQuerySearch(searchParams: URLSearchParams): 
         }
     }
 
+    searchParams.forEach((value, key) => {
+        if (key.startsWith("filter_")) {
+            result.filters = result.filters || {}
+            result.filters[key.substring(7)] = value
+        }
+    })
+
     if (searchParams.has("sorting")) {
         const sorting = JSON.parse(searchParams.get("sorting")!)
 
@@ -57,6 +64,13 @@ function prepareQuerySearchFromListRecordParams(params: ListRecordParams): URLSe
 
     if (params.sorting) {
         result.sorting = JSON.stringify(params.sorting)
+    }
+
+    if (params.filters) {
+        const filters = params.filters
+        Object.keys(filters).forEach(key => {
+            result[`filter_${key}`] = filters[key]
+        })
     }
 
     return result

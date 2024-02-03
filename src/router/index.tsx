@@ -2,7 +2,6 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import IndexPage from "../pages/IndexPage";
 import DashboardIndexPage from "../pages/dashboard/index/IndexPage";
 import {DashboardPage} from "../pages/dashboard";
-import * as React from "react";
 import LogoutPage from "../pages/logout/LogoutPage";
 import ResourcesPage from "../pages/dashboard/resources/ResourcesPage";
 import UserProfilePage from "../pages/dashboard/user-profile/UserProfilePage";

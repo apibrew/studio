@@ -46,7 +46,7 @@ export const menuItems: MenuItem[] = [
         icon: <Group/>
     },
     {
-        title: '',
+        title: 'delimeter-1',
         path: '',
         grow: true,
         delimiter: true,
@@ -74,7 +74,7 @@ export const menuItems: MenuItem[] = [
         conditional: (cp) => Boolean(cp.allowUserSwitchConnections)
     },
     {
-        title: '',
+        title: 'delimeter-2',
         path: '',
         grow: true,
         delimiter: true,
