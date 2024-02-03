@@ -35,7 +35,7 @@ export default function EditUser() {
         toast.promise(repository?.update(record), {
             loading: 'Saving...',
             success: 'User saved successfully',
-            error: 'Failed to save User'
+            error: err => err.message
         }).then((resp) => {
             navigate('../' + resp.id)
         })

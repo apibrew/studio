@@ -26,7 +26,7 @@ export function PropertyDrawer(props: ColumnDrawerProps) {
         toast.promise(repository.update(updatedResource), {
             loading: 'Updating Resource...',
             success: 'Resource updated',
-            error: 'Failed to update Resource'
+            error: err => err.message
         }).then(() => {
             props.onClose()
             props.onUpdateResource(updatedResource)

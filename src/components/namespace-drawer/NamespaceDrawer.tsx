@@ -34,7 +34,7 @@ export function NamespaceDrawer(props: NamespaceDrawerProps) {
                                         toast.promise(repository.create(namespace), {
                                             loading: 'Creating namespace...',
                                             success: 'Namespace created',
-                                            error: 'Failed to create namespace'
+                                            error: err => err.message
                                         }).then(() => {
                                             props.onClose()
                                         }, console.error)
@@ -42,7 +42,7 @@ export function NamespaceDrawer(props: NamespaceDrawerProps) {
                                         toast.promise(repository.update(namespace), {
                                             loading: 'Updating namespace...',
                                             success: 'Namespace updated',
-                                            error: 'Failed to update namespace'
+                                            error: err => err.message
                                         }).then(() => {
                                             props.onClose()
                                         }, console.error)

@@ -21,7 +21,7 @@ export default function NewRole() {
         toast.promise(repository?.create(record), {
             loading: 'Saving...',
             success: 'Role saved successfully',
-            error: 'Failed to save Role'
+            error: err => err.message
         }).then((resp) => {
             navigate('../' + resp.id)
         })

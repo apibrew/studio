@@ -67,7 +67,7 @@ export function TableContainer(props: TableContainerProps) {
                     {
                         loading: 'Deleting records...',
                         success: 'Records deleted',
-                        error: 'Failed to delete records'
+                        error: err => err.message
                     })
                     .then(() => {
                         setSelectedItems([])

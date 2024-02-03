@@ -38,7 +38,7 @@ export function NanoScript(props: NanoScriptProps) {
                     {
                         loading: 'Deleting line...',
                         success: 'deleted',
-                        error: 'Failed to delete records'
+                        error: err => err.message
                     })
                     .then(() => {
                         props.onRemove()

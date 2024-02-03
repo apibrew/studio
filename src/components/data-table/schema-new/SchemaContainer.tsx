@@ -27,7 +27,7 @@ export function SchemaContainer(props: SchemaContainerProps) {
         toast.promise(client.updateResource(updatedResource, force), {
             loading: 'Updating Resource...',
             success: 'Resource updated',
-            error: 'Failed to update Resource'
+            error: err => err.message
         }).then(() => {
             refresh()
         })

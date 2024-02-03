@@ -233,7 +233,7 @@ export function ConnectionDrawer(props: ConnectionDrawerProps) {
                                         toast.promise(connectionProvider.createConnection!(connection), {
                                             loading: 'Creating Connection...',
                                             success: 'Connection created',
-                                            error: 'Failed to create Connection'
+                                            error: err => err.message
                                         }).then(() => {
                                             props.onClose()
                                         })
@@ -241,7 +241,7 @@ export function ConnectionDrawer(props: ConnectionDrawerProps) {
                                         toast.promise(connectionProvider.updateConnection!(connection), {
                                             loading: 'Updating Connection...',
                                             success: 'Connection updated',
-                                            error: 'Failed to update Connection'
+                                            error: err => err.message
                                         }).then(() => {
                                             props.onClose()
                                         })

@@ -1,5 +1,6 @@
-import {Resource} from "@apibrew/react";
+import {Namespace, Resource} from "@apibrew/react";
 import {Client} from "@apibrew/client";
+import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 
 export async function ensureResource(client: Client, resource: Resource, override?: boolean): Promise<void> {
     client.getResourceByName(resource.namespace.name, resource.name)
@@ -10,7 +11,11 @@ export async function ensureResource(client: Client, resource: Resource, overrid
                 return client.updateResource(resource, true)
             }
         })
-        .catch(() => {
+        .catch(async () => {
+            await client.applyRecord<Namespace>(NamespaceEntityInfo, {
+                "name": resource.namespace.name,
+            } as Namespace)
+
             return client.createResource(resource, true);
         });
 }

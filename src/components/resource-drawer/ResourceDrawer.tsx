@@ -26,7 +26,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
                 toast.promise(client.deleteResource(props.resource, force), {
                     loading: 'Deleting Resource...',
                     success: 'Resource deleted',
-                    error: 'Failed to delete Resource'
+                    error: err => err.message
                 }).then(() => {
                     props.onClose()
                 })
@@ -58,7 +58,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
                                         toast.promise(client.createResource(resource, force), {
                                             loading: 'Creating Resource...',
                                             success: 'Resource created',
-                                            error: 'Failed to create Resource'
+                                            error: err => err.message
                                         }).then(() => {
                                             props.onClose()
                                         })
@@ -66,7 +66,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
                                         toast.promise(client.updateResource(resource, force), {
                                             loading: 'Updating Resource...',
                                             success: 'Resource updated',
-                                            error: 'Failed to update Resource'
+                                            error: err => err.message
                                         }).then(() => {
                                             props.onClose()
                                         })

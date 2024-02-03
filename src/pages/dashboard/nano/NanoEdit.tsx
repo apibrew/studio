@@ -5,12 +5,12 @@ import {NanoForm} from "../../../components/nano-form/NanoForm";
 import Button from "@mui/material/Button";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useRepository} from "@apibrew/react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import toast from "react-hot-toast";
 
 export function NanoEdit() {
     const params = useParams()
-
+    const navigate = useNavigate()
     const [code, setCode] = useState<Code>()
 
     const repository = useRepository<Code>(CodeEntityInfo)
@@ -19,15 +19,14 @@ export function NanoEdit() {
         repository.get(params.id as string).then(setCode)
     }, [params.id]);
 
-
-
     async function handleSave() {
         toast.promise(repository.update(code as Code), {
             loading: 'Saving...',
             success: 'Saved',
-            error: 'Failed to save'
+            error: err => err.message
         })
     }
+
     return <>
         <Box m={1}>
             <Card>
@@ -42,7 +41,7 @@ export function NanoEdit() {
                     <Button onClick={() => {
                         handleSave()
                     }} color='success'>Save</Button>
-                    <Button color='info'>Cancel</Button>
+                    <Button onClick={() => navigate('..')} color='info'>Cancel</Button>
                 </CardActions>
             </Card>
         </Box>

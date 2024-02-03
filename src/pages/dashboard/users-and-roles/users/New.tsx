@@ -24,7 +24,7 @@ export default function NewUser() {
         toast.promise(repository?.create(record), {
             loading: 'Saving...',
             success: 'User saved successfully',
-            error: 'Failed to save User'
+            error: err => err.message
         }).then((resp) => {
             navigate('../' + resp.id)
         })

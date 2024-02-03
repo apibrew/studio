@@ -33,7 +33,7 @@ export function NanoPlayGround() {
         })), {
             loading: 'Loading PlayGrounds...',
             success: 'Loaded PlayGrounds',
-            error: 'Failed to load PlayGrounds'
+            error: err => err.message
         }).then(async (response) => {
             setItems(response.content || [])
 
@@ -91,7 +91,7 @@ export function NanoPlayGround() {
                         toast.promise(client.updateRecord(PlayGroundEntityInfo, selected!), {
                             loading: 'Updating PlayGround...',
                             success: 'Updated PlayGround',
-                            error: 'Failed to update PlayGround'
+                            error: err => err.message
                         })
                     }}
                 />
@@ -104,7 +104,7 @@ export function NanoPlayGround() {
                             }), {
                                 loading: 'Stopping PlayGround...',
                                 success: 'Stopped PlayGround',
-                                error: 'Failed to stop PlayGround'
+                                error: err => err.message
                             }).then(response => {
                                 setSelected(response)
                             })
@@ -126,7 +126,7 @@ export function NanoPlayGround() {
                             }), {
                                 loading: 'Restarting PlayGround...',
                                 success: 'Restarted PlayGround',
-                                error: 'Failed to restart PlayGround'
+                                error: err => err.message
                             }).then(response => {
                                 setSelected(response)
                             })
@@ -146,7 +146,7 @@ export function NanoPlayGround() {
                             }), {
                                 loading: 'Starting PlayGround...',
                                 success: 'Started PlayGround',
-                                error: 'Failed to start PlayGround'
+                                error: err => err.message
                             }).then(response => {
                                 setSelected(response)
                             })
