@@ -7,6 +7,8 @@ import {InnerPage} from "./pages/Inner";
 import {ListInstance} from "./pages/instance/ListInstance";
 import {Goto} from "./pages/instance/Goto";
 import {Outlet} from "react-router-dom";
+import {RegisterPage} from "./pages/RegisterPage";
+import {GithubSsoPage} from "./pages/GithubSso";
 
 export const cloudRoutes: RouteObject[] = [
     {
@@ -16,6 +18,14 @@ export const cloudRoutes: RouteObject[] = [
     {
         path: 'login',
         element: <LoginPage/>
+    },
+    {
+        path: 'register',
+        element: <RegisterPage/>
+    },
+    {
+        path: 'github-sso',
+        element: <GithubSsoPage/>
     },
     {
         path: 'post-login',
@@ -38,7 +48,10 @@ export const cloudRoutes: RouteObject[] = [
                     },
                     {
                         path: ':id/goto',
-                        element: <Goto/>
+                        element: <Goto/>,
+                        handle: {
+                            tab: 'goto'
+                        }
                     },
                 ]
             }

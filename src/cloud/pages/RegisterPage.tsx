@@ -6,34 +6,42 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import {useClient} from '@apibrew/react';
+import {useClient, useRepository} from '@apibrew/react';
 import {GitHub} from "@mui/icons-material";
 import {Layout} from "../layout/modern-layout";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect} from "react";
 import toast from "react-hot-toast";
+import {UserRegistration, UserRegistrationEntityInfo} from "../model/user-registration";
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
     const client = useClient();
     const navigate = useNavigate()
+    const userRegistrationRepository = useRepository<UserRegistration>(UserRegistrationEntityInfo);
 
     useEffect(() => {
         if (client.isAuthenticated()) {
-            navigate('../post-login')
+            navigate('/cloud/post-login')
         }
     }, [client]);
 
+    const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
-    const handleLogin = async () => {
+    const handleRegister = async () => {
         const loadingId = toast.loading('Logging in...');
         try {
+            await userRegistrationRepository.create({
+                emailAddress: email,
+                name: name,
+                password: password,
+            } as UserRegistration)
+
             await client.authenticateWithUsernameAndPassword(email, password);
-            navigate('../post-login')
-            toast.success('Welcome: ' + client.getTokenBody()?.username);
-        } catch (e: any) {
-            toast.error(e.message);
+            navigate('/cloud/post-login')
+        } catch (err: any) {
+            toast.error(err.message);
         } finally {
             toast.dismiss(loadingId);
         }
@@ -46,22 +54,32 @@ export const LoginPage = () => {
                     sx={{mb: 4}}
                     spacing={1}
                 >
-                    <Typography variant="h5">Log in</Typography>
+                    <Typography variant="h5">Register</Typography>
                     <Typography
                         color="text.secondary"
                         variant="body2"
                     >
-                        Don&apos;t have an account? &nbsp;
+                        Already have an account? &nbsp;
                         <Link
-                            href={'register'}
+                            href={'login'}
                             underline="hover"
                             variant="subtitle2"
                         >
-                            Register
+                            Log in
                         </Link>
                     </Typography>
                 </Stack>
                 <Stack spacing={3}>
+                    <TextField
+                        autoFocus
+                        fullWidth
+                        helperText='Your name'
+                        label="Name"
+                        name="name"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
                     <TextField
                         autoFocus
                         fullWidth
@@ -87,7 +105,7 @@ export const LoginPage = () => {
                     sx={{mt: 3}}
                     size="large"
                     variant="contained"
-                    onClick={() => handleLogin()}
+                    onClick={() => handleRegister()}
                 >
                     Continue
                 </Button>

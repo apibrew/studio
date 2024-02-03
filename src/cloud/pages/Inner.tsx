@@ -30,6 +30,12 @@ export function InnerPage() {
         return <LoadingOverlay/>
     }
 
+    if (tab === 'goto') {
+        return <PageLayout>
+            <Outlet/>
+        </PageLayout>
+    }
+
     return <PageLayout>
         <Box display='flex'
              sx={{

@@ -2,20 +2,40 @@ import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useNavigate, useParams} from "react-router-dom";
 import {LocalStorageTokenStorage, useClient, useRecordBy} from "@apibrew/react";
 import {DeploymentStatus, Instance, InstanceEntityInfo} from "../../model/instance";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import toast from "react-hot-toast";
-import {ClientImpl} from "@apibrew/client";
+import {Client, ClientImpl} from "@apibrew/client";
+import Alert from "@mui/material/Alert";
 
 export function Goto() {
     const params = useParams()
     const navigate = useNavigate()
     const hostClient = useClient()
+    const [message, setMessage] = React.useState('')
 
     const instance = useRecordBy<Instance>(InstanceEntityInfo, {
         id: params.id
     })
 
-    function handleInstance(instance: Instance) {
+    async function awaitInstance(guestClient: Client) {
+        for (let i = 0; i < 20; i++) {
+            try {
+                await guestClient.listResources()
+                break
+            } catch (e) {
+                console.error(e)
+                await new Promise(resolve => setTimeout(resolve, 5000))
+            } finally {
+                setMessage('Awaiting instance... ' + i + '/20')
+            }
+        }
+    }
+
+    async function handleInstance(instance: Instance, retry?: boolean) {
+        if (retry) {
+            setMessage('Awaiting instance[retry]...')
+        }
+
         const guestClient = new ClientImpl(`https://${instance.name}.apibrew.io:8443`)
         guestClient.useTokenStorage(new LocalStorageTokenStorage(instance.name))
 
@@ -24,16 +44,23 @@ export function Goto() {
             filters: {
                 name: instance.name
             }
-        }).then(resp => {
+        }).then(async (resp) => {
             toast.dismiss(prem)
             if (resp.content[0].controllerAccessToken) {
                 console.log('reps', resp)
-                guestClient.authenticateWithToken(resp.content[0].controllerAccessToken!)
+
+                await awaitInstance(guestClient)
+
+                setMessage('Authenticating...')
+                await guestClient.authenticateWithToken(resp.content[0].controllerAccessToken!)
                 toast.success('Authenticated')
+                setMessage('Redirecting...')
 
                 navigate(`/${instance.name}/dashboard`)
             } else {
-                toast.error('Could not authenticate with project instance, please rebuild project or contact support.')
+                if (!retry) {
+                    await handleInstance(instance, true)
+                }
             }
         }, err => {
             console.error(err)
@@ -42,6 +69,7 @@ export function Goto() {
     }
 
     useEffect(() => {
+        setMessage('Loading instance')
         if (!instance) {
             console.log('still loading')
         } else {
@@ -49,21 +77,21 @@ export function Goto() {
                 case DeploymentStatus.DESTROYED:
                 case DeploymentStatus.PENDING_DESTROY:
                     toast.error('Instance is destroyed')
-                    navigate('/cloud/post-login')
+                    navigate('/cloud/instances')
                     break
                 case DeploymentStatus.DEPLOYED:
                     handleInstance(instance)
                     break
                 default:
                     toast.error('Instance deployment failed, please contact support: contact@apibrew.io')
-                    navigate('/cloud/post-login')
+                    navigate('/cloud/instances')
                     break
             }
         }
     }, [instance]);
 
     return <>
-        {params.id}
+        <Alert severity="info">{message}</Alert>
         <LoadingOverlay/>
     </>
 }

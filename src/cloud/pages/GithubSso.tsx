@@ -6,7 +6,7 @@ import {useSearchParams} from "react-router-dom";
 import {GithubSso, GithubSsoEntityInfo} from "../model/github-sso";
 import {LoadingOverlay} from "../../components/LoadingOverlay";
 
-const GithubSso = () => {
+export const GithubSsoPage = () => {
     const [searchParams] = useSearchParams();
     const code = searchParams.get('code');
 
@@ -34,4 +34,3 @@ const GithubSso = () => {
     return <LoadingOverlay/>
 };
 
-export default GithubSso;

@@ -80,7 +80,7 @@ export const menuItems: MenuItem[] = [
         delimiter: true,
     },
     {
-        title: 'Connections',
+        title: 'Other Instances',
         path: '/connections',
         icon: <SettingsEthernet/>,
         conditional: (cp) => Boolean(cp.allowManageConnections)
