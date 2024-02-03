@@ -29,7 +29,8 @@ export function DataTable(props: DataTableProps) {
                     onClick={() => {
                         drawer.open(
                             <ResourceNanoDrawer
-                                resource={props.resource}
+                                namespace={props.resource.namespace.name}
+                                resource={props.resource.name}
                                 onClose={drawer.close}/>
                         )
                     }}>

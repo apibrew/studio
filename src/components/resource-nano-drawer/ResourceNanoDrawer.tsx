@@ -2,18 +2,21 @@ import {NanoForm} from "../nano-form/NanoForm";
 import React, {useEffect} from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Code, CodeEntityInfo, Language} from "@apibrew/client/nano/model/code";
-import {Resource, useRepository} from "@apibrew/react";
+import {Resource, useRepository, useResourceByName} from "@apibrew/react";
 import toast from "react-hot-toast";
+import {LoadingOverlay} from "../LoadingOverlay";
 
 export interface ResourceNanoDrawerProps {
-    resource: Resource;
+    resource: string
+    namespace: string
     onClose: () => void;
 }
 
 export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
     const repository = useRepository<Code>(CodeEntityInfo)
+    const resource = useResourceByName(props.resource, props.namespace)
 
-    const codeName = 'ResourceNano/' + props.resource.namespace.name + '/' + props.resource.name
+    const codeName = 'ResourceNano/' + props.namespace + '/' + props.resource
 
     const [code, setCode] = React.useState<Code>({
         name: codeName,
@@ -30,7 +33,7 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
             }, err => {
                 console.error(err)
             })
-    }, [props.resource]);
+    }, [codeName]);
 
     function handleSave() {
         if (code.content.trim() === '') {
@@ -71,7 +74,8 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
                     <CardHeader title='Edit Code'/>
                 </Card>
                 <CardContent>
-                    <NanoForm resource={props.resource} inline={true} code={code} onChange={setCode}/>
+                    {!resource && <LoadingOverlay/>}
+                    {resource && <NanoForm resource={resource} inline={true} code={code} onChange={setCode}/>}
                 </CardContent>
                 <CardActions>
                    <Box marginLeft={5}>

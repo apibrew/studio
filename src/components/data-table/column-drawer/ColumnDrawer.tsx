@@ -24,20 +24,13 @@ export function ColumnDrawer(props: ColumnDrawerProps) {
     const confirmation = useConfirmation()
 
     function handleUpdateResource(updatedResource: Resource) {
-        confirmation.open({
-            kind: 'confirm',
-            message: 'Are you sure you want to update this resource?',
-            buttonMessage: 'Update',
-            onConfirm: () => {
-                toast.promise(repository.update(updatedResource), {
-                    loading: 'Updating Resource...',
-                    success: 'Resource updated',
-                    error: 'Failed to update Resource'
-                }).then(() => {
-                    props.onClose()
-                    props.onUpdateResource(updatedResource)
-                })
-            }
+        toast.promise(repository.update(updatedResource), {
+            loading: 'Updating Resource...',
+            success: 'Resource updated',
+            error: 'Failed to update Resource'
+        }).then(() => {
+            props.onClose()
+            props.onUpdateResource(updatedResource)
         })
     }
 

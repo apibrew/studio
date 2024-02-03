@@ -21,23 +21,15 @@ export function PropertyDrawer(props: ColumnDrawerProps) {
     const [property, setProperty] = React.useState<Property>(props.property)
 
     const repository = useRepository(ResourceEntityInfo)
-    const confirmation = useConfirmation()
 
     function handleUpdateResource(updatedResource: Resource) {
-        confirmation.open({
-            kind: 'confirm',
-            message: 'Are you sure you want to update this resource?',
-            buttonMessage: 'Update',
-            onConfirm: () => {
-                toast.promise(repository.update(updatedResource), {
-                    loading: 'Updating Resource...',
-                    success: 'Resource updated',
-                    error: 'Failed to update Resource'
-                }).then(() => {
-                    props.onClose()
-                    props.onUpdateResource(updatedResource)
-                })
-            }
+        toast.promise(repository.update(updatedResource), {
+            loading: 'Updating Resource...',
+            success: 'Resource updated',
+            error: 'Failed to update Resource'
+        }).then(() => {
+            props.onClose()
+            props.onUpdateResource(updatedResource)
         })
     }
 
@@ -68,7 +60,6 @@ export function PropertyDrawer(props: ColumnDrawerProps) {
 
     return (
         <>
-            {confirmation.render()}
             <Box width='600px'>
                 <Card>
                     <CardHeader title={props.new ? 'New property' : 'Update property: ' + props.property}/>

@@ -24,19 +24,12 @@ export function SchemaContainer(props: SchemaContainerProps) {
     }
 
     function handleUpdateResource(updatedResource: Resource, force?: boolean) {
-        confirmation.open({
-            kind: 'confirm',
-            message: 'Are you sure you want to update this resource?' + (force ? ' This will force migrate the resource' : ''),
-            buttonMessage: 'Update',
-            onConfirm: () => {
-                toast.promise(client.updateResource(updatedResource, force), {
-                    loading: 'Updating Resource...',
-                    success: 'Resource updated',
-                    error: 'Failed to update Resource'
-                }).then(() => {
-                    refresh()
-                })
-            }
+        toast.promise(client.updateResource(updatedResource, force), {
+            loading: 'Updating Resource...',
+            success: 'Resource updated',
+            error: 'Failed to update Resource'
+        }).then(() => {
+            refresh()
         })
     }
 
