@@ -75,7 +75,7 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
                 </Card>
                 <CardContent>
                     {!resource && <LoadingOverlay/>}
-                    {/*{resource && <NanoForm resource={resource} inline={true} code={code} onChange={setCode}/>}*/}
+                    {resource && <NanoForm resource={resource} inline={true} code={code} onChange={setCode}/>}
                 </CardContent>
                 <CardActions>
                    <Box marginLeft={5}>

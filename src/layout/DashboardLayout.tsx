@@ -27,6 +27,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                  display: 'flex',
                  flexDirection: 'row',
                  width: '100%',
+                 minWidth: '1200px',
                  height: '100vh',
                  background: '#f5f5f5'
              }}
