@@ -9,6 +9,8 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm i
 
+npm i --save-dev @types/js-yaml
+
 # Copy app files
 COPY . .
 
