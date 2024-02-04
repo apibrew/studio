@@ -23,7 +23,7 @@ export function ReferenceMultiValueSelector(props: ReferenceMultiValueSelectorPr
             name: namespace
         },
         name: resourceName,
-    } as Resource))
+    } as Resource)) || []
 
     if (!records) {
         return <LoadingOverlay/>

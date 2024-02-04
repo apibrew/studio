@@ -53,7 +53,7 @@ export function UserForm(props: UserFormProps) {
                                     props.onChange({...props.value, roles})
                                 }}/>
                             <FormHelperText>
-                                New password for the user
+                                The roles of the user
                             </FormHelperText>
                         </FormControl>
                     </Stack>
