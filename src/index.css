@@ -8,4 +8,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  min-width: 1200px;
 }
