@@ -1,17 +1,25 @@
-import {Box, Typography} from "@mui/material";
+import {Grid} from "@mui/material";
 import {PageLayout} from "../../../layout/PageLayout";
-import {useParams} from "react-router-dom";
+import React from "react";
+import {WelcomeWidget} from "../../../components/widgets/WelcomeWidget";
+import {HealthWidget} from "../../../components/widgets/HealthWidget";
+import {IntegrationsWidget} from "../../../components/widgets/IntegrationsWidget";
+import {GeneralStatsWidget} from "../../../components/widgets/GeneralStatsWidget";
 
 export default function IndexPage() {
-    const params = useParams()
 
-    const connectionName = params['connectionName'] as string
+    const widgets = [
+        <WelcomeWidget/>,
+        <HealthWidget/>,
+        <IntegrationsWidget/>,
+        <GeneralStatsWidget/>
+    ]
 
     return <>
         <PageLayout>
-            <Box m={5}>
-                <Typography variant="h5">Welcome to the Dashboard for "{connectionName}"</Typography>
-            </Box>
+            <Grid container spacing={3}>
+                {widgets.map((widget, i) => <Grid item key={i} xs={12} sm={6}>{widget}</Grid>)}
+            </Grid>
         </PageLayout>
     </>
 }

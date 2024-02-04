@@ -1,18 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import {DashboardLayout} from "../../layout/DashboardLayout";
 import {Outlet, useParams} from "react-router-dom";
-import {connectionProvider} from "../../connection-provider";
+import {Connection, connectionProvider} from "../../connection-provider";
 import {Client} from "@apibrew/client";
 import {newClientByServerConfig} from "@apibrew/client/client";
 import {ClientProvider, LocalStorageTokenStorage} from "@apibrew/react";
 import toast from "react-hot-toast";
+import {ConnectionContext} from "../../context/ConnectionContext";
 
 
 export function DashboardPage() {
     const params = useParams()
     const connectionName = params['connectionName']!
 
-    const [client, setClient] = React.useState<Client>()
+    const [client, setClient] = useState<Client>()
+    const [connection, setConnection] = useState<Connection>()
 
     React.useEffect(() => {
         const connection = connectionProvider.getConnection(connectionName)
@@ -22,6 +24,8 @@ export function DashboardPage() {
                 window.location.href = '/connections'
                 return;
             }
+
+            setConnection(connection)
 
             newClientByServerConfig(connection.serverConfig).then(client => {
                 setClient(client)
@@ -37,9 +41,11 @@ export function DashboardPage() {
 
     return <>
         <ClientProvider value={client}>
-            {client && <DashboardLayout>
-                <Outlet/>
-            </DashboardLayout>}
+            <ConnectionContext.Provider value={connection}>
+                {client && <DashboardLayout>
+                    <Outlet/>
+                </DashboardLayout>}
+            </ConnectionContext.Provider>
         </ClientProvider>
     </>
 }

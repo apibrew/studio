@@ -13,7 +13,7 @@ export interface ConnectionProvider {
 
     allowUserSwitchConnections?: boolean;
 
-    getConnection(name: string): Promise<Connection | undefined>;
+    getConnection(name: string): Promise<Connection>;
 
     listConnections?(): Promise<Connection[]>;
 
@@ -31,7 +31,7 @@ let _connectionProvider: ConnectionProvider;
 if (connectionProviderName === 'LOCAL_ENV') {
     _connectionProvider = {
         allowManageConnections: true,
-        getConnection(): Promise<Connection | undefined> {
+        getConnection(): Promise<Connection> {
             return Promise.reject('Not implemented')
         }
 
@@ -64,11 +64,11 @@ if (connectionProviderName === 'LOCAL_ENV') {
             return Promise.resolve(connections);
         },
         allowManageConnections: true,
-        getConnection(name: string): Promise<Connection | undefined> {
+        getConnection(name: string): Promise<Connection> {
             const connectionStr = localStorage.getItem('connection_' + name)
 
             if (!connectionStr) {
-                return Promise.resolve(undefined)
+                return Promise.reject('Connection not found: ' + name)
             }
 
             return Promise.resolve(JSON.parse(connectionStr) as Connection);

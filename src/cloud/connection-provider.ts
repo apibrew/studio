@@ -15,11 +15,11 @@ export const cloudConnectionProvider: ConnectionProvider = {
         return []
     },
     allowManageConnections: true,
-    getConnection(name: string): Promise<Connection | undefined> {
+    getConnection(name: string): Promise<Connection> {
         const localStorageItem = localStorage.getItem(`@apibrew/client/${name}/token`)
 
         if (localStorageItem === null) {
-            return Promise.reject('Not found')
+            return Promise.reject('Not found: ' + name)
         }
 
         const tokenData = JSON.parse(localStorageItem)
