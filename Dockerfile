@@ -12,6 +12,8 @@ RUN npm i
 # Copy app files
 COPY . .
 
+RUN ls node_modules/types
+
 # Build the app
 RUN npm run build
 
