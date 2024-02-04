@@ -67,3 +67,7 @@ declare module '*.module.sass' {
   const classes: { readonly [key: string]: string };
   export default classes;
 }
+
+declare module 'js-yaml' {
+  declare function dump(data: any): string;
+}
