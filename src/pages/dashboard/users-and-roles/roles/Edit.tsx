@@ -1,14 +1,12 @@
 'use client';
 
 import React, {useEffect, useState} from "react";
-import {useClient, useRepository} from "@apibrew/react";
-import Grid from "@mui/material/Unstable_Grid2";
+import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {Role} from "@apibrew/client/model";
 import {RoleEntityInfo} from "@apibrew/client/model/role";
 import {useNavigate, useParams} from "react-router-dom";
-import {Box, FormControl, FormHelperText, FormLabel, Stack, TextField} from "@mui/material";
-import {PermissionsInput} from "../../../../components/security/PermissionsInput";
+import {Box, Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import {RoleForm} from "../../../../components/user-and-roles/RoleForm";
 

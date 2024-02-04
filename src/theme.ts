@@ -95,17 +95,3 @@ export const theme = createTheme({
         },
     },
 });
-
-const inputSx = {
-    width: '100%',
-    padding: 0,
-    margin: 0,
-    '& .MuiInputBase-input': {
-        padding: '3px',
-        margin: 0,
-    },
-    '& .MuiSelect-select': {
-        padding: '3px',
-        margin: 0,
-    }
-}

@@ -9,11 +9,11 @@ export enum AccessLevel {
 
 export function checkResourceAccess(permissions: Permission[], resource: Resource, operation: Permission["operation"], recordId?: string): boolean {
     const matchingConstraints = permissions.filter(constraint => {
-        if (constraint.namespace && constraint.namespace != resource.namespace.name) {
+        if (constraint.namespace && constraint.namespace !== resource.namespace.name) {
             return false
         }
 
-        if (constraint.resource && constraint.resource != resource.name) {
+        if (constraint.resource && constraint.resource !== resource.name) {
             return false
         }
 
@@ -33,11 +33,11 @@ export function checkResourceAccess(permissions: Permission[], resource: Resourc
 
 export function checkResourcePropertyAccess(permissions: Permission[], resource: Resource): AccessLevel {
     const matchingConstraints = permissions.filter(constraint => {
-        if (constraint.namespace && constraint.namespace != resource.namespace.name) {
+        if (constraint.namespace && constraint.namespace !== resource.namespace.name) {
             return false
         }
 
-        if (constraint.resource && constraint.resource != resource.name) {
+        if (constraint.resource && constraint.resource !== resource.name) {
             return false
         }
 

@@ -1,6 +1,6 @@
 import {fromResource, Resource, useRepository} from "@apibrew/react";
 import React, {useEffect, useState} from "react";
-import {Box, Popover, Stack, TablePagination} from "@mui/material";
+import {Box, CircularProgress, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Add, Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
@@ -186,183 +186,183 @@ export function TableContainer(props: TableContainerProps) {
     return <>
         {drawer.render()}
         {confirmation.render()}
-            <Box className='action-bar' display='flex' p={1}>
-                <Stack direction='row' spacing={1}>
-                    <Button size='small' onClick={() => {
-                        refresh()
-                    }}>
-                        <Refresh fontSize='small'/>
-                        <span style={{marginLeft: '3px'}}>Refresh</span>
-                    </Button>
-                    <Button size='small' onClick={(event) => {
-                        setFiltersAnchor(event.currentTarget);
-                    }}>
-                        <FilterList fontSize='small'/>
-                        <span style={{marginLeft: '3px'}}>Filter</span>
-                        {listParams.query && <span style={{marginLeft: '3px'}}>({filterCount})</span>}
-                    </Button>
-                    <Button size='small' onClick={(event) => {
-                        setSortingAnchor(event.currentTarget);
-                    }}>
-                        <Sort fontSize='small'/>
-                        <span style={{marginLeft: '3px'}}>Sorting</span>
-                        {listParams.sorting && <span style={{marginLeft: '3px'}}>({sortingCount})</span>}
-                    </Button>
-                    {selectedItems.length === 0 && <>
-                        <Button color='success'
-                                size='small'
-                                onClick={() => {
-                                    if (updates['new']) {
-                                        toast.error('Please save the new record first')
-                                        return
-                                    }
-
-                                    const newRecord: any = {
-                                        id: 'new',
-                                    }
-
-                                    for (const propertyName of Object.keys(resource.properties)) {
-                                        const property = resource.properties[propertyName]
-
-                                        if (property.defaultValue) {
-                                            newRecord[propertyName] = property.defaultValue
-                                        }
-                                    }
-
-                                    setRecords([newRecord, ...records!])
-                                    setUpdates({
-                                        ...updates,
-                                        new: {}
-                                    })
-                                }}>
-                            <Add fontSize='small'/>
-                            <span style={{marginLeft: '3px'}}>Add</span>
-                        </Button>
-                    </>}
-                    {!resource.immutable && selectedItems.length > 0 && <>
-                        <Button color='warning' size='small'>
-                            <Domain fontSize='small'/>
-                            <span style={{marginLeft: '3px'}}>Yaml</span>
-                        </Button>
-                        <Button color='error' size='small' onClick={() => {
-                            handleDelete()
-                        }}>
-                            <Remove fontSize='small'/>
-                            <span style={{marginLeft: '3px'}}>Delete</span>
-                        </Button>
-                    </>}
-                    {Object.keys(updates).length > 0 && <>
-                        <Button
-                            style={{
-                                marginLeft: '40px'
-                            }}
+        <Box className='action-bar' display='flex' p={1}>
+            <Stack direction='row' spacing={1}>
+                <Button size='small' onClick={() => {
+                    refresh()
+                }}>
+                    <Refresh fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Refresh</span>
+                </Button>
+                <Button size='small' onClick={(event) => {
+                    setFiltersAnchor(event.currentTarget);
+                }}>
+                    <FilterList fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Filter</span>
+                    {listParams.query && <span style={{marginLeft: '3px'}}>({filterCount})</span>}
+                </Button>
+                <Button size='small' onClick={(event) => {
+                    setSortingAnchor(event.currentTarget);
+                }}>
+                    <Sort fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Sorting</span>
+                    {listParams.sorting && <span style={{marginLeft: '3px'}}>({sortingCount})</span>}
+                </Button>
+                {selectedItems.length === 0 && <>
+                    <Button color='success'
+                            size='small'
                             onClick={() => {
-                                handleSave()
-                            }}
-                            color='success'
-                            size='small'>
-                            <Domain fontSize='small'/>
-                            <span style={{marginLeft: '3px'}}>Save</span>
-                            <span style={{marginLeft: '3px'}}>({Object.keys(updates).length})</span>
-                        </Button>
-                        <Button color='warning' size='small'
-                                onClick={() => {
-                                    setUpdates({})
-                                }}>
-                            <Remove fontSize='small'/>
-                            <span style={{marginLeft: '3px'}}>Revert</span>
-                        </Button>
-                    </>}
-                </Stack>
-                <Box flexGrow={1}/>
-                {props.commonButtons}
-            </Box>
-            <Popover
-                open={Boolean(filtersAnchor)}
-                anchorEl={filtersAnchor}
-                onClose={() => setFiltersAnchor(undefined)}
-                anchorPosition={{
-                    top: 200,
-                    left: 200
+                                if (updates['new']) {
+                                    toast.error('Please save the new record first')
+                                    return
+                                }
+
+                                const newRecord: any = {
+                                    id: 'new',
+                                }
+
+                                for (const propertyName of Object.keys(resource.properties)) {
+                                    const property = resource.properties[propertyName]
+
+                                    if (property.defaultValue) {
+                                        newRecord[propertyName] = property.defaultValue
+                                    }
+                                }
+
+                                setRecords([newRecord, ...records!])
+                                setUpdates({
+                                    ...updates,
+                                    new: {}
+                                })
+                            }}>
+                        <Add fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Add</span>
+                    </Button>
+                </>}
+                {!resource.immutable && selectedItems.length > 0 && <>
+                    <Button color='warning' size='small'>
+                        <Domain fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Yaml</span>
+                    </Button>
+                    <Button color='error' size='small' onClick={() => {
+                        handleDelete()
+                    }}>
+                        <Remove fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Delete</span>
+                    </Button>
+                </>}
+                {Object.keys(updates).length > 0 && <>
+                    <Button
+                        style={{
+                            marginLeft: '40px'
+                        }}
+                        onClick={() => {
+                            handleSave()
+                        }}
+                        color='success'
+                        size='small'>
+                        <Domain fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Save</span>
+                        <span style={{marginLeft: '3px'}}>({Object.keys(updates).length})</span>
+                    </Button>
+                    <Button color='warning' size='small'
+                            onClick={() => {
+                                setUpdates({})
+                            }}>
+                        <Remove fontSize='small'/>
+                        <span style={{marginLeft: '3px'}}>Revert</span>
+                    </Button>
+                </>}
+            </Stack>
+            <Box flexGrow={1}/>
+            {props.commonButtons}
+        </Box>
+        <Popover
+            open={Boolean(filtersAnchor)}
+            anchorEl={filtersAnchor}
+            onClose={() => setFiltersAnchor(undefined)}
+            anchorPosition={{
+                top: 200,
+                left: 200
+            }}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+        >
+            <Filters resource={resource}
+                     query={listParams.query}
+                     onApply={query => {
+                         setListParams({
+                             ...listParams,
+                             query: query
+                         })
+                         setFiltersAnchor(undefined)
+                         refresh()
+                     }}/>
+        </Popover>
+        <Popover
+            open={Boolean(sortingAnchor)}
+            anchorEl={sortingAnchor}
+            onClose={() => setSortingAnchor(undefined)}
+            anchorPosition={{
+                top: 200,
+                left: 200
+            }}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+        >
+            <Sorting resource={resource}
+                     sorts={listParams.sorting}
+                     onApply={sorting => {
+                         setListParams({
+                             ...listParams,
+                             sorting
+                         })
+                         setFiltersAnchor(undefined)
+                         refresh()
+                     }}/>
+        </Popover>
+        <Box display='flex' flexDirection='row' flexGrow={1} className='data-table' marginLeft={2}
+             style={{overflow: 'auto', height: '1px'}}>
+            <DataTableTable
+                offset={listParams.offset ?? 0}
+                selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
+                resource={resource}
+                schema={resource}
+                updateSchema={resource => {
+                    setResource(resource as Resource)
+                    resourceRepository.update(resource as Resource)
+                    refresh()
                 }}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-            >
-                <Filters resource={resource}
-                         query={listParams.query}
-                         onApply={query => {
-                             setListParams({
-                                 ...listParams,
-                                 query: query
-                             })
-                             setFiltersAnchor(undefined)
-                             refresh()
-                         }}/>
-            </Popover>
-            <Popover
-                open={Boolean(sortingAnchor)}
-                anchorEl={sortingAnchor}
-                onClose={() => setSortingAnchor(undefined)}
-                anchorPosition={{
-                    top: 200,
-                    left: 200
-                }}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-            >
-                <Sorting resource={resource}
-                         sorts={listParams.sorting}
-                         onApply={sorting => {
-                             setListParams({
-                                 ...listParams,
-                                 sorting
-                             })
-                             setFiltersAnchor(undefined)
-                             refresh()
-                         }}/>
-            </Popover>
-            <Box display='flex' flexGrow={1} className='data-table' marginLeft={2}
-                 style={{overflow: 'auto', height: '1px'}}>
-                {!loading && <DataTableTable
-                    offset={listParams.offset ?? 0}
-                    selectedItems={selectedItems}
-                    setSelectedItems={setSelectedItems}
-                    resource={resource}
-                    schema={resource}
-                    updateSchema={resource => {
-                        setResource(resource as Resource)
-                        resourceRepository.update(resource as Resource)
-                        refresh()
-                    }}
-                    updates={updates}
-                    setUpdates={setUpdates}
-                    records={records}
-                    onAddColumnClick={handleAddColumnClick}
-                    onEditColumnClick={handleEditColumnClick}
-                />}
-                {loading && <LoadingOverlay/>}
-            </Box>
-            {!loading && <TablePagination component="div"
-                                          count={total!}
-                                          showFirstButton={true}
-                                          showLastButton={true}
-                                          page={Math.ceil(listParams.offset! / listParams.limit!)}
-                                          rowsPerPage={listParams.limit!}
-                                          onRowsPerPageChange={(event) => {
-                                              setListParams({
-                                                  ...listParams,
-                                                  limit: parseInt(event.target.value)
-                                              })
-                                          }}
-                                          onPageChange={(event, page) => {
-                                              setListParams({
-                                                  ...listParams,
-                                                  offset: (page * listParams.limit!)
-                                              })
-                                          }}/>}
+                loading={loading}
+                updates={updates}
+                setUpdates={setUpdates}
+                records={records}
+                onAddColumnClick={handleAddColumnClick}
+                onEditColumnClick={handleEditColumnClick}
+            />
+        </Box>
+        {<TablePagination component="div"
+                                      count={total || 0}
+                                      showFirstButton={true}
+                                      showLastButton={true}
+                                      page={Math.ceil((listParams.offset || 0) / (listParams.limit || defaultListParams.limit))}
+                                      rowsPerPage={listParams.limit || defaultListParams.limit}
+                                      onRowsPerPageChange={(event) => {
+                                          setListParams({
+                                              ...listParams,
+                                              limit: parseInt(event.target.value)
+                                          })
+                                      }}
+                                      onPageChange={(event, page) => {
+                                          setListParams({
+                                              ...listParams,
+                                              offset: (page * listParams.limit!)
+                                          })
+                                      }}/>}
     </>
 }

@@ -1,4 +1,4 @@
-import {Box, Checkbox, IconButton, Tooltip} from "@mui/material";
+import {Box, Checkbox, CircularProgress, IconButton, Tooltip} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
 import {
@@ -19,6 +19,7 @@ import './Table.scss'
 import {Schema} from "../../../types/schema";
 import {ensureGivenPropertiesOrder} from "../../../util/resource";
 import {Type} from "@apibrew/client/model/resource";
+import {LoadingOverlay} from "../../LoadingOverlay";
 
 export interface DataTableTableProps {
     resource: Resource
@@ -32,6 +33,7 @@ export interface DataTableTableProps {
     setSelectedItems: (selectedItems: string[]) => void
     onAddColumnClick: () => void
     onEditColumnClick: (property: string) => void
+    loading?: boolean
 }
 
 export function DataTableTable(props: DataTableTableProps) {
@@ -126,7 +128,7 @@ export function DataTableTable(props: DataTableTableProps) {
     }, [props.selectedItems])
 
     const allExpanded = useMemo(() => {
-        return Object.keys(expandedRecords).length === props.records.length
+        return props.records.length > 0 && Object.keys(expandedRecords).length === props.records.length
     }, [props.records, expandedRecords])
 
     if (properties.length === 0) return <></>
@@ -136,7 +138,7 @@ export function DataTableTable(props: DataTableTableProps) {
             <Box display='flex' flexDirection='row' className='row row-header'>
                 <Box width='75px' className='cell header-cell'>
                     <Box className='cell-inner'>
-                        <Checkbox checked={props.selectedItems.length === props.records.length}
+                        <Checkbox checked={props.selectedItems.length > 0 && props.selectedItems.length === props.records.length}
                                   sx={{
                                       padding: 0
                                   }}
@@ -216,6 +218,7 @@ export function DataTableTable(props: DataTableTableProps) {
                     </IconButton>
                 </Box>
             </Box>
+            {props.loading && <LoadingOverlay/>}
             <Box display='flex' flexGrow={1} flexDirection='column'>
                 <Box display='flex' flexDirection='column'>
                     {props.records.map((record, index) => (
