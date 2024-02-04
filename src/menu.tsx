@@ -56,11 +56,11 @@ export const menuItems: MenuItem[] = [
         path: '/dashboard/monitoring',
         icon: <Monitor/>
     },
-    {
-        title: 'Settings',
-        path: '/dashboard/settings',
-        icon: <Settings/>
-    },
+    // {
+    //     title: 'Settings',
+    //     path: '/dashboard/settings',
+    //     icon: <Settings/>
+    // },
     {
         title: 'User Profile',
         path: '/dashboard/user-profile',

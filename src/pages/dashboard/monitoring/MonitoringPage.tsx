@@ -37,8 +37,8 @@ export default function MonitoringPage() {
                     }}>
                     <Tab value='audit' label="Audit Logs"/>
                     <Tab value='logs' label="Application Logs"/>
-                    <Tab value='metrics' label="Metrics"/>
-                    <Tab value='stats' label="Stats"/>
+                    {/*<Tab value='metrics' label="Metrics"/>*/}
+                    {/*<Tab value='stats' label="Stats"/>*/}
                 </Tabs>
                 <Box flexGrow={1}/>
             </Box>
