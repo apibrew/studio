@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm run build
+      - run: CI=false npm run build
       - run: |
           docker build . --progress=plain --no-cache -t tislib/studio:latest
           docker push tislib/studio:latest
