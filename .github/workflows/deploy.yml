@@ -26,6 +26,11 @@ jobs:
             return context.payload.ref.replace(/\/refs\/tags\//, '');
       - name: Build the Docker image
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm build
       - run: |
           docker build . --progress=plain --no-cache -t tislib/studio:latest
           docker push tislib/studio:latest
