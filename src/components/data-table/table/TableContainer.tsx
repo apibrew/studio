@@ -1,10 +1,9 @@
 import {fromResource, Resource, useRepository} from "@apibrew/react";
 import React, {useEffect, useState} from "react";
-import {Box, CircularProgress, Popover, Stack, TablePagination} from "@mui/material";
+import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Add, Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
-import {LoadingOverlay} from "../../LoadingOverlay";
 import {Filters} from "./Filters";
 import {useQueryListParams} from "../../../hooks/use-query-list-params";
 import {useConfirmation} from "../../modal/use-confirmation";
@@ -14,6 +13,7 @@ import {ColumnDrawer} from "../column-drawer/ColumnDrawer";
 import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Property} from "@apibrew/client/model";
 import {Sorting} from "./Sorting";
+import {useAnalytics} from "../../../hooks/use-analytics";
 
 export interface TableContainerProps {
     resource: Resource
@@ -40,16 +40,19 @@ export function TableContainer(props: TableContainerProps) {
     const [total, setTotal] = useState<number>()
     const [selectedItems, setSelectedItems] = useState<string[]>([])
     const drawer = useDrawer()
+    const analytics = useAnalytics()
 
     const loading = total === undefined
 
     function refresh() {
+        analytics.click('action', 'refresh')
         setRecords([])
         setTotal(undefined)
         setRefreshIndex(refreshIndex + 1)
     }
 
     function handleDelete() {
+        analytics.click('action', 'delete')
         const deleteFn = async function (): Promise<unknown> {
             for (const id of selectedItems) {
                 await repository.delete(id)
@@ -78,6 +81,7 @@ export function TableContainer(props: TableContainerProps) {
     }
 
     async function handleSave() {
+        analytics.click('action', 'save')
         let isSuccess = true
         let sc = 0
         const loadingId = toast.loading('Saving records...')
@@ -115,6 +119,7 @@ export function TableContainer(props: TableContainerProps) {
     }
 
     function handleAddColumnClick() {
+        analytics.click('action', 'add-column-open')
         drawer.open(
             <ColumnDrawer new={true}
                           propertyName={'new'}
@@ -131,6 +136,7 @@ export function TableContainer(props: TableContainerProps) {
     }
 
     function handleEditColumnClick(property: string) {
+        analytics.click('action', 'edit-column-open')
         drawer.open(
             <ColumnDrawer new={false}
                           propertyName={property}
@@ -181,8 +187,6 @@ export function TableContainer(props: TableContainerProps) {
     const filterCount = listParams.query ? listParams.query.and ? listParams.query.and.length : 1 : 0
     const sortingCount = listParams.sorting ? listParams.sorting ? listParams.sorting.length : 1 : 0
 
-    console.log('sortingCount', sortingCount)
-
     return <>
         {drawer.render()}
         {confirmation.render()}
@@ -196,6 +200,7 @@ export function TableContainer(props: TableContainerProps) {
                 </Button>
                 <Button size='small' onClick={(event) => {
                     setFiltersAnchor(event.currentTarget);
+                    analytics.click('action', 'filters-open')
                 }}>
                     <FilterList fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Filter</span>
@@ -203,6 +208,7 @@ export function TableContainer(props: TableContainerProps) {
                 </Button>
                 <Button size='small' onClick={(event) => {
                     setSortingAnchor(event.currentTarget);
+                    analytics.click('action', 'sorting-open')
                 }}>
                     <Sort fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Sorting</span>
@@ -240,10 +246,10 @@ export function TableContainer(props: TableContainerProps) {
                     </Button>
                 </>}
                 {!resource.immutable && selectedItems.length > 0 && <>
-                    <Button color='warning' size='small'>
-                        <Domain fontSize='small'/>
-                        <span style={{marginLeft: '3px'}}>Yaml</span>
-                    </Button>
+                    {/*<Button color='warning' size='small'>*/}
+                    {/*    <Domain fontSize='small'/>*/}
+                    {/*    <span style={{marginLeft: '3px'}}>Yaml</span>*/}
+                    {/*</Button>*/}
                     <Button color='error' size='small' onClick={() => {
                         handleDelete()
                     }}>
@@ -347,22 +353,26 @@ export function TableContainer(props: TableContainerProps) {
             />
         </Box>
         {<TablePagination component="div"
-                                      count={total || 0}
-                                      showFirstButton={true}
-                                      showLastButton={true}
-                                      page={Math.ceil((listParams.offset || 0) / (listParams.limit || defaultListParams.limit))}
-                                      rowsPerPage={listParams.limit || defaultListParams.limit}
-                                      onRowsPerPageChange={(event) => {
-                                          setListParams({
-                                              ...listParams,
-                                              limit: parseInt(event.target.value)
-                                          })
-                                      }}
-                                      onPageChange={(event, page) => {
-                                          setListParams({
-                                              ...listParams,
-                                              offset: (page * listParams.limit!)
-                                          })
-                                      }}/>}
+                          count={total || 0}
+                          showFirstButton={true}
+                          showLastButton={true}
+                          page={Math.ceil((listParams.offset || 0) / (listParams.limit || defaultListParams.limit))}
+                          rowsPerPage={listParams.limit || defaultListParams.limit}
+                          onRowsPerPageChange={(event) => {
+                              const rowsPerPage = parseInt(event.target.value)
+
+                              setListParams({
+                                  ...listParams,
+                                  limit: rowsPerPage
+                              })
+                              analytics.click('action', 'change-page', rowsPerPage)
+                          }}
+                          onPageChange={(event, page) => {
+                              setListParams({
+                                  ...listParams,
+                                  offset: (page * listParams.limit!)
+                              })
+                              analytics.click('action', 'change-page', page)
+                          }}/>}
     </>
 }

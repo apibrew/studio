@@ -61,6 +61,7 @@ export function DataTable(props: DataTableProps) {
                                       mode: 'data'
                                   })
                                   props.reloadResource?.()
+                                  analytics.click('tab', 'data')
                               }}
                               size='small'>
                     <DataArray fontSize='small'/>
@@ -88,6 +89,7 @@ export function DataTable(props: DataTableProps) {
                                       mode: 'schema-new'
                                   })
                                   props.reloadResource?.()
+                                  analytics.click('tab', 'schema')
                               }}
                               size='small'>
                     <Schema fontSize='small'/>

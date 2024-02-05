@@ -9,6 +9,7 @@ import {Comment, Parser} from "acorn";
 import {generate, GENERATOR} from "astring";
 import {ValidateProperty} from "./templates/validate-property";
 import {traverse} from "estraverse";
+import {useAnalytics} from "../../hooks/use-analytics";
 
 export interface NanoFormProps {
     resource?: Resource
@@ -24,6 +25,7 @@ export function NanoForm(props: NanoFormProps) {
             new ValidateProperty(props.resource)
         ]
     }, [props.resource])
+    const analytics = useAnalytics()
 
     const lineCount = useMemo(() => props.code.content.split("\n").length, [props.code.content]);
     // create array
@@ -83,7 +85,7 @@ export function NanoForm(props: NanoFormProps) {
             content: generated
         })
 
-        // setSelectedTemplate(undefined)
+        setSelectedTemplate(undefined)
     }
 
     return <>
@@ -148,6 +150,7 @@ export function NanoForm(props: NanoFormProps) {
                             value={selectedTemplate ?? ''}
                             onChange={e => {
                                 setSelectedTemplate(e.target.value as string)
+                                analytics.click('choose-template', e.target.value as string)
                             }}>
                             <MenuItem>---</MenuItem>
                             {templates.map(t => <MenuItem key={t.label} value={t.label}>{t.label}</MenuItem>)}
@@ -159,6 +162,7 @@ export function NanoForm(props: NanoFormProps) {
                         </Box>
                         <Box marginTop='20px'>
                             <Button onClick={() => {
+                                analytics.click('apply-template', selectedTemplate)
                                 handleApplyTemplate()
                             }}>Apply Template</Button>
                         </Box>
