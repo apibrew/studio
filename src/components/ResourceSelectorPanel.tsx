@@ -23,12 +23,14 @@ import {useDrawer} from "../hooks/use-drawer";
 import {NamespaceDrawer} from "./namespace-drawer/NamespaceDrawer";
 import Button from "@mui/material/Button";
 import {ResourceDrawer} from "./resource-drawer/ResourceDrawer";
+import {useAnalytics} from "../hooks/use-analytics";
 
 export function ResourceSelectorPanel() {
     const params = useParams()
     const navigate = useNavigate()
     const drawer = useDrawer()
     const connectionName = params['connectionName']
+    const analytics = useAnalytics()
 
     const [namespace, setNamespace] = useState<Namespace>({
         name: 'default'
@@ -118,6 +120,8 @@ export function ResourceSelectorPanel() {
                                         onClick={() => {
                                             const url = (connectionName ? `/${connectionName}` : ``) + `/dashboard/resources/${namespace.name}/${resource.name}`
                                             navigate(url)
+
+                                            analytics.click('resource', resource.name)
                                         }}>
                             <Icon sx={{
                                 marginRight: 0.6

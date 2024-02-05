@@ -10,6 +10,7 @@ import {ApiDocModal} from "../api-doc/ApiDocModal";
 import {SchemaContainer as SchemaContainerNew} from "./schema-new/SchemaContainer";
 import {useDrawer} from "../../hooks/use-drawer";
 import {ResourceNanoDrawer} from "../resource-nano-drawer/ResourceNanoDrawer";
+import {useAnalytics} from "../../hooks/use-analytics";
 
 export interface DataTableProps {
     resource: Resource
@@ -21,6 +22,7 @@ export function DataTable(props: DataTableProps) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [mode, setMode] = useState<'data' | 'schema' | 'schema-new'>(searchParams.get('mode') === 'schema-new' ? 'schema-new' : 'data')
     const [apiDocOpen, setApiDocOpen] = useState<boolean>(false)
+    const analytics = useAnalytics()
 
     const commonButtons = (
         <Stack direction='row' spacing={1}>
@@ -33,6 +35,8 @@ export function DataTable(props: DataTableProps) {
                                 resource={props.resource.name}
                                 onClose={drawer.close}/>
                         )
+
+                        analytics.click('nano-code')
                     }}>
                 <Code fontSize='small'/>
                 <span style={{marginLeft: '3px'}}>Nano code</span>
@@ -41,6 +45,8 @@ export function DataTable(props: DataTableProps) {
                     size='small'
                     onClick={() => {
                         setApiDocOpen(true)
+
+                        analytics.click('api-doc')
                     }}>
                 <Api fontSize='small'/>
                 <span style={{marginLeft: '3px'}}>Api Doc</span>

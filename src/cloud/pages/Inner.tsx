@@ -6,10 +6,12 @@ import {LoadingOverlay} from "../../components/LoadingOverlay";
 import {Box, Tab, Tabs} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useClient} from "@apibrew/react";
+import {useAnalytics} from "../../hooks/use-analytics";
 
 export function InnerPage() {
     const tab = useRouteTab()
     const navigate = useNavigate()
+    const analytics = useAnalytics()
     const client = useClient()
 
     useEffect(() => {
@@ -50,6 +52,8 @@ export function InnerPage() {
                     }
 
                     navigate(newValue)
+
+                    analytics.click('tab', newValue)
                 }}>
                 <Tab value='instances' label="Instances"/>
                 <Tab value='invoices' label="Invoices"/>
