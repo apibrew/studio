@@ -56,7 +56,7 @@ export function InnerPage() {
                     analytics.click('tab', newValue)
                 }}>
                 <Tab value='instances' label="Instances"/>
-                <Tab value='invoices' label="Invoices"/>
+                {/*<Tab value='invoices' label="Invoices"/>*/}
             </Tabs>
             <Box flexGrow={1}/>
             <Box sx={{

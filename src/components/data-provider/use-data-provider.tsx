@@ -20,13 +20,13 @@ const initParams = {
     offset: 0
 }
 
-export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Partial<ListRecordParams>): useDataProviderResult<T> {
+export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Partial<ListRecordParams>, gwi?: number): useDataProviderResult<T> {
     const repository = useRepository(entityInfo)
     const [listParams, setListParams] = useQueryListParams({...initParams, ...defaultParams})
     const [records, setRecords] = useState<any[]>([])
     const [total, setTotal] = useState<number>()
     const loading = total === undefined
-    const [wi, setWi] = useState(0)
+    const [wi, setWi] = useState(gwi || 0)
 
     useEffect(() => {
         setRecords([])
@@ -60,6 +60,7 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
                                               showLastButton={true}
                                               page={Math.ceil(listParams.offset! / listParams.limit!)}
                                               rowsPerPage={listParams.limit!}
+                                              rowsPerPageOptions={[10, 25, 50, 100, 1000]}
                                               onRowsPerPageChange={(event) => {
                                                   setListParams({
                                                       ...listParams,
