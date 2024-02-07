@@ -1,6 +1,5 @@
 import {Statement} from "acorn";
 import {Ast} from "./abs";
-import {type} from "node:os";
 
 export interface AstMatch {
     statement: Statement
@@ -132,7 +131,7 @@ export function astMatcher(ast: Ast, statement: Partial<Statement>): AstMatcherR
 
     console.log(ast.body)
 
-    for (let i = 0; i < ast.body.length; i++){
+    for (let i = 0; i < ast.body.length; i++) {
         const node = ast.body[i];
         const matchPart = matchAny(node as Statement, statement)
         console.debug('astMatcher matchPart', matchPart)
@@ -148,6 +147,18 @@ export function astMatcher(ast: Ast, statement: Partial<Statement>): AstMatcherR
     console.debug('astMatcher result', result)
 
     return result
+}
+
+export function ensureStatement(ast: Ast, matcherStatement: Partial<Statement>, applyStatement: Statement): Statement {
+    const matches = astMatcher(ast, matcherStatement)
+
+    if (matches.matches.length > 0) {
+        return matches.matches[0].statement
+    }
+
+    ast.body.push(applyStatement)
+
+    return applyStatement
 }
 
 export function capture<T>(extractName: string): T {
@@ -170,6 +181,7 @@ export function any<T>(): T {
         $any: true
     } as T
 }
+
 
 export function concat(left: string, right: string): string {
     return {

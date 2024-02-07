@@ -2,11 +2,12 @@ import React from "react";
 import {NanoCodeTemplate} from "./abs";
 import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
-import {Program} from 'acorn'
 import {Resource} from "@apibrew/react";
 import {Box, FormLabel, MenuItem, Select, TextField} from "@mui/material";
-import {applyValidatePropertyModifier, checkValidatePropertyAlreadyApplied} from "../modifiers/validate-property";
 import {sortedProperties} from "../../../util/property";
+import {NanoAstModifier} from "../../../logic/nano-ast/NanoAstModifier";
+import {ResourceHandlerType} from "../../../logic/nano-ast/abs";
+import {BinaryOperator} from "acorn";
 
 export interface RenderParamsProps {
     resource: Resource | undefined
@@ -120,16 +121,16 @@ export class ValidateProperty implements NanoCodeTemplate {
     label: string = 'Validate Property';
 
     resource?: Resource
-    property?: string;
-    operator?: string;
-    value?: string;
+    property?: string = 'version';
+    operator?: string = '==';
+    value?: string = '1';
     errorMessage?: string;
 
     constructor(resource?: Resource) {
         this.resource = resource
     }
 
-    check(ast: Program): boolean {
+    apply(modifier: NanoAstModifier): boolean {
         if (!this.resource) {
             toast.error('Resource is required')
             return false
@@ -154,31 +155,31 @@ export class ValidateProperty implements NanoCodeTemplate {
             this.errorMessage = 'Invalid value'
         }
 
-        if (checkValidatePropertyAlreadyApplied(ast, {
-            resource: this.resource.name!,
-            namespace: this.resource.namespace.name!,
-            propertyName: this.property!,
-            operator: this.operator!,
-            value: this.value!,
-            propertyType: this.resource?.properties[this.property!]?.type!,
-        })) {
-            toast.error('Rule already imported')
-            return false
-        }
+        modifier.declareResource(this.resource)
+
+        const validateMethodName = "validate" + this.resource.name
+
+        modifier.declareFunction(validateMethodName, [modifier.resourceItemName(this.resource)], methodModifier => {
+            methodModifier.if(
+                methodModifier.binaryStatement(
+                    methodModifier.property(methodModifier.item(), this.property!),
+                    methodModifier.value(this.value),
+                    this.operator as BinaryOperator
+                ),
+                scopeModifier => {
+                    scopeModifier.throwError(this.errorMessage!)
+                })
+        })
+
+        modifier.resourceHandler(this.resource, ResourceHandlerType.BEFORE_CREATE, methodModifier => {
+            methodModifier.callMethod(validateMethodName, methodModifier.item())
+        })
+
+        modifier.resourceHandler(this.resource, ResourceHandlerType.BEFORE_UPDATE, methodModifier => {
+            methodModifier.callMethod(validateMethodName, methodModifier.item())
+        })
 
         return true
-    }
-
-    apply(ast: Program): void {
-        applyValidatePropertyModifier(ast, {
-            resource: this.resource?.name!,
-            namespace: this.resource?.namespace.name!,
-            propertyName: this.property!,
-            operator: this.operator!,
-            value: this.value!,
-            errorMessage: this.errorMessage!,
-            propertyType: this.resource?.properties[this.property!]?.type!,
-        })
     }
 
     renderParams() {

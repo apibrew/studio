@@ -2,10 +2,9 @@ import React from "react";
 import {NanoCodeTemplate} from "./abs";
 import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
-import {Program} from 'acorn'
-import {applyUseResourceModifier, checkUseResourceModifierAlreadyApplied} from "../modifiers/use-resource";
 import {Resource} from "@apibrew/react";
-import { FormLabel } from "@mui/material";
+import {FormLabel} from "@mui/material";
+import {NanoAstModifier} from "../../../logic/nano-ast/NanoAstModifier";
 
 export interface RenderParamsProps {
     resource: Resource | undefined
@@ -37,32 +36,17 @@ export class UseResource implements NanoCodeTemplate {
         this.resource = resource
     }
 
-    check(ast: Program): boolean {
+    label: string = 'Use Resource';
+
+    apply(modifier: NanoAstModifier): boolean {
         if (!this.resource) {
             toast.error('Resource is required')
             return false
         }
 
-        // check import from ast
-
-        if (checkUseResourceModifierAlreadyApplied(ast, {
-            resource: this.resource.name!,
-            namespace: this.resource.namespace.name!,
-        })) {
-            toast.error('Resource already imported')
-            return false
-        }
+        modifier.declareResource(this.resource)
 
         return true
-    }
-
-    label: string = 'Use Resource';
-
-    apply(ast: Program): void {
-        applyUseResourceModifier(ast, {
-            resource: this.resource!.name,
-            namespace: this.resource!.namespace.name,
-        })
     }
 
     renderParams() {

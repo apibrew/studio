@@ -1,11 +1,12 @@
 import {capture, concat, or} from "./matcher";
-import {Expression, Identifier, Statement, VariableDeclarator} from "acorn";
+import {Expression, FunctionDeclaration, FunctionExpression, Identifier, Statement, VariableDeclarator} from "acorn";
+import {Resource} from "@apibrew/react";
 
-export const resourceMatcher = (namespace: string, resource: string) => {
-    let resourceArgument = namespace + '/' + resource
+export const resourceMatcher = (resource: Resource) => {
+    let resourceArgument = resource.namespace.name + '/' + resource.name
 
-    if (namespace === 'default') {
-        resourceArgument = or(resourceArgument, resource)
+    if (resource.namespace.name === 'default') {
+        resourceArgument = or(resourceArgument, resource.name)
     }
 
     return {
@@ -35,7 +36,7 @@ export const resourceMatcher = (namespace: string, resource: string) => {
     } as Statement
 }
 
-export const resourceHandlerMethodMatcher = (resourceVarName: string, resourceItemVarName: string) => {
+export const resourceHandlerMethodMatcher = (resourceVarName: string, handlerMethodName: string) => {
     return {
         "type": "ExpressionStatement",
         "expression": {
@@ -48,7 +49,7 @@ export const resourceHandlerMethodMatcher = (resourceVarName: string, resourceIt
                 },
                 "property": {
                     "type": "Identifier",
-                    "name": resourceItemVarName
+                    "name": handlerMethodName
                 },
             },
             "arguments": [
@@ -66,21 +67,8 @@ export const resourceHandlerMethodMatcher = (resourceVarName: string, resourceIt
     } as Statement
 }
 
-export const validateMethodMatcher = (resource: string, itemVarName: string) => {
+export const functionCallMatcher = () => {
     return {
-        "type": "ExpressionStatement",
-        "expression": {
-            "type": "CallExpression",
-            "callee": {
-                "type": "Identifier",
-                "name": concat("validate", resource)
-            },
-            "arguments": [
-                {
-                    "type": "Identifier",
-                    "name": itemVarName
-                }
-            ]
-        }
-    } as Statement
+        "type": "FunctionDeclaration",
+    } as FunctionDeclaration
 }

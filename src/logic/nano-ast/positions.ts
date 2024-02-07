@@ -1,23 +1,33 @@
-import {Ast, SectionDetails} from "./abs";
-import {resourceMatcher, validateMethodMatcher} from "./matchers";
-import {any, astMatcher} from "./matcher";
 import {Statement} from "acorn";
+import {Resource} from "@apibrew/react";
+import {Ast, SectionDetails} from "./abs";
+import {any, astMatcher} from "./matcher";
+import {
+    functionCallMatcher,
+    resourceHandlerMethodMatcher,
+    resourceMatcher,
+} from "./matchers";
 
 export const sections: SectionDetails[] = [
     {
         key: 'resources',
         comment: 'Resources',
-        matcherStatement: resourceMatcher('default', any()),
+        matcherStatement: resourceMatcher({
+            name: any(),
+            namespace: {
+                name: 'default'
+            }
+        } as Resource),
     },
     {
-        key: 'validators',
+        key: 'functions',
         comment: 'Resource Validation Functions',
-        matcherStatement: validateMethodMatcher(any(), any()),
+        matcherStatement: functionCallMatcher(),
     },
     {
         key: 'handlers',
         comment: 'Resource Handlers',
-        matcherStatement: validateMethodMatcher(any(), any()),
+        matcherStatement: resourceHandlerMethodMatcher(any(), any()),
     }
 ]
 

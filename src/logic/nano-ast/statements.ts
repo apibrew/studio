@@ -1,10 +1,11 @@
 import {Statement} from "acorn";
+import {Resource} from "@apibrew/react";
 
-export const resourceStatement = (namespace: string, resource: string) => {
-    let resourceArgument = namespace + '/' + resource
+export const resourceStatement = (resource: Resource) => {
+    let resourceArgument = resource.namespace.name + '/' + resource.name
 
-    if (namespace === 'default') {
-        resourceArgument = resource
+    if (resource.namespace.name === 'default') {
+        resourceArgument = resource.name
     }
 
     return {
@@ -15,7 +16,7 @@ export const resourceStatement = (namespace: string, resource: string) => {
                 type: 'VariableDeclarator',
                 id: {
                     type: 'Identifier',
-                    name: resource
+                    name: resource.name
                 },
                 init: {
                     type: 'CallExpression',
@@ -70,14 +71,14 @@ export const resourceHandlerMethodStatement = (resourceVarName: string, handlerM
     } as Statement
 }
 
-export const validateMethodStatement = (resource: string, itemVarName: string) => {
+export const validateMethodCallStatement = (resourceName: string, itemVarName: string) => {
     return {
         "type": "ExpressionStatement",
         "expression": {
             "type": "CallExpression",
             "callee": {
                 "type": "Identifier",
-                "name": "validate" + resource
+                "name": "validate" + resourceName
             },
             "arguments": [
                 {

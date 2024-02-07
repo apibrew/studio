@@ -10,12 +10,14 @@ export const getAnnotation = (annotations: Annotations | undefined, annotation: 
     return annotations?.[annotation] ?? defaultValue ?? '';
 }
 
-export const withAnnotation = (annotations: Annotations | undefined, annotation: string, value: string): Annotations => {
-    if (!annotations) {
-        annotations = {};
+export const withBooleanAnnotation = (annotations: Annotations | undefined, annotation: string, value: boolean): Annotations => {
+    const newAnnotations: Annotations = annotations ? {...annotations} : {};
+
+    if (value) {
+        newAnnotations[annotation] = "true";
+    } else {
+        delete (newAnnotations[annotation])
     }
 
-    annotations[annotation] = value;
-
-    return annotations;
+    return newAnnotations;
 }

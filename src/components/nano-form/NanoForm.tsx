@@ -10,6 +10,9 @@ import {generate, GENERATOR} from "astring";
 import {ValidateProperty} from "./templates/validate-property";
 import {traverse} from "estraverse";
 import {useAnalytics} from "../../hooks/use-analytics";
+import {BindResource} from "./templates/bind-resource";
+import {NanoCodeTemplate} from "./templates/abs";
+import {NanoAstModifier} from "../../logic/nano-ast/NanoAstModifier";
 
 export interface NanoFormProps {
     resource?: Resource
@@ -19,10 +22,11 @@ export interface NanoFormProps {
 }
 
 export function NanoForm(props: NanoFormProps) {
-    const templates = useMemo(() => {
+    const templates = useMemo<NanoCodeTemplate[]>(() => {
         return [
-            new UseResource(props.resource),
-            new ValidateProperty(props.resource)
+            new UseResource(props.resource) as NanoCodeTemplate,
+            new ValidateProperty(props.resource) as NanoCodeTemplate,
+            new BindResource(props.resource) as NanoCodeTemplate,
         ]
     }, [props.resource])
     const analytics = useAnalytics()
@@ -56,13 +60,13 @@ export function NanoForm(props: NanoFormProps) {
             onComment: comments
         })
 
-        if (!template.check(ast)) {
+        const nanoAstModifier = new NanoAstModifier(ast)
+
+        if (!template.apply(nanoAstModifier)) {
             return
         }
 
         const astAny = ast as any
-
-        template.apply(ast)
 
         insertEmptyStatements(ast)
 
@@ -85,7 +89,7 @@ export function NanoForm(props: NanoFormProps) {
             content: generated
         })
 
-        setSelectedTemplate(undefined)
+        // setSelectedTemplate(undefined)
     }
 
     return <>
