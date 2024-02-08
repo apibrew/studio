@@ -1,5 +1,6 @@
 import {Server} from "@apibrew/client/config";
 import {cloudConnectionProvider} from "./cloud/connection-provider";
+import {ServerConfig} from "./cloud/model/config";
 
 export interface Connection {
     name: string
@@ -30,9 +31,21 @@ let _connectionProvider: ConnectionProvider;
 
 if (connectionProviderName === 'LOCAL_ENV') {
     _connectionProvider = {
-        allowManageConnections: true,
         getConnection(): Promise<Connection> {
-            return Promise.reject('Not implemented')
+            return Promise.resolve({
+                name: "local",
+                serverConfig: {
+                    name: 'local',
+                    host: process.env.REACT_APP_APBR_HOST,
+                    httpPort: parseInt(process.env.REACT_APP_APBR_HTTP_PORT || "9009"),
+                    insecure: process.env.REACT_APP_APBR_INSECURE === "true",
+                    authentication: {
+                        token: process.env.REACT_APP_APBR_AUTHENTICATION_TOKEN,
+                        username: process.env.REACT_APP_APBR_AUTHENTICATION_USERNAME,
+                        password: process.env.REACT_APP_APBR_AUTHENTICATION_PASSWORD,
+                    }
+                } as ServerConfig
+            } as Connection)
         }
 
     }

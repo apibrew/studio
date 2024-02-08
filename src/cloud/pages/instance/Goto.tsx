@@ -17,12 +17,16 @@ export function Goto() {
         id: params.id
     })
 
-    async function awaitInstance(guestClient: Client) {
+    async function awaitInstance(guestClient: Client, tokenStorage: LocalStorageTokenStorage) {
         for (let i = 0; i < 20; i++) {
             try {
                 await guestClient.listResources()
                 break
-            } catch (e) {
+            } catch (e: any) {
+                if (e.code === 'AUTHENTICATION_FAILED') {
+                    tokenStorage.clear()
+                    continue
+                }
                 console.error(e)
                 await new Promise(resolve => setTimeout(resolve, 5000))
             } finally {
@@ -37,7 +41,8 @@ export function Goto() {
         }
 
         const guestClient = new ClientImpl(`https://${instance.name}.apibrew.io:8443`)
-        guestClient.useTokenStorage(new LocalStorageTokenStorage(instance.name))
+        const tokenStorage = new LocalStorageTokenStorage(instance.name)
+        guestClient.useTokenStorage(tokenStorage)
 
         const prem = toast.loading('Authenticating...')
         hostClient.listRecords<Instance>(InstanceEntityInfo, {
@@ -49,7 +54,7 @@ export function Goto() {
             if (resp.content[0].controllerAccessToken) {
                 console.log('reps', resp)
 
-                await awaitInstance(guestClient)
+                await awaitInstance(guestClient, tokenStorage)
 
                 setMessage('Authenticating...')
                 await guestClient.authenticateWithToken(resp.content[0].controllerAccessToken!)
