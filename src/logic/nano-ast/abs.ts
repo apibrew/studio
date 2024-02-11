@@ -1,4 +1,5 @@
-import {BlockStatement, Program, Statement} from "acorn";
+import {BlockStatement, Comment, Parser, Program, Statement} from "acorn";
+import {traverse} from "estraverse";
 
 export type Ast = Program | BlockStatement
 
@@ -32,4 +33,43 @@ export enum ResourceBinderType {
     DELETE = "bindDelete",
     GET = "bindGet",
     LIST = "bindList",
+}
+
+
+function insertEmptyStatements(ast: any) {
+    let lastLine = 0;
+    traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type !== 'Program' && parent?.type === 'Program') {
+                const currentLine = node.loc?.start.line ?? 0;
+                if (currentLine - lastLine > 1) {
+                    // Insert an empty statement in the parent body
+                    const index = parent.body.indexOf(node as any);
+                    parent.body.splice(index, 0, {type: "EmptyStatement"});
+                }
+                lastLine = node.loc?.end.line || 0;
+            }
+        }
+    });
+}
+
+
+export function parseNanoCode(code: string): Ast {
+    const parser = Parser.extend()
+
+    const comments: Comment[] = []
+
+    const ast = parser.parse(code, {
+        ecmaVersion: 2020,
+        locations: true,
+        onComment: comments
+    })
+
+    const astAny = ast as any
+
+    insertEmptyStatements(ast)
+
+    astAny.comments = comments
+
+    return ast
 }

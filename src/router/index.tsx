@@ -7,12 +7,13 @@ import ResourcesPage from "../pages/dashboard/resources/ResourcesPage";
 import UserProfilePage from "../pages/dashboard/user-profile/UserProfilePage";
 import {ConnectionsPage} from "../pages/connections/ConnectionsPage";
 import TestPage from "../pages/dashboard/test/TestPage";
-import {NanoRoutes} from "./nano";
 import {UserAndRolesRoutes} from "./user-and-roles";
 import {SettingsRoutes} from "./settings";
 import {MonitoringRoutes} from "./monitoring";
 import CloudIndex from '../cloud'
 import {cloudRoutes} from "../cloud/routes";
+import TemplatesPage from "../pages/dashboard/templates/IndexPage";
+import {NanoRoutes} from "./nano";
 
 export const index = createBrowserRouter([
     {
@@ -69,6 +70,13 @@ export const index = createBrowserRouter([
                 element: <UserProfilePage/>,
                 handle: {
                     breadcrumb: 'Users Profile'
+                }
+            },
+            {
+                path: "templates",
+                element: <TemplatesPage/>,
+                handle: {
+                    breadcrumb: 'Templates'
                 }
             },
             {

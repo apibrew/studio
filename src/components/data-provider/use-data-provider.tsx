@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {TablePagination} from "@mui/material";
-import {useQueryListParams} from "../../hooks/use-query-list-params";
 import {EntityInfo} from "@apibrew/client/entity-info";
 import {ListRecordParams} from "@apibrew/client";
 import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
+import {useQueryListParams} from "@apibrew/react";
 
 export interface useDataProviderResult<T> {
     records: T[]
@@ -37,7 +37,7 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
         }, err => {
             toast.error(err.message)
         })
-    }, [entityInfo, listParams, wi]);
+    }, [entityInfo.restPath, listParams, wi]);
 
     return {
         updateParams: (params: Partial<ListRecordParams>) => {

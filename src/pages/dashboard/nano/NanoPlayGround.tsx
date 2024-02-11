@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {ensureResource} from "../../../logic/ensure-resource";
-import {PlayArrow, Refresh, Star, Stop} from "@mui/icons-material";
+import {PlayArrow, Refresh, Stop} from "@mui/icons-material";
 
 export function NanoPlayGround() {
     const [items, setItems] = React.useState<PlayGround[]>()

@@ -1,10 +1,10 @@
 import React from "react";
 import {NanoCodeTemplate} from "./abs";
-import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
 import {Resource} from "@apibrew/react";
 import {FormLabel} from "@mui/material";
-import {NanoAstModifier} from "../../../logic/nano-ast/NanoAstModifier";
+import {ResourceSelect} from "../components/ResourceSelect";
+import {NanoAstModifier} from "../logic/nano-ast/NanoAstModifier";
 
 export interface RenderParamsProps {
     resource: Resource | undefined

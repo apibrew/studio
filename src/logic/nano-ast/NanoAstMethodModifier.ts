@@ -14,14 +14,20 @@ export class NanoAstMethodModifier extends AstScopeModifier {
         this.args = args
     }
 
-    item(): Expression {
+    itemName(): string {
         if (this.args.length === 0) {
             throw new Error("Method has 0 args")
         }
 
+        return this.args[0]
+    }
+
+    item(): Expression {
+        const itemName = this.itemName()
+
         return {
             type: "Identifier",
-            name: this.args[0],
+            name: itemName,
         } as Identifier
     }
 }

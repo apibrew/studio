@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 import {NanoCodeTemplate} from "./abs";
-import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
 import {Resource} from "@apibrew/react";
 import {Box, FormLabel} from "@mui/material";
-import {NanoAstModifier} from "../../../logic/nano-ast/NanoAstModifier";
-import {ResourceBinderType} from "../../../logic/nano-ast/abs";
-import {NanoAstMethodModifier} from "../../../logic/nano-ast/NanoAstMethodModifier";
-import {sortedProperties} from "../../../util/property";
 import {ExpressionStatement, Pattern} from "acorn";
+import {ResourceSelect} from "../components/ResourceSelect";
+import {NanoAstModifier} from "../logic/nano-ast/NanoAstModifier";
+import {ResourceBinderType} from "../logic/nano-ast/abs";
+import {NanoAstMethodModifier} from "../logic/nano-ast/NanoAstMethodModifier";
+import {sortedProperties} from "../util/property";
 
 export interface RenderParamsProps {
     resource: Resource | undefined

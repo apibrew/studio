@@ -1,11 +1,10 @@
-import {fromResource, Resource, useRepository} from "@apibrew/react";
+import {fromResource, Resource, useQueryListParams, useRepository} from "@apibrew/react";
 import React, {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Add, Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
-import {useQueryListParams} from "../../../hooks/use-query-list-params";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer";
@@ -54,8 +53,24 @@ export function TableContainer(props: TableContainerProps) {
     function handleDelete() {
         analytics.click('action', 'delete')
         const deleteFn = async function (): Promise<unknown> {
-            for (const id of selectedItems) {
-                await repository.delete(id)
+            const tid = toast.loading('Deleting records')
+            let deleted = 0
+            try {
+                for (const id of selectedItems) {
+                    await repository.delete(id)
+                    deleted++
+                }
+            } catch (e: any) {
+                toast.error(e.message)
+            } finally {
+                toast.dismiss(tid)
+
+                setSelectedItems([])
+                refresh()
+
+                if (deleted > 0) {
+                    toast.success(`${deleted} records deleted`)
+                }
             }
 
             return
@@ -65,17 +80,7 @@ export function TableContainer(props: TableContainerProps) {
             message: 'Are you sure you want to delete these records?',
             buttonMessage: 'Delete',
             onConfirm: () => {
-                toast.promise(
-                    deleteFn(),
-                    {
-                        loading: 'Deleting records...',
-                        success: 'Records deleted',
-                        error: err => err.message
-                    })
-                    .then(() => {
-                        setSelectedItems([])
-                        refresh()
-                    })
+                deleteFn()
             }
         })
     }

@@ -1,13 +1,13 @@
 import React from "react";
 import {NanoCodeTemplate} from "./abs";
-import {ResourceSelect} from "../../ResourceSelect";
 import toast from "react-hot-toast";
 import {Resource} from "@apibrew/react";
 import {Box, FormLabel, MenuItem, Select, TextField} from "@mui/material";
-import {sortedProperties} from "../../../util/property";
-import {NanoAstModifier} from "../../../logic/nano-ast/NanoAstModifier";
-import {ResourceHandlerType} from "../../../logic/nano-ast/abs";
 import {BinaryOperator} from "acorn";
+import {sortedProperties} from "../util/property";
+import {ResourceSelect} from "../components/ResourceSelect";
+import {NanoAstModifier} from "../logic/nano-ast/NanoAstModifier";
+import {ResourceHandlerType} from "../logic/nano-ast/abs";
 
 export interface RenderParamsProps {
     resource: Resource | undefined

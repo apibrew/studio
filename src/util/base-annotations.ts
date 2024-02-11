@@ -62,6 +62,8 @@ export const ExtensionId = "ExtensionId";
 // Bypass extensions
 export const BypassExtensions = "BypassExtensions";
 
+export const StudioSeparatePages = "StudioSeparatePages";
+
 // Client allowed annotations
 export const ClientAllowedAnnotations = {
     [BypassExtensions]: true,
@@ -109,5 +111,6 @@ const annotations: AnnotationDef[] = [
     {name: OpenApiRestPath, type: Type.BOOL},
     {name: ServiceKey, type: Type.BOOL},
     {name: ExtensionId, type: Type.BOOL},
-    {name: BypassExtensions, type: Type.BOOL}
+    {name: BypassExtensions, type: Type.BOOL},
+    {name: StudioSeparatePages, type: Type.BOOL}
 ];

@@ -20,8 +20,6 @@ export class NanoAstModifier extends BaseNanoAstModifier {
 
     constructor(ast: Ast) {
         super(ast);
-
-        this.parse()
     }
 
     declareResource(resource: Resource) {
@@ -146,9 +144,5 @@ export class NanoAstModifier extends BaseNanoAstModifier {
         const methodModifier = new NanoAstMethodModifier(functionAst)
         methodModifier.setArgs(argNames)
         prepare(methodModifier)
-    }
-
-    private parse() {
-
     }
 }

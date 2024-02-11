@@ -5,7 +5,7 @@ import {
     Group,
     Home,
     Logout,
-    Monitor,
+    Monitor, Pattern,
     Person,
     Settings,
     SettingsEthernet
@@ -45,6 +45,11 @@ export const menuItems: MenuItem[] = [
         path: '/dashboard/users-and-roles',
         icon: <Group/>
     },
+    // {
+    //     title: 'Templates',
+    //     path: '/dashboard/templates',
+    //     icon: <Pattern/>
+    // },
     {
         title: 'delimeter-1',
         path: '',

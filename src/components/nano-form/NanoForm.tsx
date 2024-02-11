@@ -2,17 +2,13 @@ import {Box, FormLabel, Grid, MenuItem, Select, TextField} from "@mui/material";
 import {Code} from "@apibrew/client/nano/model/code";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import React, {useMemo, useState} from "react";
-import {UseResource} from "./templates/use-resource";
 import Button from "@mui/material/Button";
 import {Resource} from "@apibrew/react";
-import {Comment, Parser} from "acorn";
 import {generate, GENERATOR} from "astring";
-import {ValidateProperty} from "./templates/validate-property";
-import {traverse} from "estraverse";
 import {useAnalytics} from "../../hooks/use-analytics";
-import {BindResource} from "./templates/bind-resource";
-import {NanoCodeTemplate} from "./templates/abs";
 import {NanoAstModifier} from "../../logic/nano-ast/NanoAstModifier";
+import {NanoCodeTemplate, nanoTemplates} from "../../nano-templates/abs";
+import {parseNanoCode} from "../../logic/nano-ast/abs";
 
 export interface NanoFormProps {
     resource?: Resource
@@ -23,11 +19,7 @@ export interface NanoFormProps {
 
 export function NanoForm(props: NanoFormProps) {
     const templates = useMemo<NanoCodeTemplate[]>(() => {
-        return [
-            new UseResource(props.resource) as NanoCodeTemplate,
-            new ValidateProperty(props.resource) as NanoCodeTemplate,
-            new BindResource(props.resource) as NanoCodeTemplate,
-        ]
+        return nanoTemplates.map(nanoTemplate => new nanoTemplate(props.resource))
     }, [props.resource])
     const analytics = useAnalytics()
 
@@ -50,27 +42,13 @@ export function NanoForm(props: NanoFormProps) {
             return
         }
 
-        const parser = Parser.extend()
-
-        const comments: Comment[] = []
-
-        const ast = parser.parse(props.code.content, {
-            ecmaVersion: 2020,
-            locations: true,
-            onComment: comments
-        })
+        const ast = parseNanoCode(props.code.content)
 
         const nanoAstModifier = new NanoAstModifier(ast)
 
         if (!template.apply(nanoAstModifier)) {
             return
         }
-
-        const astAny = ast as any
-
-        insertEmptyStatements(ast)
-
-        astAny.comments = comments
 
         const generated = generate(ast, {
             comments: true,
@@ -175,22 +153,4 @@ export function NanoForm(props: NanoFormProps) {
             </Grid>
         </Grid>
     </>
-}
-
-
-function insertEmptyStatements(ast: any) {
-    let lastLine = 0;
-    traverse(ast, {
-        enter: function (node, parent) {
-            if (node.type !== 'Program' && parent?.type === 'Program') {
-                const currentLine = node.loc?.start.line ?? 0;
-                if (currentLine - lastLine > 1) {
-                    // Insert an empty statement in the parent body
-                    const index = parent.body.indexOf(node as any);
-                    parent.body.splice(index, 0, {type: "EmptyStatement"});
-                }
-                lastLine = node.loc?.end.line || 0;
-            }
-        }
-    });
 }

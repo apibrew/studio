@@ -23,8 +23,11 @@ import {
     AllowPublicCreateAccess,
     AllowPublicDeleteAccess,
     AllowPublicReadAccess,
-    AllowPublicUpdateAccess, DisableVersion,
-    EnableAudit, RestApiDisabled
+    AllowPublicUpdateAccess,
+    DisableVersion,
+    EnableAudit,
+    RestApiDisabled,
+    StudioSeparatePages
 } from "../../util/base-annotations";
 
 export interface ResourceFormProps {
@@ -190,7 +193,8 @@ export function ResourceForm(props: ResourceFormProps) {
                                 })
                             }}/>
                         <FormHelperText>
-                            If you don't want resource to have Rest API endpoints, you can disable them, it is useful for creating internal Resources
+                            If you don't want resource to have Rest API endpoints, you can disable them, it is useful
+                            for creating internal Resources
                         </FormHelperText>
                     </FormControl>
                     <FormControl fullWidth>
@@ -252,6 +256,25 @@ export function ResourceForm(props: ResourceFormProps) {
                         <FormHelperText>
                             Virtual resources are not materialized in the database.
                             They are used to define relationships between resources.
+                        </FormHelperText>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Separate Page in Studio</FormLabel>
+                        <Checkbox
+                            size='small'
+                            sx={{
+                                display: 'inline-block',
+                                width: '40px'
+                            }}
+                            checked={isAnnotationEnabled(props.resource.annotations, StudioSeparatePages)}
+                            onChange={(event) => {
+                                props.onChange({
+                                    ...props.resource,
+                                    annotations: withBooleanAnnotation(props.resource.annotations, StudioSeparatePages, event.target.checked)
+                                })
+                            }}/>
+                        <FormHelperText>
+                            Separate page for this resource will be created in Menu for this resource.
                         </FormHelperText>
                     </FormControl>
                     <FormControl>

@@ -1,8 +1,8 @@
-import {NanoPage} from "../pages/dashboard/nano";
-import NanoList from "../pages/dashboard/nano/NanoList";
 import {NanoNew} from "../pages/dashboard/nano/NanoNew";
 import {NanoPlayGround} from "../pages/dashboard/nano/NanoPlayGround";
 import {NanoEdit} from "../pages/dashboard/nano/NanoEdit";
+import {NanoPage} from "../pages/dashboard/nano/";
+import {NanoList} from "../pages/dashboard/nano/NanoList";
 
 export const NanoRoutes = {
     path: "nano",

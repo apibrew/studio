@@ -4,8 +4,8 @@ import {
     BinaryExpression,
     BinaryOperator,
     BlockStatement,
+    CallExpression,
     Expression,
-    Identifier,
     Statement,
     ThrowStatement
 } from "acorn";
@@ -18,7 +18,7 @@ export class AstScopeModifier extends BaseNanoAstModifier {
         super(ast);
     }
 
-    if(binaryStatement: BinaryExpression, prepare: (scopeModifier: AstScopeModifier) => void, prepareElse?: (scopeModifier: AstScopeModifier) => void) {
+    if(binaryStatement: Expression, prepare: (scopeModifier: AstScopeModifier) => void, prepareElse?: (scopeModifier: AstScopeModifier) => void) {
         const ast: Ast = {
             type: "BlockStatement",
             body: [] as Statement[]
@@ -60,29 +60,6 @@ export class AstScopeModifier extends BaseNanoAstModifier {
         } as BinaryExpression;
     }
 
-    property(item: Expression, property: string): Expression {
-        return {
-            type: "MemberExpression",
-            object: item,
-            property: this.identifier(property)
-        } as Expression;
-    }
-
-    identifier(name: string) {
-        return {
-            type: "Identifier",
-            name: name,
-        } as Identifier
-    }
-
-    value(value: any): Expression {
-        return {
-            type: "Literal",
-            value: value,
-            raw: value,
-        } as Expression;
-    }
-
     throwError(message: string): void {
         const statement: Statement = {
             "type": "ThrowStatement",
@@ -103,5 +80,26 @@ export class AstScopeModifier extends BaseNanoAstModifier {
         } as ThrowStatement
 
         appendStatementToSection(this.ast, statement, 'functions')
+    }
+
+    callMethod(methodName: string, ...args: Expression[]) {
+        const statement = this.call(this.identifier(methodName), ...args)
+
+        ensureStatement(this.ast, statement, statement)
+    }
+
+    call(callee: Expression, ...args: Expression[]): Statement {
+        return {
+            type: 'ExpressionStatement',
+            expression: this.callExpression(callee, ...args)
+        } as Statement
+    }
+
+    callExpression(callee: Expression, ...args: Expression[]): CallExpression {
+        return {
+            type: "CallExpression",
+            callee: callee,
+            arguments: args
+        } as CallExpression
     }
 }

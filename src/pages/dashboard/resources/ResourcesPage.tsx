@@ -2,7 +2,6 @@ import {Box, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {Resource, useClient} from "@apibrew/react";
 import {useEffect, useState} from "react";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {DataTable} from "../../../components/data-table/DataTable";
 import toast from "react-hot-toast";
 

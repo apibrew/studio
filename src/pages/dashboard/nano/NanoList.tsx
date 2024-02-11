@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {useDataProvider} from "../../../components/data-provider/use-data-provider";
 import {PageLayout} from "../../../layout/PageLayout";
 
-export default function NanoList() {
+export function NanoList() {
     const data = useDataProvider<Code>(CodeEntityInfo)
     const navigate = useNavigate()
 
