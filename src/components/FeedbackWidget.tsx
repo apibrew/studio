@@ -22,6 +22,7 @@ export function FeedbackWidget(props: FeedbackWidgetProps) {
                 location: window.location.href,
             })
         })
+        setMessage('')
         props.onClose?.()
         toast.success('Thank you for your feedback!')
     }
