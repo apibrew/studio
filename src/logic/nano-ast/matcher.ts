@@ -9,40 +9,48 @@ export interface AstMatch {
 
 export interface AstMatcherResult {
     matches: AstMatch[]
+    differences: string[]
 }
 
 export interface MatchPart {
     matches: boolean
     extracted: { [key: string]: any }
+    differences: string[]
 }
 
 const matches: () => MatchPart = () => {
     return {
         matches: true,
-        extracted: {}
+        extracted: {},
+        differences: [],
     }
 }
 
-const notMatches: () => MatchPart = () => {
+const notMatches: (difference: string) => MatchPart = (difference: string) => {
     return {
         matches: false,
-        extracted: {}
+        extracted: {},
+        differences: [difference]
     }
 }
 
-export function matchObject<T>(element: T, matcher: Partial<T>): MatchPart {
+export function matchObject<T>(path: string, element: T, matcher: Partial<T>): MatchPart {
     console.debug('matchObject', element, matcher)
     const keys = Object.keys(matcher)
 
     let result = matches()
 
     for (const key of keys) {
-        console.debug('matchObject [key]', key)
-        const matchPart = matchAny((element as any)[key], (matcher as any)[key])
+        if (key === 'start' || key === 'end') {
+            continue
+        }
+        const left = (element as any)[key]
+        const right = (matcher as any)[key]
+        const matchPart = matchAny(path + '.' + key, left, right)
 
         if (!matchPart.matches) {
-            console.debug('matchObject [key] not matches', key)
-            return notMatches()
+            console.debug('matchObject [path] not matches', path + "." + key, left, right)
+            return notMatches(path + "." + key)
         }
 
         result.extracted = {
@@ -56,84 +64,88 @@ export function matchObject<T>(element: T, matcher: Partial<T>): MatchPart {
     return result
 }
 
-export function matchSpecial<T>(element: T, matcher: any): MatchPart {
+export function matchSpecial<T>(path: string, element: T, matcher: any): MatchPart {
     console.debug('matchSpecial', element, matcher)
     if (matcher.$capture) {
         return {
             matches: true,
             extracted: {
                 [matcher.$capture]: element
-            }
+            },
+            differences: [],
         }
     } else if (matcher.$or) {
         for (const option of matcher.$or) {
-            const matchPart = matchAny(element, option)
+            const matchPart = matchAny(path, element, option)
 
             if (matchPart.matches) {
                 return matchPart
             }
         }
 
-        return notMatches()
+        return notMatches(path + '.$or')
     } else if (matcher.$any) {
         return matches()
     } else if (matcher.$concat) {
         if (typeof element != 'string') {
-            return notMatches()
+
+            return notMatches(path)
         }
 
         if (typeof matcher.$left == 'string') {
             if (!element.startsWith(matcher.$left)) {
-                return notMatches()
+                console.log('Type difference startsWith', path, element, matcher.$left)
+                return notMatches(path)
             }
 
             const rem = element.substring(matcher.$left.length)
 
-            return matchAny(rem, matcher.$right)
+            return matchAny(path, rem, matcher.$right)
         } else {
             if (!element.endsWith(matcher.$right)) {
-                return notMatches()
+
+                console.log('endsWith difference', path, element, matcher.$left)
+                return notMatches(path)
             }
 
             const rem = element.substring(0, element.length - matcher.$right.length)
 
-            return matchAny(rem, matcher.$left)
+            return matchAny(path, rem, matcher.$left)
         }
     }
 
     throw new Error('Unknown special matcher: ' + JSON.stringify(matcher))
 }
 
-export function matchAny<T>(element: T, matcher: Partial<T>): MatchPart {
+export function matchAny<T>(path: string, element: T, matcher: Partial<T>): MatchPart {
     console.debug('matchAny', element, matcher)
-    if ((matcher === undefined) !== (element === undefined)) {
-        return notMatches()
-    }
-    if ((matcher === null) !== (element === null)) {
-        return notMatches()
+    if ((!matcher) !== (!element)) {
+        console.log('undefined mismatch', path, matcher, element)
+        return notMatches(path)
+    } else if (!matcher && !element) {
+        return matches()
     }
 
     if ((matcher as any).$special) {
-        return matchSpecial(element, matcher)
+        return matchSpecial(path, element, matcher)
     }
 
     if (typeof element === 'object') {
-        return matchObject(element, matcher)
+        return matchObject(path, element, matcher)
     }
 
-    return element === matcher ? matches() : notMatches()
+    return element === matcher ? matches() : notMatches(path)
 }
 
 export function astMatcher(ast: Ast, statement: Partial<Statement>): AstMatcherResult {
     const result = {
-        matches: []
+        matches: [],
+        differences: [],
     } as AstMatcherResult
-
-    console.log(ast.body)
 
     for (let i = 0; i < ast.body.length; i++) {
         const node = ast.body[i];
-        const matchPart = matchAny(node as Statement, statement)
+        const matchPart = matchAny('$', node as Statement, statement)
         console.debug('astMatcher matchPart', matchPart)
         if (matchPart.matches) {
             result.matches.push({
@@ -141,6 +153,8 @@ export function astMatcher(ast: Ast, statement: Partial<Statement>): AstMatcherR
                 matchIndex: i,
                 extracted: matchPart.extracted
             })
+        } else {
+            result.differences = matchPart.differences
         }
     }
 

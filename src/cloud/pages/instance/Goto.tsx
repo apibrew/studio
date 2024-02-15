@@ -61,7 +61,7 @@ export function Goto() {
                 toast.success('Authenticated')
                 setMessage('Redirecting...')
 
-                navigate(`/${instance.name}/dashboard`)
+                navigate(`/${instance.name}/dashboard/resources`)
             } else {
                 if (!retry) {
                     await handleInstance(instance, true)

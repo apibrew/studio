@@ -79,12 +79,6 @@ export class SoftDelete implements NanoCodeTemplate {
 
         modifier.declareResource(this.resource)
 
-        //  CREATE = 0;
-        //     UPDATE = 1;
-        //     DELETE = 2;
-        //     GET = 3;
-        //     LIST = 4;
-
         const resourceIdentifier = modifier.identifier(modifier.resourceName(this.resource))
 
         modifier.resourceHandler(this.resource, ResourceHandlerType.BEFORE_CREATE, methodModifier => { // Book.beforeCreate
@@ -107,8 +101,6 @@ export class SoftDelete implements NanoCodeTemplate {
 
         modifier.resourceHandler(this.resource, ResourceHandlerType.BEFORE_DELETE, methodModifier => { // Book.beforeCreate
             methodModifier.applyTemplate(`
-            const existing = $resource.get($item.id)
-            
             if (existing.deleted) {
                 throw new Error('$item not found or marked as deleted')
             }

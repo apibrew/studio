@@ -7,6 +7,7 @@ import {Breadcrumbs} from "../components/Breadcrumbs";
 import {AsideBar} from "../components/AsideBar";
 import {useActiveMenuItem} from "../hooks/active-menu-item";
 import {useNavigate} from "react-router-dom";
+import {FeedbackWidget} from "../components/FeedbackWidget";
 
 export interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -16,11 +17,17 @@ export function DashboardLayout(props: DashboardLayoutProps) {
     const [config, setConfig] = React.useState<DashboardLayoutConfig>({
         sideBarOpen: true,
     });
+    const [feedbackOpen, setFeedbackOpen] = React.useState(false)
 
     const activeItem = useActiveMenuItem()
     const navigate = useNavigate()
 
     return <>
+        <FeedbackWidget
+            onClose={() => {
+                setFeedbackOpen(false)
+            }}
+            open={feedbackOpen}/>
         <Box id='dashboard-layout'
              sx={{
                  flex: 1,
@@ -68,13 +75,13 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                 <AsideBar activeItem={activeItem}/>
             </Box>
             {activeItem?.secondSideBar && <Box id='second-left-bar'
-                                              sx={{
-                                                  display: 'flex',
-                                                  flexDirection: 'column',
-                                                  borderRight: '1px solid #e6e8ec',
-                                                  width: '230px',
-                                                  overflow: 'hidden'
-                                              }}>
+                                               sx={{
+                                                   display: 'flex',
+                                                   flexDirection: 'column',
+                                                   borderRight: '1px solid #e6e8ec',
+                                                   width: '230px',
+                                                   overflow: 'hidden'
+                                               }}>
                 {activeItem.secondSideBar()}
             </Box>}
             <Box sx={{
@@ -98,7 +105,9 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                     <Box display='flex'>
                         <Stack direction='row'
                                spacing={1}>
-                            <Button>
+                            <Button onClick={() => {
+                                setFeedbackOpen(true)
+                            }}>
                                 <Feedback fontSize='small'/>
                                 <Typography ml={1}>Feedback</Typography>
                             </Button>
