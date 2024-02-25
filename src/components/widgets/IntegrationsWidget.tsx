@@ -20,8 +20,7 @@ export function IntegrationsWidget() {
                 </Typography>
                 <Box display='flex'>
                     <code>
-                        apbr configure --cloud
-                        --project {connection.name} --token {connection.serverConfig.authentication.token}
+                        apbr configure --cloud --project {connection.name} --token {connection.serverConfig.authentication.token}
                     </code>
                     <Box flexGrow={1}/>
                     <Button
@@ -31,7 +30,7 @@ export function IntegrationsWidget() {
                             display: 'inline-block'
                         }}
                         onClick={() => {
-                            navigator.clipboard.writeText(connection.serverConfig.authentication.token)
+                            navigator.clipboard.writeText('apbr configure --cloud --project {connection.name} --token {connection.serverConfig.authentication.token}')
                             toast.success('Token copied to clipboard')
                         }}>Copy to clipboard</Button>
                 </Box>
