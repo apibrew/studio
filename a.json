@@ -1,0 +1,28 @@
+{
+  "type": "transaction",
+  "data": {
+    "id": "tx_1Gg",
+    "status": "pending",
+    "amount": 100000000
+  },
+  "relationships": {
+    "account": {
+      "data": {
+        "id": "acc_1Gg",
+        "type": "account"
+      }
+    },
+    "source": {
+      "data": {
+        "id": "btc_1Gg",
+        "type": "bitcoin_address"
+      }
+    },
+    "destination": {
+      "data": {
+        "id": "btc_1Gg",
+        "type": "bitcoin_address"
+      }
+    }
+  }
+}

@@ -111,7 +111,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                                 <Feedback fontSize='small'/>
                                 <Typography ml={1}>Feedback</Typography>
                             </Button>
-                            <Button target='_blank' href='https://apibrew.io/docs/getting-started'>
+                            <Button target='_blank' href='https://docs.apibrew.io/getting-started/intro'>
                                 <Help fontSize='small'/>
                                 <Typography ml={1}>Help</Typography>
                             </Button>

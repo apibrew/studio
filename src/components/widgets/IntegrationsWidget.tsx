@@ -17,7 +17,7 @@ export function IntegrationsWidget() {
                 </Typography>
                 <Typography>
                     <b>Note:</b> see docs to setup apbr on your local machine. <a target='_blank'
-                                                                                  href='https://apibrew.io/docs/cli'>https://apibrew.io/docs/cli</a>
+                                                                                  href='https://docs.apibrew.io/cli/#configure'>https://docs.apibrew.io/cli/#configure</a>
                 </Typography>
                 <ul>
                     <li>
