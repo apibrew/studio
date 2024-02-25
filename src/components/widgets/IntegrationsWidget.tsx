@@ -12,13 +12,30 @@ export function IntegrationsWidget() {
         <Box>
             <Stack spacing={5}>
                 <Typography>
-                    To configure your Api Brew Client (apbr) to use this project, use the following
-                    configuration:
+                    This project is now ready to be used with Api Brew Client (apbr).
                 </Typography>
                 <Typography>
                     <b>Note:</b> see docs to setup apbr on your local machine. <a target='_blank'
                                                                                   href='https://docs.apibrew.io/cli/#configure'>https://docs.apibrew.io/cli/#configure</a>
                 </Typography>
+                <Box display='flex'>
+                    <code>
+                        apbr configure --cloud
+                        --project {connection.name} --token {connection.serverConfig.authentication.token}
+                    </code>
+                    <Box flexGrow={1}/>
+                    <Button
+                        size='small'
+                        variant='text'
+                        sx={{
+                            display: 'inline-block'
+                        }}
+                        onClick={() => {
+                            navigator.clipboard.writeText(connection.serverConfig.authentication.token)
+                            toast.success('Token copied to clipboard')
+                        }}>Copy to clipboard</Button>
+                </Box>
+                <Typography>Additional configuration options:</Typography>
                 <ul>
                     <li>
                         <b>Configuration type:</b> - ApiBrew Cloud
@@ -35,9 +52,6 @@ export function IntegrationsWidget() {
                             toast.success('Token copied to clipboard')
                         }}>Copy to clipboard</Button>
                     </li>
-                </ul>
-                <Typography>Additional configuration options:</Typography>
-                <ul>
                     <li>
                         <b>host:</b> - {connection.name}.apibrew.io
                     </li>
