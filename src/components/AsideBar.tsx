@@ -1,9 +1,8 @@
-import {Box, Icon, IconButton, List, ListItem, ListItemButton, Tooltip, useTheme} from "@mui/material";
+import {Box, Icon, List, ListItem, ListItemButton, ListItemText, useTheme} from "@mui/material";
 import {MenuItem, menuItems} from "../menu";
 import {useNavigate, useParams} from "react-router-dom";
 import React from "react";
 import {connectionProvider} from "../connection-provider";
-import {SettingsEthernet} from "@mui/icons-material";
 
 export interface AsideBarProps {
     activeItem?: MenuItem
@@ -24,7 +23,7 @@ export function AsideBar(props: AsideBarProps) {
     }
 
     return <>
-        <Box>
+        <Box width='200px'>
             <List>
                 {items.map(item => {
                     if (item.conditional && !item.conditional(connectionProvider)) {
@@ -53,14 +52,11 @@ export function AsideBar(props: AsideBarProps) {
                                             navigate(`/${connectionName}${item.path}`)
                                         }
                                     }}>
-                                    <Tooltip
-                                        placement='right'
-                                        title={item.title}>
-                                        <Icon sx={{
-                                            color: 'rgb(60, 120, 160)',
-                                            marginRight: 1
-                                        }}>{item.icon}</Icon>
-                                    </Tooltip>
+                                    <Icon sx={{
+                                        color: 'rgb(60, 120, 160)',
+                                        marginRight: 1
+                                    }}>{item.icon}</Icon>
+                                    <ListItemText secondary={item.title}/>
                                 </ListItemButton>
                             </>}
                         </ListItem>)

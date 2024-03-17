@@ -1,16 +1,5 @@
 import React from "react";
-import {
-    Dataset,
-    FunctionsTwoTone,
-    Group,
-    Home,
-    Logout,
-    Monitor, Pattern,
-    Person,
-    Settings,
-    SettingsEthernet
-} from "@mui/icons-material";
-import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
+import {Dataset, FunctionsTwoTone, Group, Home, Logout, Monitor, Person, SettingsEthernet} from "@mui/icons-material";
 import {ConnectionProvider} from "./connection-provider";
 
 export interface MenuItem {
@@ -32,9 +21,14 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Resources',
         path: '/dashboard/resources',
-        secondSideBar: () => <ResourceSelectorPanel/>,
+        // secondSideBar: () => <ResourceSelectorPanel/>,
         icon: <Dataset/>
     },
+    // {
+    //     title: 'Designer',
+    //     path: '/dashboard/designer',
+    //     icon: <DesignServices/>
+    // },
     {
         title: 'Nano Code',
         path: '/dashboard/nano',

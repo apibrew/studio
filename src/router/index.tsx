@@ -14,6 +14,8 @@ import CloudIndex from '../cloud'
 import {cloudRoutes} from "../cloud/routes";
 import TemplatesPage from "../pages/dashboard/templates/IndexPage";
 import {NanoRoutes} from "./nano";
+import OldResourcesPage from "../pages/dashboard/resources/OldResourcesPage";
+import ResourcePage from "../pages/dashboard/resources/ResourcePage";
 
 export const index = createBrowserRouter([
     {
@@ -56,7 +58,14 @@ export const index = createBrowserRouter([
             },
             {
                 path: "resources/:namespace/:resource",
-                element: <ResourcesPage/>,
+                element: <ResourcePage/>,
+                handle: {
+                    breadcrumb: 'Resource'
+                }
+            },
+            {
+                path: "resources-old/:namespace/:resource",
+                element: <OldResourcesPage/>,
                 handle: {
                     breadcrumb: 'Resources'
                 }

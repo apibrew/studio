@@ -44,8 +44,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                      display: 'flex',
                      flexDirection: 'column',
                      borderRight: '1px solid #e6e8ec',
-                     width: '61px',
-                     overflow: 'hidden'
                  }}
             >
                 <Box id='left-top-bar'
@@ -57,20 +55,23 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                          display: 'flex'
                      }}>
                     <Box flexGrow={1}/>
-                    <IconButton onClick={() => {
-                        if (activeItem?.secondSideBar) {
-                            navigate('/dashboard')
-                        }
-                        setConfig({
-                            ...config,
+                    <Typography variant='h6'>
+                        ApiBrew Studio
+                    </Typography>
+                    {/*<IconButton onClick={() => {*/}
+                    {/*    if (activeItem?.secondSideBar) {*/}
+                    {/*        navigate('/dashboard')*/}
+                    {/*    }*/}
+                    {/*    setConfig({*/}
+                    {/*        ...config,*/}
 
-                        })
-                    }}
-                                sx={{
-                                    padding: '0px'
-                                }}>
-                        <MenuRounded/>
-                    </IconButton>
+                    {/*    })*/}
+                    {/*}}*/}
+                    {/*            sx={{*/}
+                    {/*                padding: '0px'*/}
+                    {/*            }}>*/}
+                    {/*    <MenuRounded/>*/}
+                    {/*</IconButton>*/}
                 </Box>
                 <AsideBar activeItem={activeItem}/>
             </Box>
@@ -80,7 +81,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                                                    flexDirection: 'column',
                                                    borderRight: '1px solid #e6e8ec',
                                                    width: '230px',
-                                                   overflow: 'hidden'
                                                }}>
                 {activeItem.secondSideBar()}
             </Box>}

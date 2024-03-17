@@ -21,7 +21,6 @@ export function DataTable(props: DataTableProps) {
     const drawer = useDrawer()
     const [searchParams, setSearchParams] = useSearchParams();
     const [mode, setMode] = useState<'data' | 'schema' | 'schema-new'>(searchParams.get('mode') === 'schema-new' ? 'schema-new' : 'data')
-    const [apiDocOpen, setApiDocOpen] = useState<boolean>(false)
     const analytics = useAnalytics()
 
     const commonButtons = (
@@ -44,7 +43,11 @@ export function DataTable(props: DataTableProps) {
             <Button color='secondary'
                     size='small'
                     onClick={() => {
-                        setApiDocOpen(true)
+                        drawer.open(<ApiDocModal
+                            onClose={() => {
+                                drawer.close()
+                            }}
+                            resource={props.resource}/>)
 
                         analytics.click('api-doc')
                     }}>
@@ -101,11 +104,6 @@ export function DataTable(props: DataTableProps) {
 
     return <>
         {drawer.render()}
-        <ApiDocModal open={apiDocOpen}
-                     onClose={() => {
-                         setApiDocOpen(false)
-                     }}
-                     resource={props.resource}/>
         {mode === 'data' && <TableContainer
             resource={props.resource}
             commonButtons={commonButtons}
