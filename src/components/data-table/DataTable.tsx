@@ -11,6 +11,7 @@ import {SchemaContainer as SchemaContainerNew} from "./schema-new/SchemaContaine
 import {useDrawer} from "../../hooks/use-drawer";
 import {ResourceNanoDrawer} from "../resource-nano-drawer/ResourceNanoDrawer";
 import {useAnalytics} from "../../hooks/use-analytics";
+import {ResourceDrawer} from "../resource-drawer/ResourceDrawer";
 
 export interface DataTableProps {
     resource: Resource
@@ -25,6 +26,22 @@ export function DataTable(props: DataTableProps) {
 
     const commonButtons = (
         <Stack direction='row' spacing={1}>
+            <Button color='secondary'
+                    size='small'
+                    onClick={() => {
+                        drawer.open(<ResourceDrawer
+                            new={false}
+                            onClose={() => {
+                                drawer.close()
+                                props.reloadResource?.()
+                            }}
+                            resource={props.resource}/>)
+
+                        analytics.click('update-resource')
+                    }}>
+                <Api fontSize='small'/>
+                <span style={{marginLeft: '3px'}}>Update Resource</span>
+            </Button>
             <Button color='secondary'
                     size='small'
                     onClick={() => {
