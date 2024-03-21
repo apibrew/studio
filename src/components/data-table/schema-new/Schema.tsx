@@ -1,25 +1,14 @@
 import {Resource} from "@apibrew/react";
 import {Box, Card, CardContent, CardHeader, IconButton} from "@mui/material";
 import React, {useMemo} from "react";
-import {SubType} from "@apibrew/client/model/resource-action";
-import {
-    AccountTree,
-    Add,
-    ChevronRight,
-    DatasetLinked,
-    ExpandMore,
-    Remove,
-    SchemaRounded,
-    ShoppingBag,
-    TableChart
-} from "@mui/icons-material";
+import {SubType, Type} from "@apibrew/client/model/resource";
+import {AccountTree, Add, ChevronRight, ExpandMore, Remove, SchemaRounded, TableChart} from "@mui/icons-material";
 import {TreeItem, TreeView} from "@mui/x-tree-view";
 import {getPropertyOrder, sortedProperties} from "../../../util/property";
 import {PropertyForm} from "../../property-form/PropertyForm";
 import {SchemaPropertyTreeItem} from "./SchemaPropertyTreeItem";
 import {ResourceForm} from "../../resource-form/ResourceForm";
 import {SubTypesForm} from "../../sub-types-form/SubTypesForm";
-import {Type} from "@apibrew/client/model/resource";
 import {Property} from "@apibrew/client/model";
 import {Schema} from "../../../types/schema";
 
@@ -408,7 +397,7 @@ export function SchemaTable(props: SchemaProps) {
             {selectionType === SelectionType.TYPE && selectedItem && <>
                 <Card>
                     <CardHeader
-                        title={'Edit Type: ' +  selectedItem}/>
+                        title={'Edit Type: ' + selectedItem}/>
                     <CardContent>
                         <SubTypesForm subType={props.resource.types?.find(item => item.name === selectedItem)!}
                                       onChange={updated => {

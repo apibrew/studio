@@ -6,10 +6,9 @@ import {Add, Domain} from "@mui/icons-material";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer";
-import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
+import {ResourceEntityInfo, SubType, Type} from "@apibrew/client/model/resource";
 import {Property} from "@apibrew/client/model";
-import {SchemaTable} from "../schema/Schema";
-import {SubType} from "@apibrew/client/model/resource-action";
+import {SchemaTable} from "./Schema";
 
 export interface SchemaContainerProps {
     resource: Resource

@@ -7,6 +7,7 @@ import {newClientByServerConfig} from "@apibrew/client/client";
 import {ClientProvider, LocalStorageTokenStorage} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {ConnectionContext} from "../../context/ConnectionContext";
+import axios from "axios";
 
 
 export function DashboardPage() {
@@ -21,6 +22,8 @@ export function DashboardPage() {
 
         connection.then(connection => {
             if (!connection) {
+                console.log('no connection found')
+                alert('No connection found')
                 window.location.href = '/connections'
                 return;
             }

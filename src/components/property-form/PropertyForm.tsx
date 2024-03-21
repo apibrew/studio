@@ -167,6 +167,21 @@ export function PropertyForm(props: PropertyFormProps) {
                             })
                         }}/>
                 </FormControl>
+                <FormControl>
+                    <FormLabel>Virtual</FormLabel>
+                    <Checkbox
+                        size='small'
+                        sx={{
+                            display: 'inline-block'
+                        }}
+                        checked={Boolean(props.property.virtual)}
+                        onChange={(event) => {
+                            props.onChange({
+                                ...props.property,
+                                virtual: event.target.checked
+                            })
+                        }}/>
+                </FormControl>
             </Stack>
             <hr/>
             <Accordion sx={{

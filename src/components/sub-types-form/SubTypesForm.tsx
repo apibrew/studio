@@ -1,7 +1,6 @@
-import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography} from "@mui/material";
-import Button from "@mui/material/Button";
+import {Stack, TextField} from "@mui/material";
 import React from "react";
-import {SubType} from "@apibrew/client/model/resource-action";
+import {SubType} from "@apibrew/client/model/resource";
 
 export interface ResourceFormProps {
     subType: SubType

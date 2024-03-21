@@ -1,10 +1,9 @@
 import {Resource} from "@apibrew/react";
 import {Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow, TextField} from "@mui/material";
 import React from "react";
-import {SubType} from "@apibrew/client/model/resource-action";
+import {SubType, Type} from "@apibrew/client/model/resource";
 import Button from "@mui/material/Button";
 import {Property} from "@apibrew/client/model";
-import {Type} from "@apibrew/client/model/resource";
 import {Delete} from "@mui/icons-material";
 import {SchemaProperties} from "./SchemaProperties";
 
