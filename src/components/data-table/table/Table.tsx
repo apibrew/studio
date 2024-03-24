@@ -1,15 +1,7 @@
-import {Box, Checkbox, CircularProgress, IconButton, Tooltip} from "@mui/material";
+import {Box, Checkbox, IconButton, Tooltip} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
-import {
-    Add,
-    ArrowCircleDown,
-    ArrowCircleUp,
-    ArrowDownward,
-    ArrowDownwardOutlined,
-    MoreVert,
-    Remove
-} from "@mui/icons-material";
+import {Add, MoreVert, Remove} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";
@@ -37,22 +29,21 @@ export interface DataTableTableProps {
 }
 
 export function DataTableTable(props: DataTableTableProps) {
-    const [properties, setProperties] = useState<string[]>([])
     const [tableWidth, setTableWidth] = useState<number>(0)
 
     const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
     const [expandedRecords, setExpandedRecords] = useState<{ [key: string]: boolean }>({} as any)
 
-    useEffect(() => {
+    const properties = useMemo(() => {
         const newProperties = sortedProperties(props.schema.properties).filter(property => !isSpecialProperty(props.schema.properties[property]))
 
         if (props.schema.properties.id && newProperties.indexOf('id') === -1) {
             newProperties.unshift('id')
         }
 
-        setProperties(newProperties)
+        return newProperties
 
-    }, [props.schema]);
+    }, [props.resource, props.schema]);
 
     useEffect(() => {
         let modifiedWidth = columnWidths
@@ -138,19 +129,20 @@ export function DataTableTable(props: DataTableTableProps) {
             <Box display='flex' flexDirection='row' className='row row-header'>
                 <Box width='75px' className='cell header-cell'>
                     <Box className='cell-inner'>
-                        <Checkbox checked={props.selectedItems.length > 0 && props.selectedItems.length === props.records.length}
-                                  sx={{
-                                      padding: 0
-                                  }}
-                                  indeterminate={props.selectedItems.length > 0 && props.selectedItems.length < props.records.length}
-                                  onChange={() => {
-                                      if (props.selectedItems.length === props.records.length) {
-                                          props.setSelectedItems([])
-                                      } else {
-                                          props.setSelectedItems(props.records.map(item => item.id))
-                                      }
-                                  }}
-                                  size='small'/>
+                        <Checkbox
+                            checked={props.selectedItems.length > 0 && props.selectedItems.length === props.records.length}
+                            sx={{
+                                padding: 0
+                            }}
+                            indeterminate={props.selectedItems.length > 0 && props.selectedItems.length < props.records.length}
+                            onChange={() => {
+                                if (props.selectedItems.length === props.records.length) {
+                                    props.setSelectedItems([])
+                                } else {
+                                    props.setSelectedItems(props.records.map(item => item.id))
+                                }
+                            }}
+                            size='small'/>
                         <Tooltip title={'Expand/Unexpand all records'}>
                             <IconButton onClick={() => {
                                 if (Object.keys(expandedRecords).length === props.records.length) {

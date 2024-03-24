@@ -29,6 +29,16 @@ export function Breadcrumbs() {
                 link: item.pathname,
             }
         })
+        .map(item => {
+
+            Object.keys(params).forEach(key => {
+                if (params[key]) {
+                    item.title = item.title.replace(`:${key}`, params[key]!)
+                }
+            })
+
+            return item
+        })
 
     breadcrumbs.unshift({
         title: connectionName,

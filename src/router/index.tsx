@@ -60,7 +60,7 @@ export const index = createBrowserRouter([
                 path: "resources/:namespace/:resource",
                 element: <ResourcePage/>,
                 handle: {
-                    breadcrumb: 'Resource'
+                    breadcrumb: ':namespace / :resource'
                 }
             },
             {

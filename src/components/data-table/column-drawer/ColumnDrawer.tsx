@@ -35,16 +35,23 @@ export function ColumnDrawer(props: ColumnDrawerProps) {
     }
 
     function handleDelete() {
-        const updatedResource = {
-            ...props.resource,
-            properties: {
-                ...props.resource.properties,
+        confirmation.open({
+            title: 'Delete property',
+            message: 'Are you sure you want to delete this property?',
+            kind: 'danger',
+            onConfirm: () => {
+                const updatedResource = {
+                    ...props.resource,
+                    properties: {
+                        ...props.resource.properties,
+                    }
+                } as Resource
+
+                delete (updatedResource.properties[propertyName])
+
+                handleUpdateResource(updatedResource);
             }
-        } as Resource
-
-        delete (updatedResource.properties[propertyName])
-
-        handleUpdateResource(updatedResource);
+        })
     }
 
     function handleUpdate() {

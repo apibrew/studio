@@ -9,32 +9,27 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import {TextField} from "@mui/material";
 import {Message, MessageEntityInfo, Role} from "./model/message";
-import {Direction, useRecords, useRepository, useWatcher} from "@apibrew/react";
+import {getRestPath, Namespace, Resource, useClient, useRepository} from "@apibrew/react";
 import {LoadingOverlay} from "../LoadingOverlay";
 import {Chat} from "./model/chat";
+import {EntityInfo} from "@apibrew/client/entity-info";
 
 export interface AiDialogProps {
-    applyItems: (items: any[]) => void;
+    resources: Resource[]
+    onReload: () => void
 }
 
 export default function AiDialog(props: AiDialogProps) {
+    const client = useClient()
     const [bannerOpen, setBannerOpen] = React.useState(true);
     const [message, setMessage] = useState<Message>({
         text: '',
         role: 'USER',
     } as Message);
 
-    const wi = useWatcher(MessageEntityInfo)
     const repository = useRepository<Message>(MessageEntityInfo)
 
-    const messages = useRecords<Message>(MessageEntityInfo, {
-        sorting: [
-            {
-                property: 'order',
-                direction: Direction.ASC,
-            }
-        ]
-    }, wi)
+    const messages = [] as Message[]
 
     const send = () => {
         let order = messages?.length ? messages[messages.length - 1].order + 1 : 1;
@@ -67,10 +62,55 @@ export default function AiDialog(props: AiDialogProps) {
         if (currentYaml) {
             const items = currentYaml.split('---')
 
-            props.applyItems(items.map(item => JSON.parse(item)))
+            applyItems(items.map(item => JSON.parse(item)))
         }
         console.log(currentYaml)
     }, [currentYaml]);
+
+    async function applyItems(items: any) {
+        console.log(items)
+        for (const item of items) {
+            const type = item['type']
+            delete item['type']
+
+            const entityInfo: EntityInfo = {} as EntityInfo
+
+            const typeParts = type.split('/')
+
+            if (typeParts.length === 2) {
+                entityInfo.namespace = typeParts[0]
+                entityInfo.resource = typeParts[1]
+            } else {
+                entityInfo.namespace = 'default'
+                entityInfo.resource = typeParts[0]
+            }
+
+            entityInfo.restPath = getRestPath({
+                    name: entityInfo.resource,
+                    namespace: {
+                        name: entityInfo.namespace
+                    } as Namespace
+                } as Resource
+            )
+
+            if (type === 'resource') {
+                entityInfo.restPath = 'resources'
+                try {
+                    await client.repo(entityInfo).create(item)
+                } catch (error) {
+                    const existing = props.resources.find(resource => resource.name === item.name)!
+                    await client.repo(entityInfo).update({
+                        ...item,
+                        id: existing.id
+                    })
+                }
+            } else {
+                await client.repo(entityInfo).apply(item)
+            }
+        }
+
+        props.onReload()
+    }
 
     return (
         <React.Fragment>

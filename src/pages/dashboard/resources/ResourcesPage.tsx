@@ -1,7 +1,7 @@
 import {Namespace, Resource, useRecords, useRepository} from "@apibrew/react";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
-import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack} from "@mui/material";
+import {Box, FormControl, Grid, MenuItem, Select, Stack} from "@mui/material";
 import {ResourceSchemaView} from "../../../components/resource-schema-view/ResourceSchemaView";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
@@ -13,6 +13,7 @@ import {ApiDocModal} from "../../../components/api-doc/ApiDocModal";
 import {useAnalytics} from "../../../hooks/use-analytics";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {NamespaceDrawer} from "../../../components/namespace-drawer/NamespaceDrawer";
+import AiDialog from "../../../components/ai-dialog/AiDialog";
 
 export default function ResourcesPage() {
     const drawer = useDrawer()
@@ -128,5 +129,7 @@ export default function ResourcesPage() {
                 })}
             </Grid>}
         </Box>
+        {/*{filteredResources && <AiDialog resources={filteredResources}*/}
+        {/*                                onReload={() => setWi(wi + 1)}/>}*/}
     </>
 }

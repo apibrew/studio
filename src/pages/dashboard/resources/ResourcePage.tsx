@@ -1,4 +1,4 @@
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {DataTable} from "../../../components/data-table/DataTable";
 import {Resource, useClient} from "@apibrew/react";
