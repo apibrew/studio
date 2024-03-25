@@ -42,6 +42,7 @@ export function ListUser() {
                         repository.delete(item.id)
                             .then(() => {
                                 data.refresh()
+                                toast.success('User deleted successfully')
                             }, err => {
                                 toast.error(err.message)
                             })

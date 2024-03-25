@@ -29,6 +29,7 @@ export function NanoList() {
                 repository.delete(item.id)
                     .then(() => {
                         data.refresh()
+                        toast.success('Code deleted successfully')
                     }, err => {
                         toast.error(err.message)
                     })

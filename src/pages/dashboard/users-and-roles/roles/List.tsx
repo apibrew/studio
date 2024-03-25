@@ -42,6 +42,7 @@ export function ListRole() {
                         repository.delete(item.id)
                             .then(() => {
                                 data.refresh()
+                                toast.success('Role deleted successfully')
                             }, err => {
                                 toast.error(err.message)
                             })
