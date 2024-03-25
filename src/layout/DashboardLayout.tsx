@@ -1,12 +1,11 @@
 import React from "react";
-import {Box, IconButton, Stack, Typography} from "@mui/material";
+import {Box, Stack, Typography} from "@mui/material";
 import {DashboardLayoutConfig, DashboardLayoutConfigureContext} from "../context/DashboardLayoutConfig";
 import Button from "@mui/material/Button";
-import {Feedback, Help, MenuRounded} from "@mui/icons-material";
+import {Feedback, Help} from "@mui/icons-material";
 import {Breadcrumbs} from "../components/Breadcrumbs";
 import {AsideBar} from "../components/AsideBar";
 import {useActiveMenuItem} from "../hooks/active-menu-item";
-import {useNavigate} from "react-router-dom";
 import {FeedbackWidget} from "../components/FeedbackWidget";
 
 export interface DashboardLayoutProps {
@@ -20,7 +19,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
     const [feedbackOpen, setFeedbackOpen] = React.useState(false)
 
     const activeItem = useActiveMenuItem()
-    const navigate = useNavigate()
 
     return <>
         <FeedbackWidget

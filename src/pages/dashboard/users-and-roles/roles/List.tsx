@@ -6,22 +6,55 @@ import {useNavigate} from "react-router-dom";
 import {LoadingOverlay} from "../../../../components/LoadingOverlay";
 import {useDataProvider} from "../../../../components/data-provider/use-data-provider";
 import {RoleEntityInfo} from "@apibrew/client/model/role";
-import {Role} from "@apibrew/react";
+import {Role, useRepository} from "@apibrew/react";
+import {useConfirmation} from "../../../../components/modal/use-confirmation";
+import toast from "react-hot-toast";
+import {PermissionEntityInfo} from "@apibrew/client/model/permission";
+import {Permission} from "@apibrew/client/model";
 
 export interface List {
 
 }
 
 export function ListRole() {
-    const data = useDataProvider<Role>(RoleEntityInfo)
+    const data = useDataProvider<Role>(RoleEntityInfo, {
+        resolveReferences: ['$.permissions[]']
+    })
     const navigate = useNavigate()
+    const confirmation = useConfirmation()
+    const repository = useRepository<Role>(RoleEntityInfo)
+    const permissionRepository = useRepository<Permission>(PermissionEntityInfo)
 
     if (data.loading) {
         return <LoadingOverlay/>
     }
 
+    function handleDelete(item: Role) {
+        confirmation.open({
+            title: 'Delete',
+            message: 'Are you sure you want to delete this item?',
+            kind: 'danger',
+            onConfirm: () => {
+                const promises: Promise<unknown>[] = item.permissions?.map(permission => permissionRepository.delete(permission.id)) || []
+
+                Promise.all(promises)
+                    .then(() => {
+                        repository.delete(item.id)
+                            .then(() => {
+                                data.refresh()
+                            }, err => {
+                                toast.error(err.message)
+                            })
+                    }, err => {
+                        toast.error(err.message)
+                    })
+            }
+        })
+    }
+
     return (
         <Box>
+            {confirmation.render()}
             <Stack direction='row' spacing={3}>
                 <Button
                     onClick={() => {
@@ -55,7 +88,9 @@ export function ListRole() {
                                     }} color='primary' size='small'>
                                         Edit
                                     </Button>
-                                    <Button color='error' size='small'>
+                                    <Button onClick={() => {
+                                        handleDelete(item)
+                                    }} color='error' size='small'>
                                         Delete
                                     </Button>
                                 </Stack>
