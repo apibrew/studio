@@ -16,6 +16,9 @@ import TemplatesPage from "../pages/dashboard/templates/IndexPage";
 import {NanoRoutes} from "./nano";
 import OldResourcesPage from "../pages/dashboard/resources/OldResourcesPage";
 import ResourcePage from "../pages/dashboard/resources/ResourcePage";
+import {AIAssistantPage} from "../pages/dashboard/ai-assistant/AIAssistantPage";
+import {ExperimentsRoutes} from "../pages/experiments/routes";
+import {FlowRoutes} from "./flows";
 
 export const index = createBrowserRouter([
     {
@@ -74,11 +77,20 @@ export const index = createBrowserRouter([
             UserAndRolesRoutes,
             SettingsRoutes,
             MonitoringRoutes,
+            ExperimentsRoutes,
+            FlowRoutes,
             {
                 path: "user-profile",
                 element: <UserProfilePage/>,
                 handle: {
                     breadcrumb: 'Users Profile'
+                }
+            },
+            {
+                path: "ai-assistant",
+                element: <AIAssistantPage/>,
+                handle: {
+                    breadcrumb: 'AI Assistant'
                 }
             },
             {

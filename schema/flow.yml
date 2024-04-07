@@ -1,0 +1,77 @@
+type: resource
+name: Flow
+namespace:
+  name: studio
+properties:
+  name:
+    title: Name
+    description: Name
+    type: STRING
+    length: 255
+    required: true
+    unique: true
+  statements:
+    type: list
+    required: true
+    item:
+      type: struct
+      typeRef: Statement
+    defaultValue: [ ]
+types:
+  - name: EventParams
+    properties:
+      type:
+        type: string
+      action:
+        type: enum
+        enumValues:
+          - CREATE
+          - GET
+          - LOAD
+          - UPDATE
+          - DELETE
+          - LIST
+      order:
+        type: enum
+        enumValues:
+          - BEFORE
+          - AFTER
+      sync:
+        type: bool
+      responds:
+        type: bool
+      finalizes:
+        type: bool
+      annotations:
+        type: map
+        item:
+          type: string
+  - name: ApiSaveParams
+    properties:
+      type:
+        type: string
+      payload:
+        type: object
+  - name: Statement
+    properties:
+      kind:
+        type: enum
+        enumValues:
+          - EVENT
+          - API_CREATE
+          - API_GET
+          - API_LOAD
+          - API_UPDATE
+          - API_DELETE
+          - API_LIST
+          - CODE
+          - ASSIGN
+          - CONDITION
+          - HTTP_CALL
+          - FUNCTION_CALL
+          - TEMPLATE_CALL
+          - END
+      params:
+        type: object
+      variable:
+        type: string

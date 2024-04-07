@@ -1,0 +1,12 @@
+.react-flow__node-END {
+  padding: 10px;
+  border-radius: 50px;
+  background: lightblue;
+  color: #000;
+  border: 1px solid #000;
+  font-size: 10px;
+
+  &.selected {
+    box-shadow: 0 0 0 0.5px #1a192b;
+  }
+}

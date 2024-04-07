@@ -1,5 +1,15 @@
 import React from "react";
-import {Dataset, FunctionsTwoTone, Group, Home, Logout, Monitor, Person, SettingsEthernet} from "@mui/icons-material";
+import {
+    Assistant,
+    Dataset,
+    FunctionsTwoTone,
+    Group,
+    Home,
+    Logout,
+    Monitor, NetworkCell,
+    Person,
+    SettingsEthernet
+} from "@mui/icons-material";
 import {ConnectionProvider} from "./connection-provider";
 
 export interface MenuItem {
@@ -28,6 +38,16 @@ export const menuItems: MenuItem[] = [
     //     title: 'Designer',
     //     path: '/dashboard/designer',
     //     icon: <DesignServices/>
+    // },
+    // {
+    //     title: 'Flows',
+    //     path: '/dashboard/flows',
+    //     icon: <NetworkCell/>
+    // },
+    // {
+    //     title: 'AI Assistant',
+    //     path: '/dashboard/ai-assistant',
+    //     icon: <Assistant/>
     // },
     {
         title: 'Nano Code',
