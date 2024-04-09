@@ -1,23 +1,29 @@
-import {EventParams} from "../../../model/flow";
 import {Handle, Position} from "reactflow";
 import React from "react";
-import './EventNode.scss'
 import {ArrowDownward} from "@mui/icons-material";
 
-export interface EventNodeProps {
-    data: EventParams,
+export interface SingleNodeProps {
+    data: {
+        label: string
+    },
     isConnectable: boolean,
     selected: boolean
 }
 
-export function EventNode(props: EventNodeProps) {
+export function SingleNode(props: SingleNodeProps) {
     return <>
+        <Handle
+            type="target"
+            position={Position.Top}
+            id="a"
+            style={{background: '#555'}}
+            isConnectable={props.isConnectable}
+        />
         <div className='label'>
             <ArrowDownward className='icon'/>
             <span className='text'>
-                <b>{props.data.type}</b>
+                <b>{props.data.label}</b>
             </span>
-            <span className='text'>({props.data.order.toLowerCase()} - {props.data.action.toLowerCase()})</span>
         </div>
         <Handle
             type="source"

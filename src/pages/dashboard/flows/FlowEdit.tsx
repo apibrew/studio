@@ -5,8 +5,10 @@ import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useRepository} from "@apibrew/react";
 import {useNavigate, useParams} from "react-router-dom";
 import toast from "react-hot-toast";
-import {ApiSaveParams, EventParams, Flow, FlowEntityInfo, Kind} from "../../../model/flow";
+import {Flow, FlowEntityInfo} from "../../../model/flow";
 import {FlowForm} from "../../../components/flow-form/FlowForm";
+import {UserRegistrationExampleStatements} from "./user-registration-example";
+import {UserEmailVerification} from "./user-email-verification";
 
 export function FlowEdit() {
     const params = useParams()
@@ -20,49 +22,7 @@ export function FlowEdit() {
             .then(data => {
                 setFlow({
                     ...data,
-                    statements: [
-                        {
-                            kind: Kind.EVENT,
-                            params: {
-                                type: 'UserRegistration',
-                                action: 'CREATE',
-                                sync: true,
-                                responds: true,
-                                finalizes: true,
-                                order: 'BEFORE',
-                            } as EventParams
-                        },
-                        {
-                            kind: Kind.API_CREATE,
-                            params: {
-                                type: 'system/User',
-                                payload: {
-                                    username: '$username',
-                                    password: '$password',
-                                    roles: [{
-                                        name: 'CUSTOMER'
-                                    }]
-                                }
-                            } as ApiSaveParams,
-                            variable: 'user',
-                        },
-                        {
-                            kind: Kind.API_CREATE,
-                            params: {
-                                type: 'Profile',
-                                payload: {
-                                    username: '$username',
-                                    roles: [{
-                                        name: 'CUSTOMER'
-                                    }]
-                                }
-                            } as ApiSaveParams
-                        },
-                        {
-                            kind: Kind.END,
-                            params: {},
-                        }
-                    ],
+                    statements: UserEmailVerification,
                 })
             })
     }, [params.id]);

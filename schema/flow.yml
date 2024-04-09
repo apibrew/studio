@@ -46,17 +46,79 @@ types:
         type: map
         item:
           type: string
+  - name: ActionParams
+    properties:
+      type:
+        type: string
   - name: ApiSaveParams
     properties:
       type:
         type: string
       payload:
         type: object
+  - name: ApiLoadParams
+    properties:
+      type:
+        type: string
+      match:
+        type: object
+      params:
+        type: object
+  - name: AssignParams
+    properties:
+      left:
+        type: string
+      expression:
+        type: string
+  - name: FunctionCallParams
+    properties:
+      name:
+        type: string
+      params:
+        type: object
+  - name: CodeParams
+    properties:
+      content:
+        type: string
+  - name: ConditionParams
+    properties:
+      condition:
+        type: string
+      pass:
+        type: list
+        required: true
+        item:
+          type: struct
+          typeRef: Statement
+        defaultValue: [ ]
+      fail:
+        type: list
+        required: true
+        item:
+          type: struct
+          typeRef: Statement
+        defaultValue: [ ]
+  - name: GroupParams
+    properties:
+      name:
+        type: string
+      statements:
+        type: list
+        required: true
+        item:
+          type: struct
+          typeRef: Statement
+        defaultValue: [ ]
+  - name: FailParams
+    properties:
+      message:
+        type: string
   - name: Statement
     properties:
       kind:
         type: enum
         enumValues:
+          - ACTION
           - EVENT
           - API_CREATE
           - API_GET
@@ -65,8 +127,10 @@ types:
           - API_DELETE
           - API_LIST
           - CODE
+          - FAIL
           - ASSIGN
           - CONDITION
+          - GROUP
           - HTTP_CALL
           - FUNCTION_CALL
           - TEMPLATE_CALL
@@ -75,3 +139,5 @@ types:
         type: object
       variable:
         type: string
+      checkResult:
+        type: bool

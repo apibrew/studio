@@ -1,11 +1,11 @@
 
 export interface PlayGround {
     id: string
-    run: boolean
     name: string
     loggingLevel: LoggingLevel
     state: State
     language: Language
+    run: boolean
     version: number
 }
 

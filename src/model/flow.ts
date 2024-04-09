@@ -1,8 +1,8 @@
 
 export interface Flow {
     id: string
-    name: string
     statements: Statement[]
+    name: string
     version: number
 }
 
@@ -13,22 +13,62 @@ export const FlowEntityInfo = {
 }
 
 export interface EventParams {
-    finalizes: boolean
-    annotations: { [key: string]: string }
-    type: string
     action: Action
     order: Order
     sync: boolean
     responds: boolean
-}
-
-export interface ApiSaveParams {
-    payload: object
+    finalizes: boolean
+    annotations: { [key: string]: string }
     type: string
 }
 
+export interface ActionParams {
+    type: string
+}
+
+export interface ApiSaveParams {
+    type: string
+    payload: object
+}
+
+export interface ApiLoadParams {
+    type: string
+    match: object
+    params: object
+}
+
+export interface AssignParams {
+    expression: string
+    left: string
+}
+
+export interface FunctionCallParams {
+    name: string
+    params: object
+}
+
+export interface CodeParams {
+    content: string
+}
+
+export interface ConditionParams {
+    pass: Statement[]
+    fail: Statement[]
+    condition: string
+}
+
+export interface GroupParams {
+    name: string
+    statements: Statement[]
+}
+
+export interface FailParams {
+    message: string
+}
+
 export interface Statement {
-    variable?: string
+    variable: string
+    checkResult: boolean
     kind: Kind
     params: object
 }
@@ -48,6 +88,7 @@ export enum Order {
 }
 
 export enum Kind {
+    ACTION = "ACTION",
     EVENT = "EVENT",
     API_CREATE = "API_CREATE",
     API_GET = "API_GET",
@@ -56,8 +97,10 @@ export enum Kind {
     API_DELETE = "API_DELETE",
     API_LIST = "API_LIST",
     CODE = "CODE",
+    FAIL = "FAIL",
     ASSIGN = "ASSIGN",
     CONDITION = "CONDITION",
+    GROUP = "GROUP",
     HTTP_CALL = "HTTP_CALL",
     FUNCTION_CALL = "FUNCTION_CALL",
     TEMPLATE_CALL = "TEMPLATE_CALL",
@@ -156,6 +199,16 @@ export const FlowResource = {
       }
     },
     {
+      "name": "ActionParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "type": {
+          "type": "STRING"
+        }
+      }
+    },
+    {
       "name": "ApiSaveParams",
       "title": "",
       "description": "",
@@ -169,13 +222,126 @@ export const FlowResource = {
       }
     },
     {
+      "name": "ApiLoadParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "match": {
+          "type": "OBJECT"
+        },
+        "params": {
+          "type": "OBJECT"
+        },
+        "type": {
+          "type": "STRING"
+        }
+      }
+    },
+    {
+      "name": "AssignParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "expression": {
+          "type": "STRING"
+        },
+        "left": {
+          "type": "STRING"
+        }
+      }
+    },
+    {
+      "name": "FunctionCallParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "STRING"
+        },
+        "params": {
+          "type": "OBJECT"
+        }
+      }
+    },
+    {
+      "name": "CodeParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "content": {
+          "type": "STRING"
+        }
+      }
+    },
+    {
+      "name": "ConditionParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "condition": {
+          "type": "STRING"
+        },
+        "fail": {
+          "type": "LIST",
+          "required": true,
+          "item": {
+            "type": "STRUCT",
+            "typeRef": "Statement"
+          },
+          "defaultValue": null
+        },
+        "pass": {
+          "type": "LIST",
+          "required": true,
+          "item": {
+            "type": "STRUCT",
+            "typeRef": "Statement"
+          },
+          "defaultValue": null
+        }
+      }
+    },
+    {
+      "name": "GroupParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "STRING"
+        },
+        "statements": {
+          "type": "LIST",
+          "required": true,
+          "item": {
+            "type": "STRUCT",
+            "typeRef": "Statement"
+          },
+          "defaultValue": null
+        }
+      }
+    },
+    {
+      "name": "FailParams",
+      "title": "",
+      "description": "",
+      "properties": {
+        "message": {
+          "type": "STRING"
+        }
+      }
+    },
+    {
       "name": "Statement",
       "title": "",
       "description": "",
       "properties": {
+        "checkResult": {
+          "type": "BOOL"
+        },
         "kind": {
           "type": "ENUM",
           "enumValues": [
+            "ACTION",
             "EVENT",
             "API_CREATE",
             "API_GET",
@@ -184,8 +350,10 @@ export const FlowResource = {
             "API_DELETE",
             "API_LIST",
             "CODE",
+            "FAIL",
             "ASSIGN",
             "CONDITION",
+            "GROUP",
             "HTTP_CALL",
             "FUNCTION_CALL",
             "TEMPLATE_CALL",

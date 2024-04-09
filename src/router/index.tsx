@@ -14,11 +14,11 @@ import CloudIndex from '../cloud'
 import {cloudRoutes} from "../cloud/routes";
 import TemplatesPage from "../pages/dashboard/templates/IndexPage";
 import {NanoRoutes} from "./nano";
-import OldResourcesPage from "../pages/dashboard/resources/OldResourcesPage";
-import ResourcePage from "../pages/dashboard/resources/ResourcePage";
+import ResourcePage from "../pages/dashboard/builder/ResourcePage";
 import {AIAssistantPage} from "../pages/dashboard/ai-assistant/AIAssistantPage";
 import {ExperimentsRoutes} from "../pages/experiments/routes";
 import {FlowRoutes} from "./flows";
+import BuilderPage from "../pages/dashboard/builder/BuilderPage";
 
 export const index = createBrowserRouter([
     {
@@ -53,10 +53,17 @@ export const index = createBrowserRouter([
                 },
             },
             {
-                path: "resources",
-                element: <ResourcesPage/>,
+                path: "builder",
+                element: <BuilderPage/>,
                 handle: {
                     breadcrumb: 'Resources'
+                }
+            },
+            {
+                path: "builder/:namespace/:resource",
+                element: <ResourcePage/>,
+                handle: {
+                    breadcrumb: ':namespace / :resource'
                 }
             },
             {
@@ -67,8 +74,8 @@ export const index = createBrowserRouter([
                 }
             },
             {
-                path: "resources-old/:namespace/:resource",
-                element: <OldResourcesPage/>,
+                path: "resources",
+                element: <ResourcesPage/>,
                 handle: {
                     breadcrumb: 'Resources'
                 }

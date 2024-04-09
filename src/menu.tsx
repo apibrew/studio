@@ -1,16 +1,17 @@
 import React from "react";
 import {
-    Assistant,
     Dataset,
     FunctionsTwoTone,
     Group,
+    Handyman,
     Home,
     Logout,
-    Monitor, NetworkCell,
+    Monitor,
     Person,
     SettingsEthernet
 } from "@mui/icons-material";
 import {ConnectionProvider} from "./connection-provider";
+import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
 
 export interface MenuItem {
     title: string;
@@ -29,9 +30,14 @@ export const menuItems: MenuItem[] = [
         icon: <Home/>
     },
     {
+        title: 'Builder',
+        path: '/dashboard/builder',
+        icon: <Handyman/>
+    },
+    {
         title: 'Resources',
         path: '/dashboard/resources',
-        // secondSideBar: () => <ResourceSelectorPanel/>,
+        secondSideBar: () => <ResourceSelectorPanel/>,
         icon: <Dataset/>
     },
     // {

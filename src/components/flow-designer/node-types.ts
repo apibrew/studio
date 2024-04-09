@@ -1,8 +1,11 @@
-import {EventNode} from "./nodes/EventNode";
-import {Kind} from "../../model/flow";
+import {EntryNode} from "./nodes/EntryNode";
 import {EndNode} from "./nodes/EndNode";
+import {SingleNode} from "./nodes/SingleNode";
+import {GroupNode} from "./nodes/GroupNode";
 
 export const nodeTypes = {
-    [Kind.EVENT]: EventNode,
-    [Kind.END]: EndNode,
+    'single': SingleNode,
+    'entry': EntryNode,
+    'end': EndNode,
+    'group': GroupNode,
 }

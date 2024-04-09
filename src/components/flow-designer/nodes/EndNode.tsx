@@ -1,10 +1,7 @@
-import {EventParams} from "../../../model/flow";
 import {Handle, Position} from "reactflow";
 import React from "react";
-import './EndNode.scss'
 
 export interface EventNodeProps {
-    data: EventParams,
     isConnectable: boolean,
     selected: boolean
 }

@@ -2,16 +2,16 @@ import {PlayGround} from './play-ground';
 
 export interface Script {
     id: string
-    context?: object
-    content: string
-    run: boolean
-    error?: object
-    playground: PlayGround
-    state: State
+    order: number
     annotations?: { [key: string]: string }
     output?: object
+    state: State
     contentFormat: ContentFormat
-    order: number
+    error?: object
+    context?: object
+    content: string
+    playground: PlayGround
+    run: boolean
     version: number
 }
 

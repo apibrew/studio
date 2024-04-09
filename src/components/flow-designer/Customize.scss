@@ -1,0 +1,71 @@
+.flow-designer {
+  .react-flow__handle {
+    width: 4px;
+    height: 4px;
+    min-width: 4px;
+    min-height: 4px;
+    left: 30px;
+  }
+
+  .react-flow__node-END .react-flow__handle {
+    left: 50%;
+  }
+}
+
+.flow-designer {
+
+  .react-flow__node {
+    padding: 10px 6px 10px 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    min-width: 200px;
+    color: #000;
+
+    &.selected {
+      box-shadow: 0 0 0 0.5px #192b28;
+    }
+
+    .label {
+      font-size: 16px;
+      font-weight: 500;
+      color: #000;
+      display: flex;
+
+      .icon {
+        font-size: 18px;
+      }
+
+      .text {
+        margin-left: 3px;
+        margin-top: 1px;
+      }
+    }
+  }
+
+  .react-flow__node-entry {
+    background: rgba(69, 194, 137, 0.36);
+  }
+  .react-flow__node-single {
+    background: rgba(206, 236, 18, 0.75);
+  }
+  .react-flow__node-group {
+    background: rgba(206, 236, 18, 0.75);
+    width: auto;
+    //height: 800px;
+  }
+
+  .react-flow__node-END {
+    border-radius: 100%;
+    background: lightblue;
+    min-width: unset;
+  }
+
+  .node-details {
+    position: absolute;
+    font-size: 12px;
+    margin-left: 200px;
+    max-height: 36px;
+    overflow: scroll;
+    width: 400px;
+  }
+}
