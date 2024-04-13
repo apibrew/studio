@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apibrew/client": "^1.1.60",
+    "@apibrew/client": "^1.1.61",
     "@apibrew/react": "^1.0.70",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
