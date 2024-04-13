@@ -21,7 +21,7 @@ export const RegisterPage = () => {
 
     useEffect(() => {
         if (client.isAuthenticated()) {
-            navigate('/cloud/post-login')
+            navigate('../post-login')
         }
     }, [client]);
 
@@ -39,7 +39,7 @@ export const RegisterPage = () => {
             } as UserRegistration)
 
             await client.authenticateWithUsernameAndPassword(email, password);
-            navigate('/cloud/post-login')
+            navigate('../post-login')
         } catch (err: any) {
             toast.error(err.message);
         } finally {

@@ -79,6 +79,7 @@ export function Goto() {
                     toast.error('Instance is destroyed')
                     navigate('/cloud/instances')
                     break
+                case DeploymentStatus.PENDING_DEPLOY:
                 case DeploymentStatus.DEPLOYED:
                     handleInstance(instance)
                     break
