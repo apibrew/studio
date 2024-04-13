@@ -20,7 +20,7 @@ export function Goto() {
     })
 
     async function awaitInstance(guestClient: Client, tokenStorage: LocalStorageTokenStorage) {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 100; i++) {
             try {
                 await guestClient.listResources()
                 break
@@ -30,9 +30,9 @@ export function Goto() {
                     continue
                 }
                 console.error(e)
-                await new Promise(resolve => setTimeout(resolve, 5000))
+                await new Promise(resolve => setTimeout(resolve, 500))
             } finally {
-                setMessage('Awaiting instance... ' + i + '/20')
+                setMessage('Awaiting instance... ' + i + '/100')
             }
         }
     }
