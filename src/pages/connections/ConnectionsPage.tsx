@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import {useDrawer} from "../../hooks/use-drawer";
 import {ConnectionDrawer} from "../../components/connections/ConnectionDrawer";
 import {Authentication, Server} from "@apibrew/client/config";
+import {useClient} from "@apibrew/react";
 
 function loadConnections(setConnections: (value: Connection[]) => void) {
     const connections$ = connectionProvider.listConnections
@@ -24,7 +25,10 @@ export function ConnectionsPage() {
     const [connections, setConnections] = React.useState<Connection[]>()
     const drawer = useDrawer()
 
+    const client = useClient()
+
     React.useEffect(() => {
+        client.refreshToken()
         loadConnections(setConnections);
     }, [])
 
