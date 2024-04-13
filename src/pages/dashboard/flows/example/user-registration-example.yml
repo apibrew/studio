@@ -1,0 +1,24 @@
+type: studio/Flow
+name: UserRegistrationExample
+statements:
+  - kind: ACTION
+    params:
+      type: UserRegistration
+  - kind: API_CREATE
+    params:
+      type: system/User
+      payload:
+        username: "$username"
+        password: "$password"
+        roles:
+          - name: CUSTOMER
+    variable: user
+  - kind: API_CREATE
+    params:
+      type: Profile
+      payload:
+        username: "$username"
+        roles:
+          - name: CUSTOMER
+  - kind: END
+    params: { }

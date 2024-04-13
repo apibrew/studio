@@ -14,12 +14,12 @@ export const DatabaseEntityInfo = {
 }
 
 export interface DbConfig {
-    dbName: string
-    password: string
     username: string
     defaultSchema: string
     host: string
     port: string
+    dbName: string
+    password: string
 }
 
 export interface AuditData {
@@ -31,10 +31,10 @@ export interface AuditData {
 
 export const DatabaseResource = {
   "auditData": {
-    "createdBy": "system",
+    "createdBy": "admin",
     "updatedBy": "system",
-    "createdOn": "2023-11-29T11:44:38Z",
-    "updatedOn": "2024-01-06T13:08:00Z"
+    "createdOn": "2024-01-06T21:56:15Z",
+    "updatedOn": "2024-04-12T19:16:01Z"
   },
   "name": "Database",
   "namespace": {
@@ -46,9 +46,9 @@ export const DatabaseResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-01-06T17:08:00+04:00",
+        "createdOn": "2024-04-12T19:16:01Z",
         "updatedBy": "admin",
-        "updatedOn": "2024-01-06T17:08:00+04:00"
+        "updatedOn": "2024-04-12T19:16:01Z"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
@@ -64,12 +64,12 @@ export const DatabaseResource = {
     },
     "id": {
       "type": "UUID",
+      "primary": true,
       "required": true,
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
-        "PrimaryProperty": "true",
         "SpecialProperty": "true"
       }
     },
@@ -149,7 +149,7 @@ export const DatabaseResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -168,7 +168,7 @@ export const DatabaseResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {
@@ -179,8 +179,7 @@ export const DatabaseResource = {
     }
   ],
   "annotations": {
-    "EnableAudit": "true",
-    "NormalizedResource": "true"
+    "EnableAudit": "true"
   }
 } as unknown
 

@@ -1,5 +1,31 @@
 import {Edge, MarkerType, Node} from "reactflow";
-import {ActionParams, EventParams, Flow, GroupParams, Kind, Statement} from "../../model/flow";
+import {
+    ActionParams,
+    ApiLoadParams,
+    ApiSaveParams,
+    AssignParams,
+    CodeParams,
+    ConditionParams,
+    EventParams, FailParams,
+    Flow,
+    FunctionCallParams,
+    GroupParams,
+    Kind,
+    Statement
+} from "../../model/flow";
+import {
+    Add,
+    Bolt,
+    CallReceived,
+    Code,
+    Dangerous,
+    Error,
+    ForkRight,
+    Functions,
+    Search,
+    Update
+} from "@mui/icons-material";
+import React from "react";
 
 interface PendingItem {
     nodeId: number,
@@ -13,51 +39,115 @@ interface PendingItem {
 }
 
 function prepareNode(item: PendingItem): Node {
-    let data: Node = {
+    let node: Node = {
         id: 'node-' + item.nodeId,
         type: 'single',
         position: item.position,
         data: {
-            label: 'Unknown',
+            label: 'Unknown: ' + item.statement.kind,
             ...item.additionalData,
         },
     }
 
     if (item.parentId !== undefined) {
-        data.parentId = 'node-' + item.parentId
+        node.parentId = 'node-' + item.parentId
     }
 
     switch (item.statement.kind) {
         case Kind.END:
-            data.data.label = 'End'
-            data.type = 'end'
+            node.data.label = 'End'
+            node.type = 'end'
             break
         case Kind.EVENT:
             const eventParams = item.statement.params as EventParams
-            data.data.label = eventParams.type
-            data.type = 'entry'
+            const act = eventParams.action.toLowerCase()
+            // act first letter to uppercase
+            const action = act.charAt(0).toUpperCase() + act.slice(1)
+            node.data.label = eventParams.order.toLowerCase() + action + ': ' + eventParams.type
+            node.data.icon = <Bolt/>
+            node.type = 'entry'
             break
         case Kind.ACTION:
             const actionParams = item.statement.params as ActionParams
-            data.data.label = actionParams.type
-            data.type = 'entry'
+            node.data.label = actionParams.type
+            node.type = 'entry'
+            node.data.icon = <CallReceived/>
             break
-        case Kind.GROUP:
+        case Kind.ASSIGN:
+            const assignParams = item.statement.params as AssignParams
+            node.data.label = assignParams.left + ' = ' + assignParams.expression
+            node.type = 'single'
+            node.data.icon = <Code/>
+            break
+        case Kind.CODE:
+            const codeParams = item.statement.params as CodeParams
+            node.data.label = ''
+            node.data.text = codeParams.content.substring(0, 16) + '...'
+            node.data.icon = <Code/>
+            node.type = 'single'
+            break
+        case Kind.API_CREATE: {
+            const apiSaveParams = item.statement.params as ApiSaveParams
+            node.data.label = apiSaveParams.type
+            node.data.icon = <Add/>
+            node.type = 'single'
+            break
+        }
+        case Kind.API_UPDATE: {
+            const apiSaveParams = item.statement.params as ApiSaveParams
+            node.data.label = 'Update: ' + apiSaveParams.type
+            node.data.icon = <Update/>
+            node.type = 'single'
+            break
+        }
+        case Kind.API_LOAD: {
+            const params = item.statement.params as ApiLoadParams
+            node.data.label = params.type
+            node.data.icon = <Search/>
+            node.type = 'single'
+            break
+        }
+        case Kind.FUNCTION_CALL: {
+            const params = item.statement.params as FunctionCallParams
+            node.data.label = params.name
+            node.data.icon = <Functions/>
+            node.type = 'single'
+            break
+        }
+        case Kind.CONDITION: {
+            const params = item.statement.params as ConditionParams
+            node.data.label = params.condition
+            node.data.icon = <ForkRight/>
+            node.type = 'single'
+            break
+        }
+        case Kind.FAIL: {
+            const params = item.statement.params as FailParams
+            node.data.label = params.message
+            node.data.icon = <Dangerous/>
+            node.type = 'single'
+            break
+        }
+        case Kind.GROUP: {
             const groupParams = item.statement.params as GroupParams
-            data.data.label = groupParams.name
-            data.type = 'group'
+            node.data.label = groupParams.name
+            node.type = 'group'
+            node.selectable = false
             break
+        }
     }
 
-    return data
+    return node
 }
 
 export function position(items: PendingItem[]) {
-    let x = 20
+    let x = 60
     let y = 40
 
     let maxY = 0
     let gi = 0
+
+    let groupTop = 20
 
     let lastGroup: PendingItem | undefined = undefined
 
@@ -67,6 +157,8 @@ export function position(items: PendingItem[]) {
                 lastGroup.additionalData = {
                     height: y - 20
                 }
+
+                groupTop += y + 20
             }
 
             y = maxY + 20 + (gi++ * 20)
@@ -81,6 +173,11 @@ export function position(items: PendingItem[]) {
 
         if (item.statement.kind === Kind.GROUP) {
             y = 40
+
+            item.position = {
+                x: x,
+                y: groupTop
+            }
         }
 
         if (y > maxY) {
@@ -112,7 +209,6 @@ export function prepare(flow: Flow): [Node[], Edge[]] {
 
         const statement = pendingItem.statement
 
-
         if (statement.kind === Kind.GROUP) {
             const groupParams = statement.params as GroupParams
 
@@ -123,6 +219,32 @@ export function prepare(flow: Flow): [Node[], Edge[]] {
                     nodeId: nodeId++
                 } as PendingItem))
                 .concat(pendingItems)
+        }
+
+        if (statement.kind === Kind.CONDITION) {
+            const conditionParams = statement.params as ConditionParams
+
+            console.log('conditionParams', flow.statements)
+
+            if (conditionParams.pass) {
+                pendingItems = conditionParams.pass
+                    .map(statement => ({
+                        statement,
+                        parentId: pendingItem.parentId,
+                        nodeId: nodeId++
+                    } as PendingItem))
+                    .concat(pendingItems)
+            }
+
+            if (conditionParams.fail) {
+                pendingItems = conditionParams.fail
+                    .map(statement => ({
+                        statement,
+                        parentId: pendingItem.parentId,
+                        nodeId: nodeId++
+                    } as PendingItem))
+                    .concat(pendingItems)
+            }
         }
     }
 

@@ -1,33 +1,30 @@
 
-export interface Account {
-    version: number
+export interface ControllerAccessToken {
     id: string
-    name?: string
-    email?: string
+    token?: string
+    version: number
+    instance: string
 }
 
-export const AccountEntityInfo = {
-    namespace: "default",
-    resource: "Account",
-    restPath: "account",
+export const ControllerAccessTokenEntityInfo = {
+    namespace: "ops",
+    resource: "ControllerAccessToken",
+    restPath: "ops-controller-access-token",
 }
 
-export const AccountResource = {
+export const ControllerAccessTokenResource = {
   "auditData": {
-    "createdBy": "admin",
-    "updatedBy": "system",
-    "createdOn": "2024-01-06T21:56:16Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "createdBy": "admin@admin.com",
+    "updatedBy": "admin@admin.com",
+    "createdOn": "2024-04-12T11:53:00Z",
+    "updatedOn": "2024-04-12T20:12:09Z"
   },
-  "name": "Account",
+  "name": "ControllerAccessToken",
   "namespace": {
-    "name": "default"
+    "name": "ops"
   },
+  "virtual": true,
   "properties": {
-    "email": {
-      "type": "STRING",
-      "description": "The email of the account"
-    },
     "id": {
       "type": "UUID",
       "primary": true,
@@ -39,9 +36,12 @@ export const AccountResource = {
         "SpecialProperty": "true"
       }
     },
-    "name": {
+    "instance": {
       "type": "STRING",
-      "description": "The name of the account"
+      "required": true
+    },
+    "token": {
+      "type": "STRING"
     },
     "version": {
       "type": "INT32",

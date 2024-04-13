@@ -2,24 +2,26 @@ import {InstancePlan} from './instance-plan';
 import {Database} from './database';
 
 export interface Instance {
-    owner?: string
-    health: Health
+    description?: string
+    adminPassword?: string
+    modules?: { [key: string]: string }
+    replicaCount: number
     auditData?: AuditData
-    plan?: InstancePlan
-    controllerAccessToken?: string
     backendVersion: string
     namespace: string
-    adminPassword?: string
+    paidPlanUntil?: string | Date
+    controllerAccessToken?: string
+    name: string
+    plan?: InstancePlan
+    version: number
     deploymentStatus: DeploymentStatus
     id: string
-    database: Database
     cluster: string
-    version: number
-    replicaCount: number
+    health: Health
+    owner?: string
     title?: string
-    name: string
-    description?: string
-    paidPlanUntil?: string | Date
+    database: Database
+    additionalConfig?: object
 }
 
 export const InstanceEntityInfo = {
@@ -29,15 +31,10 @@ export const InstanceEntityInfo = {
 }
 
 export interface AuditData {
-    updatedBy: string
-    updatedOn: string | Date
     createdBy: string
     createdOn: string | Date
-}
-
-export enum Health {
-    HEALTHY = "HEALTHY",
-    UNHEALTHY = "UNHEALTHY",
+    updatedBy: string
+    updatedOn: string | Date
 }
 
 export enum DeploymentStatus {
@@ -50,18 +47,26 @@ export enum DeploymentStatus {
     DESTROY_FAILED = "DESTROY_FAILED",
 }
 
+export enum Health {
+    HEALTHY = "HEALTHY",
+    UNHEALTHY = "UNHEALTHY",
+}
+
 export const InstanceResource = {
   "auditData": {
-    "createdBy": "system",
+    "createdBy": "admin",
     "updatedBy": "system",
-    "createdOn": "2023-11-29T11:44:38Z",
-    "updatedOn": "2024-01-06T13:08:00Z"
+    "createdOn": "2024-01-06T21:56:15Z",
+    "updatedOn": "2024-04-12T19:16:01Z"
   },
   "name": "Instance",
   "namespace": {
     "name": "default"
   },
   "properties": {
+    "additionalConfig": {
+      "type": "OBJECT"
+    },
     "adminPassword": {
       "type": "STRING",
       "description": "The admin password of the instance"
@@ -71,9 +76,9 @@ export const InstanceResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-01-06T17:08:00+04:00",
+        "createdOn": "2024-04-12T19:16:01Z",
         "updatedBy": "admin",
-        "updatedOn": "2024-01-06T17:08:00+04:00"
+        "updatedOn": "2024-04-12T19:16:01Z"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
@@ -131,13 +136,19 @@ export const InstanceResource = {
     },
     "id": {
       "type": "UUID",
+      "primary": true,
       "required": true,
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
-        "PrimaryProperty": "true",
         "SpecialProperty": "true"
+      }
+    },
+    "modules": {
+      "type": "MAP",
+      "item": {
+        "type": "STRING"
       }
     },
     "name": {
@@ -205,7 +216,7 @@ export const InstanceResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -224,7 +235,7 @@ export const InstanceResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {
@@ -235,8 +246,7 @@ export const InstanceResource = {
     }
   ],
   "annotations": {
-    "EnableAudit": "true",
-    "NormalizedResource": "true"
+    "EnableAudit": "true"
   }
 } as unknown
 

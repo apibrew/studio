@@ -1,17 +1,19 @@
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useNavigate, useParams} from "react-router-dom";
-import {LocalStorageTokenStorage, useClient, useRecordBy} from "@apibrew/react";
+import {LocalStorageTokenStorage, useClient, useRecordBy, useRepository} from "@apibrew/react";
 import {DeploymentStatus, Instance, InstanceEntityInfo} from "../../model/instance";
 import React, {useEffect} from "react";
 import toast from "react-hot-toast";
 import {Client, ClientImpl} from "@apibrew/client";
 import Alert from "@mui/material/Alert";
+import {ControllerAccessToken, ControllerAccessTokenEntityInfo} from "../../model/ops/controller-access-token";
 
 export function Goto() {
     const params = useParams()
     const navigate = useNavigate()
     const hostClient = useClient()
     const [message, setMessage] = React.useState('')
+    const controllerAccessTokenRepository = useRepository<ControllerAccessToken>(ControllerAccessTokenEntityInfo)
 
     const instance = useRecordBy<Instance>(InstanceEntityInfo, {
         id: params.id
@@ -44,33 +46,25 @@ export function Goto() {
         const tokenStorage = new LocalStorageTokenStorage(instance.name)
         guestClient.useTokenStorage(tokenStorage)
 
-        const prem = toast.loading('Authenticating...')
-        hostClient.listRecords<Instance>(InstanceEntityInfo, {
-            filters: {
-                name: instance.name
-            }
-        }).then(async (resp) => {
-            toast.dismiss(prem)
-            if (resp.content[0].controllerAccessToken) {
-                console.log('reps', resp)
+        const prem = toast.loading('Loading Instance...')
 
-                await awaitInstance(guestClient, tokenStorage)
+        await awaitInstance(guestClient, tokenStorage)
 
-                setMessage('Authenticating...')
-                await guestClient.authenticateWithToken(resp.content[0].controllerAccessToken!)
-                toast.success('Authenticated')
-                setMessage('Redirecting...')
+        toast.dismiss(prem)
+        setMessage('Authenticating...')
+        const result = await controllerAccessTokenRepository.create({
+            instance: instance.id,
+        } as ControllerAccessToken)
 
-                navigate(`/${instance.name}/dashboard/builder`)
-            } else {
-                if (!retry) {
-                    await handleInstance(instance, true)
-                }
-            }
-        }, err => {
-            console.error(err)
-            toast.success('Could not authenticate with project instance, please rebuild project or contact support.')
-        })
+        if (!result) {
+            toast.error('Could not authenticate with project instance, please rebuild project or contact support.')
+            return
+        }
+        const token = result.token
+        await guestClient.authenticateWithToken(token!)
+        toast.success('Authenticated')
+        setMessage('Redirecting...')
+        navigate(`/${instance.name}/dashboard/builder`)
     }
 
     useEffect(() => {

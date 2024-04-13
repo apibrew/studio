@@ -1,33 +1,25 @@
 
-export interface Account {
-    version: number
+export interface InstanceControllerToken {
     id: string
-    name?: string
-    email?: string
+    version: number
 }
 
-export const AccountEntityInfo = {
+export const InstanceControllerTokenEntityInfo = {
     namespace: "default",
-    resource: "Account",
-    restPath: "account",
+    resource: "InstanceControllerToken",
+    restPath: "instance-controller-token",
 }
 
-export const AccountResource = {
+export const InstanceControllerTokenResource = {
   "auditData": {
-    "createdBy": "admin",
-    "updatedBy": "system",
-    "createdOn": "2024-01-06T21:56:16Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "createdBy": "admin@admin.com",
+    "createdOn": "2024-04-12T11:50:24Z"
   },
-  "name": "Account",
+  "name": "InstanceControllerToken",
   "namespace": {
     "name": "default"
   },
   "properties": {
-    "email": {
-      "type": "STRING",
-      "description": "The email of the account"
-    },
     "id": {
       "type": "UUID",
       "primary": true,
@@ -38,10 +30,6 @@ export const AccountResource = {
       "annotations": {
         "SpecialProperty": "true"
       }
-    },
-    "name": {
-      "type": "STRING",
-      "description": "The name of the account"
     },
     "version": {
       "type": "INT32",

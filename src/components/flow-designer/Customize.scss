@@ -49,12 +49,13 @@
     background: rgba(206, 236, 18, 0.75);
   }
   .react-flow__node-group {
-    background: rgba(206, 236, 18, 0.75);
+    background: rgba(206, 236, 200, 0.3);
     width: auto;
-    //height: 800px;
+    border: none;
+    box-shadow: 0 0 0 0.5px #FFF;
   }
 
-  .react-flow__node-END {
+  .react-flow__node-end {
     border-radius: 100%;
     background: lightblue;
     min-width: unset;

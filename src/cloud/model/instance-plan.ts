@@ -1,13 +1,13 @@
 
 export interface InstancePlan {
+    id: string
+    name: string
+    amount: number
     limits?: PlanLimits
     version: number
     currency: string
     auditData?: AuditData
     attributes?: { [key: string]: string }
-    id: string
-    name: string
-    amount: number
 }
 
 export const InstancePlanEntityInfo = {
@@ -17,25 +17,25 @@ export const InstancePlanEntityInfo = {
 }
 
 export interface PlanLimits {
+    maxRecordCount: number
     maxResourceCount: number
     requestPerMinute: number
     maxNamespaceCount: number
-    maxRecordCount: number
 }
 
 export interface AuditData {
+    updatedBy: string
     updatedOn: string | Date
     createdBy: string
     createdOn: string | Date
-    updatedBy: string
 }
 
 export const InstancePlanResource = {
   "auditData": {
-    "createdBy": "system",
+    "createdBy": "admin",
     "updatedBy": "system",
-    "createdOn": "2023-11-29T11:44:38Z",
-    "updatedOn": "2024-01-06T13:08:00Z"
+    "createdOn": "2024-01-06T21:56:14Z",
+    "updatedOn": "2024-04-12T19:16:01Z"
   },
   "name": "InstancePlan",
   "namespace": {
@@ -58,9 +58,9 @@ export const InstancePlanResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-01-06T17:08:00+04:00",
+        "createdOn": "2024-04-12T19:16:01Z",
         "updatedBy": "admin",
-        "updatedOn": "2024-01-06T17:08:00+04:00"
+        "updatedOn": "2024-04-12T19:16:01Z"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
@@ -75,12 +75,12 @@ export const InstancePlanResource = {
     },
     "id": {
       "type": "UUID",
+      "primary": true,
       "required": true,
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
-        "PrimaryProperty": "true",
         "SpecialProperty": "true"
       }
     },
@@ -150,7 +150,7 @@ export const InstancePlanResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -169,7 +169,7 @@ export const InstancePlanResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {
@@ -180,8 +180,7 @@ export const InstancePlanResource = {
     }
   ],
   "annotations": {
-    "EnableAudit": "true",
-    "NormalizedResource": "true"
+    "EnableAudit": "true"
   }
 } as unknown
 

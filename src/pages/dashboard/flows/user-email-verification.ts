@@ -78,7 +78,7 @@ export const UserEmailVerification: Statement[] = [
                 {
                     kind: Kind.ACTION,
                     params: {
-                        type: 'UserVerification',
+                        type: 'UserVerificationSubmit',
                     } as ActionParams
                 },
                 {
@@ -146,7 +146,7 @@ export const UserEmailVerification: Statement[] = [
                 {
                     kind: Kind.ACTION,
                     params: {
-                        type: 'UserVerification',
+                        type: 'UserVerificationSubmit',
                     } as ActionParams
                 },
                 {
@@ -214,7 +214,7 @@ export const UserEmailVerification: Statement[] = [
                 {
                     kind: Kind.ACTION,
                     params: {
-                        type: 'UserVerification',
+                        type: 'UserVerificationSubmit',
                     } as ActionParams
                 },
                 {
@@ -282,7 +282,7 @@ export const UserEmailVerification: Statement[] = [
                 {
                     kind: Kind.ACTION,
                     params: {
-                        type: 'UserVerification',
+                        type: 'UserVerificationSubmit',
                     } as ActionParams
                 },
                 {

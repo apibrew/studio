@@ -1,20 +1,20 @@
 import {Payment} from './payment';
-import {InstancePlan} from './instance-plan';
 import {Instance} from './instance';
+import {InstancePlan} from './instance-plan';
 
 export interface Invoice {
-    items: InvoiceItem[]
-    amount: number
-    version: number
-    currency: string
-    paymentDate?: string | Date
-    id: string
+    executionStatus: ExecutionStatus
     status: Status
     payment?: Payment
+    currency: string
     auditData?: AuditData
-    executionStatus: ExecutionStatus
-    user: string
+    amount: number
+    paymentDate?: string | Date
+    items: InvoiceItem[]
     notes?: string
+    version: number
+    id: string
+    user: string
 }
 
 export const InvoiceEntityInfo = {
@@ -24,23 +24,18 @@ export const InvoiceEntityInfo = {
 }
 
 export interface InvoiceItem {
+    instance: Instance
     monthCount: number
     instancePreviousPlanName: string
     instancePreviousPlanUntil: string | Date
     plan: InstancePlan
-    instance: Instance
 }
 
 export interface AuditData {
-    updatedOn: string | Date
     createdBy: string
     createdOn: string | Date
     updatedBy: string
-}
-
-export enum Status {
-    PENDING = "PENDING",
-    PAID = "PAID",
+    updatedOn: string | Date
 }
 
 export enum ExecutionStatus {
@@ -50,12 +45,17 @@ export enum ExecutionStatus {
     FAILED = "FAILED",
 }
 
+export enum Status {
+    PENDING = "PENDING",
+    PAID = "PAID",
+}
+
 export const InvoiceResource = {
   "auditData": {
-    "createdBy": "system",
+    "createdBy": "admin",
     "updatedBy": "system",
-    "createdOn": "2023-11-29T11:44:38Z",
-    "updatedOn": "2024-01-06T13:08:01Z"
+    "createdOn": "2024-01-06T21:56:20Z",
+    "updatedOn": "2024-04-12T19:16:01Z"
   },
   "name": "Invoice",
   "namespace": {
@@ -72,9 +72,9 @@ export const InvoiceResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-01-06T17:08:00+04:00",
+        "createdOn": "2024-04-12T19:16:01Z",
         "updatedBy": "admin",
-        "updatedOn": "2024-01-06T17:08:00+04:00"
+        "updatedOn": "2024-04-12T19:16:01Z"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
@@ -100,12 +100,12 @@ export const InvoiceResource = {
     },
     "id": {
       "type": "UUID",
+      "primary": true,
       "required": true,
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
-        "PrimaryProperty": "true",
         "SpecialProperty": "true"
       }
     },
@@ -208,7 +208,7 @@ export const InvoiceResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -227,7 +227,7 @@ export const InvoiceResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-01-06T17:08:00+04:00",
+          "exampleValue": "2024-04-12T19:16:01Z",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {
@@ -238,8 +238,7 @@ export const InvoiceResource = {
     }
   ],
   "annotations": {
-    "EnableAudit": "true",
-    "NormalizedResource": "true"
+    "EnableAudit": "true"
   }
 } as unknown
 

@@ -5,7 +5,7 @@ export interface EntryNodeProps {
     data: {
         icon: ReactNode
         label: string
-        additionalLabel: string
+        text: string
     },
     isConnectable: boolean,
     selected: boolean
@@ -17,8 +17,8 @@ export function EntryNode(props: EntryNodeProps) {
             {props.data.icon}
             <span className='text'>
                 <b>{props.data.label}</b>
+                {props.data.text}
             </span>
-            <span className='text'>{props.data.additionalLabel}</span>
         </div>
         <Handle
             type="source"

@@ -1,41 +1,32 @@
-import {Instance} from './instance';
 
-export interface InstanceUserCredentials {
-    instance: Instance
-    dbPassword: string
-    adminPassword: string
-    controllerPassword: string
+export interface Feedback {
+    p?: string
     id: string
+    message?: string
     version: number
+    connection: string
+    parameters?: object
 }
 
-export const InstanceUserCredentialsEntityInfo = {
+export const FeedbackEntityInfo = {
     namespace: "default",
-    resource: "InstanceUserCredentials",
-    restPath: "instance-user-credentials",
+    resource: "Feedback",
+    restPath: "feedback",
 }
 
-export const InstanceUserCredentialsResource = {
+export const FeedbackResource = {
   "auditData": {
     "createdBy": "admin",
-    "updatedBy": "admin@admin.com",
-    "createdOn": "2024-01-06T21:56:19Z",
-    "updatedOn": "2024-04-12T20:11:41Z"
+    "updatedBy": "system",
+    "createdOn": "2024-02-15T16:52:33Z",
+    "updatedOn": "2024-04-12T19:16:01Z"
   },
-  "name": "InstanceUserCredentials",
+  "name": "Feedback",
   "namespace": {
     "name": "default"
   },
   "properties": {
-    "adminPassword": {
-      "type": "STRING",
-      "required": true
-    },
-    "controllerPassword": {
-      "type": "STRING",
-      "required": true
-    },
-    "dbPassword": {
+    "connection": {
       "type": "STRING",
       "required": true
     },
@@ -50,11 +41,14 @@ export const InstanceUserCredentialsResource = {
         "SpecialProperty": "true"
       }
     },
-    "instance": {
-      "type": "REFERENCE",
-      "required": true,
-      "unique": true,
-      "reference": "default/Instance"
+    "message": {
+      "type": "STRING"
+    },
+    "p": {
+      "type": "STRING"
+    },
+    "parameters": {
+      "type": "OBJECT"
     },
     "version": {
       "type": "INT32",
@@ -68,6 +62,9 @@ export const InstanceUserCredentialsResource = {
         "SpecialProperty": "true"
       }
     }
+  },
+  "annotations": {
+    "AllowPublicCreateAccess": "true"
   }
 } as unknown
 

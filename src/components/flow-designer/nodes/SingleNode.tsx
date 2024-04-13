@@ -1,10 +1,11 @@
 import {Handle, Position} from "reactflow";
-import React from "react";
-import {ArrowDownward} from "@mui/icons-material";
+import React, {ReactNode} from "react";
 
 export interface SingleNodeProps {
     data: {
         label: string
+        text: string
+        icon: ReactNode
     },
     isConnectable: boolean,
     selected: boolean
@@ -20,9 +21,10 @@ export function SingleNode(props: SingleNodeProps) {
             isConnectable={props.isConnectable}
         />
         <div className='label'>
-            <ArrowDownward className='icon'/>
+            {props.data.icon}
             <span className='text'>
                 <b>{props.data.label}</b>
+                {props.data.text}
             </span>
         </div>
         <Handle
