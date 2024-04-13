@@ -53,6 +53,7 @@ export function Goto() {
         toast.dismiss(prem)
         setMessage('Authenticating...')
         const result = await controllerAccessTokenRepository.create({
+            username: instance.owner,
             instance: instance.name,
         } as ControllerAccessToken)
 

@@ -15,10 +15,10 @@ export const GithubSsoEntityInfo = {
 }
 
 export interface AuditData {
-    updatedBy: string
     updatedOn: string | Date
     createdBy: string
     createdOn: string | Date
+    updatedBy: string
 }
 
 export const GithubSsoResource = {

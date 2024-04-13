@@ -2,26 +2,26 @@ import {InstancePlan} from './instance-plan';
 import {Database} from './database';
 
 export interface Instance {
-    description?: string
-    adminPassword?: string
     modules?: { [key: string]: string }
-    replicaCount: number
-    auditData?: AuditData
-    backendVersion: string
-    namespace: string
-    paidPlanUntil?: string | Date
-    controllerAccessToken?: string
-    name: string
     plan?: InstancePlan
-    version: number
     deploymentStatus: DeploymentStatus
-    id: string
-    cluster: string
     health: Health
-    owner?: string
-    title?: string
+    namespace: string
+    auditData?: AuditData
     database: Database
+    paidPlanUntil?: string | Date
+    owner?: string
+    backendVersion: string
     additionalConfig?: object
+    controllerAccessToken?: string
+    title?: string
+    cluster: string
+    id: string
+    name: string
+    adminPassword?: string
+    description?: string
+    replicaCount: number
+    version: number
 }
 
 export const InstanceEntityInfo = {

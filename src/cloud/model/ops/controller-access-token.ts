@@ -1,5 +1,6 @@
 
 export interface ControllerAccessToken {
+    username?: string
     id: string
     token?: string
     version: number
@@ -17,7 +18,7 @@ export const ControllerAccessTokenResource = {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin@admin.com",
     "createdOn": "2024-04-12T11:53:00Z",
-    "updatedOn": "2024-04-12T20:12:09Z"
+    "updatedOn": "2024-04-13T07:54:04Z"
   },
   "name": "ControllerAccessToken",
   "namespace": {
@@ -43,6 +44,9 @@ export const ControllerAccessTokenResource = {
     "token": {
       "type": "STRING"
     },
+    "username": {
+      "type": "STRING"
+    },
     "version": {
       "type": "INT32",
       "required": true,
@@ -55,6 +59,9 @@ export const ControllerAccessTokenResource = {
         "SpecialProperty": "true"
       }
     }
+  },
+  "annotations": {
+    "AllowPublicCreateAccess": "true"
   }
 } as unknown
 

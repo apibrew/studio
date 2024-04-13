@@ -1,26 +1,14 @@
 
-export interface InstancePlan {
-    currency: string
-    auditData?: AuditData
-    attributes?: { [key: string]: string }
-    id: string
-    name: string
-    amount: number
-    limits?: PlanLimits
+export interface Message {
     version: number
+    auditData?: AuditData
+    id: string
 }
 
-export const InstancePlanEntityInfo = {
+export const MessageEntityInfo = {
     namespace: "default",
-    resource: "InstancePlan",
-    restPath: "instance-plan",
-}
-
-export interface PlanLimits {
-    maxRecordCount: number
-    maxResourceCount: number
-    requestPerMinute: number
-    maxNamespaceCount: number
+    resource: "Message",
+    restPath: "message",
 }
 
 export interface AuditData {
@@ -30,29 +18,18 @@ export interface AuditData {
     updatedOn: string | Date
 }
 
-export const InstancePlanResource = {
+export const MessageResource = {
   "auditData": {
-    "createdBy": "admin",
-    "updatedBy": "system",
-    "createdOn": "2024-01-06T21:56:14Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "createdBy": "admin@admin.com",
+    "updatedBy": "admin@admin.com",
+    "createdOn": "2024-04-12T19:29:15Z",
+    "updatedOn": "2024-04-12T19:29:37Z"
   },
-  "name": "InstancePlan",
+  "name": "Message",
   "namespace": {
     "name": "default"
   },
   "properties": {
-    "amount": {
-      "type": "INT32",
-      "required": true,
-      "description": "The amount of the payment"
-    },
-    "attributes": {
-      "type": "MAP",
-      "item": {
-        "type": "STRING"
-      }
-    },
     "auditData": {
       "type": "STRUCT",
       "typeRef": "AuditData",
@@ -68,11 +45,6 @@ export const InstancePlanResource = {
         "SpecialProperty": "true"
       }
     },
-    "currency": {
-      "type": "STRING",
-      "required": true,
-      "description": "The currency of the payment"
-    },
     "id": {
       "type": "UUID",
       "primary": true,
@@ -83,16 +55,6 @@ export const InstancePlanResource = {
       "annotations": {
         "SpecialProperty": "true"
       }
-    },
-    "limits": {
-      "type": "STRUCT",
-      "typeRef": "PlanLimits"
-    },
-    "name": {
-      "type": "STRING",
-      "required": true,
-      "unique": true,
-      "description": "The user of the payment"
     },
     "version": {
       "type": "INT32",
@@ -108,29 +70,6 @@ export const InstancePlanResource = {
     }
   },
   "types": [
-    {
-      "name": "PlanLimits",
-      "title": "",
-      "description": "",
-      "properties": {
-        "maxNamespaceCount": {
-          "type": "INT32",
-          "description": "The max namespace count"
-        },
-        "maxRecordCount": {
-          "type": "INT32",
-          "description": "The max record count"
-        },
-        "maxResourceCount": {
-          "type": "INT32",
-          "description": "The max resource count"
-        },
-        "requestPerMinute": {
-          "type": "INT32",
-          "description": "The request per minute"
-        }
-      }
-    },
     {
       "name": "AuditData",
       "title": "Audit Data",
