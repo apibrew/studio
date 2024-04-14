@@ -1,0 +1,37 @@
+type: studio/Flow
+name: UserEmailVerificationPostVerification
+statements:
+  - kind: ACTION
+    params:
+      type: UserVerificationSubmit
+  - kind: API_LOAD
+    params:
+      type: UserVerificationCode
+      match:
+        code: "$code"
+    variable: verification
+    checkResult: true
+  - kind: CONDITION
+    params:
+      condition: "$verification.expiry < new Date()"
+      pass:
+        - kind: API_LOAD
+          params:
+            type: Profile
+            match: "$verification.profile"
+          variable: profile
+          checkResult: true
+        - kind: ASSIGN
+          params:
+            left: "$profile.verified"
+            expression: 'true'
+        - kind: API_UPDATE
+          params:
+            type: Profile
+            payload: "$profile"
+      fail:
+        - kind: FAIL
+          params:
+            message: Verification code expired
+  - kind: END
+    params: { }

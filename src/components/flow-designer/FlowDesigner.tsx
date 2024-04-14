@@ -17,7 +17,7 @@ export interface FlowDesignerProps {
 export function FlowDesigner(props: FlowDesignerProps) {
     const [flow, setFlow] = useState<Flow>(props.flow)
 
-    const [defaultNodes, defaultEdges] = prepare(flow);
+    const result = prepare(flow);
 
     const navigate = useNavigate()
     const repository = useRepository<Flow>(FlowEntityInfo)
@@ -37,10 +37,10 @@ export function FlowDesigner(props: FlowDesignerProps) {
             className='flow-designer'
             nodeTypes={nodeTypes}
             fitView={false}
-            nodesDraggable={false}
+            nodesDraggable={true}
             nodesConnectable={false}
-            defaultNodes={defaultNodes}
-            defaultEdges={defaultEdges}>
+            defaultNodes={result.nodes}
+            defaultEdges={result.edges}>
             <Background/>
             <Controls/>
             <MiniMap/>
