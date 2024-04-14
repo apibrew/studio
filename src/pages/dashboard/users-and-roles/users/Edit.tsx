@@ -19,7 +19,7 @@ export default function EditUser() {
     async function load() {
         setRecord({} as User)
         // NProgress.start()
-        const resp = await repository?.get(id as string, ['$.permissions[]'])
+        const resp = await repository?.get(id as string, ['$.permissions[],$.roles[]'])
         // NProgress.done()
         if (!resp) {
             throw new Error('Failed to load record');

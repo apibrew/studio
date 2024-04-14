@@ -3,6 +3,9 @@ import {MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, Text
 import IconButton from "@mui/material/IconButton";
 import {Add, Delete} from "@mui/icons-material";
 import {Permission, Role, User} from "@apibrew/client/model";
+import {useDrawer} from "../../hooks/use-drawer";
+import Button from "@mui/material/Button";
+import {JsonEditorDrawer} from "../json-editor-drawer/JsonEditorDrawer";
 
 type Operation = Permission["operation"]
 type Permit = Permission["permit"]
@@ -14,7 +17,11 @@ export interface PermissionsInputAdvancedProps {
 }
 
 export function PermissionsInputAdvanced(props: PermissionsInputAdvancedProps) {
+    const drawer = useDrawer()
+
+
     return <Box>
+        {drawer.render()}
         <IconButton onClick={() => {
             props.setConstraints([...props.constraints, {
                 namespace: 'namespace-1',
@@ -30,12 +37,13 @@ export function PermissionsInputAdvanced(props: PermissionsInputAdvancedProps) {
                 <TableRow>
                     <TableCell>Namespace</TableCell>
                     <TableCell>Resource</TableCell>
-                    <TableCell>Property</TableCell>
                     <TableCell>Operation</TableCell>
                     {/*<TableCell>Before</TableCell>*/}
                     {/*<TableCell>After</TableCell>*/}
                     {props.mode === 'resource' && <TableCell>Username</TableCell>}
                     {props.mode === 'resource' && <TableCell>Role</TableCell>}
+                    <TableCell style={{width: '50px'}}>Local Flags</TableCell>
+                    <TableCell style={{width: '50px'}}>Record Selector</TableCell>
                     <TableCell style={{width: '50px'}}>Permit</TableCell>
                     <TableCell style={{width: '50px'}}>Actions</TableCell>
                 </TableRow>
@@ -44,7 +52,7 @@ export function PermissionsInputAdvanced(props: PermissionsInputAdvancedProps) {
                 {props.constraints.map((constraint, index) => <TableRow key={index}>
                     <TableCell sx={{padding: 1}}>
                         <TextField sx={{margin: 0}}
-                                   disabled={props.mode === 'namespace' || props.mode == 'resource'}
+                                   disabled={props.mode === 'namespace' || props.mode === 'resource'}
                                    size='small'
                                    variant='outlined'
                                    value={constraint.namespace}
@@ -106,6 +114,38 @@ export function PermissionsInputAdvanced(props: PermissionsInputAdvancedProps) {
                                        props.setConstraints(updatedConstraints)
                                    }}/>
                     </TableCell>}
+                    <TableCell sx={{padding: 1}}>
+                        <Button size='small'
+                                variant='text'
+                                onClick={() => {
+                                    drawer.open(<JsonEditorDrawer title={'Edit Local Flags for permission'}
+                                                                  value={constraint.localFlags || {}}
+                                                                  onClose={drawer.close}
+                                                                  onChange={localFlags => {
+                                                                      const updatedConstraints = [...props.constraints]
+                                                                      updatedConstraints[index].localFlags = localFlags
+                                                                      props.setConstraints(updatedConstraints)
+                                                                  }}/>)
+                                }}>
+                            {constraint.localFlags ? 'Edit' : 'Add'}
+                        </Button>
+                    </TableCell>
+                    <TableCell sx={{padding: 1}}>
+                        <Button size='small'
+                                variant='text'
+                                onClick={() => {
+                                    drawer.open(<JsonEditorDrawer title={'Edit Local Flags for permission'}
+                                                                  value={constraint.recordSelector || {}}
+                                                                  onClose={drawer.close}
+                                                                  onChange={localFlags => {
+                                                                      const updatedConstraints = [...props.constraints]
+                                                                      updatedConstraints[index].recordSelector = localFlags
+                                                                      props.setConstraints(updatedConstraints)
+                                                                  }}/>)
+                                }}>
+                            {constraint.recordSelector ? 'Edit' : 'Add'}
+                        </Button>
+                    </TableCell>
                     <TableCell sx={{padding: 1}}>
                         <Select sx={{width: '100%'}}
                                 size='small'
