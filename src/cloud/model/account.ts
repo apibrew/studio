@@ -1,9 +1,9 @@
 
 export interface Account {
+    id: string
     name?: string
     email?: string
     version: number
-    id: string
 }
 
 export const AccountEntityInfo = {

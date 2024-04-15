@@ -15,10 +15,10 @@ export const UserRegistrationEntityInfo = {
 }
 
 export interface AuditData {
-    createdBy: string
-    createdOn: string | Date
     updatedBy: string
     updatedOn: string | Date
+    createdBy: string
+    createdOn: string | Date
 }
 
 export const UserRegistrationResource = {

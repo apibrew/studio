@@ -1,10 +1,10 @@
 
 export interface ControllerAccessToken {
+    version: number
+    instance: string
     username?: string
     id: string
     token?: string
-    version: number
-    instance: string
 }
 
 export const ControllerAccessTokenEntityInfo = {
@@ -18,7 +18,7 @@ export const ControllerAccessTokenResource = {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin@admin.com",
     "createdOn": "2024-04-12T11:53:00Z",
-    "updatedOn": "2024-04-13T07:54:04Z"
+    "updatedOn": "2024-04-13T20:10:53Z"
   },
   "name": "ControllerAccessToken",
   "namespace": {
@@ -34,18 +34,28 @@ export const ControllerAccessTokenResource = {
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
+        "Order": "0",
         "SpecialProperty": "true"
       }
     },
     "instance": {
       "type": "STRING",
-      "required": true
+      "required": true,
+      "annotations": {
+        "Order": "1"
+      }
     },
     "token": {
-      "type": "STRING"
+      "type": "STRING",
+      "annotations": {
+        "Order": "3"
+      }
     },
     "username": {
-      "type": "STRING"
+      "type": "STRING",
+      "annotations": {
+        "Order": "2"
+      }
     },
     "version": {
       "type": "INT32",
@@ -59,9 +69,6 @@ export const ControllerAccessTokenResource = {
         "SpecialProperty": "true"
       }
     }
-  },
-  "annotations": {
-    "AllowPublicCreateAccess": "true"
   }
 } as unknown
 

@@ -1,32 +1,33 @@
 
-export interface Feedback {
+export interface DestroyAccount {
     id: string
-    message?: string
+    email: string
+    details?: object
     version: number
-    connection: string
-    parameters?: object
-    p?: string
 }
 
-export const FeedbackEntityInfo = {
-    namespace: "default",
-    resource: "Feedback",
-    restPath: "feedback",
+export const DestroyAccountEntityInfo = {
+    namespace: "ops",
+    resource: "DestroyAccount",
+    restPath: "ops-destroy-account",
 }
 
-export const FeedbackResource = {
+export const DestroyAccountResource = {
   "auditData": {
-    "createdBy": "admin",
-    "updatedBy": "system",
-    "createdOn": "2024-02-15T16:52:33Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "createdBy": "admin@admin.com",
+    "updatedBy": "admin@admin.com",
+    "createdOn": "2024-04-14T06:35:35Z",
+    "updatedOn": "2024-04-14T06:37:42Z"
   },
-  "name": "Feedback",
+  "name": "DestroyAccount",
   "namespace": {
-    "name": "default"
+    "name": "ops"
   },
   "properties": {
-    "connection": {
+    "details": {
+      "type": "OBJECT"
+    },
+    "email": {
       "type": "STRING",
       "required": true
     },
@@ -41,15 +42,6 @@ export const FeedbackResource = {
         "SpecialProperty": "true"
       }
     },
-    "message": {
-      "type": "STRING"
-    },
-    "p": {
-      "type": "STRING"
-    },
-    "parameters": {
-      "type": "OBJECT"
-    },
     "version": {
       "type": "INT32",
       "required": true,
@@ -62,9 +54,6 @@ export const FeedbackResource = {
         "SpecialProperty": "true"
       }
     }
-  },
-  "annotations": {
-    "AllowPublicCreateAccess": "true"
   }
 } as unknown
 

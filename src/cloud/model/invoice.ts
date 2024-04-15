@@ -3,17 +3,17 @@ import {InstancePlan} from './instance-plan';
 import {Instance} from './instance';
 
 export interface Invoice {
-    status: Status
+    currency: string
+    user: string
+    notes?: string
     id: string
     amount: number
-    notes?: string
+    status: Status
     payment?: Payment
+    version: number
+    auditData?: AuditData
     paymentDate?: string | Date
     executionStatus: ExecutionStatus
-    user: string
-    auditData?: AuditData
-    version: number
-    currency: string
     items: InvoiceItem[]
 }
 
@@ -32,10 +32,10 @@ export interface InvoiceItem {
 }
 
 export interface AuditData {
-    updatedOn: string | Date
     createdBy: string
     createdOn: string | Date
     updatedBy: string
+    updatedOn: string | Date
 }
 
 export enum Status {

@@ -1,14 +1,14 @@
 import {Instance} from './instance';
 
 export interface DeploymentTask {
-    id: string
-    user: string
-    instance: Instance
-    auditData?: AuditData
-    version: number
     message?: string
+    instance: Instance
     kind: Kind
+    user: string
     status: Status
+    version: number
+    id: string
+    auditData?: AuditData
     params?: { [key: string]: string }
 }
 

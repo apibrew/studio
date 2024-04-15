@@ -1,31 +1,40 @@
+import {Instance} from './instance';
 
-export interface Message {
-    id: string
-    version: number
+export interface InstanceHealthCheck {
     auditData?: AuditData
+    id: string
+    health: Health
+    details?: object
+    version: number
+    instance: Instance
 }
 
-export const MessageEntityInfo = {
+export const InstanceHealthCheckEntityInfo = {
     namespace: "default",
-    resource: "Message",
-    restPath: "message",
+    resource: "InstanceHealthCheck",
+    restPath: "instance-health-check",
 }
 
 export interface AuditData {
+    createdBy: string
     createdOn: string | Date
     updatedBy: string
     updatedOn: string | Date
-    createdBy: string
 }
 
-export const MessageResource = {
+export enum Health {
+    HEALTHY = "HEALTHY",
+    UNHEALTHY = "UNHEALTHY",
+}
+
+export const InstanceHealthCheckResource = {
   "auditData": {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin@admin.com",
-    "createdOn": "2024-04-12T19:29:15Z",
-    "updatedOn": "2024-04-12T19:29:37Z"
+    "createdOn": "2024-04-15T08:44:20Z",
+    "updatedOn": "2024-04-15T08:54:34Z"
   },
-  "name": "Message",
+  "name": "InstanceHealthCheck",
   "namespace": {
     "name": "default"
   },
@@ -35,15 +44,26 @@ export const MessageResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-04-12T19:16:01Z",
+        "createdOn": "2024-04-15T08:43:22Z",
         "updatedBy": "admin",
-        "updatedOn": "2024-04-12T19:16:01Z"
+        "updatedOn": "2024-04-15T08:43:22Z"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
       "annotations": {
         "SpecialProperty": "true"
       }
+    },
+    "details": {
+      "type": "OBJECT"
+    },
+    "health": {
+      "type": "ENUM",
+      "required": true,
+      "enumValues": [
+        "HEALTHY",
+        "UNHEALTHY"
+      ]
     },
     "id": {
       "type": "UUID",
@@ -55,6 +75,12 @@ export const MessageResource = {
       "annotations": {
         "SpecialProperty": "true"
       }
+    },
+    "instance": {
+      "type": "REFERENCE",
+      "required": true,
+      "unique": true,
+      "reference": "default/Instance"
     },
     "version": {
       "type": "INT32",
@@ -89,7 +115,7 @@ export const MessageResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-04-12T19:16:01Z",
+          "exampleValue": "2024-04-15T08:43:22Z",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -108,7 +134,7 @@ export const MessageResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-04-12T19:16:01Z",
+          "exampleValue": "2024-04-15T08:43:22Z",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {

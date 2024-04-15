@@ -1,12 +1,12 @@
 import {Instance} from './instance';
 
 export interface InstanceUserCredentials {
+    adminPassword: string
+    controllerPassword: string
     id: string
     version: number
     instance: Instance
     dbPassword: string
-    adminPassword: string
-    controllerPassword: string
 }
 
 export const InstanceUserCredentialsEntityInfo = {
