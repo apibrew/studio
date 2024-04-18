@@ -2,6 +2,7 @@ import {NanoForm} from "../nano-form/NanoForm";
 import React from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Code} from "@apibrew/client/nano/model/code";
+import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
 
 export interface PropertyNanoDrawerProps {
     code: string;
@@ -22,7 +23,7 @@ export function PropertyNanoDrawer(props: PropertyNanoDrawerProps) {
                     <CardHeader title='Edit Code'/>
                 </Card>
                 <CardContent>
-                    <NanoForm inline={true} code={code} onChange={setCode}/>
+                    <MonacoNanoForm inline={true} code={code} onChange={setCode}/>
                 </CardContent>
                 <CardActions>
                     <Stack direction='row' spacing={1}>

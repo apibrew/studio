@@ -5,6 +5,7 @@ import {Code, CodeEntityInfo, Language} from "@apibrew/client/nano/model/code";
 import {Resource, useRepository, useResourceByName} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {LoadingOverlay} from "../LoadingOverlay";
+import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
 
 export interface ResourceNanoDrawerProps {
     resource: string
@@ -75,7 +76,7 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
                 </Card>
                 <CardContent>
                     {!resource && <LoadingOverlay/>}
-                    {resource && <NanoForm resource={resource} inline={true} code={code} onChange={setCode}/>}
+                    {resource && <MonacoNanoForm resource={resource} inline={true} code={code} onChange={setCode}/>}
                 </CardContent>
                 <CardActions>
                    <Box marginLeft={5}>

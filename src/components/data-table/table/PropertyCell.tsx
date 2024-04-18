@@ -48,7 +48,25 @@ export function PropertyCell(props: PropertyCellProps) {
                     return
                 }
 
+                let isNanoProperty = false
+
                 if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
+                    isNanoProperty = true
+                }
+
+                if (props.resource.namespace.name === 'nano') {
+                    if (props.resource.name === 'Function' && props.propertyName === 'source') {
+                        isNanoProperty = true
+                    }
+                    if (props.resource.name === 'Function' && props.propertyName === 'source') {
+                        isNanoProperty = true
+                    }
+                    if (props.resource.name === 'CronJob' && props.propertyName === 'source') {
+                        isNanoProperty = true
+                    }
+                }
+
+                if (isNanoProperty) {
                     drawer.open(<PropertyNanoDrawer
                         code={props.updated || props.value}
                         onClose={() => {

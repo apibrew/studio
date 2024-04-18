@@ -6,6 +6,7 @@ import {Code, CodeEntityInfo, Language} from "@apibrew/client/nano/model/code";
 import toast from "react-hot-toast";
 import {useRepository} from "@apibrew/react";
 import {useNavigate} from "react-router-dom";
+import {MonacoNanoForm} from "../../../components/nano-form/MonacoNanoForm";
 
 export function NanoNew() {
     const [code, setCode] = useState<Code>({
@@ -22,7 +23,7 @@ export function NanoNew() {
             success: 'Saved',
             error: err => err.message
         }).then(resp => {
-            navigate('../' + resp.name)
+            navigate('../' + resp.id)
         })
     }
 
@@ -31,7 +32,7 @@ export function NanoNew() {
             <Card>
                 <CardHeader title='New Nano Code'/>
                 <CardContent>
-                    <NanoForm
+                    <MonacoNanoForm
                         code={code}
                         onChange={setCode}/>
                 </CardContent>

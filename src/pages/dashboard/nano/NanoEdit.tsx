@@ -7,6 +7,7 @@ import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useRepository} from "@apibrew/react";
 import {useNavigate, useParams} from "react-router-dom";
 import toast from "react-hot-toast";
+import {MonacoNanoForm} from "../../../components/nano-form/MonacoNanoForm";
 
 export function NanoEdit() {
     const params = useParams()
@@ -33,7 +34,7 @@ export function NanoEdit() {
                 <CardHeader title={`Edit Nano Code: ` + (code?.name ?? '...')}/>
                 <CardContent>
                     {!code && <LoadingOverlay/>}
-                    {code && <NanoForm
+                    {code && <MonacoNanoForm
                         code={code}
                         onChange={setCode}/>}
                 </CardContent>
