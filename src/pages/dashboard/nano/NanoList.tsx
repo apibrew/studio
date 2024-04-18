@@ -47,11 +47,11 @@ export function NanoList() {
                     }}
                     color='success'>New</Button>
                 <Box flexGrow={1}/>
-                {/*<Button*/}
-                {/*    onClick={() => {*/}
-                {/*        navigate('playground')*/}
-                {/*    }}*/}
-                {/*    color='info'>PlayGround</Button>*/}
+                <Button
+                    onClick={() => {
+                        navigate('playground')
+                    }}
+                    color='info'>PlayGround</Button>
             </Stack>
             <Table>
                 <TableHead>

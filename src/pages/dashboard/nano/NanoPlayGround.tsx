@@ -1,167 +1,79 @@
-import {NanoPlayGroundComponent} from "../../../components/nano-playground/NanoPlayGround";
-import {Box, IconButton, MenuItem, Select, TextField} from "@mui/material";
-import React, {useEffect} from "react";
-import {PlayGround, PlayGroundEntityInfo, PlayGroundResource, State} from "../../../model/play-ground";
-import {Namespace, Resource, useClient} from "@apibrew/react";
-import {ScriptResource} from "../../../model/script";
+import {Box, Stack} from "@mui/material";
+import React, {useState} from "react";
+import {useRepository} from "@apibrew/react";
+import Button from "@mui/material/Button";
+import {Script, ScriptEntityInfo} from "@apibrew/client/nano/model/script";
+import {MonacoNanoForm} from "../../../components/nano-form/MonacoNanoForm";
+import {Code} from "@apibrew/client/nano/model/code";
 import toast from "react-hot-toast";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
-import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
-import {ensureResource} from "../../../logic/ensure-resource";
-import {PlayArrow, Refresh, Stop} from "@mui/icons-material";
 
 export function NanoPlayGround() {
-    const [items, setItems] = React.useState<PlayGround[]>()
-    const client = useClient()
-    const [selected, setSelected] = React.useState<PlayGround>()
+    const [script, setScript] = useState<Script>({
+        source: 'const a = 1\nconst b = 2\na + b\n',
+    } as Script)
+    const repository = useRepository<Script>(ScriptEntityInfo)
 
-    useEffect(() => {
-        // ensure resources are loaded
+    let out = ''
 
-        const prom = Promise.all([
-            client.applyRecord<Namespace>(NamespaceEntityInfo, {
-                name: 'studio',
-                description: 'Studio',
-                id: 'studio',
-            } as Namespace),
-            ensureResource(client, PlayGroundResource as Resource),
-            ensureResource(client, ScriptResource as Resource),
-        ])
+    if (typeof script.output === 'string') {
+        out = script.output
+    } else if (typeof script.output === 'object') {
+        out = JSON.stringify(script.output, null, 2)
+    } else if (typeof script.output === 'number') {
+        out = script.output
+    } else {
+        out = script.output as any
+    }
 
-        toast.promise(prom.then(() => client.listRecords<PlayGround>(PlayGroundEntityInfo, {
-            limit: 1000,
-        })), {
-            loading: 'Loading PlayGrounds...',
-            success: 'Loaded PlayGrounds',
-            error: err => err.message
-        }).then(async (response) => {
-            setItems(response.content || [])
+    async function handleRun() {
+        const loadingId = toast.loading('Running...')
 
-            if (response.content?.length > 0) {
-                setSelected(response.content[0])
-            } else {
-                const newPlayGround = {
-                    name: 'New PlayGround',
-                    run: true,
-                } as PlayGround
+        try {
+            const result = await repository.create(script)
+            setScript({
+                ...script,
+                output: result.output
+            })
 
-                await client.createRecord(PlayGroundEntityInfo, newPlayGround).then((response) => {
-                    setSelected(response)
-                    console.log('found2')
-                })
-            }
-        })
-    }, []);
-
+            toast.success('Done')
+        } catch (e: any) {
+            toast(e.message)
+            setScript({
+                ...script,
+                output: e.message
+            })
+        } finally {
+            toast.dismiss(loadingId)
+        }
+    }
 
     return <>
-        <Box display='flex' flexDirection='column' m={1}>
-            <Box display='flex'>
-                <Select
-                    sx={{
-                        width: '200px',
-                        marginRight: '20px'
-                    }}
-                    size='small'
-                    value={selected?.id ?? ''}
-                    onChange={e => {
-                        const id = e.target.value as string
-                        const item = items?.find(item => item.id === id)
-                        setSelected(item)
-                    }}>
-                    {items?.map(item => (
-                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                    ))}
-                </Select>
-                <TextField
-                    sx={{
-                        marginRight: '20px'
-                    }}
-                    size='small'
-                    disabled={!selected}
-                    value={selected?.name ?? ''}
-                    onChange={e => {
-                        const name = e.target.value as string
-                        setSelected({
-                            ...selected!,
-                            name: name,
-                        })
-                    }}
-                    onBlur={() => {
-                        toast.promise(client.updateRecord(PlayGroundEntityInfo, selected!), {
-                            loading: 'Updating PlayGround...',
-                            success: 'Updated PlayGround',
-                            error: err => err.message
-                        })
-                    }}
-                />
-                {selected?.state === State.RUNNING && <>
-                    <IconButton
-                        onClick={() => {
-                            toast.promise(client.updateRecord(PlayGroundEntityInfo, {
-                                ...selected!,
-                                run: false
-                            }), {
-                                loading: 'Stopping PlayGround...',
-                                success: 'Stopped PlayGround',
-                                error: err => err.message
-                            }).then(response => {
-                                setSelected(response)
-                            })
-                        }}
-                        color='primary'
-                        size='medium'>
-                        <Stop fontSize='large'/>
-                    </IconButton>
-                    <IconButton
-                        onClick={() => {
-                            toast.promise(client.updateRecord(PlayGroundEntityInfo, {
-                                ...selected!,
-                                run: false
-                            }).then((response) => {
-                                return client.updateRecord(PlayGroundEntityInfo, {
-                                    ...response,
-                                    run: true
-                                })
-                            }), {
-                                loading: 'Restarting PlayGround...',
-                                success: 'Restarted PlayGround',
-                                error: err => err.message
-                            }).then(response => {
-                                setSelected(response)
-                            })
-                        }}
-                        color='primary'
-                        size='medium'>
-                        <Refresh fontSize='large'/>
-                    </IconButton>
-                </>}
-
-                {selected?.state !== State.RUNNING && <>
-                    <IconButton
-                        onClick={() => {
-                            toast.promise(client.updateRecord(PlayGroundEntityInfo, {
-                                ...selected!,
-                                run: true
-                            }), {
-                                loading: 'Starting PlayGround...',
-                                success: 'Started PlayGround',
-                                error: err => err.message
-                            }).then(response => {
-                                setSelected(response)
-                            })
-                        }}
-                        color='primary'
-                        size='medium'>
-                        <PlayArrow fontSize='large'/>
-                    </IconButton>
-                </>}
-
+        <Stack flexDirection='column' m={1} spacing={1}>
+            <Box>
+                <Button onClick={() => {
+                    handleRun()
+                }}>Run</Button>
             </Box>
-            <Box flexGrow={1}>
-                {!selected && <LoadingOverlay/>}
-                {selected && <NanoPlayGroundComponent playground={selected}/>}
+            <Box>
+                <MonacoNanoForm
+                    inline={true}
+                    code={{
+                        content: script.source,
+                    } as Code}
+                    onChange={code => {
+                        setScript({
+                            ...script,
+                            source: code.content
+                        })
+                    }}/>
             </Box>
-        </Box>
+
+            <Box display='flex' flexDirection='row'>
+                <Box flexGrow={1}
+                     p={1}>
+                    {(out)}
+                </Box>
+            </Box>
+        </Stack>
     </>
 }
