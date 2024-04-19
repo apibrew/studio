@@ -5,10 +5,13 @@ import ReactFlow, {Background, Controls, MiniMap} from 'reactflow';
 import 'reactflow/dist/style.css';
 import {nodeTypes} from "./node-types";
 import './Customize.scss';
+import './colors.scss';
 import {prepare} from "./nodes";
 import {useNavigate} from "react-router-dom";
 import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
+import {Box} from "@mui/material";
+import Button from "@mui/material/Button";
 
 export interface FlowDesignerProps {
     flow: Flow
@@ -33,6 +36,9 @@ export function FlowDesigner(props: FlowDesignerProps) {
     }
 
     return <>
+        <Box className='flow-designer-toolbar'>
+            <Button onClick={handleSave} variant='contained'>Save</Button>
+        </Box>
         <ReactFlow
             className='flow-designer'
             nodeTypes={nodeTypes}

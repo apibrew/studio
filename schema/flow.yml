@@ -1,7 +1,7 @@
 type: resource
 name: Flow
 namespace:
-  name: studio
+  name: nano
 properties:
   name:
     title: Name
@@ -10,6 +10,14 @@ properties:
     length: 255
     required: true
     unique: true
+  trigger:
+    title: Trigger
+    description: Trigger
+    type: OBJECT
+    length: 255
+    required: false
+    annotations:
+      oneOf: "FunctionCall, WebHookCall, Action, Event"
   statements:
     type: list
     required: true
@@ -18,11 +26,41 @@ properties:
       typeRef: Statement
     defaultValue: [ ]
 types:
-  - name: EventParams
+  - name: ArgumentType
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        annotations:
+          type: PropertyType
+  - name: FunctionCall
+    properties:
+      name:
+        type: string
+      params:
+        type: list
+        item:
+          type: struct
+          typeRef: ArgumentType
+  - name: WebHookCall
+    properties:
+      name:
+        type: string
+      params:
+        type: list
+        item:
+          type: struct
+          typeRef: ArgumentType
+  - name: Action
     properties:
       type:
         type: string
-      action:
+  - name: Event
+    properties:
+      type:
+        type: string
+      apiAction:
         type: enum
         enumValues:
           - CREATE
@@ -46,10 +84,6 @@ types:
         type: map
         item:
           type: string
-  - name: ActionParams
-    properties:
-      type:
-        type: string
   - name: ApiSaveParams
     properties:
       type:
@@ -98,17 +132,6 @@ types:
           type: struct
           typeRef: Statement
         defaultValue: [ ]
-  - name: GroupParams
-    properties:
-      name:
-        type: string
-      statements:
-        type: list
-        required: true
-        item:
-          type: struct
-          typeRef: Statement
-        defaultValue: [ ]
   - name: FailParams
     properties:
       message:
@@ -118,25 +141,28 @@ types:
       kind:
         type: enum
         enumValues:
-          - ACTION
-          - EVENT
           - API_CREATE
           - API_GET
           - API_LOAD
           - API_UPDATE
           - API_DELETE
+          - API_DELETE_ALL
           - API_LIST
+          - API_EXISTS
+          - API_AUTHENTICATE
+          - TRANSACTION
           - CODE
-          - FAIL
           - ASSIGN
           - CONDITION
-          - GROUP
           - HTTP_CALL
           - FUNCTION_CALL
-          - TEMPLATE_CALL
-          - END
+          - LOOP
+          - GROUP
+          - FAIL
       params:
         type: object
+        annotations:
+          oneOf: "FunctionCall, WebHookCall, Action, Event"
       variable:
         type: string
       checkResult:

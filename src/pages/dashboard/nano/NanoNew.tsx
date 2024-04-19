@@ -1,5 +1,4 @@
-import {Box, Card, CardActions, CardContent, CardHeader} from "@mui/material";
-import {NanoForm} from "../../../components/nano-form/NanoForm";
+import {Box, Card, CardActions, CardContent, CardHeader, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import React, {useState} from "react";
 import {Code, CodeEntityInfo, Language} from "@apibrew/client/nano/model/code";
@@ -30,11 +29,29 @@ export function NanoNew() {
     return <>
         <Box m={1}>
             <Card>
-                <CardHeader title='New Nano Code'/>
+                <CardHeader title={<>
+                    <span>New Code</span>
+                    <TextField
+                        value={code.name ?? ''}
+                        style={{marginLeft: '1rem', width: '400px', marginTop: '-14px'}}
+                        onChange={e => {
+                            setCode({
+                                ...code,
+                                name: e.target.value
+                            })
+                        }}
+                        label='Name'
+                        variant='standard'
+                    />
+                </>}/>
                 <CardContent>
-                    <MonacoNanoForm
-                        code={code}
-                        onChange={setCode}/>
+                    <MonacoNanoForm code={code.content}
+                                    onChange={updated => {
+                                        setCode({
+                                            ...code,
+                                            content: updated
+                                        })
+                                    }}/>
                 </CardContent>
                 <CardActions>
                     <Button onClick={() => handleSave()} color='success'>Save</Button>

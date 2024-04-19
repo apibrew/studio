@@ -1,9 +1,6 @@
 type: studio/Flow
 name: UserEmailVerificationPostVerification
 statements:
-  - kind: ACTION
-    params:
-      type: UserVerificationSubmit
   - kind: API_LOAD
     params:
       type: UserVerificationCode
@@ -120,5 +117,3 @@ statements:
         - kind: FAIL
           params:
             message: Verification code expired
-  - kind: END
-    params: { }

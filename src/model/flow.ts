@@ -3,26 +3,42 @@ export interface Flow {
     id: string
     statements: Statement[]
     name: string
+    trigger?: object
     version: number
 }
 
 export const FlowEntityInfo = {
-    namespace: "studio",
+    namespace: "nano",
     resource: "Flow",
-    restPath: "studio-flow",
+    restPath: "nano-flow",
 }
 
-export interface EventParams {
-    action: Action
+export interface ArgumentType {
+    type: string
+    name: string
+}
+
+export interface FunctionCall {
+    name: string
+    params: ArgumentType[]
+}
+
+export interface WebHookCall {
+    params: ArgumentType[]
+    name: string
+}
+
+export interface Action {
+    type: string
+}
+
+export interface Event {
+    apiAction: ApiAction
     order: Order
     sync: boolean
     responds: boolean
     finalizes: boolean
     annotations: { [key: string]: string }
-    type: string
-}
-
-export interface ActionParams {
     type: string
 }
 
@@ -32,14 +48,14 @@ export interface ApiSaveParams {
 }
 
 export interface ApiLoadParams {
+    params: object
     type: string
     match: object
-    params: object
 }
 
 export interface AssignParams {
-    expression: string
     left: string
+    expression: string
 }
 
 export interface FunctionCallParams {
@@ -57,23 +73,18 @@ export interface ConditionParams {
     condition: string
 }
 
-export interface GroupParams {
-    name: string
-    statements: Statement[]
-}
-
 export interface FailParams {
     message: string
 }
 
 export interface Statement {
-    variable: string
     checkResult: boolean
     kind: Kind
     params: object
+    variable: string
 }
 
-export enum Action {
+export enum ApiAction {
     CREATE = "CREATE",
     GET = "GET",
     LOAD = "LOAD",
@@ -88,29 +99,30 @@ export enum Order {
 }
 
 export enum Kind {
-    ACTION = "ACTION",
-    EVENT = "EVENT",
     API_CREATE = "API_CREATE",
     API_GET = "API_GET",
     API_LOAD = "API_LOAD",
     API_UPDATE = "API_UPDATE",
     API_DELETE = "API_DELETE",
+    API_DELETE_ALL = "API_DELETE_ALL",
     API_LIST = "API_LIST",
+    API_EXISTS = "API_EXISTS",
+    API_AUTHENTICATE = "API_AUTHENTICATE",
+    TRANSACTION = "TRANSACTION",
     CODE = "CODE",
-    FAIL = "FAIL",
     ASSIGN = "ASSIGN",
     CONDITION = "CONDITION",
-    GROUP = "GROUP",
     HTTP_CALL = "HTTP_CALL",
     FUNCTION_CALL = "FUNCTION_CALL",
-    TEMPLATE_CALL = "TEMPLATE_CALL",
-    END = "END",
+    LOOP = "LOOP",
+    GROUP = "GROUP",
+    FAIL = "FAIL",
 }
 
 export const FlowResource = {
   "name": "Flow",
   "namespace": {
-    "name": "studio"
+    "name": "nano"
   },
   "properties": {
     "id": {
@@ -141,6 +153,15 @@ export const FlowResource = {
       },
       "defaultValue": null
     },
+    "trigger": {
+      "type": "OBJECT",
+      "length": 255,
+      "title": "Trigger",
+      "description": "Trigger",
+      "annotations": {
+        "oneOf": "FunctionCall, WebHookCall, Action, Event"
+      }
+    },
     "version": {
       "type": "INT32",
       "required": true,
@@ -156,11 +177,77 @@ export const FlowResource = {
   },
   "types": [
     {
-      "name": "EventParams",
+      "name": "ArgumentType",
       "title": "",
       "description": "",
       "properties": {
-        "action": {
+        "name": {
+          "type": "STRING"
+        },
+        "type": {
+          "type": "STRING",
+          "annotations": {
+            "type": "PropertyType"
+          }
+        }
+      }
+    },
+    {
+      "name": "FunctionCall",
+      "title": "",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "STRING"
+        },
+        "params": {
+          "type": "LIST",
+          "item": {
+            "type": "STRUCT",
+            "typeRef": "ArgumentType"
+          }
+        }
+      }
+    },
+    {
+      "name": "WebHookCall",
+      "title": "",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "STRING"
+        },
+        "params": {
+          "type": "LIST",
+          "item": {
+            "type": "STRUCT",
+            "typeRef": "ArgumentType"
+          }
+        }
+      }
+    },
+    {
+      "name": "Action",
+      "title": "",
+      "description": "",
+      "properties": {
+        "type": {
+          "type": "STRING"
+        }
+      }
+    },
+    {
+      "name": "Event",
+      "title": "",
+      "description": "",
+      "properties": {
+        "annotations": {
+          "type": "MAP",
+          "item": {
+            "type": "STRING"
+          }
+        },
+        "apiAction": {
           "type": "ENUM",
           "enumValues": [
             "CREATE",
@@ -170,12 +257,6 @@ export const FlowResource = {
             "DELETE",
             "LIST"
           ]
-        },
-        "annotations": {
-          "type": "MAP",
-          "item": {
-            "type": "STRING"
-          }
         },
         "finalizes": {
           "type": "BOOL"
@@ -193,16 +274,6 @@ export const FlowResource = {
         "sync": {
           "type": "BOOL"
         },
-        "type": {
-          "type": "STRING"
-        }
-      }
-    },
-    {
-      "name": "ActionParams",
-      "title": "",
-      "description": "",
-      "properties": {
         "type": {
           "type": "STRING"
         }
@@ -302,25 +373,6 @@ export const FlowResource = {
       }
     },
     {
-      "name": "GroupParams",
-      "title": "",
-      "description": "",
-      "properties": {
-        "name": {
-          "type": "STRING"
-        },
-        "statements": {
-          "type": "LIST",
-          "required": true,
-          "item": {
-            "type": "STRUCT",
-            "typeRef": "Statement"
-          },
-          "defaultValue": null
-        }
-      }
-    },
-    {
       "name": "FailParams",
       "title": "",
       "description": "",
@@ -341,36 +393,37 @@ export const FlowResource = {
         "kind": {
           "type": "ENUM",
           "enumValues": [
-            "ACTION",
-            "EVENT",
             "API_CREATE",
             "API_GET",
             "API_LOAD",
             "API_UPDATE",
             "API_DELETE",
+            "API_DELETE_ALL",
             "API_LIST",
+            "API_EXISTS",
+            "API_AUTHENTICATE",
+            "TRANSACTION",
             "CODE",
-            "FAIL",
             "ASSIGN",
             "CONDITION",
-            "GROUP",
             "HTTP_CALL",
             "FUNCTION_CALL",
-            "TEMPLATE_CALL",
-            "END"
+            "LOOP",
+            "GROUP",
+            "FAIL"
           ]
         },
         "params": {
-          "type": "OBJECT"
+          "type": "OBJECT",
+          "annotations": {
+            "oneOf": "FunctionCall, WebHookCall, Action, Event"
+          }
         },
         "variable": {
           "type": "STRING"
         }
       }
     }
-  ],
-  "annotations": {
-    "NormalizedResource": "true"
-  }
+  ]
 } as unknown
 

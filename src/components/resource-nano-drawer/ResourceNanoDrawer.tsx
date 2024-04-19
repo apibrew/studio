@@ -19,9 +19,21 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
 
     const codeName = 'ResourceNano/' + props.namespace + '/' + props.resource
 
+    let type = props.resource
+
+    if (props.namespace && props.namespace !== '' && props.namespace !== 'default') {
+        type = props.namespace + '/' + props.resource
+    }
+
     const [code, setCode] = React.useState<Code>({
         name: codeName,
-        content: '',
+        content: `${props.resource} = resource('${type}')
+
+${props.resource}.beforeCreate(record => {
+
+    return record
+})
+        `,
         language: Language.JAVASCRIPT,
     } as Code)
 
@@ -76,7 +88,13 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
                 </Card>
                 <CardContent>
                     {!resource && <LoadingOverlay/>}
-                    {resource && <MonacoNanoForm resource={resource} inline={true} code={code} onChange={setCode}/>}
+                    {resource &&  <MonacoNanoForm code={code.content}
+                                                  onChange={updated => {
+                                                      setCode({
+                                                          ...code,
+                                                          content: updated
+                                                      })
+                                                  }}/>}
                 </CardContent>
                 <CardActions>
                    <Box marginLeft={5}>

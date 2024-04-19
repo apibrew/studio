@@ -1,7 +1,7 @@
 import {Handle, Position} from "reactflow";
 import React, {ReactNode} from "react";
 
-export interface SingleNodeProps {
+export interface SimpleNodeProps {
     data: {
         label: string
         text: string
@@ -11,7 +11,7 @@ export interface SingleNodeProps {
     selected: boolean
 }
 
-export function SingleNode(props: SingleNodeProps) {
+export function SimpleNode(props: SimpleNodeProps) {
     return <>
         <Handle
             type="target"

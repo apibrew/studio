@@ -1,22 +1,18 @@
 import {Edge, MarkerType, Node} from "reactflow";
 import {
-    ActionParams,
     ApiLoadParams,
     ApiSaveParams,
     AssignParams,
     CodeParams,
     ConditionParams,
-    EventParams,
     FailParams,
     Flow,
     FunctionCallParams,
-    GroupParams,
     Kind,
     Statement
 } from "../../model/flow";
-import {Add, Bolt, Code, Dangerous, ForkRight, Functions, Search, Update} from "@mui/icons-material";
+import {Add, Functions} from "@mui/icons-material";
 import React from "react";
-import {isBeginningStatement} from "./helper";
 
 interface Position {
     x: number,
@@ -38,11 +34,12 @@ function prepareNode(item: PendingItem): Node {
 
     let node: Node = {
         id: 'node-' + item.nodeId,
-        type: 'single',
+        type: 'simple',
         position: position,
         data: {
             label: 'Unknown: ' + item.statement.kind,
         },
+        className: 'kind-' + item.statement.kind.toLowerCase(),
     }
 
     if (item.parentId !== undefined) {
@@ -50,32 +47,10 @@ function prepareNode(item: PendingItem): Node {
     }
 
     switch (item.statement.kind) {
-        case Kind.END:
-            node.data.label = 'End'
-            node.type = 'end'
-            node.position.x += 80
-            break
-        case Kind.EVENT:
-            const eventParams = item.statement.params as EventParams
-            const act = eventParams.action.toLowerCase()
-            // act first letter to uppercase
-            const action = act.charAt(0).toUpperCase() + act.slice(1)
-            node.data.label = eventParams.order.toLowerCase() + action + ': ' + eventParams.type
-            node.data.icon = <Bolt/>
-            node.type = 'entry'
-            break
-        case Kind.ACTION:
-            const actionParams = item.statement.params as ActionParams
-            node.data.label = 'Action: '
-            node.data.text = actionParams.type
-            node.type = 'entry'
-            // node.data.icon = <CallReceived/>
-            break
         case Kind.ASSIGN:
             const assignParams = item.statement.params as AssignParams
             node.data.label = 'Assign: '
             node.data.text = assignParams.left + ' = ' + assignParams.expression
-            node.type = 'single'
             // node.data.icon = <Code/>
             break
         case Kind.CODE:
@@ -83,13 +58,11 @@ function prepareNode(item: PendingItem): Node {
             node.data.label = 'Code: '
             node.data.text = codeParams.content.substring(0, 16) + '...'
             // node.data.icon = <Code/>
-            node.type = 'single'
             break
         case Kind.API_CREATE: {
             const apiSaveParams = item.statement.params as ApiSaveParams
             node.data.label = apiSaveParams.type
             node.data.icon = <Add/>
-            node.type = 'single'
             break
         }
         case Kind.API_UPDATE: {
@@ -97,7 +70,6 @@ function prepareNode(item: PendingItem): Node {
             node.data.label = 'Update: '
             node.data.text = apiSaveParams.type
             // node.data.icon = <Update/>
-            node.type = 'single'
             break
         }
         case Kind.API_LOAD: {
@@ -105,14 +77,12 @@ function prepareNode(item: PendingItem): Node {
             node.data.label = 'Load: '
             node.data.text = params.type
             // node.data.icon = <Search/>
-            node.type = 'single'
             break
         }
         case Kind.FUNCTION_CALL: {
             const params = item.statement.params as FunctionCallParams
             node.data.label = params.name
             node.data.icon = <Functions/>
-            node.type = 'single'
             break
         }
         case Kind.CONDITION: {
@@ -120,7 +90,6 @@ function prepareNode(item: PendingItem): Node {
             node.data.label = 'If: '
             node.data.text = params.condition
             // node.data.icon = <ForkRight/>
-            node.type = 'single'
             break
         }
         case Kind.FAIL: {
@@ -128,14 +97,6 @@ function prepareNode(item: PendingItem): Node {
             node.data.label = 'Error: '
             node.data.text = params.message
             // node.data.icon = <Dangerous/>
-            node.type = 'single'
-            break
-        }
-        case Kind.GROUP: {
-            const groupParams = item.statement.params as GroupParams
-            node.data.label = groupParams.name
-            node.type = 'group'
-            node.selectable = false
             break
         }
     }
@@ -148,19 +109,22 @@ export interface Result {
     edges: Edge[]
 }
 
-export function prepareInner(result: Result, statements: Statement[], lastNode: Node | undefined, cmp: Position): number {
+export function prepareInner(result: Result, statements: Statement[], lastNode: Node | undefined, cmp: Position, edgeLabel: string | undefined): number {
     const currentCmp = {...cmp}
 
     let maxY = currentCmp.y
 
+    let currentEdgeLabel = edgeLabel
+
     for (const statement of statements) {
         let nodeId = 'node-' + result.nodes.length
-        if (!isBeginningStatement(statement) && lastNode) {
+        if (lastNode) {
             // add edge
             result.edges.push({
                 id: lastNode.id + '-' + nodeId,
                 source: lastNode.id,
                 target: nodeId,
+                label: currentEdgeLabel,
                 markerEnd: {
                     type: MarkerType.Arrow,
                 },
@@ -192,13 +156,13 @@ export function prepareInner(result: Result, statements: Statement[], lastNode: 
         if (statement.kind === Kind.CONDITION) {
             const params = statement.params as ConditionParams
             let maxYInner;
-            maxYInner = prepareInner(result, params.fail, lastNode, {x: currentCmp.x - 0.8, y: currentCmp.y})
+            maxYInner = prepareInner(result, params.fail, lastNode, {x: currentCmp.x - 0.8, y: currentCmp.y}, 'fail')
 
             if (maxYInner > maxY) {
                 maxY = maxYInner
             }
 
-            maxYInner = prepareInner(result, params.pass, lastNode, {x: currentCmp.x + 1, y: currentCmp.y})
+            maxYInner = prepareInner(result, params.pass, lastNode, {x: currentCmp.x + 1, y: currentCmp.y}, 'pass')
 
             if (maxYInner > maxY) {
                 maxY = maxYInner
@@ -206,6 +170,8 @@ export function prepareInner(result: Result, statements: Statement[], lastNode: 
 
             currentCmp.y = maxY
         }
+
+        currentEdgeLabel = undefined
     }
 
     return maxY
@@ -217,7 +183,7 @@ export function prepare(flow: Flow): Result {
         edges: []
     } as Result
 
-    prepareInner(result, flow.statements, undefined, {x: 2, y: 0})
+    prepareInner(result, flow.statements, undefined, {x: 2, y: 0}, undefined)
 
     return result
 }

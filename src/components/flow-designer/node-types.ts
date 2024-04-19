@@ -1,10 +1,10 @@
 import {EntryNode} from "./nodes/EntryNode";
 import {EndNode} from "./nodes/EndNode";
-import {SingleNode} from "./nodes/SingleNode";
+import {SimpleNode} from "./nodes/SimpleNode";
 import {GroupNode} from "./nodes/GroupNode";
 
 export const nodeTypes = {
-    'single': SingleNode,
+    'simple': SimpleNode,
     'entry': EntryNode,
     'end': EndNode,
     'group': GroupNode,

@@ -4,7 +4,6 @@ import {useRepository} from "@apibrew/react";
 import Button from "@mui/material/Button";
 import {Script, ScriptEntityInfo} from "@apibrew/client/nano/model/script";
 import {MonacoNanoForm} from "../../../components/nano-form/MonacoNanoForm";
-import {Code} from "@apibrew/client/nano/model/code";
 import toast from "react-hot-toast";
 
 export function NanoPlayGround() {
@@ -55,17 +54,13 @@ export function NanoPlayGround() {
                 }}>Run</Button>
             </Box>
             <Box>
-                <MonacoNanoForm
-                    inline={true}
-                    code={{
-                        content: script.source,
-                    } as Code}
-                    onChange={code => {
-                        setScript({
-                            ...script,
-                            source: code.content
-                        })
-                    }}/>
+                <MonacoNanoForm code={script.source}
+                                onChange={updated => {
+                                    setScript({
+                                        ...script,
+                                        source: updated
+                                    })
+                                }}/>
             </Box>
 
             <Box display='flex' flexDirection='row'>

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Code, CodeEntityInfo} from "@apibrew/client/nano/model/code";
-import {Box, Card, CardActions, CardContent, CardHeader} from "@mui/material";
-import {NanoForm} from "../../../components/nano-form/NanoForm";
+import {Box, Card, CardActions, CardContent, CardHeader, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useRepository} from "@apibrew/react";
@@ -31,12 +30,30 @@ export function NanoEdit() {
     return <>
         <Box m={1}>
             <Card>
-                <CardHeader title={`Edit Nano Code: ` + (code?.name ?? '...')}/>
+                <CardHeader title={<>
+                    <span>Edit Nano Code</span>
+                    {code && <TextField
+                        value={code.name ?? ''}
+                        style={{marginLeft: '1rem', width: '400px', marginTop: '-14px'}}
+                        onChange={e => {
+                            setCode({
+                                ...code,
+                                name: e.target.value
+                            })
+                        }}
+                        label='Name'
+                        variant='standard'
+                    />}
+                </>}/>
                 <CardContent>
                     {!code && <LoadingOverlay/>}
-                    {code && <MonacoNanoForm
-                        code={code}
-                        onChange={setCode}/>}
+                    {code && <MonacoNanoForm code={code.content}
+                                             onChange={updated => {
+                                                 setCode({
+                                                     ...code,
+                                                     content: updated
+                                                 })
+                                             }}/>}
                 </CardContent>
                 <CardActions>
                     <Button onClick={() => {

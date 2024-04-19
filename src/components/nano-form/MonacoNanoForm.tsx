@@ -1,74 +1,43 @@
-import {Box, FormLabel, Grid, MenuItem, Select, TextField} from "@mui/material";
-import {Code} from "@apibrew/client/nano/model/code";
-import React, {useMemo, useRef, useState} from "react";
-import Button from "@mui/material/Button";
-import {Resource} from "@apibrew/react";
-import {generate, GENERATOR} from "astring";
-import {useAnalytics} from "../../hooks/use-analytics";
-import {NanoAstModifier} from "../../logic/nano-ast/NanoAstModifier";
-import {NanoCodeTemplate, nanoTemplates} from "../../nano-templates/abs";
-import {parseNanoCode} from "../../logic/nano-ast/abs";
-import Editor from '@monaco-editor/react';
+import {Box, Grid} from "@mui/material";
+import React, {useEffect, useRef} from "react";
+import Editor, {Monaco} from '@monaco-editor/react';
+import {Resource, useClient, useRecords} from "@apibrew/react";
+import {LoadingOverlay} from "../LoadingOverlay";
+import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 
 export interface NanoFormProps {
-    resource?: Resource
-    code: Code
-    onChange: (code: Code) => void
-    inline?: boolean
+    code: string
+    onChange: (code: string) => void
 }
 
 export function MonacoNanoForm(props: NanoFormProps) {
-    const templates = useMemo<NanoCodeTemplate[]>(() => {
-        return nanoTemplates.map(nanoTemplate => new nanoTemplate(props.resource))
-    }, [props.resource])
-    const analytics = useAnalytics()
+    const client = useClient();
+    // const [types, setTypes] = React.useState<string>('');
+    const [apibrewTypes, setApibrewTypes] = React.useState<string>('');
+    const [nanoDefinitions, setNanoDefinitions] = React.useState<string>('')
 
-    const lineCount = useMemo(() => props.code.content.split("\n").length, [props.code.content]);
-    // create array
-    const linesArr = useMemo(
-        () =>
-            Array.from({length: lineCount}, (_, i) => i + 1),
-        [lineCount]
-    );
+    // const typesUrl = client.getUrl() + '/docs/typescript-types.d.ts';
+    const resources = useRecords<Resource>(ResourceEntityInfo)
 
-    const [selectedTemplate, setSelectedTemplate] = useState<string>()
+    useEffect(() => {
+        // fetch(typesUrl)
+        //     .then((response) => response.text())
+        //     .then((text) => {
+        //         setTypes(text);
+        //     });
 
-    const template = useMemo(() => {
-        return templates.find(t => t.label === selectedTemplate)
-    }, [selectedTemplate, templates])
+        fetch('/types.d.ts')
+            .then((response) => response.text())
+            .then((text) => {
+                setApibrewTypes(text);
+            });
 
-    function handleApplyTemplate() {
-        if (!template) {
-            return
-        }
-
-        const ast = parseNanoCode(props.code.content)
-
-        const nanoAstModifier = new NanoAstModifier(ast)
-
-        if (!template.apply(nanoAstModifier)) {
-            return
-        }
-
-        const generated = generate(ast, {
-            comments: true,
-            generator: {
-                ...GENERATOR,
-                EmptyStatement(node, state) {
-                    console.log('EmptyStatement', node)
-                }
-            }
-        })
-
-        console.log('generated', generated, ast)
-
-        props.onChange({
-            ...props.code,
-            content: generated
-        })
-
-        // setSelectedTemplate(undefined)
-    }
+        fetch('/nano.d.ts')
+            .then((response) => response.text())
+            .then((text) => {
+                setNanoDefinitions(text);
+            });
+    }, [client]);
 
     const editorRef = useRef<any>(null);
 
@@ -76,13 +45,28 @@ export function MonacoNanoForm(props: NanoFormProps) {
         editorRef.current = editor;
     }
 
-    function showValue() {
-        alert(editorRef.current!.getValue());
+    function handleEditorWillMount(monaco: Monaco) {
+        // prepare resources.d.t
+        let resourceDefinitions = ''
+
+        for (const resource of resources!) {
+            resourceDefinitions += `declare const ${resource.name}: ResourceOps<${resource.name}>;\n`
+        }
+
+        monaco.languages.typescript.javascriptDefaults.addExtraLib(apibrewTypes, 'local-types.d.ts');
+        monaco.languages.typescript.javascriptDefaults.addExtraLib(nanoDefinitions, 'nano.d.ts');
+        monaco.languages.typescript.javascriptDefaults.addExtraLib(resourceDefinitions, 'resources.d.ts');
+
+
+    }
+
+    if (!nanoDefinitions || !resources) {
+        return <LoadingOverlay/>
     }
 
     return <>
         <Grid container>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={12}>
                 <Box display='flex' flexDirection='row' sx={{
                     maxHeight: '600px',
                     overflow: 'auto'
@@ -91,57 +75,33 @@ export function MonacoNanoForm(props: NanoFormProps) {
                         <Editor
                             height="90vh"
                             language="javascript"
+                            theme='vs-dark'
+                            options={{
+                                // wordWrap: 'on',
+                                // minimap: {enabled: true},
+                                fontSize: 12,
+                                tabSize: 4,
+                                // insertSpaces: true,
+                                // automaticLayout: true,
+                                // scrollBeyondLastLine: false,
+                                // scrollbar: {
+                                //     vertical: 'auto',
+                                //     horizontal: 'auto',
+                                //     useShadows: false,
+                                //     verticalHasArrows: false,
+                                //     horizontalHasArrows: false,
+                                //     verticalScrollbarSize: 17,
+                                //     horizontalScrollbarSize: 17,
+                                //     arrowSize: 30
+                                // },
+                            }}
+
+                            beforeMount={handleEditorWillMount}
                             onMount={handleEditorDidMount}
-                            value={props.code.content}
-                            onChange={(evn) => props.onChange({
-                                ...props.code,
-                                content: evn!
-                            })}
+                            value={props.code}
+                            onChange={(evn) => props.onChange(evn!)}
                         />
                     </Box>
-                </Box>
-            </Grid>
-            <Grid item xs={12} md={4}>
-                <Box marginLeft={2}>
-                    <Box m={1}>
-                        {!props.inline && <TextField
-                            fullWidth
-                            value={props.code.name ?? ''}
-                            onChange={e => {
-                                props.onChange({
-                                    ...props.code,
-                                    name: e.target.value
-                                })
-                            }}
-                            label='Name'
-                            variant='outlined'
-                        />}
-                    </Box>
-                    <Box m={1}>
-                        <FormLabel>Templates:</FormLabel>
-                        <Select
-                            size='small'
-                            fullWidth
-                            value={selectedTemplate ?? ''}
-                            onChange={e => {
-                                setSelectedTemplate(e.target.value as string)
-                                analytics.click('choose-template', e.target.value as string)
-                            }}>
-                            <MenuItem>---</MenuItem>
-                            {templates.map(t => <MenuItem key={t.label} value={t.label}>{t.label}</MenuItem>)}
-                        </Select>
-                    </Box>
-                    {template && <Box m={1} marginTop={3}>
-                        <Box>
-                            {template.renderParams()}
-                        </Box>
-                        <Box marginTop='20px'>
-                            <Button onClick={() => {
-                                analytics.click('apply-template', selectedTemplate)
-                                handleApplyTemplate()
-                            }}>Apply Template</Button>
-                        </Box>
-                    </Box>}
                 </Box>
             </Grid>
         </Grid>
