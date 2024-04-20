@@ -6,7 +6,7 @@ import {Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typograp
 import {checkResourceAccess} from "../../../util/authorization";
 import {Direction, Resource, useRecords, useRepository, useTokenBody, useWatcher} from "@apibrew/react";
 import {ExtensionResource} from "@apibrew/client/model/extension";
-import {Operation} from "@apibrew/client/model/permission";
+import {BooleanExpression, Operation} from "@apibrew/client/model/permission";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import {DeploymentTask, DeploymentTaskEntityInfo, Kind} from "../../model/deployment-task";
@@ -24,7 +24,20 @@ export function ListInstance() {
 
     const data = useDataProvider<Instance>(InstanceEntityInfo, {
         sorting: [{property: 'deploymentStatus', direction: Direction.ASC}],
+        query: {
+            not: {
+                equal: {
+                    left: {
+                        property: 'deploymentStatus'
+                    },
+                    right: {
+                        value: 'DESTROYED'
+                    }
+                }
+            }
+        } as unknown as BooleanExpression,
         limit: 100,
+        resolveReferences: ['$.plan']
     }, wi)
 
     const tokenBody = useTokenBody()
@@ -96,6 +109,7 @@ export function ListInstance() {
                         <TableCell>Name</TableCell>
                         <TableCell>Title</TableCell>
                         <TableCell>Description</TableCell>
+                        <TableCell>Plan</TableCell>
                         <TableCell>Status</TableCell>
                         <TableCell>Health</TableCell>
                         <TableCell>Actions</TableCell>
@@ -122,6 +136,9 @@ export function ListInstance() {
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body2">{instance.description}</Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body2">{instance.plan?.name}</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body2">{instance.deploymentStatus}</Typography>
