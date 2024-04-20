@@ -36,7 +36,7 @@ export function DashboardPage() {
             }
             setClient(client)
             setConnection({
-                name: 'manager',
+                name: 'local',
                 serverConfig: {}
             } as Connection)
             return;
