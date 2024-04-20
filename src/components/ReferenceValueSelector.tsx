@@ -23,7 +23,9 @@ export function ReferenceValueSelector(props: ReferenceValueSelectorProps) {
             name: namespace
         },
         name: resourceName,
-    } as Resource))
+    } as Resource), {
+        limit: 1000,
+    })
 
     if (!records) {
         return <LoadingOverlay/>
