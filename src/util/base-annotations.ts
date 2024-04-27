@@ -9,6 +9,7 @@ export const HistoryResource = "HistoryResource";
 export const NormalizedResource = "NormalizedResource";
 export const AutoCreated = "AutoCreated";
 export const EnableAudit = "EnableAudit";
+export const CascadeReference = "CascadeReference";
 export const DisableVersion = "DisableVersion";
 export const DisableBackup = "DisableBackup";
 

@@ -4,9 +4,13 @@ import {useConnection} from "../../context/ConnectionContext";
 import {WidgetLayout} from "../../layout/WidgetLayout";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
+import {useClient} from "@apibrew/react";
 
 export function IntegrationsWidget() {
     const connection = useConnection()
+    const client = useClient()
+
+    const url = new URL(client.getUrl())
 
     return <WidgetLayout title='Quick Integration'>
         <Box>
@@ -52,7 +56,7 @@ export function IntegrationsWidget() {
                         }}>Copy to clipboard</Button>
                     </li>
                     <li>
-                        <b>host:</b> - {connection.name}.apibrew.io
+                        <b>host:</b> - {url.hostname}
                     </li>
                     <li>
                         <b>port (grpc):</b> - 9443
@@ -60,16 +64,17 @@ export function IntegrationsWidget() {
                         Grpc is mainly used by apbr itself and golang sdk
                     </li>
                     <li>
-                        <b>port (http(s)):</b> - 8443
+                        <b>port (http(s)):</b> - {url.port}
                         <br/>
                         Https is mainly used by other sdks and for REST api
                     </li>
                     <li>
-                        <b>insecure:</b> - false
+                        <b>insecure:</b> - {(url.port === '443' || url.port === '8443') ? 'false' : 'true'}
                     </li>
                     <li>
                         <b>swagger</b> - <a target='_blank'
-                                            href={`https://${connection.name}.apibrew.io:8443/docs/swagger`}>https://{connection.name}.apibrew.io:8443/docs/swagger</a>
+                                            rel='noreferrer'
+                                            href={`${url}docs/swagger`}>{`${url}docs/swagger`}</a>
                     </li>
                 </ul>
             </Stack>

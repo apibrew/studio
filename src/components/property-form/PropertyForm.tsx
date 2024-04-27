@@ -19,6 +19,8 @@ import {PropertyExtras} from "./PropertyExtras";
 import {ArrowDownward} from "@mui/icons-material";
 import {AnnotationsForm} from "../annotations-form/AnnotationsForm";
 import {PropertyValueEdit} from "../property-value-edit/PropertyValueEdit";
+import {isAnnotationEnabled, withBooleanAnnotation} from "../../util/annotation";
+import {CascadeReference} from "../../util/base-annotations";
 
 export interface PropertyFormProps {
     resource: Resource
@@ -182,6 +184,28 @@ export function PropertyForm(props: PropertyFormProps) {
                             })
                         }}/>
                 </FormControl>
+                {props.property.type === Type.REFERENCE && <FormControl fullWidth>
+                    <FormLabel>
+                        Cascade Reference
+                    </FormLabel>
+                    <Checkbox
+                        size='small'
+                        sx={{
+                            display: 'inline-block',
+                            width: '40px'
+                        }}
+                        checked={isAnnotationEnabled(props.property.annotations, CascadeReference)}
+                        onChange={(event) => {
+                            props.onChange({
+                                ...props.property,
+                                annotations: withBooleanAnnotation(props.property.annotations, CascadeReference, event.target.checked)
+                            })
+                        }}/>
+                    <FormHelperText>
+                        If enabled, when the referenced record is deleted, this record will also be deleted. This is
+                        useful for cascading deletes.
+                    </FormHelperText>
+                </FormControl>}
             </Stack>
             <hr/>
             <Accordion sx={{
