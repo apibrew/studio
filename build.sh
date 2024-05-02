@@ -1,3 +1,5 @@
+export PATH="$PATH:/root/.nvm/versions/node/v20.6.1/bin/"
+
 npm install
 npm run build
 
