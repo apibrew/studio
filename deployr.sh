@@ -6,4 +6,4 @@ git push
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 
-ssh root@tisserv.net "cd studio; git checkout $BRANCH; git pull; sh build.sh"
+ssh root@tisserv.net "cd studio; git checkout $BRANCH; git checkout package-lock.json; git pull; sh build.sh"
