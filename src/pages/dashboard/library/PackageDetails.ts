@@ -17,6 +17,7 @@ export interface PackageDetails {
     author: Author;
     license: string;
     paramsFile: string;
+    uninstallScript: string;
     steps: Step[];
 }
 

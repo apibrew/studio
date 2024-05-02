@@ -4,7 +4,7 @@ import {
     FunctionsTwoTone,
     Group,
     Handyman,
-    Home,
+    Home, LibraryBooks,
     Logout,
     Monitor,
     Person,
@@ -59,6 +59,21 @@ export const menuItems: MenuItem[] = [
         title: 'Nano Code',
         path: '/dashboard/nano',
         icon: <FunctionsTwoTone/>
+    },
+    {
+        title: 'Nano Module',
+        path: '/dashboard/nano-module',
+        icon: <FunctionsTwoTone/>
+    },
+    {
+        title: 'Nano Playground',
+        path: '/dashboard/nano/playground',
+        icon: <FunctionsTwoTone/>
+    },
+    {
+        title: 'Library',
+        path: '/dashboard/library',
+        icon: <LibraryBooks/>
     },
     {
         title: 'Users & Roles',

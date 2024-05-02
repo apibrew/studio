@@ -20,6 +20,7 @@ import {ExperimentsRoutes} from "../pages/experiments/routes";
 import {FlowRoutes} from "./flows";
 import BuilderPage from "../pages/dashboard/builder/BuilderPage";
 import Library from "../pages/dashboard/library";
+import {NanoModuleRoutes} from "./nano-module";
 
 export const index = createBrowserRouter([
     {
@@ -89,6 +90,7 @@ export const index = createBrowserRouter([
                 }
             },
             NanoRoutes,
+            NanoModuleRoutes,
             UserAndRolesRoutes,
             SettingsRoutes,
             MonitoringRoutes,

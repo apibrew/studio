@@ -66,3 +66,5 @@ declare const http: {
     patch(url: string, body: any, options?: Options): HttpResponse
     delete(url: string, options?: Options): HttpResponse
 }
+
+declare const exports: {[key: string]: any}

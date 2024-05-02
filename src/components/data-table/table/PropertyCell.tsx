@@ -64,6 +64,9 @@ export function PropertyCell(props: PropertyCellProps) {
                     if (props.resource.name === 'CronJob' && props.propertyName === 'source') {
                         isNanoProperty = true
                     }
+                    if (props.resource.name === 'Module' && props.propertyName === 'source') {
+                        isNanoProperty = true
+                    }
                 }
 
                 if (isNanoProperty) {

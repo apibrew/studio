@@ -5,76 +5,167 @@ import {Repository, RepositoryEntityInfo, RepositoryResource} from "../../../mod
 import {useEffect, useState} from "react";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {Client} from "@apibrew/client";
-import {Box, Card, CardActions, CardHeader, Stack} from "@mui/material";
+import {Box, Stack, Table, TableCell, TableHead, TableRow} from "@mui/material";
 import {useDrawer} from "../../../hooks/use-drawer";
 import Button from "@mui/material/Button";
 import {PackagePage} from "./Package";
-import {PackageDetails, Params, Step} from "./PackageDetails";
-import {Module, ModuleEntityInfo} from "@apibrew/client/nano/model/module";
 import {readFile} from "./helper";
-import {Script, ScriptEntityInfo} from "@apibrew/client/nano/model/script";
 import toast from "react-hot-toast";
+import {install} from "./install";
+import {uninstall} from "./uninstall";
+import {useConfirmation} from "../../../components/modal/use-confirmation";
 
 export default function Page() {
     const client = useClient()
     const [loading, setLoading] = useState(true)
     const [candidatePackages, setCandidatePackages] = useState<Package[]>([])
+    const [existingPackages, setExistingPackages] = useState<Package[]>([])
+    const [wi, setWi] = useState(0)
     const drawer = useDrawer()
+    const confirmation = useConfirmation()
 
     useEffect(() => {
         const promises = [
             ensureResource(client, PackageResource as Resource),
             ensureResource(client, RepositoryResource as Resource),
+            client.listRecords<Package>(PackageEntityInfo, {limit: 100, resolveReferences: ['$.repository']})
+                .then(resp => resp.content)
+                .then(setExistingPackages),
             listCandidatePackages(client).then(setCandidatePackages)
         ]
 
         Promise.all(promises).then(() => {
             setLoading(false)
         })
-    }, [client]);
+    }, [wi, client]);
 
     if (loading) {
         return <LoadingOverlay/>
     }
 
-    return <Box>
+    function openInstaller(pkg: Package) {
+        drawer.open(<PackagePage
+            pkg={pkg}
+            params={pkg.params || {}}
+            cancel={() => drawer.close()}
+            install={(name, params) => {
+                install(client, {...pkg, name: name, params: params}).then(installed => {
+                    if (installed) {
+                        toast.success('Package installed')
+                        drawer.close()
+                    }
+
+                    setWi(wi + 1)
+                })
+            }}
+        />)
+    }
+
+    function openUnInstaller(pkg: Package) {
+        confirmation.open({
+            kind: 'danger',
+            title: 'Uninstall Package',
+            message: 'Are you sure you want to uninstall this package?',
+            onConfirm: () => {
+                uninstall(client, pkg).then(installed => {
+                    if (installed) {
+                        toast.success('Package Uninstalled')
+                        drawer.close()
+                    }
+
+                    setWi(wi + 1)
+                })
+            }
+        })
+    }
+
+    return <Box m={1}>
         {drawer.render()}
-        {candidatePackages.map((pkg) => <Stack m={3} spacing={3}>
-            <Card>
-                <CardHeader title={pkg.name} subheader={`${pkg.repository.owner}/${pkg.repository.repo}/${pkg.name}`}/>
-                <CardActions>
-                    <Button onClick={() => {
-                        drawer.open(<PackagePage
-                            pkg={pkg}
-                            cancel={() => drawer.close()}
-                            install={(name, details, params) => {
-                                install(client, pkg, name, details, params).then(installed => {
+        {confirmation.render()}
+        <h2>Packages</h2>
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Repository</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Actions</TableCell>
+                </TableRow>
+                {existingPackages.map(pkg => <TableRow>
+                    <TableCell>{pkg.id}</TableCell>
+                    <TableCell>{pkg.name}</TableCell>
+                    <TableCell>{pkg.repository.owner}/{pkg.repository.repo}/{pkg.path}</TableCell>
+                    <TableCell>{pkg.status}</TableCell>
+                    <TableCell>
+                        <Stack direction='row' spacing={1}>
+                            {pkg.status === Status.READY_TO_INSTALL && <Button color='success' onClick={() => {
+                                openInstaller(pkg)
+                            }}>Install</Button>}
+                            {pkg.status === Status.INSTALLED && <Button color='primary' onClick={() => {
+                                openInstaller(pkg)
+                            }}>Configure</Button>}
+                            {pkg.status === Status.INSTALLED && <Button color='secondary' onClick={() => {
+                                install(client, pkg).then(installed => {
                                     if (installed) {
-                                        toast.success('Package installed')
+                                        toast.success('Package reinstalled')
                                         drawer.close()
                                     }
-                                })
-                            }}
-                        />)
-                    }}>Setup</Button>
-                </CardActions>
-            </Card>
 
-        </Stack>)}
+                                    setWi(wi + 1)
+                                })
+                            }}>Reinstall</Button>}
+                            {pkg.status === Status.INSTALLED && <Button color='error' onClick={() => {
+                                openUnInstaller(pkg)
+                            }}>Uninstall</Button>}
+                            {pkg.status === Status.UNINSTALLED && <Button onClick={() => {
+                                confirmation.open({
+                                    kind: 'danger',
+                                    title: 'Delete Package',
+                                    message: 'Are you sure you want to delete this package?',
+                                    onConfirm: () => {
+                                        client.deleteRecord(PackageEntityInfo, pkg.id).then(() => {
+                                            setWi(wi + 1)
+                                        })
+                                    }
+                                })
+                            }}>Delete</Button>}
+                        </Stack>
+                    </TableCell>
+                </TableRow>)}
+            </TableHead>
+        </Table>
+        <h2>Library</h2>
+
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Repository</TableCell>
+                    <TableCell>Actions</TableCell>
+                </TableRow>
+                {candidatePackages.map(pkg => <TableRow>
+                    <TableCell>{pkg.id}</TableCell>
+                    <TableCell>{pkg.name}</TableCell>
+                    <TableCell>{pkg.repository.owner}/{pkg.repository.repo}/{pkg.path}</TableCell>
+                    <TableCell>
+                        <Button color='success' onClick={() => {
+                            openInstaller(pkg)
+                        }}>Install</Button>
+                    </TableCell>
+                </TableRow>)}
+            </TableHead>
+        </Table>
     </Box>
 }
 
 async function listCandidatePackages(client: Client): Promise<Package[]> {
     const repositories = (await client.listRecords<Repository>(RepositoryEntityInfo, {limit: 100})).content
-
-    console.log(repositories)
-
     const packages: Package[] = []
 
     for (const repository of repositories) {
         const data = JSON.parse(await readFile(repository, 'packages.json'))
-
-        console.log(data)
 
         for (const item of data) {
             item.repository = repository
@@ -84,36 +175,3 @@ async function listCandidatePackages(client: Client): Promise<Package[]> {
 
     return packages;
 }
-
-async function install(client: Client, pkg: Package, name: string, packageDetails: PackageDetails, params: Params): Promise<boolean> {
-    const installedPackage = await client.applyRecord<Package>(PackageEntityInfo, {
-        ...pkg,
-        name: name,
-        params: params,
-        status: Status.READY_TO_INSTALL,
-    })
-
-    for (const step of packageDetails.steps) {
-        await executeStep(client, pkg, installedPackage, step)
-    }
-
-    installedPackage.status = Status.INSTALLED
-    client.updateRecord(PackageEntityInfo, installedPackage)
-
-    return true
-}
-
-async function executeStep(client: Client, pkg: Package, installedPackage: Package, step: Step) {
-    switch (step.operation) {
-        case 'applyModule':
-            return client.applyRecord<Module>(ModuleEntityInfo, {
-                name: step.name,
-                source: await readFile(pkg.repository, pkg.path + '/' + step.contentFile),
-            })
-        case 'applyScript':
-            return client.applyRecord<Script>(ScriptEntityInfo, {
-                source: await readFile(pkg.repository, pkg.path + '/' + step.contentFile),
-            })
-    }
-}
-

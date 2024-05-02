@@ -7,18 +7,18 @@ import {useEffect, useState} from "react";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import {readFile} from "./helper";
-import {Repository} from "../../../model/repository";
+import {loadPackageDetails, readFile} from "./helper";
 
 export interface PackageProps {
     pkg: Package
+    params: Params
     cancel: () => void
-    install: (name: string, packageDetails: PackageDetails, params: Params) => void
+    install: (name: string, params: Params) => void
 }
 
 export function PackagePage(props: PackageProps) {
     let [name, setName] = useState(props.pkg.name)
-    let [params, setParams] = useState({} as any)
+    let [params, setParams] = useState({...props.params} as any)
     let [valid, setValid] = useState(false)
 
     const [packageDetails, setPackageDetails] = useState<PackageDetails>()
@@ -26,7 +26,7 @@ export function PackagePage(props: PackageProps) {
 
     useEffect(() => {
         (async function () {
-            const packageDetails = JSON.parse(await readFile(props.pkg.repository, `${props.pkg.path}/package-details.json`)) as PackageDetails
+            const packageDetails = await loadPackageDetails(props.pkg)
             const paramsFile = await readFile(props.pkg.repository, `${props.pkg.path}/${packageDetails.paramsFile}`)
 
             setPackageDetails(packageDetails)
@@ -73,7 +73,7 @@ export function PackagePage(props: PackageProps) {
             <CardActions>
                 <Button onClick={() => {
                     if (valid) {
-                        props.install(name, packageDetails, params)
+                        props.install(name, params)
                     } else {
                         toast.error('Please fill in all required fields')
                     }
