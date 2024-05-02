@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Code, CodeEntityInfo} from "@apibrew/client/nano/model/code";
-import {Box, Card, CardActions, CardContent, CardHeader, TextField} from "@mui/material";
+import {Box, Card, CardActions, CardContent, CardHeader, MenuItem, Select, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useRepository} from "@apibrew/react";
@@ -32,6 +32,19 @@ export function NanoEdit() {
             <Card>
                 <CardHeader title={<>
                     <span>Edit Nano Code</span>
+                    {code && <Select sx={{
+                        width: '300px',
+                        marginRight: '1rem'
+                    }} value={code.language}
+                            onChange={e => {
+                                setCode({
+                                    ...code,
+                                    language: e.target.value as any
+                                })
+                            }}>
+                        <MenuItem value='JAVASCRIPT'>JavaScript</MenuItem>
+                        <MenuItem value='TYPESCRIPT'>Typescript</MenuItem>
+                    </Select>}
                     {code && <TextField
                         value={code.name ?? ''}
                         style={{marginLeft: '1rem', width: '400px', marginTop: '-14px'}}
@@ -48,6 +61,7 @@ export function NanoEdit() {
                 <CardContent>
                     {!code && <LoadingOverlay/>}
                     {code && <MonacoNanoForm code={code.content}
+                                             language={code.language}
                                              onChange={updated => {
                                                  setCode({
                                                      ...code,

@@ -1,4 +1,4 @@
-import {Box, Stack} from "@mui/material";
+import {Box, MenuItem, Select, Stack} from "@mui/material";
 import React, {useState} from "react";
 import {useRepository} from "@apibrew/react";
 import Button from "@mui/material/Button";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 export function NanoPlayGround() {
     const [script, setScript] = useState<Script>({
         source: 'const a = 1\nconst b = 2\na + b\n',
+        language: 'JAVASCRIPT',
     } as Script)
     const repository = useRepository<Script>(ScriptEntityInfo)
 
@@ -49,12 +50,26 @@ export function NanoPlayGround() {
     return <>
         <Stack flexDirection='column' m={1} spacing={1}>
             <Box>
+                <Select sx={{
+                    width: '300px',
+                    marginRight: '1rem'
+                }} value={script.language}
+                        onChange={e => {
+                            setScript({
+                                ...script,
+                                language: e.target.value as any
+                            })
+                        }}>
+                    <MenuItem value='JAVASCRIPT'>JavaScript</MenuItem>
+                    <MenuItem value='TYPESCRIPT'>Typescript</MenuItem>
+                </Select>
                 <Button onClick={() => {
                     handleRun()
                 }}>Run</Button>
             </Box>
             <Box>
                 <MonacoNanoForm code={script.source}
+                                language={script.language}
                                 onChange={updated => {
                                     setScript({
                                         ...script,

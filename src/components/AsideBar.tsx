@@ -2,7 +2,7 @@ import {Box, Icon, List, ListItem, ListItemButton, ListItemText, useTheme} from 
 import {MenuItem, menuItems} from "../menu";
 import {useNavigate, useParams} from "react-router-dom";
 import React from "react";
-import {connectionProvider} from "../connection-provider";
+import {connectionProvider} from "@apibrew/react";
 
 export interface AsideBarProps {
     activeItem?: MenuItem

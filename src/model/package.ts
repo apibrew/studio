@@ -1,24 +1,20 @@
+import {Repository} from './repository';
 
-export interface Settings {
+export interface Package {
     id: string
+    path: string
+    params?: object
+    status: Status
     name: string
     repository: Repository
-    params?: object
-    installed: boolean
     version: number
     auditData?: AuditData
 }
 
-export const SettingsEntityInfo = {
+export const PackageEntityInfo = {
     namespace: "studio",
-    resource: "Settings",
-    restPath: "studio-settings",
-}
-
-export interface Repository {
-    provider: Provider
-    owner: string
-    repo: string
+    resource: "Package",
+    restPath: "studio-package",
 }
 
 export interface AuditData {
@@ -28,12 +24,14 @@ export interface AuditData {
     updatedOn: string | Date
 }
 
-export enum Provider {
-    GITHUB = "GITHUB",
+export enum Status {
+    READY_TO_INSTALL = "READY_TO_INSTALL",
+    INSTALLED = "INSTALLED",
+    UNINSTALLED = "UNINSTALLED",
 }
 
-export const SettingsResource = {
-  "name": "Settings",
+export const PackageResource = {
+  "name": "Package",
   "namespace": {
     "name": "studio"
   },
@@ -43,9 +41,9 @@ export const SettingsResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-05-01T19:28:21+04:00",
+        "createdOn": "2024-05-01T19:38:12+04:00",
         "updatedBy": "admin",
-        "updatedOn": "2024-05-01T19:28:21+04:00"
+        "updatedOn": "2024-05-01T19:38:12+04:00"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
@@ -64,13 +62,6 @@ export const SettingsResource = {
         "SpecialProperty": "true"
       }
     },
-    "installed": {
-      "type": "BOOL",
-      "required": true,
-      "defaultValue": false,
-      "title": "Installed",
-      "description": "Installed"
-    },
     "name": {
       "type": "STRING",
       "required": true,
@@ -84,12 +75,30 @@ export const SettingsResource = {
       "title": "Params",
       "description": "Params"
     },
-    "repository": {
-      "type": "STRUCT",
-      "typeRef": "Repository",
+    "path": {
+      "type": "STRING",
       "required": true,
+      "title": "Path",
+      "description": "Path"
+    },
+    "repository": {
+      "type": "REFERENCE",
+      "required": true,
+      "reference": "studio/Repository",
       "title": "Repository",
       "description": "Repository"
+    },
+    "status": {
+      "type": "ENUM",
+      "required": true,
+      "defaultValue": "READY_TO_INSTALL",
+      "enumValues": [
+        "READY_TO_INSTALL",
+        "INSTALLED",
+        "UNINSTALLED"
+      ],
+      "title": "Installed",
+      "description": "Installed"
     },
     "version": {
       "type": "INT32",
@@ -105,29 +114,6 @@ export const SettingsResource = {
     }
   },
   "types": [
-    {
-      "name": "Repository",
-      "title": "",
-      "description": "",
-      "properties": {
-        "owner": {
-          "type": "STRING",
-          "required": true
-        },
-        "provider": {
-          "type": "ENUM",
-          "required": true,
-          "defaultValue": "GITHUB",
-          "enumValues": [
-            "GITHUB"
-          ]
-        },
-        "repo": {
-          "type": "STRING",
-          "required": true
-        }
-      }
-    },
     {
       "name": "AuditData",
       "title": "Audit Data",
@@ -147,7 +133,7 @@ export const SettingsResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-05-01T19:28:21+04:00",
+          "exampleValue": "2024-05-01T19:38:12+04:00",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -166,7 +152,7 @@ export const SettingsResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-05-01T19:28:21+04:00",
+          "exampleValue": "2024-05-01T19:38:12+04:00",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {

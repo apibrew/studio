@@ -7,24 +7,25 @@ import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 
 export interface NanoFormProps {
     code: string
+    language: 'JAVASCRIPT' | 'TYPESCRIPT'
     onChange: (code: string) => void
 }
 
 export function MonacoNanoForm(props: NanoFormProps) {
     const client = useClient();
-    // const [types, setTypes] = React.useState<string>('');
+    const [types, setTypes] = React.useState<string>('');
     const [apibrewTypes, setApibrewTypes] = React.useState<string>('');
     const [nanoDefinitions, setNanoDefinitions] = React.useState<string>('')
 
-    // const typesUrl = client.getUrl() + '/docs/typescript-types.d.ts';
+    const typesUrl = client.getUrl() + '/docs/typescript-types.d.ts';
     const resources = useRecords<Resource>(ResourceEntityInfo)
 
     useEffect(() => {
-        // fetch(typesUrl)
-        //     .then((response) => response.text())
-        //     .then((text) => {
-        //         setTypes(text);
-        //     });
+        fetch(typesUrl)
+            .then((response) => response.text())
+            .then((text) => {
+                setTypes(text);
+            });
 
         fetch('/types.d.ts')
             .then((response) => response.text())
@@ -46,21 +47,20 @@ export function MonacoNanoForm(props: NanoFormProps) {
     }
 
     function handleEditorWillMount(monaco: Monaco) {
-        // prepare resources.d.t
-        let resourceDefinitions = ''
-
+        let adjustedTypes = types;
         for (const resource of resources!) {
-            resourceDefinitions += `declare const ${resource.name}: ResourceOps<${resource.name}>;\n`
+            adjustedTypes = adjustedTypes.replaceAll(resource.name, resource.name + 'Resource')
         }
 
         monaco.languages.typescript.javascriptDefaults.addExtraLib(apibrewTypes, 'local-types.d.ts');
         monaco.languages.typescript.javascriptDefaults.addExtraLib(nanoDefinitions, 'nano.d.ts');
-        monaco.languages.typescript.javascriptDefaults.addExtraLib(resourceDefinitions, 'resources.d.ts');
 
-
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(adjustedTypes, 'types.d.ts');
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(apibrewTypes, 'local-types.d.ts');
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(nanoDefinitions, 'nano.d.ts');
     }
 
-    if (!nanoDefinitions || !resources) {
+    if (!types || !nanoDefinitions || !resources) {
         return <LoadingOverlay/>
     }
 
@@ -74,7 +74,7 @@ export function MonacoNanoForm(props: NanoFormProps) {
                     <Box flexGrow={1}>
                         <Editor
                             height="90vh"
-                            language="javascript"
+                            language={props.language === 'JAVASCRIPT' ? 'javascript' : 'typescript'}
                             theme='vs-dark'
                             options={{
                                 // wordWrap: 'on',

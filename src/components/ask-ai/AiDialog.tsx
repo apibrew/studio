@@ -1,35 +1,20 @@
-import React from "react";
+import * as React from 'react';
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
-import {Code} from "@apibrew/client/nano/model/code";
-import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
 
-export interface PropertyNanoDrawerProps {
-    code: string;
-    onChange: (code: string) => void;
-    onClose: () => void;
+export interface AskAiProps {
+    onClose: () => void
 }
 
-export function PropertyNanoDrawer(props: PropertyNanoDrawerProps) {
+export default function AskAi(props: AskAiProps) {
 
-    const [code, setCode] = React.useState<Code>({
-        name: '',
-        content: props.code ?? '',
-    } as Code)
     return (
-        <>
+        <React.Fragment>
             <Box width='1400px'>
                 <Card>
                     <CardHeader title='Edit Code'/>
                 </Card>
                 <CardContent>
-                    <MonacoNanoForm code={code.content}
-                                    language={code.language}
-                                    onChange={updated => {
-                                        setCode({
-                                            ...code,
-                                            content: updated
-                                        })
-                                    }}/>
+
                 </CardContent>
                 <CardActions>
                     <Stack direction='row' spacing={1}>
@@ -37,7 +22,6 @@ export function PropertyNanoDrawer(props: PropertyNanoDrawerProps) {
                                 size='small'
                                 color='success'
                                 onClick={() => {
-                                    props.onChange(code.content)
                                     props.onClose()
                                 }}>Apply</Button>
                         <Button variant='outlined'
@@ -47,6 +31,6 @@ export function PropertyNanoDrawer(props: PropertyNanoDrawerProps) {
                     </Stack>
                 </CardActions>
             </Box>
-        </>
-    )
+        </React.Fragment>
+    );
 }

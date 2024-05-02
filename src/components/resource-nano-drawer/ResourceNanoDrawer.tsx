@@ -1,6 +1,6 @@
 import {NanoForm} from "../nano-form/NanoForm";
 import React, {useEffect} from "react";
-import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
+import {Box, Button, Card, CardActions, CardContent, CardHeader, MenuItem, Select, Stack} from "@mui/material";
 import {Code, CodeEntityInfo, Language} from "@apibrew/client/nano/model/code";
 import {Resource, useRepository, useResourceByName} from "@apibrew/react";
 import toast from "react-hot-toast";
@@ -27,7 +27,7 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
 
     const [code, setCode] = React.useState<Code>({
         name: codeName,
-        content: `${props.resource} = resource('${type}')
+        content: `const ${props.resource} = resource('${type}')
 
 ${props.resource}.beforeCreate(record => {
 
@@ -84,11 +84,26 @@ ${props.resource}.beforeCreate(record => {
         <>
             <Box width='80vw'>
                 <Card>
-                    <CardHeader title='Edit Code'/>
+                    <CardHeader title={<>
+                        <Select sx={{
+                            width: '300px',
+                            marginRight: '1rem'
+                        }} value={code.language}
+                                onChange={e => {
+                                    setCode({
+                                        ...code,
+                                        language: e.target.value as any
+                                    })
+                                }}>
+                            <MenuItem value='JAVASCRIPT'>JavaScript</MenuItem>
+                            <MenuItem value='TYPESCRIPT'>Typescript</MenuItem>
+                        </Select>
+                    </>}/>
                 </Card>
                 <CardContent>
                     {!resource && <LoadingOverlay/>}
                     {resource &&  <MonacoNanoForm code={code.content}
+                                                  language={code.language}
                                                   onChange={updated => {
                                                       setCode({
                                                           ...code,

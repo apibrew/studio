@@ -11,7 +11,6 @@ import {ControllerAccessToken, ControllerAccessTokenEntityInfo} from "../../mode
 export function Goto() {
     const params = useParams()
     const navigate = useNavigate()
-    const hostClient = useClient()
     const [message, setMessage] = React.useState('')
     const controllerAccessTokenRepository = useRepository<ControllerAccessToken>(ControllerAccessTokenEntityInfo)
 

@@ -1,24 +1,18 @@
 
-export interface Settings {
+export interface Repository {
     id: string
     name: string
-    repository: Repository
-    params?: object
-    installed: boolean
+    provider: Provider
+    owner: string
+    repo: string
     version: number
     auditData?: AuditData
 }
 
-export const SettingsEntityInfo = {
+export const RepositoryEntityInfo = {
     namespace: "studio",
-    resource: "Settings",
-    restPath: "studio-settings",
-}
-
-export interface Repository {
-    provider: Provider
-    owner: string
-    repo: string
+    resource: "Repository",
+    restPath: "studio-repository",
 }
 
 export interface AuditData {
@@ -32,8 +26,8 @@ export enum Provider {
     GITHUB = "GITHUB",
 }
 
-export const SettingsResource = {
-  "name": "Settings",
+export const RepositoryResource = {
+  "name": "Repository",
   "namespace": {
     "name": "studio"
   },
@@ -43,9 +37,9 @@ export const SettingsResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-05-01T19:28:21+04:00",
+        "createdOn": "2024-05-01T19:38:26+04:00",
         "updatedBy": "admin",
-        "updatedOn": "2024-05-01T19:28:21+04:00"
+        "updatedOn": "2024-05-01T19:38:26+04:00"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
@@ -64,13 +58,6 @@ export const SettingsResource = {
         "SpecialProperty": "true"
       }
     },
-    "installed": {
-      "type": "BOOL",
-      "required": true,
-      "defaultValue": false,
-      "title": "Installed",
-      "description": "Installed"
-    },
     "name": {
       "type": "STRING",
       "required": true,
@@ -79,17 +66,21 @@ export const SettingsResource = {
       "title": "Name",
       "description": "Name"
     },
-    "params": {
-      "type": "OBJECT",
-      "title": "Params",
-      "description": "Params"
+    "owner": {
+      "type": "STRING",
+      "required": true
     },
-    "repository": {
-      "type": "STRUCT",
-      "typeRef": "Repository",
+    "provider": {
+      "type": "ENUM",
       "required": true,
-      "title": "Repository",
-      "description": "Repository"
+      "defaultValue": "GITHUB",
+      "enumValues": [
+        "GITHUB"
+      ]
+    },
+    "repo": {
+      "type": "STRING",
+      "required": true
     },
     "version": {
       "type": "INT32",
@@ -105,29 +96,6 @@ export const SettingsResource = {
     }
   },
   "types": [
-    {
-      "name": "Repository",
-      "title": "",
-      "description": "",
-      "properties": {
-        "owner": {
-          "type": "STRING",
-          "required": true
-        },
-        "provider": {
-          "type": "ENUM",
-          "required": true,
-          "defaultValue": "GITHUB",
-          "enumValues": [
-            "GITHUB"
-          ]
-        },
-        "repo": {
-          "type": "STRING",
-          "required": true
-        }
-      }
-    },
     {
       "name": "AuditData",
       "title": "Audit Data",
@@ -147,7 +115,7 @@ export const SettingsResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-05-01T19:28:21+04:00",
+          "exampleValue": "2024-05-01T19:38:26+04:00",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -166,7 +134,7 @@ export const SettingsResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-05-01T19:28:21+04:00",
+          "exampleValue": "2024-05-01T19:38:26+04:00",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {

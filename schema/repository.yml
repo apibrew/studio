@@ -1,0 +1,26 @@
+type: resource
+name: Repository
+namespace:
+  name: studio
+properties:
+  name:
+    title: Name
+    description: Name
+    type: STRING
+    length: 255
+    required: true
+    unique: true
+  provider:
+    type: enum
+    enumValues:
+      - GITHUB
+    required: true
+    defaultValue: GITHUB
+  owner:
+    type: string
+    required: true
+  repo:
+    type: string
+    required: true
+annotations:
+  EnableAudit: "true"
