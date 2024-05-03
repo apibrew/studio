@@ -1,8 +1,8 @@
-import {Resource, useClient, useRepository} from "@apibrew/react";
+import {Resource, useClient} from "@apibrew/react";
 import React, {useState} from "react";
-import {Box, IconButton, Stack} from "@mui/material";
+import {Box, Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Add, Domain, Save, UpdateSharp} from "@mui/icons-material";
+import {Save, UpdateSharp} from "@mui/icons-material";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer";
@@ -10,7 +10,6 @@ import {SchemaTable} from "./Schema";
 
 export interface SchemaContainerProps {
     resource: Resource
-    commonButtons: React.ReactNode
 }
 
 export function SchemaContainer(props: SchemaContainerProps) {
@@ -33,7 +32,11 @@ export function SchemaContainer(props: SchemaContainerProps) {
         })
     }
 
-    return <Box display='flex' flexDirection='column' height='100%' overflow='auto'>
+    return <Box display='flex'
+                flexDirection='column'
+                width='1400px'
+                height='100%'
+                overflow='auto'>
         {drawer.render()}
         {confirmation.render()}
         <Box className='action-bar' display='flex' p={1}>
@@ -64,7 +67,6 @@ export function SchemaContainer(props: SchemaContainerProps) {
                 </Button>
             </Stack>
             <Box flexGrow={1}/>
-            {props.commonButtons}
         </Box>
         <SchemaTable
             resource={resource}

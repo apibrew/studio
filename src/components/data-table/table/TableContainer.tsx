@@ -2,7 +2,7 @@ import {fromResource, Resource, useQueryListParams, useRepository} from "@apibre
 import React, {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Add, Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
+import {Add, Api, Code, Domain, FilterList, Refresh, Remove, Schema, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import {useConfirmation} from "../../modal/use-confirmation";
@@ -13,10 +13,13 @@ import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Property} from "@apibrew/client/model";
 import {Sorting} from "./Sorting";
 import {useAnalytics} from "../../../hooks/use-analytics";
+import {ResourceDrawer} from "../../resource-drawer/ResourceDrawer";
+import {ResourceNanoDrawer} from "../../resource-nano-drawer/ResourceNanoDrawer";
+import {ApiDocModal} from "../../api-doc/ApiDocModal";
+import {SchemaContainer as SchemaContainerNew} from "../schema-new/SchemaContainer";
 
 export interface TableContainerProps {
     resource: Resource
-    commonButtons: React.ReactNode
 }
 
 const defaultListParams = {
@@ -192,6 +195,65 @@ export function TableContainer(props: TableContainerProps) {
     const filterCount = listParams.query ? listParams.query.and ? listParams.query.and.length : 1 : 0
     const sortingCount = listParams.sorting ? listParams.sorting ? listParams.sorting.length : 1 : 0
 
+    const commonButtons = (
+        <Stack direction='row' spacing={1}>
+            <Button color='secondary'
+                    size='small'
+                    onClick={() => {
+                        drawer.open(<ResourceDrawer
+                            new={false}
+                            onClose={() => {
+                                drawer.close()
+                            }}
+                            resource={props.resource}/>)
+
+                        analytics.click('update-resource')
+                    }}>
+                <Api fontSize='small'/>
+                <span style={{marginLeft: '3px'}}>Update Resource</span>
+            </Button>
+            <Button color='secondary'
+                    size='small'
+                    onClick={() => {
+                        drawer.open(
+                            <ResourceNanoDrawer
+                                namespace={props.resource.namespace.name}
+                                resource={props.resource.name}
+                                onClose={drawer.close}/>
+                        )
+
+                        analytics.click('nano-code')
+                    }}>
+                <Code fontSize='small'/>
+                <span style={{marginLeft: '3px'}}>Nano code</span>
+            </Button>
+            <Button color='secondary'
+                    size='small'
+                    onClick={() => {
+                        drawer.open(<ApiDocModal
+                            onClose={() => {
+                                drawer.close()
+                            }}
+                            resource={props.resource}/>)
+
+                        analytics.click('api-doc')
+                    }}>
+                <Api fontSize='small'/>
+                <span style={{marginLeft: '3px'}}>Api Doc</span>
+            </Button>
+            <Button color='secondary'
+                    onClick={() => {
+                        drawer.open(<SchemaContainerNew
+                            resource={props.resource}
+                        />)
+                    }}
+                    size='small'>
+                <Schema fontSize='small'/>
+                <span style={{marginLeft: '3px'}}>Schema</span>
+            </Button>
+        </Stack>
+    )
+
     return <>
         {drawer.render()}
         {confirmation.render()}
@@ -286,7 +348,7 @@ export function TableContainer(props: TableContainerProps) {
                 </>}
             </Stack>
             <Box flexGrow={1}/>
-            {props.commonButtons}
+            {commonButtons}
         </Box>
         <Popover
             open={Boolean(filtersAnchor)}

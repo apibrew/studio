@@ -21,3 +21,15 @@ export const withBooleanAnnotation = (annotations: Annotations | undefined, anno
 
     return newAnnotations;
 }
+
+export const withAnnotation = (annotations: Annotations | undefined, annotation: string, value: string): Annotations => {
+    const newAnnotations: Annotations = annotations ? {...annotations} : {};
+
+    if (value) {
+        newAnnotations[annotation] = value;
+    } else {
+        delete (newAnnotations[annotation])
+    }
+
+    return newAnnotations;
+}

@@ -76,6 +76,8 @@ export interface AnnotationDef {
     defaultValue?: any
 }
 
+export const PropertyEditorAnnotation = "PropertyEditor";
+
 const annotations: AnnotationDef[] = [
     {name: Enabled, type: Type.BOOL},
     {name: KeepHistory, type: Type.BOOL},
@@ -113,5 +115,6 @@ const annotations: AnnotationDef[] = [
     {name: ServiceKey, type: Type.BOOL},
     {name: ExtensionId, type: Type.BOOL},
     {name: BypassExtensions, type: Type.BOOL},
-    {name: StudioSeparatePages, type: Type.BOOL}
+    {name: StudioSeparatePages, type: Type.BOOL},
+    {name: PropertyEditorAnnotation, type: Type.STRING},
 ];

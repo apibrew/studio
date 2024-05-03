@@ -2,10 +2,11 @@ import React, {useEffect, useRef} from 'react';
 import EditorJS, {OutputData} from '@editorjs/editorjs';
 
 type EditorProps = {
+    value: OutputData;
     onChange: (data: OutputData) => void;
 };
 
-const Editor: React.FC<EditorProps> = ({onChange}) => {
+const Editor: React.FC<EditorProps> = ({value, onChange}) => {
     const editorContainer = useRef<HTMLDivElement>(null);
     const editorInstance = useRef<EditorJS | null>(null);
 
@@ -14,6 +15,7 @@ const Editor: React.FC<EditorProps> = ({onChange}) => {
             editorInstance.current = new EditorJS({
                 holder: editorContainer.current,
                 autofocus: true,
+                data: value,
                 onChange: async () => {
                     if (editorInstance.current) {
                         const outputData = await editorInstance.current.save();
