@@ -1,7 +1,7 @@
-import {Box, Checkbox, IconButton, Tooltip} from "@mui/material";
+import {Box, Checkbox, IconButton} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
-import {Add, MoreVert, Remove} from "@mui/icons-material";
+import {Add, MoreVert} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";
@@ -32,7 +32,6 @@ export function DataTableTable(props: DataTableTableProps) {
     const [tableWidth, setTableWidth] = useState<number>(0)
 
     const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
-    const [expandedRecords, setExpandedRecords] = useState<{ [key: string]: boolean }>({} as any)
 
     const properties = useMemo(() => {
         const newProperties = sortedProperties(props.schema.properties).filter(property => !isSpecialProperty(props.schema.properties[property]))
@@ -118,10 +117,6 @@ export function DataTableTable(props: DataTableTableProps) {
         }, {} as any)
     }, [props.selectedItems])
 
-    const allExpanded = useMemo(() => {
-        return props.records.length > 0 && Object.keys(expandedRecords).length === props.records.length
-    }, [props.records, expandedRecords])
-
     if (properties.length === 0) return <></>
 
     return <Box className='data-table-table' display='flex' flexDirection='column' width='1px' overflow='scroll'>
@@ -143,22 +138,6 @@ export function DataTableTable(props: DataTableTableProps) {
                                 }
                             }}
                             size='small'/>
-                        <Tooltip title={'Expand/Unexpand all records'}>
-                            <IconButton onClick={() => {
-                                if (Object.keys(expandedRecords).length === props.records.length) {
-                                    setExpandedRecords({})
-                                } else {
-                                    const newExpandedRecords = {} as any
-                                    props.records.forEach(record => {
-                                        newExpandedRecords[record.id] = true
-                                    })
-                                    setExpandedRecords(newExpandedRecords)
-                                }
-                            }}>
-                                {allExpanded && <Remove/>}
-                                {!allExpanded && <Add/>}
-                            </IconButton>
-                        </Tooltip>
                     </Box>
                 </Box>
                 {properties.map((property, index) => {
@@ -229,21 +208,8 @@ export function DataTableTable(props: DataTableTableProps) {
                                              }
                                          }}
                                          index={props.offset + index + 1}
-                                         expanded={Boolean(expandedRecords[record.id])}
-                                         onExpanded={expanded => {
-                                             if (expanded) {
-                                                 setExpandedRecords({
-                                                     ...expandedRecords,
-                                                     [record.id]: true
-                                                 })
-                                             } else {
-                                                 const newExpandedRecords = {...expandedRecords}
-                                                 delete newExpandedRecords[record.id]
-                                                 setExpandedRecords(newExpandedRecords)
-                                             }
-                                         }}
                                          onUpdate={(updated) => {
-                                             if (updated) {
+                                             if (updated && Object.keys(updated).length > 0) {
                                                  props.setUpdates({
                                                      ...props.updates,
                                                      [record.id]: updated

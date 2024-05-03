@@ -4,10 +4,11 @@ import {Property} from "@apibrew/client/model";
 import {Resource} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {PropertyValueView} from "../../property-value-view/PropertyValueView";
-import {PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit";
+import {isInlineEditSupported, PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit";
 import {useDrawer} from "../../../hooks/use-drawer";
 import {isAnnotationEnabled} from "../../../util/annotation";
 import {PropertyNanoDrawer} from "../../property-nano-drawer/PropertyNanoDrawer";
+import {isSimpleProperty} from "../../../util/property";
 
 export interface PropertyCellProps {
     resource: Resource
@@ -18,7 +19,7 @@ export interface PropertyCellProps {
     onUpdate: (updated: any) => void
     width: number
     new?: boolean
-
+    openContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
 export function PropertyCell(props: PropertyCellProps) {
@@ -27,12 +28,15 @@ export function PropertyCell(props: PropertyCellProps) {
 
     const edited = props.updated !== undefined && props.updated !== props.value
 
-    const isComplex = (
-        props.property.type === 'LIST' && props.property.item?.type !== 'STRING'
-    ) || props.property.type === 'MAP' || props.property.type === 'STRUCT' || props.property.type === 'OBJECT'
+    let value = props.updated
+
+    if (props.updated === undefined) {
+        value = props.value
+    }
 
     return <Box
         className='cell body-cell'
+        onContextMenu={props.openContextMenu}
         style={{
             backgroundColor: edited ? 'lightcyan' : 'transparent',
             flexBasis: props.width
@@ -40,9 +44,13 @@ export function PropertyCell(props: PropertyCellProps) {
         onBlur={() => {
             // setInlineEdit(false)
         }}
-        onDoubleClick={() => {
-            if (isComplex) {
-                toast.error('Cannot edit complex types, please expand the row to edit')
+        onDoubleClick={(e) => {
+            if (!isInlineEditSupported(props.property)) {
+                if (props.openContextMenu) {
+                    props.openContextMenu(e)
+                } else {
+                    toast.error('Cannot edit complex types, please expand the row to edit')
+                }
             } else {
                 if (!props.new && (props.property.immutable || props.resource.immutable)) {
                     return
@@ -90,12 +98,12 @@ export function PropertyCell(props: PropertyCellProps) {
         <Box className='cell-inner'>
             {!inlineEdit && <PropertyValueView
                 property={props.property}
-                value={props.updated || props.value}
+                value={value}
             />}
             {inlineEdit && <PropertyValueEdit
                 autoOpen={true}
                 property={props.property}
-                value={props.updated || props.value}
+                value={value}
                 onChange={value => {
                     if (JSON.stringify(value) !== JSON.stringify(props.value)) {
                         props.onUpdate(value)

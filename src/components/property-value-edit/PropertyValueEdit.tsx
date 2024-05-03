@@ -2,13 +2,30 @@ import React from "react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
-import {TagInput} from "../TagInput";
 
 export interface PropertyValueEditProps {
     property: Property
     value: any
     onChange: (value: any) => void
     autoOpen?: boolean
+}
+
+export function isInlineEditSupported(property: Property): boolean {
+    switch (property.type) {
+        case Type.BOOL:
+        case Type.INT32:
+        case Type.INT64:
+        case Type.FLOAT32:
+        case Type.FLOAT64:
+        case Type.STRING:
+        case Type.DATE:
+        case Type.TIME:
+        case Type.TIMESTAMP:
+        case Type.ENUM:
+        case Type.REFERENCE:
+            return true
+    }
+    return false
 }
 
 export function PropertyValueEdit(props: PropertyValueEditProps) {
@@ -123,17 +140,6 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                     return <option key={i} value={v}>{v}</option>
                 })}
             </select>
-        case Type.LIST:
-            return <TagInput
-                autoOpen={Boolean(props.autoOpen)}
-                value={updated || []}
-                onChange={e => {
-                    setUpdated(e)
-                }}
-                onClose={() => {
-                    props.onChange(updated)
-                }}
-                inputPros={{}}/>
         case Type.REFERENCE:
             if (!props.property.reference) {
                 return <>Reference is not specified yet</>

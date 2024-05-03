@@ -1,11 +1,13 @@
-import {Box, Checkbox, Collapse, IconButton} from "@mui/material";
+import {Box, Checkbox, IconButton, Menu, MenuItem} from "@mui/material";
 import {PropertyCell} from "./PropertyCell";
-import React from "react";
+import React, {useState} from "react";
 import {Entity} from "@apibrew/client";
 import {Resource} from "@apibrew/react";
-import {Add, DeleteForever, Remove} from "@mui/icons-material";
+import {DeleteForever, OpenInFullRounded} from "@mui/icons-material";
 import {Schema} from "../../../types/schema";
+import {useDrawer} from "../../../hooks/use-drawer";
 import {RecordExpand} from "./RecordExpand";
+import {PropertyEditor} from "../../property-editor/PropertyEditor";
 
 export interface TableRecordLineProps {
     index: number
@@ -16,17 +18,75 @@ export interface TableRecordLineProps {
     record: Entity & any
     selected: boolean
     onSelected: (selected: boolean) => void
-    expanded: boolean
-    onExpanded: (expanded: boolean) => void
     updated: Entity & any
     onUpdate: (updated: Entity & any) => void
     columnWidths: { [key: string]: number }
 }
 
 export function TableRecordLine(props: TableRecordLineProps) {
+    const drawer = useDrawer()
     const edited = Object.keys(props.updated).length > 0 || props.record.id === 'new'
+    const [chosenProperty, setChosenProperty] = useState<string | null>(null)
+
+    const [mouseXY, setMouseXY] = useState<{ mouseX: null | number; mouseY: null | number }>({
+        mouseX: null,
+        mouseY: null
+    });
+
+    const handleRightClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        setMouseXY({
+            mouseX: event.clientX - 2,
+            mouseY: event.clientY - 4,
+        });
+    };
+
+    const handleClose = () => {
+        setMouseXY({mouseX: null, mouseY: null});
+    };
 
     return <>
+        {drawer.render()}
+        <Menu
+            open={mouseXY.mouseY !== null}
+            onClose={handleClose}
+            anchorReference="anchorPosition"
+            anchorPosition={
+                mouseXY.mouseY !== null && mouseXY.mouseX !== null
+                    ? {top: mouseXY.mouseY, left: mouseXY.mouseX}
+                    : undefined
+            }
+        >
+            <MenuItem onClick={() => {
+                drawer.open(<PropertyEditor resource={props.resource}
+                                            property={props.schema.properties[chosenProperty!]}
+                                            title={chosenProperty!}
+                                            value={props.updated[chosenProperty!] || props.record[chosenProperty!]}
+                                            onClose={() => drawer.close()}
+                                            onApply={updated => {
+                                                props.onUpdate({
+                                                    ...props.updated,
+                                                    [chosenProperty!]: updated
+                                                })
+                                            }}/>)
+                handleClose()
+            }}>Edit</MenuItem>
+            <MenuItem onClick={() => {
+                props.onUpdate({
+                    ...props.updated,
+                    [chosenProperty!]: null
+                })
+                handleClose()
+            }}>Set Null</MenuItem>
+            <MenuItem onClick={() => {
+                const updated = {...props.updated,}
+
+                delete updated[chosenProperty!]
+
+                props.onUpdate(updated)
+                handleClose()
+            }}>Revert</MenuItem>
+        </Menu>
         <Box display='flex' flexDirection='row' className='row row-body'>
             <Box width='75px' className='cell body-cell'>
                 <Box className='cell-inner'>
@@ -46,16 +106,23 @@ export function TableRecordLine(props: TableRecordLineProps) {
                         <DeleteForever/>
                     </IconButton>}
                     <IconButton onClick={() => {
-                        props.onExpanded(!props.expanded)
+                        drawer.open(<RecordExpand resource={props.resource}
+                                                  title={props.record.id === 'new' ? 'New ' + props.resource.name : 'Edit ' + props.resource.name}
+                                                  value={{...props.record, ...props.updated}}
+                                                  onClose={() => drawer.close()}
+                                                  onApply={props.onUpdate}/>)
                     }}>
-                        {props.expanded && <Remove/>}
-                        {!props.expanded && <Add/>}
+                        <OpenInFullRounded/>
                     </IconButton>
                 </Box>
             </Box>
             {props.properties.map(property => (
                 <PropertyCell
                     key={property}
+                    openContextMenu={e => {
+                        handleRightClick(e)
+                        setChosenProperty(property)
+                    }}
                     resource={props.resource}
                     width={props.columnWidths[property]}
                     propertyName={property}
@@ -72,15 +139,6 @@ export function TableRecordLine(props: TableRecordLineProps) {
                 />
             ))}
             <Box width='50px'></Box>
-        </Box>
-        <Box className='row-expand'>
-            <Collapse in={props.expanded}>
-                {props.expanded && <RecordExpand resource={props.resource}
-                                                 new={props.new}
-                                                 value={props.record}
-                                                 updated={props.updated}
-                                                 onUpdate={props.onUpdate}/>}
-            </Collapse>
         </Box>
     </>
 }

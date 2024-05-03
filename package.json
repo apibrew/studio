@@ -5,6 +5,7 @@
   "dependencies": {
     "@apibrew/client": "^1.1.66",
     "@apibrew/react": "^1.0.70",
+    "@editorjs/editorjs": "^2.29.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
