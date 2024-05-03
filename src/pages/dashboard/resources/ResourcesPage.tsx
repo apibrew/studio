@@ -2,8 +2,8 @@ import {Box, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {Resource, useClient} from "@apibrew/react";
 import {useEffect, useState} from "react";
-import {DataTable} from "../../../components/data-table/DataTable";
 import toast from "react-hot-toast";
+import {DataTable} from "../../../components/data-table/table/DataTable";
 
 export default function ResourcesPage() {
     const params = useParams()

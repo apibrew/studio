@@ -5,7 +5,7 @@ import {Add, MoreVert} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";
-import {isSpecialProperty, sortedProperties} from "../../../util/property";
+import {getPropertyOrder, isSpecialProperty, sortedProperties} from "../../../util/property";
 
 import './Table.scss'
 import {Schema} from "../../../types/schema";
@@ -29,6 +29,7 @@ export interface DataTableTableProps {
 }
 
 export function DataTableTable(props: DataTableTableProps) {
+    let [wi, setWi] = useState<number>(0)
     const [tableWidth, setTableWidth] = useState<number>(0)
 
     const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
@@ -42,7 +43,7 @@ export function DataTableTable(props: DataTableTableProps) {
 
         return newProperties
 
-    }, [props.resource, props.schema]);
+    }, [props.resource, props.schema, wi]);
 
     useEffect(() => {
         let modifiedWidth = columnWidths
@@ -64,7 +65,7 @@ export function DataTableTable(props: DataTableTableProps) {
                     case Type.STRUCT:
                     case Type.BOOL:
                     case Type.OBJECT:
-                        defaultWidth = 100
+                        defaultWidth = 150
                         break;
                     case Type.ENUM:
                     case Type.DATE:
@@ -72,6 +73,11 @@ export function DataTableTable(props: DataTableTableProps) {
                     case Type.TIMESTAMP:
                         defaultWidth = 150
                         break;
+                }
+
+                let propertyLength = property.length * 10
+                if (defaultWidth < propertyLength) {
+                    defaultWidth = propertyLength
                 }
 
                 modifiedWidth = {
@@ -99,6 +105,7 @@ export function DataTableTable(props: DataTableTableProps) {
     tableDnd.onReorderProperties(updatedProperties => {
         ensureGivenPropertiesOrder(props.schema, updatedProperties)
         props.updateSchema(props.schema)
+        setWi(wi + 1)
     })
 
     tableResize.onResize((property, width) => {

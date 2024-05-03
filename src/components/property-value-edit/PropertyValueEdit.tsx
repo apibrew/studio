@@ -44,7 +44,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               setUpdated(e.target.checked)
                           }}
                           onBlur={e => {
-                              props.onChange(e.target.checked)
+                              props.onChange(updated)
                           }}/>
         case Type.INT32:
         case Type.INT64:
@@ -55,8 +55,12 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               setUpdated(e.target.value)
                           }}
                           onBlur={e => {
-                              props.onChange(parseInt(e.target.value))
-                              setUpdated(parseInt(e.target.value))
+                              if (!updated) {
+                                  setUpdated(undefined)
+                                  return
+                              }
+
+                              props.onChange(parseInt(updated))
                           }}/>
         case Type.FLOAT32:
         case Type.FLOAT64:
@@ -67,8 +71,12 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               setUpdated(e.target.value)
                           }}
                           onBlur={e => {
-                              props.onChange(parseFloat(e.target.value))
-                              setUpdated(parseFloat(e.target.value))
+                              if (!updated) {
+                                  setUpdated(undefined)
+                                  return
+                              }
+                              props.onChange(parseFloat(updated))
+                              setUpdated(parseFloat(updated))
                           }}/>
         case Type.STRING:
             return <input value={updated || ''}
@@ -78,7 +86,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               setUpdated(e.target.value)
                           }}
                           onBlur={e => {
-                              props.onChange(e.target.value)
+                              props.onChange(updated)
                           }}/>
         case Type.DATE:
             return <input type='date' value={updated || ''}
@@ -88,7 +96,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               setUpdated(e.target.value)
                           }}
                           onBlur={e => {
-                              props.onChange(e.target.value)
+                              props.onChange(updated)
                           }}/>
         case Type.TIME:
             return <input type='time' value={updated || ''}
@@ -98,7 +106,12 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               setUpdated(e.target.value)
                           }}
                           onBlur={e => {
-                              let value = e.target.value
+                              if (!updated) {
+                                  props.onChange(undefined)
+                                  return
+                              }
+
+                              let value = updated
 
                               if (value.length === 5) {
                                   value = value + ':00'
@@ -114,7 +127,12 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               setUpdated(e.target.value)
                           }}
                           onBlur={e => {
-                              let value = e.target.value
+                              if (!updated) {
+                                  props.onChange(undefined)
+                                  return
+                              }
+
+                              let value = updated
 
                               if (value.length === 16) {
                                   value = value + ':00Z'
@@ -133,7 +151,18 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                                setUpdated(e.target.value)
                            }}
                            onBlur={e => {
-                               props.onChange(e.target.value)
+                               if (!updated) {
+                                   props.onChange(undefined)
+                                   return
+                               }
+
+                               let value = updated
+
+                               if (value.length === 0) {
+                                   props.onChange(undefined)
+                               } else {
+                                   props.onChange(value)
+                               }
                            }}>
                 <option value={undefined}>---</option>
                 {props.property.enumValues?.map((v, i) => {

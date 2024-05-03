@@ -8,6 +8,7 @@ import {Schema} from "../../../types/schema";
 import {useDrawer} from "../../../hooks/use-drawer";
 import {RecordExpand} from "./RecordExpand";
 import {PropertyEditor} from "../../property-editor/PropertyEditor";
+import {coalesce} from "./util";
 
 export interface TableRecordLineProps {
     index: number
@@ -61,7 +62,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
                 drawer.open(<PropertyEditor resource={props.resource}
                                             property={props.schema.properties[chosenProperty!]}
                                             title={chosenProperty!}
-                                            value={props.updated[chosenProperty!] || props.record[chosenProperty!]}
+                                            value={coalesce(props.updated[chosenProperty!], props.record[chosenProperty!])}
                                             onClose={() => drawer.close()}
                                             onApply={updated => {
                                                 props.onUpdate({
@@ -130,10 +131,16 @@ export function TableRecordLine(props: TableRecordLineProps) {
                     new={props.record['id'] === 'new'}
                     value={props.record[property]}
                     onUpdate={value => {
-                        props.onUpdate({
-                            ...props.updated,
-                            [property]: value
-                        })
+                        if (value === undefined || value == null) {
+                            const update = {...props.updated}
+                            delete update[property]
+                            props.onUpdate(update);
+                        } else {
+                            props.onUpdate({
+                                ...props.updated,
+                                [property]: value
+                            })
+                        }
                     }}
                     updated={props.updated[property]}
                 />

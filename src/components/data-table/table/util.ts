@@ -17,3 +17,13 @@ export function getTargetColumn(e: BaseSyntheticEvent<any>) {
 
     return undefined
 }
+
+export function coalesce<T>(...args: (T | undefined)[]): T | undefined {
+    for (const arg of args) {
+        if (arg !== undefined) {
+            return arg
+        }
+    }
+
+    return undefined
+}

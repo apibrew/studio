@@ -20,6 +20,7 @@ import {SchemaContainer as SchemaContainerNew} from "../schema-new/SchemaContain
 
 export interface TableContainerProps {
     resource: Resource
+    reloadResource?: () => void
 }
 
 const defaultListParams = {
@@ -27,7 +28,7 @@ const defaultListParams = {
     limit: 10
 }
 
-export function TableContainer(props: TableContainerProps) {
+export function DataTable(props: TableContainerProps) {
     const [resource, setResource] = useState<Resource>(props.resource)
     const resourceRepository = useRepository(ResourceEntityInfo)
     const repository = useRepository(fromResource(resource))
@@ -313,10 +314,6 @@ export function TableContainer(props: TableContainerProps) {
                     </Button>
                 </>}
                 {!resource.immutable && selectedItems.length > 0 && <>
-                    {/*<Button color='warning' size='small'>*/}
-                    {/*    <Domain fontSize='small'/>*/}
-                    {/*    <span style={{marginLeft: '3px'}}>Yaml</span>*/}
-                    {/*</Button>*/}
                     <Button color='error' size='small' onClick={() => {
                         handleDelete()
                     }}>
@@ -419,27 +416,27 @@ export function TableContainer(props: TableContainerProps) {
                 onEditColumnClick={handleEditColumnClick}
             />
         </Box>
-        {<TablePagination component="div"
-                          count={total || 0}
-                          showFirstButton={true}
-                          showLastButton={true}
-                          page={Math.ceil((listParams.offset || 0) / (listParams.limit || defaultListParams.limit))}
-                          rowsPerPage={listParams.limit || defaultListParams.limit}
-                          onRowsPerPageChange={(event) => {
-                              const rowsPerPage = parseInt(event.target.value)
+        <TablePagination component="div"
+                         count={total || 0}
+                         showFirstButton={true}
+                         showLastButton={true}
+                         page={Math.ceil((listParams.offset || 0) / (listParams.limit || defaultListParams.limit))}
+                         rowsPerPage={listParams.limit || defaultListParams.limit}
+                         onRowsPerPageChange={(event) => {
+                             const rowsPerPage = parseInt(event.target.value)
 
-                              setListParams({
-                                  ...listParams,
-                                  limit: rowsPerPage
-                              })
-                              analytics.click('action', 'change-page', rowsPerPage)
-                          }}
-                          onPageChange={(event, page) => {
-                              setListParams({
-                                  ...listParams,
-                                  offset: (page * listParams.limit!)
-                              })
-                              analytics.click('action', 'change-page', page)
-                          }}/>}
+                             setListParams({
+                                 ...listParams,
+                                 limit: rowsPerPage
+                             })
+                             analytics.click('action', 'change-page', rowsPerPage)
+                         }}
+                         onPageChange={(event, page) => {
+                             setListParams({
+                                 ...listParams,
+                                 offset: (page * listParams.limit!)
+                             })
+                             analytics.click('action', 'change-page', page)
+                         }}/>
     </>
 }

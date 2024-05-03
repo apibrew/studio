@@ -8,7 +8,6 @@ import {isInlineEditSupported, PropertyValueEdit} from "../../property-value-edi
 import {useDrawer} from "../../../hooks/use-drawer";
 import {isAnnotationEnabled} from "../../../util/annotation";
 import {PropertyNanoDrawer} from "../../property-nano-drawer/PropertyNanoDrawer";
-import {isSimpleProperty} from "../../../util/property";
 
 export interface PropertyCellProps {
     resource: Resource
@@ -84,9 +83,7 @@ export function PropertyCell(props: PropertyCellProps) {
                             drawer.close()
                         }}
                         onChange={updated => {
-                            if (JSON.stringify(updated) !== JSON.stringify(props.value)) {
-                                props.onUpdate(updated)
-                            }
+                            props.onUpdate(updated)
                         }}/>)
                     return
                 }
@@ -105,9 +102,7 @@ export function PropertyCell(props: PropertyCellProps) {
                 property={props.property}
                 value={value}
                 onChange={value => {
-                    if (JSON.stringify(value) !== JSON.stringify(props.value)) {
-                        props.onUpdate(value)
-                    }
+                    props.onUpdate(value)
                     setInlineEdit(false)
                 }}
             />}

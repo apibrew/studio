@@ -16,7 +16,7 @@ export interface PropertyValueViewProps {
 export function PropertyValueView(props: PropertyValueViewProps) {
     let value = props.value
 
-    if (!value) {
+    if (value === undefined || value === null) {
         return <Typography sx={props.sx} color='lightgrey'>Null</Typography>
     }
 

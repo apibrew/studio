@@ -1,9 +1,9 @@
 import {Box, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import {DataTable} from "../../../components/data-table/DataTable";
 import {Resource, useClient} from "@apibrew/react";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useParams} from "react-router-dom";
+import {DataTable} from "../../../components/data-table/table/DataTable";
 
 export default function ResourcePage() {
     const [wi, setWi] = useState<number>(0)
