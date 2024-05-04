@@ -45,6 +45,11 @@ export function DataTable(props: TableContainerProps) {
     const drawer = useDrawer()
     const analytics = useAnalytics()
 
+    function reloadResource(resource: Resource) {
+        props.reloadResource?.()
+        setRefreshIndex(refreshIndex + 1)
+    }
+
     const loading = total === undefined
 
     function refresh() {
@@ -135,7 +140,7 @@ export function DataTable(props: TableContainerProps) {
                           property={{
                               type: Type.STRING
                           } as Property}
-                          onUpdateResource={setResource}
+                          onUpdateResource={reloadResource}
                           onClose={() => {
                               drawer.close()
                               refresh()

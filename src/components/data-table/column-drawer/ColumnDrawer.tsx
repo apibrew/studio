@@ -59,7 +59,7 @@ export function ColumnDrawer(props: ColumnDrawerProps) {
     async function handleUpdate() {
         let updatedProperties = {...props.resource.properties}
 
-        if (props.propertyName !== propertyName && getAnnotation(property.annotations, SourceMatchKey) === "") {
+        if (!props.new && props.propertyName !== propertyName && getAnnotation(property.annotations, SourceMatchKey) === "") {
             updatedProperties[props.propertyName] = property
             property.annotations = withAnnotation(property.annotations, SourceMatchKey, propertyName)
 
