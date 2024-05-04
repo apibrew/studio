@@ -70,8 +70,10 @@ export function ColumnDrawer(props: ColumnDrawerProps) {
                 properties: updatedProperties
             } as Resource)
         }
+        if (props.propertyName !== propertyName) {
+            delete updatedProperties[props.propertyName]
+        }
 
-        delete updatedProperties[props.propertyName]
         updatedProperties[propertyName] = property
 
         const updatedResource = {
@@ -92,7 +94,6 @@ export function ColumnDrawer(props: ColumnDrawerProps) {
                 <CardContent>
                     <PropertyForm
                         resource={props.resource}
-                        new={props.new}
                         propertyName={propertyName}
                         onChangeName={setPropertyName}
                         property={property}

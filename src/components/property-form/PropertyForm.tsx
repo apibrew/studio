@@ -27,7 +27,6 @@ import {getPropertyEditorList} from "../property-editor/PropertyEditor";
 
 export interface PropertyFormProps {
     resource: Resource
-    new: boolean
     propertyName: string
     onChangeName: (propertyName: string) => void
     property: Property;

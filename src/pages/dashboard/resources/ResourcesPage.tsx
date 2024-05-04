@@ -47,6 +47,7 @@ export default function ResourcesPage() {
              flexDirection='column'>
             <DataTable reloadResource={() => {
                 setWi(wi + 1)
+                alert('loading resource')
             }} resource={resource}/>
         </Box>
     </>

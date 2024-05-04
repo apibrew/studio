@@ -11,18 +11,12 @@ import {Schema} from "../../../types/schema";
 import {useDrawer} from "../../../hooks/use-drawer";
 import {PropertyDrawer} from "../../property-drawer/PropertyDrawer";
 import {SubTypeDrawer} from "../../sub-type-drawer/SubTypeDrawer";
-
-enum SelectionType {
-    PROPERTY,
-    TYPE,
-    INDEX,
-    RESOURCE
-}
+import {getAnnotation, withAnnotation} from "../../../util/annotation";
+import {SourceMatchKey} from "../../../util/base-annotations";
 
 export interface SchemaProps {
     resource: Resource
     setResource: (resource: Resource) => void
-    onTriggerUpdate: () => void
 }
 
 export function SchemaTable(props: SchemaProps) {
@@ -97,15 +91,26 @@ export function SchemaTable(props: SchemaProps) {
                             }}>Properties</span>
                             <IconButton
                                 onClick={() => {
-                                    drawer.open(<PropertyDrawer resource={props.resource}
-                                                                new={true}
-                                                                inlineMode={true}
-                                                                propertyName={`new-property-${Math.floor(Math.random() * 100)}`}
-                                                                property={{
-                                                                    type: Type.STRING
-                                                                } as Property}
-                                                                onUpdateResource={props.setResource}
-                                                                onClose={drawer.close}/>)
+                                    drawer.open(<PropertyDrawer
+                                        resource={props.resource}
+                                        title='New Property'
+                                        value={{
+                                            name: `new-property-${Math.floor(Math.random() * 100)}`,
+                                            property: {
+                                                type: Type.STRING
+                                            } as Property
+                                        }}
+                                        onChange={(updated) => {
+                                            props.setResource({
+                                                ...props.resource,
+                                                properties: {
+                                                    ...props.resource.properties,
+                                                    [updated.name]: updated.property
+                                                }
+                                            })
+                                        }}
+                                        onClose={drawer.close}
+                                    />)
                                 }}
                                 color='success'
                                 size='small'>
@@ -147,26 +152,29 @@ export function SchemaTable(props: SchemaProps) {
                                 }}
                                 onEdit={() => {
                                     drawer.open(<PropertyDrawer resource={props.resource}
-                                                                new={false}
-                                                                propertyName={propertyName}
-                                                                property={props.resource.properties[propertyName]}
-                                                                onUpdate={(updated, updatedPropertyName) => {
+                                                                title={`Update property: ${propertyName}`}
+                                                                value={{
+                                                                    name: propertyName,
+                                                                    property: props.resource.properties[propertyName]
+                                                                }}
+                                                                onChange={async (updated) => {
+                                                                    const updatedProperties = {...props.resource.properties}
+                                                                    const property = props.resource.properties[propertyName]
+
+                                                                    if (propertyName !== updated.name) {
+                                                                        if (getAnnotation(property.annotations, SourceMatchKey) === "") {
+                                                                            updatedProperties[propertyName] = property
+                                                                            property.annotations = withAnnotation(property.annotations, SourceMatchKey, propertyName)
+                                                                        } else {
+                                                                            delete updatedProperties[propertyName]
+                                                                        }
+                                                                    }
+
+                                                                    updatedProperties[updated.name] = updated.property
                                                                     props.setResource({
                                                                         ...props.resource,
-                                                                        properties: {
-                                                                            ...props.resource.properties,
-                                                                            [updatedPropertyName]: updated
-                                                                        }
+                                                                        properties: updatedProperties
                                                                     })
-
-                                                                    if (updatedPropertyName !== propertyName) {
-                                                                        const newProperties = {...props.resource.properties}
-                                                                        delete newProperties[propertyName]
-                                                                        props.setResource({
-                                                                            ...props.resource,
-                                                                            properties: newProperties
-                                                                        })
-                                                                    }
                                                                 }}
                                                                 onClose={drawer.close}/>)
                                 }}/>
@@ -210,14 +218,26 @@ export function SchemaTable(props: SchemaProps) {
                                         <IconButton
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                updateType(type.name, {
-                                                    properties: {
-                                                        ...type.properties,
-                                                        [`new-property-${Math.floor(Math.random() * 100)}`]: {
+
+                                                drawer.open(<PropertyDrawer
+                                                    resource={props.resource}
+                                                    title='New Property'
+                                                    value={{
+                                                        name: `new-property-${Math.floor(Math.random() * 100)}`,
+                                                        property: {
                                                             type: Type.STRING
                                                         } as Property
-                                                    }
-                                                })
+                                                    }}
+                                                    onChange={(updated) => {
+                                                        updateType(type.name, {
+                                                            properties: {
+                                                                ...type.properties,
+                                                                [updated.name]: updated.property
+                                                            }
+                                                        })
+                                                    }}
+                                                    onClose={drawer.close}
+                                                />)
                                             }}
                                             color='success'
                                             size='small'>
@@ -275,28 +295,22 @@ export function SchemaTable(props: SchemaProps) {
                                                     })
                                                 }}
                                                 onEdit={() => {
-                                                    drawer.open(<PropertyDrawer resource={props.resource}
-                                                                                new={false}
-                                                                                inlineMode={true}
-                                                                                propertyName={propertyName}
-                                                                                property={type.properties[propertyName]}
-                                                                                onUpdate={(property, updatedPropertyName) => {
-                                                                                    updateType(type.name, {
-                                                                                        properties: {
-                                                                                            ...type.properties,
-                                                                                            [updatedPropertyName]: property
-                                                                                        }
-                                                                                    })
-
-                                                                                    if (updatedPropertyName !== propertyName) {
-                                                                                        const newProperties = {...type.properties}
-                                                                                        delete newProperties[propertyName]
-                                                                                        updateType(type.name, {
-                                                                                            properties: newProperties
-                                                                                        })
-                                                                                    }
-                                                                                }}
-                                                                                onClose={drawer.close}/>)
+                                                    drawer.open(<PropertyDrawer
+                                                        title={'Update property: ' + propertyName}
+                                                        resource={props.resource}
+                                                        value={{
+                                                            name: propertyName,
+                                                            property: type.properties[propertyName]
+                                                        }}
+                                                        onChange={updated => {
+                                                            updateType(type.name, {
+                                                                properties: {
+                                                                    ...type.properties,
+                                                                    [updated.name]: updated.property
+                                                                }
+                                                            })
+                                                        }}
+                                                        onClose={drawer.close}/>)
                                                 }}/>
                                         )
                                     })}

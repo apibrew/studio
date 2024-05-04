@@ -209,6 +209,7 @@ export function DataTable(props: TableContainerProps) {
                             new={false}
                             onClose={() => {
                                 drawer.close()
+                                props.reloadResource?.()
                             }}
                             resource={props.resource}/>)
 

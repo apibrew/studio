@@ -93,7 +93,8 @@ export default function BuilderPage() {
                                                         namespace: {
                                                             name: 'default'
                                                         }
-                                                    } as Resource}/>
+                                                    } as Resource}
+                                    />
                                 )
                             }}>
                         <Add fontSize='small'/>

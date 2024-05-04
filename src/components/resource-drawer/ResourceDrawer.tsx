@@ -44,8 +44,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
             },
             {
                 title: 'Schema',
-                content: <SchemaTable resource={resource} setResource={setResource} onTriggerUpdate={() => {
-                }}/>
+                content: <SchemaTable resource={resource} setResource={setResource}/>
             }
         ]}
         actions={<>

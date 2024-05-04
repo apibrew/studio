@@ -16,7 +16,7 @@ export const withBooleanAnnotation = (annotations: Annotations | undefined, anno
     if (value) {
         newAnnotations[annotation] = "true";
     } else {
-        delete (newAnnotations[annotation])
+        delete newAnnotations[annotation]
     }
 
     return newAnnotations;
