@@ -44,7 +44,6 @@ export function PropertyForm(props: PropertyFormProps) {
                     size='small'
                     value={props.propertyName}
                     label='Name'
-                    disabled={!props.new}
                     variant='outlined'
                     onChange={(event) => {
                         props.onChangeName(event.target.value)

@@ -245,7 +245,7 @@ export function DataTable(props: TableContainerProps) {
             <Button color='secondary'
                     onClick={() => {
                         drawer.open(<SchemaContainerNew
-                            resource={props.resource}
+                            resource={resource}
                         />)
                     }}
                     size='small'>

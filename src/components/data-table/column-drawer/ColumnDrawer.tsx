@@ -1,11 +1,13 @@
 import {Resource, useRepository} from "@apibrew/react";
-import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
+import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import React from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Property} from "@apibrew/client/model";
 import {PropertyForm} from "../../property-form/PropertyForm";
+import {getAnnotation, withAnnotation} from "../../../util/annotation";
+import {SourceMatchKey} from "../../../util/base-annotations";
 
 export interface ColumnDrawerProps {
     resource: Resource
@@ -54,13 +56,25 @@ export function ColumnDrawer(props: ColumnDrawerProps) {
         })
     }
 
-    function handleUpdate() {
+    async function handleUpdate() {
+        let updatedProperties = {...props.resource.properties}
+
+        if (props.propertyName !== propertyName && getAnnotation(property.annotations, SourceMatchKey) === "") {
+            updatedProperties[props.propertyName] = property
+            property.annotations = withAnnotation(property.annotations, SourceMatchKey, propertyName)
+
+            await repository.update({
+                ...props.resource,
+                properties: updatedProperties
+            } as Resource)
+        }
+
+        delete updatedProperties[props.propertyName]
+        updatedProperties[propertyName] = property
+
         const updatedResource = {
             ...props.resource,
-            properties: {
-                ...props.resource.properties,
-                [propertyName]: property
-            }
+            properties: updatedProperties
         } as Resource
 
         handleUpdateResource(updatedResource);
