@@ -1,4 +1,4 @@
-import {Resource, useClient, useResourceById} from "@apibrew/react";
+import {Resource, useClient} from "@apibrew/react";
 import React, {useState} from "react";
 import {Box, Stack} from "@mui/material";
 import Button from "@mui/material/Button";

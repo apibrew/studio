@@ -37,7 +37,7 @@ export interface ResourceFormProps {
 
 export function ResourceForm(props: ResourceFormProps) {
     return (
-        <Stack spacing={2}>
+        <Stack m={1} spacing={2}>
             <FormControl fullWidth>
                 <TextField
                     size='small'

@@ -1,16 +1,17 @@
 import {TreeItem} from "@mui/x-tree-view";
-import {ArrowDownward, ArrowUpward, ListAlt, Remove, ShoppingCartTwoTone} from "@mui/icons-material";
+import {ArrowDownward, ArrowUpward, Edit, ListAlt, Remove} from "@mui/icons-material";
 import React from "react";
 import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
 import {IconButton} from "@mui/material";
+import {isSpecialProperty} from "../../../util/property";
 
 export interface SchemaPropertyTreeItemProps {
     resource: Resource
     property: Property
     path: string
     propertyName: string
-    onClick: () => void
+    onEdit: () => void
     onRemove: () => void
     onMoveUp: () => void
     onMoveDown: () => void
@@ -51,7 +52,7 @@ export function SchemaPropertyTreeItem(props: SchemaPropertyTreeItemProps) {
 
     return (
         <TreeItem
-            onClick={props.onClick}
+            onDoubleClick={props.onEdit}
             icon={<ListAlt/>}
             nodeId={props.path + '.' + props.propertyName}
 
@@ -60,18 +61,28 @@ export function SchemaPropertyTreeItem(props: SchemaPropertyTreeItemProps) {
                     display: 'inline-block',
                     minWidth: props.path !== '$' ? '400px' : '416px'
                 }}>{label}</span>
-                <IconButton disabled={props.isFirstChild} onClick={(e) => {
-                    e.stopPropagation()
+                <IconButton disabled={isSpecialProperty(props.property)}
+                            onClick={(e) => {
+                                e.stopPropagation()
 
-                    props.onMoveUp()
-                }} color='primary' size='small'>
+                                props.onEdit()
+                            }} color='primary' size='small'>
+                    <Edit fontSize='small'/>
+                </IconButton>
+                <IconButton disabled={props.isFirstChild}
+                            onClick={(e) => {
+                                e.stopPropagation()
+
+                                props.onMoveUp()
+                            }} color='primary' size='small'>
                     <ArrowUpward fontSize='small'/>
                 </IconButton>
-                <IconButton disabled={props.isLastChild} onClick={(e) => {
-                    e.stopPropagation()
+                <IconButton disabled={props.isLastChild}
+                            onClick={(e) => {
+                                e.stopPropagation()
 
-                    props.onMoveDown()
-                }} color='primary' size='small'>
+                                props.onMoveDown()
+                            }} color='primary' size='small'>
                     <ArrowDownward fontSize='small'/>
                 </IconButton>
                 <IconButton onClick={(e) => {

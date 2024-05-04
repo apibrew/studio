@@ -1,16 +1,16 @@
 import {Resource} from "@apibrew/react";
-import {Box, Card, CardContent, CardHeader, IconButton} from "@mui/material";
+import {Box, IconButton} from "@mui/material";
 import React, {useMemo} from "react";
 import {SubType, Type} from "@apibrew/client/model/resource";
 import {AccountTree, Add, ChevronRight, ExpandMore, Remove, SchemaRounded, TableChart} from "@mui/icons-material";
 import {TreeItem, TreeView} from "@mui/x-tree-view";
 import {getPropertyOrder, sortedProperties} from "../../../util/property";
-import {PropertyForm} from "../../property-form/PropertyForm";
 import {SchemaPropertyTreeItem} from "./SchemaPropertyTreeItem";
-import {ResourceForm} from "../../resource-form/ResourceForm";
-import {SubTypesForm} from "../../sub-types-form/SubTypesForm";
 import {Property} from "@apibrew/client/model";
 import {Schema} from "../../../types/schema";
+import {useDrawer} from "../../../hooks/use-drawer";
+import {PropertyDrawer} from "../../property-drawer/PropertyDrawer";
+import {SubTypeDrawer} from "../../sub-type-drawer/SubTypeDrawer";
 
 enum SelectionType {
     PROPERTY,
@@ -26,6 +26,8 @@ export interface SchemaProps {
 }
 
 export function SchemaTable(props: SchemaProps) {
+    const drawer = useDrawer()
+
     function updateType(typeName: string, updated: Partial<SubType>) {
         props.setResource({
             ...props.resource,
@@ -69,14 +71,11 @@ export function SchemaTable(props: SchemaProps) {
 
     const properties = useMemo(() => sortedProperties(props.resource.properties), [props.resource.properties])
 
-    const [selectionType, setSelectionType] = React.useState<SelectionType>()
-    const [selectedItem, setSelectedItem] = React.useState<string>()
-    const [selectedTypeIndex, setSelectedTypeIndex] = React.useState<number>()
-    const selectedType = props.resource.types ? props.resource.types![selectedTypeIndex as any] : undefined
 
     const typeNames = props.resource.types?.map(item => 'type-' + item.name) ?? []
 
     return <Box m={1} display='flex' flexDirection='row'>
+        {drawer.render()}
         <Box flex={1}>
             <TreeView
                 aria-label="file system navigator"
@@ -87,18 +86,8 @@ export function SchemaTable(props: SchemaProps) {
                 <TreeItem
                     icon={<TableChart/>}
                     nodeId="resource"
-                    onClick={() => {
-                        setSelectionType(SelectionType.RESOURCE)
-                        setSelectedItem(undefined)
-                        setSelectedTypeIndex(undefined)
-                    }}
                     label={`Resource: ${props.resource.name}`}>
                     <TreeItem
-                        onClick={() => {
-                            setSelectionType(undefined)
-                            setSelectedItem(undefined)
-                            setSelectedTypeIndex(undefined)
-                        }}
                         icon={<SchemaRounded/>}
                         nodeId="properties"
                         label={<>
@@ -108,15 +97,15 @@ export function SchemaTable(props: SchemaProps) {
                             }}>Properties</span>
                             <IconButton
                                 onClick={() => {
-                                    props.setResource({
-                                        ...props.resource,
-                                        properties: {
-                                            ...props.resource.properties,
-                                            [`new-property-${Math.floor(Math.random() * 100)}`]: {
-                                                type: Type.STRING
-                                            } as Property
-                                        }
-                                    })
+                                    drawer.open(<PropertyDrawer resource={props.resource}
+                                                                new={true}
+                                                                inlineMode={true}
+                                                                propertyName={`new-property-${Math.floor(Math.random() * 100)}`}
+                                                                property={{
+                                                                    type: Type.STRING
+                                                                } as Property}
+                                                                onUpdateResource={props.setResource}
+                                                                onClose={drawer.close}/>)
                                 }}
                                 color='success'
                                 size='small'>
@@ -155,25 +144,37 @@ export function SchemaTable(props: SchemaProps) {
                                         ...props.resource,
                                         properties: newProperties
                                     })
-
-                                    setSelectedItem(undefined)
-                                    setSelectionType(undefined)
                                 }}
-                                onClick={() => {
-                                    setSelectionType(SelectionType.PROPERTY)
-                                    setSelectedItem(propertyName)
-                                    setSelectedTypeIndex(undefined)
+                                onEdit={() => {
+                                    drawer.open(<PropertyDrawer resource={props.resource}
+                                                                new={false}
+                                                                propertyName={propertyName}
+                                                                property={props.resource.properties[propertyName]}
+                                                                onUpdate={(updated, updatedPropertyName) => {
+                                                                    props.setResource({
+                                                                        ...props.resource,
+                                                                        properties: {
+                                                                            ...props.resource.properties,
+                                                                            [updatedPropertyName]: updated
+                                                                        }
+                                                                    })
+
+                                                                    if (updatedPropertyName !== propertyName) {
+                                                                        const newProperties = {...props.resource.properties}
+                                                                        delete newProperties[propertyName]
+                                                                        props.setResource({
+                                                                            ...props.resource,
+                                                                            properties: newProperties
+                                                                        })
+                                                                    }
+                                                                }}
+                                                                onClose={drawer.close}/>)
                                 }}/>
                         ))}
                     </TreeItem>
                     <TreeItem
                         icon={<AccountTree/>}
                         nodeId="types"
-                        onClick={() => {
-                            setSelectionType(undefined)
-                            setSelectedItem(undefined)
-                            setSelectedTypeIndex(undefined)
-                        }}
                         label={<>
                             <span style={{
                                 display: 'inline-block',
@@ -233,17 +234,18 @@ export function SchemaTable(props: SchemaProps) {
                                                 ...props.resource,
                                                 types: newTypes
                                             })
-                                            setSelectedItem(undefined)
-                                            setSelectionType(undefined)
                                         }} color='error' size='small'>
                                             <Remove fontSize='small'/>
                                         </IconButton>
                                     </>}
-
                                     onClick={() => {
-                                        setSelectionType(SelectionType.TYPE)
-                                        setSelectedItem(type.name)
-                                        setSelectedTypeIndex(undefined)
+                                        drawer.open(<SubTypeDrawer
+                                            type={type}
+                                            onChange={updated => {
+                                                updateType(type.name, updated)
+                                            }}
+                                            onClose={drawer.close}
+                                        />)
                                     }}>
                                     {properties.map((propertyName, index) => {
                                         return (
@@ -271,14 +273,30 @@ export function SchemaTable(props: SchemaProps) {
                                                     updateType(type.name, {
                                                         properties: newProperties
                                                     })
-
-                                                    setSelectedItem(undefined)
-                                                    setSelectionType(undefined)
                                                 }}
-                                                onClick={() => {
-                                                    setSelectionType(SelectionType.PROPERTY)
-                                                    setSelectedItem(propertyName)
-                                                    setSelectedTypeIndex(0)
+                                                onEdit={() => {
+                                                    drawer.open(<PropertyDrawer resource={props.resource}
+                                                                                new={false}
+                                                                                inlineMode={true}
+                                                                                propertyName={propertyName}
+                                                                                property={type.properties[propertyName]}
+                                                                                onUpdate={(property, updatedPropertyName) => {
+                                                                                    updateType(type.name, {
+                                                                                        properties: {
+                                                                                            ...type.properties,
+                                                                                            [updatedPropertyName]: property
+                                                                                        }
+                                                                                    })
+
+                                                                                    if (updatedPropertyName !== propertyName) {
+                                                                                        const newProperties = {...type.properties}
+                                                                                        delete newProperties[propertyName]
+                                                                                        updateType(type.name, {
+                                                                                            properties: newProperties
+                                                                                        })
+                                                                                    }
+                                                                                }}
+                                                                                onClose={drawer.close}/>)
                                                 }}/>
                                         )
                                     })}
@@ -286,129 +304,8 @@ export function SchemaTable(props: SchemaProps) {
                             )
                         })}
                     </TreeItem>
-                    {/*<TreeItem*/}
-                    {/*    icon={<ShoppingBag/>}*/}
-                    {/*    nodeId="indexes"*/}
-                    {/*    label={<>*/}
-                    {/*        <span style={{*/}
-                    {/*            display: 'inline-block',*/}
-                    {/*            minWidth: '433px'*/}
-                    {/*        }}>Indexes</span>*/}
-                    {/*        <IconButton color='success' size='small'>*/}
-                    {/*            <Add fontSize='small'/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </>}*/}
-                    {/*>*/}
-                    {/*    {props.resource.indexes?.map((index, idx) => {*/}
-                    {/*        return (*/}
-                    {/*            <TreeItem*/}
-                    {/*                icon={<ShoppingBag/>}*/}
-                    {/*                nodeId={'index-' + idx}*/}
-                    {/*                label={index.properties.map(item => item.name).join(', ') + (index.unique ? ' (unique)' : '')}>*/}
-                    {/*            </TreeItem>*/}
-                    {/*        )*/}
-                    {/*    })}*/}
-                    {/*</TreeItem>*/}
                 </TreeItem>
             </TreeView>
-        </Box>
-        <Box flex={1}>
-            {selectionType === SelectionType.PROPERTY && selectedItem && <>
-                <Card>
-                    <CardHeader
-                        title={'Edit Property: ' + (selectedType ? selectedType?.name + '/' + selectedItem : selectedItem)}/>
-                    <CardContent>
-                        {!selectedType && props.resource.properties[selectedItem] &&
-                            <PropertyForm resource={props.resource}
-                                          new={true}
-                                          propertyName={selectedItem}
-                                          onChangeName={updatedPropertyName => {
-                                              const newProperties = {...props.resource.properties}
-                                              const property = newProperties[selectedItem]
-
-                                              if (updatedPropertyName !== selectedItem && newProperties[updatedPropertyName]) {
-                                                  return
-                                              }
-
-                                              if (property) {
-                                                  delete newProperties[selectedItem]
-                                              }
-                                              newProperties[updatedPropertyName] = property
-
-                                              props.setResource({
-                                                  ...props.resource,
-                                                  properties: newProperties
-                                              })
-                                              setSelectedItem(updatedPropertyName)
-                                          }}
-                                          property={props.resource.properties[selectedItem]}
-                                          onChange={property => {
-                                              props.setResource({
-                                                  ...props.resource,
-                                                  properties: {
-                                                      ...props.resource.properties,
-                                                      [selectedItem]: property
-                                                  }
-                                              })
-                                          }}/>}
-                        {selectedType && selectedType.properties[selectedItem] &&
-                            <PropertyForm resource={props.resource}
-                                          new={true}
-                                          propertyName={selectedItem}
-                                          onChangeName={updatedPropertyName => {
-                                              const newProperties = {...selectedType.properties}
-                                              const property = newProperties[selectedItem]
-
-                                              if (updatedPropertyName !== selectedItem && newProperties[updatedPropertyName]) {
-                                                  return
-                                              }
-
-                                              if (property) {
-                                                  delete newProperties[selectedItem]
-                                              }
-                                              newProperties[updatedPropertyName] = property
-
-                                              updateType(selectedType.name, {
-                                                  properties: newProperties
-                                              })
-                                              setSelectedItem(updatedPropertyName)
-                                          }}
-                                          property={selectedType.properties[selectedItem]}
-                                          onChange={property => {
-                                              updateType(selectedType.name, {
-                                                  properties: {
-                                                      ...selectedType.properties,
-                                                      [selectedItem]: property
-                                                  }
-                                              })
-                                          }}/>}
-                    </CardContent>
-                </Card>
-            </>}
-            {selectionType === SelectionType.RESOURCE && <>
-                <Card>
-                    <CardHeader
-                        title='Edit Resource details'/>
-                    <CardContent>
-                        <ResourceForm resource={props.resource} onChange={props.setResource}/>
-                    </CardContent>
-                </Card>
-            </>}
-            {selectionType === SelectionType.TYPE && selectedItem && <>
-                <Card>
-                    <CardHeader
-                        title={'Edit Type: ' + selectedItem}/>
-                    <CardContent>
-                        <SubTypesForm subType={props.resource.types?.find(item => item.name === selectedItem)!}
-                                      onChange={updated => {
-                                          updateType(selectedItem, updated)
-                                          if (updated.name) {
-                                              setSelectedItem(updated.name)
-                                          }
-                                      }}/>
-                    </CardContent>
-                </Card>
-            </>}
         </Box>
     </Box>
 }

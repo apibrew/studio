@@ -1,18 +1,19 @@
 import {Resource, useRepository} from "@apibrew/react";
-import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
+import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import toast from "react-hot-toast";
 import React from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Property} from "@apibrew/client/model";
-import {useConfirmation} from "../modal/use-confirmation";
 import {PropertyForm} from "../property-form/PropertyForm";
 
 export interface ColumnDrawerProps {
     resource: Resource
     new: boolean
+    inlineMode?: boolean
     propertyName: string
     property: Property
-    onUpdateResource: (resource: Resource) => void
+    onUpdate?: (property: Property, propertyName: string) => void
+    onUpdateResource?: (resource: Resource) => void
     onClose: () => void
 }
 
@@ -29,7 +30,7 @@ export function PropertyDrawer(props: ColumnDrawerProps) {
             error: err => err.message
         }).then(() => {
             props.onClose()
-            props.onUpdateResource(updatedResource)
+            props.onUpdateResource!(updatedResource)
         })
     }
 
@@ -76,17 +77,28 @@ export function PropertyDrawer(props: ColumnDrawerProps) {
                 </CardContent>
                 <CardActions>
                     <Stack direction='row' spacing={1}>
-                        <Button variant='contained'
-                                size='small'
-                                color='success'
-                                onClick={() => {
-                                    handleUpdate()
-                                }
-                                }>Save</Button>
-                        {!props.new && <Button variant='outlined'
-                                               size='medium'
-                                               color='error'
-                                               onClick={() => handleDelete()}>Delete</Button>}
+                        {props.inlineMode && <>
+                            <Button variant='contained'
+                                    size='small'
+                                    color='success'
+                                    onClick={() => {
+                                        props.onUpdate!(property, propertyName)
+                                    }
+                                    }>Apply</Button>
+                        </>}
+                        {!props.inlineMode && <>
+                            <Button variant='contained'
+                                    size='small'
+                                    color='success'
+                                    onClick={() => {
+                                        handleUpdate()
+                                    }
+                                    }>Save</Button>
+                            {!props.new && <Button variant='outlined'
+                                                   size='medium'
+                                                   color='error'
+                                                   onClick={() => handleDelete()}>Delete</Button>}
+                        </>}
                         <Button variant='outlined'
                                 size='medium'
                                 color='primary'

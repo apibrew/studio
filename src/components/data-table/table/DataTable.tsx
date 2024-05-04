@@ -2,7 +2,7 @@ import {fromResource, Resource, useQueryListParams, useRepository} from "@apibre
 import React, {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Add, Api, Code, Domain, FilterList, Refresh, Remove, Schema, Sort} from "@mui/icons-material";
+import {Add, Api, Code, Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import {useConfirmation} from "../../modal/use-confirmation";
@@ -16,7 +16,6 @@ import {useAnalytics} from "../../../hooks/use-analytics";
 import {ResourceDrawer} from "../../resource-drawer/ResourceDrawer";
 import {ResourceNanoDrawer} from "../../resource-nano-drawer/ResourceNanoDrawer";
 import {ApiDocModal} from "../../api-doc/ApiDocModal";
-import {SchemaContainer as SchemaContainerNew} from "../schema-new/SchemaContainer";
 
 export interface TableContainerProps {
     resource: Resource
@@ -246,16 +245,6 @@ export function DataTable(props: TableContainerProps) {
                     }}>
                 <Api fontSize='small'/>
                 <span style={{marginLeft: '3px'}}>Api Doc</span>
-            </Button>
-            <Button color='secondary'
-                    onClick={() => {
-                        drawer.open(<SchemaContainerNew
-                            resource={resource}
-                        />)
-                    }}
-                    size='small'>
-                <Schema fontSize='small'/>
-                <span style={{marginLeft: '3px'}}>Schema</span>
             </Button>
         </Stack>
     )
