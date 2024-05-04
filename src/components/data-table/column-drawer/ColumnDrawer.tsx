@@ -33,6 +33,8 @@ export function ColumnDrawer(props: ColumnDrawerProps) {
         }).then(() => {
             props.onClose()
             props.onUpdateResource(updatedResource)
+        }).catch(e => {
+            console.error(e)
         })
     }
 
