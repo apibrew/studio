@@ -35,3 +35,4 @@ jobs:
       - run: |
           docker build . --progress=plain --no-cache -t tislib/studio:latest
           docker push tislib/studio:latest
+
