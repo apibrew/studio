@@ -13,6 +13,8 @@ else
   TAG="studio"
 fi
 
+echo Building and deploying $TAG
+
 # Build and push Docker image
 docker build -f Dockerfile . -t docker-registry.apibrew.io/$TAG:latest --platform linux/amd64 || exit 1
 docker push docker-registry.apibrew.io/$TAG:latest
