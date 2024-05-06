@@ -18,4 +18,4 @@ docker build -f Dockerfile . -t docker-registry.apibrew.io/$TAG:latest --platfor
 docker push docker-registry.apibrew.io/$TAG:latest
 
 # Restart deployment
-k0s kubectl rollout restart deployment $TAG
+kubectl rollout restart deployment $TAG
