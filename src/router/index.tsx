@@ -21,6 +21,7 @@ import {FlowRoutes} from "./flows";
 import BuilderPage from "../pages/dashboard/builder/BuilderPage";
 import Library from "../pages/dashboard/library";
 import {NanoModuleRoutes} from "./nano-module";
+import {FlowControlsRoutes} from "./flow-controls";
 
 export const index = createBrowserRouter([
     {
@@ -96,6 +97,7 @@ export const index = createBrowserRouter([
             MonitoringRoutes,
             ExperimentsRoutes,
             FlowRoutes,
+            FlowControlsRoutes,
             {
                 path: "user-profile",
                 element: <UserProfilePage/>,

@@ -3,10 +3,8 @@ import {Flow, FlowEntityInfo} from "../../model/flow";
 import React, {useState} from 'react';
 import ReactFlow, {Background, Controls, MiniMap} from 'reactflow';
 import 'reactflow/dist/style.css';
-import {nodeTypes} from "./node-types";
 import './Customize.scss';
 import './colors.scss';
-import {prepare} from "./nodes";
 import {useNavigate} from "react-router-dom";
 import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
@@ -20,7 +18,6 @@ export interface FlowDesignerProps {
 export function FlowDesigner(props: FlowDesignerProps) {
     const [flow, setFlow] = useState<Flow>(props.flow)
 
-    const result = prepare(flow);
 
     const navigate = useNavigate()
     const repository = useRepository<Flow>(FlowEntityInfo)
@@ -41,12 +38,12 @@ export function FlowDesigner(props: FlowDesignerProps) {
         </Box>
         <ReactFlow
             className='flow-designer'
-            nodeTypes={nodeTypes}
+            nodeTypes={{}}
             fitView={false}
             nodesDraggable={true}
             nodesConnectable={false}
-            defaultNodes={result.nodes}
-            defaultEdges={result.edges}>
+            defaultNodes={[]}
+            defaultEdges={[]}>
             <Background/>
             <Controls/>
             <MiniMap/>

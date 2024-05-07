@@ -10,160 +10,33 @@ properties:
     length: 255
     required: true
     unique: true
-  trigger:
-    title: Trigger
-    description: Trigger
-    type: OBJECT
-    length: 255
-    required: false
-    annotations:
-      oneOf: "FunctionCall, WebHookCall, Action, Event"
-  statements:
-    type: list
+  controls:
+    title: Controls
+    description: Controls
+    type: LIST
     required: true
     item:
-      type: struct
-      typeRef: Statement
-    defaultValue: [ ]
+      type: STRUCT
+      typeRef: Control
 types:
-  - name: ArgumentType
+  - name: Control
     properties:
-      name:
-        type: string
-      type:
-        type: string
-        annotations:
-          type: PropertyType
-  - name: FunctionCall
-    properties:
-      name:
-        type: string
+      control:
+        title: Name
+        description: Name
+        type: REFERENCE
+        reference: FlowControl
       params:
-        type: list
-        item:
-          type: struct
-          typeRef: ArgumentType
-  - name: WebHookCall
-    properties:
-      name:
-        type: string
-      params:
-        type: list
-        item:
-          type: struct
-          typeRef: ArgumentType
-  - name: Action
-    properties:
-      type:
-        type: string
-  - name: Event
-    properties:
-      type:
-        type: string
-      apiAction:
-        type: enum
-        enumValues:
-          - CREATE
-          - GET
-          - LOAD
-          - UPDATE
-          - DELETE
-          - LIST
-      order:
-        type: enum
-        enumValues:
-          - BEFORE
-          - AFTER
-      sync:
-        type: bool
-      responds:
-        type: bool
-      finalizes:
-        type: bool
-      annotations:
-        type: map
-        item:
-          type: string
-  - name: ApiSaveParams
-    properties:
-      type:
-        type: string
-      payload:
-        type: object
-  - name: ApiLoadParams
-    properties:
-      type:
-        type: string
-      match:
-        type: object
-      params:
-        type: object
-  - name: AssignParams
-    properties:
-      left:
-        type: string
-      expression:
-        type: string
-  - name: FunctionCallParams
-    properties:
-      name:
-        type: string
-      params:
-        type: object
-  - name: CodeParams
-    properties:
-      content:
-        type: string
-  - name: ConditionParams
-    properties:
-      condition:
-        type: string
-      pass:
-        type: list
+        title: Parameters
+        description: Parameters
+        type: MAP
         required: true
         item:
-          type: struct
-          typeRef: Statement
-        defaultValue: [ ]
-      fail:
-        type: list
-        required: true
+          type: OBJECT
+      stylesOverride:
+        title: Styles Override
+        description: Styles Override
+        type: MAP
+        required: false
         item:
-          type: struct
-          typeRef: Statement
-        defaultValue: [ ]
-  - name: FailParams
-    properties:
-      message:
-        type: string
-  - name: Statement
-    properties:
-      kind:
-        type: enum
-        enumValues:
-          - API_CREATE
-          - API_GET
-          - API_LOAD
-          - API_UPDATE
-          - API_DELETE
-          - API_DELETE_ALL
-          - API_LIST
-          - API_EXISTS
-          - API_AUTHENTICATE
-          - TRANSACTION
-          - CODE
-          - ASSIGN
-          - CONDITION
-          - HTTP_CALL
-          - FUNCTION_CALL
-          - LOOP
-          - GROUP
-          - FAIL
-      params:
-        type: object
-        annotations:
-          oneOf: "FunctionCall, WebHookCall, Action, Event"
-      variable:
-        type: string
-      checkResult:
-        type: bool
+          type: STRING

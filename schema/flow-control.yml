@@ -1,0 +1,113 @@
+type: resource
+name: FlowControl
+namespace:
+  name: nano
+properties:
+  name:
+    title: Name
+    description: Name
+    type: STRING
+    length: 255
+    required: true
+    unique: true
+  description:
+    title: Description
+    description: Description
+    type: STRING
+    length: 255
+    required: false
+  kind:
+    title: Kind
+    description: Kind
+    type: ENUM
+    required: true
+    enumValues:
+      - ENTRY_POINT
+      - EXIT_POINT
+      - STATEMENT
+      - EXPRESSION
+  shape:
+    title: Shape
+    description: Shape
+    type: STRUCT
+    typeRef: Shape
+  parameters:
+    title: Parameters
+    description: Parameters
+    type: LIST
+    required: true
+    item:
+      type: STRUCT
+      typeRef: Parameter
+  hasReturn:
+    title: Has Return
+    description: Has Return
+    type: bool
+    required: false
+  code:
+    title: Code
+    description: Code
+    type: STRING
+    required: true
+    length: 10000
+types:
+  - name: Parameter
+    properties:
+      name:
+        title: Name
+        description: Name
+        type: STRING
+        length: 255
+        required: true
+      required:
+        title: Required
+        description: Required
+        type: bool
+        required: true
+      description:
+        title: Description
+        description: Description
+        type: STRING
+        length: 255
+        required: false
+      paramKind:
+        title: Param Kind
+        description: Param Kind
+        type: ENUM
+        required: true
+        enumValues:
+          - INPUT
+          - BLOCK
+          - RESOURCE
+          - PROPERTY
+          - ENUM
+          - BOOLEAN
+      enumValues:
+        title: Enum Values
+        description: Enum Values
+        type: LIST
+        required: false
+        item:
+          type: STRING
+  - name: Shape
+    properties:
+      format:
+        title: Format
+        description: Format
+        type: ENUM
+        required: true
+        enumValues:
+          - JSX
+          - SVG
+      content:
+        title: Content
+        description: Content
+        type: STRING
+        required: false
+      styles:
+        title: Styles
+        description: Styles
+        type: MAP
+        required: false
+        item:
+          type: STRING

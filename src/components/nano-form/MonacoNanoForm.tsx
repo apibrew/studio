@@ -77,23 +77,8 @@ export function MonacoNanoForm(props: NanoFormProps) {
                             language={props.language === 'JAVASCRIPT' ? 'javascript' : 'typescript'}
                             theme='vs-dark'
                             options={{
-                                // wordWrap: 'on',
-                                // minimap: {enabled: true},
                                 fontSize: 12,
                                 tabSize: 4,
-                                // insertSpaces: true,
-                                // automaticLayout: true,
-                                // scrollBeyondLastLine: false,
-                                // scrollbar: {
-                                //     vertical: 'auto',
-                                //     horizontal: 'auto',
-                                //     useShadows: false,
-                                //     verticalHasArrows: false,
-                                //     horizontalHasArrows: false,
-                                //     verticalScrollbarSize: 17,
-                                //     horizontalScrollbarSize: 17,
-                                //     arrowSize: 30
-                                // },
                             }}
 
                             beforeMount={handleEditorWillMount}

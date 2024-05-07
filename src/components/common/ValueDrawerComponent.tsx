@@ -10,7 +10,7 @@ export interface ValueDrawerComponentFormProps<T = any> {
 export interface ValueDrawerComponentProps<T = any> {
     title: string;
     value: T;
-    onChange: (value: T) => void;
+    onChange: (value: T) => void | Promise<void>;
     onClose: () => void;
     component: React.ComponentType<ValueDrawerComponentFormProps<T>>;
 }
@@ -27,8 +27,16 @@ export function ValueDrawerComponent(props: ValueDrawerComponentProps) {
         actions={<>
             <Button
                 onClick={() => {
-                    props.onChange(value)
-                    props.onClose()
+                    const res = props.onChange(value)
+
+                    if (res === void 0 || res === null || !res.then) {
+                        props.onClose()
+                        return
+                    }
+
+                    res.then(() => {
+                        props.onClose()
+                    }).catch(() => {})
                 }}
             >
                 Save
