@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 import {Flow, FlowEntityInfo} from "../../../model/flow";
 import {FlowDesigner} from "../../../components/flow-designer/FlowDesigner";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import toast from "react-hot-toast";
 
 export function FlowEdit() {
     const params = useParams()
@@ -13,7 +14,7 @@ export function FlowEdit() {
     const repository = useRepository<Flow>(FlowEntityInfo)
 
     useEffect(() => {
-        repository.get(params.id as string)
+        repository.get(params.id as string, ['$.controls[].control'])
             .then(data => {
                 setFlow({
                     ...data,
@@ -32,7 +33,16 @@ export function FlowEdit() {
              flexGrow={1}
              height={'100%'}>
             <Box flexGrow={1}>
-                <FlowDesigner flow={flow}/>
+                <FlowDesigner
+                    flow={flow}
+                    onSave={flow => {
+                        toast.promise(repository.update(flow), {
+                            loading: 'Saving...',
+                            success: 'Saved',
+                            error: err => err.message
+                        })
+                    }}
+                />
             </Box>
         </Box>
     </>

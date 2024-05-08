@@ -26,6 +26,7 @@
     "acorn": "^8.11.3",
     "astring": "^1.8.6",
     "axios": "^1.6.8",
+    "dagre": "^0.8.5",
     "dayjs": "^1.11.10",
     "env-cmd": "^10.1.0",
     "escodegen": "^2.1.0",
@@ -70,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@types/dagre": "^0.7.52",
     "@types/escodegen": "^0.0.10",
     "@types/estraverse": "^5.1.7",
     "@types/js-yaml": "^4.0.9",

@@ -28,7 +28,7 @@ export const ControlForm = (props: ValueDrawerComponentFormProps<Control>) => {
         return <LoadingOverlay/>
     }
 
-    let selectedControlType: FlowControlType | undefined = flowControls.find(item => item.id === props.value?.control?.id)
+    let selectedControlType: FlowControlType | undefined = flowControls.find(item => item.id === props.value?.controlType?.id)
 
     return <Box width='600px'>
         <FormControl fullWidth>
@@ -47,16 +47,15 @@ export const ControlForm = (props: ValueDrawerComponentFormProps<Control>) => {
             <InputLabel shrink={true}>Control*</InputLabel>
             <Select
                 size='small'
-                value={props.value?.control?.id}
+                value={props.value?.controlType?.id}
                 onChange={e => {
                     props.onChange({
                         ...props.value,
-                        control: flowControls.find(item => item.id === e.target.value)!
+                        controlType: flowControls.find(item => item.id === e.target.value)!
                     })
                 }}
             >
-                {flowControls.filter(item => item.kind === Kind.ENTRY_POINT)
-                    .map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)}
+                {flowControls.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)}
             </Select>
         </FormControl>
         {selectedControlType && <>

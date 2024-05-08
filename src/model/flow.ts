@@ -2,8 +2,8 @@ import {FlowControlType} from './flow-control-type';
 
 export interface Flow {
     id: string
-    name: string
     controls: Control[]
+    name: string
     version: number
 }
 
@@ -14,10 +14,11 @@ export const FlowEntityInfo = {
 }
 
 export interface Control {
-    title: string
-    control: FlowControlType
-    params: { [key: string]: object }
     stylesOverride: { [key: string]: string }
+    id: string
+    title: string
+    controlType: FlowControlType
+    params: { [key: string]: object }
 }
 
 export const FlowResource = {
@@ -74,11 +75,17 @@ export const FlowResource = {
       "title": "",
       "description": "",
       "properties": {
-        "control": {
+        "controlType": {
           "type": "REFERENCE",
-          "reference": "nano/FlowControl",
+          "reference": "nano/FlowControlType",
           "title": "Name",
           "description": "Name"
+        },
+        "id": {
+          "type": "STRING",
+          "required": true,
+          "title": "ID",
+          "description": "ID"
         },
         "params": {
           "type": "MAP",

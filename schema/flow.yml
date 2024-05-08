@@ -21,15 +21,20 @@ properties:
 types:
   - name: Control
     properties:
+      id:
+        title: ID
+        description: ID
+        type: string
+        required: true
       title:
         title: Title
         description: Title
         type: string
-      control:
+      controlType:
         title: Name
         description: Name
         type: REFERENCE
-        reference: FlowControl
+        reference: FlowControlType
       params:
         title: Parameters
         description: Parameters
