@@ -21,6 +21,10 @@ properties:
 types:
   - name: Control
     properties:
+      title:
+        title: Title
+        description: Title
+        type: string
       control:
         title: Name
         description: Name

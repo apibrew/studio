@@ -1,9 +1,9 @@
 import {FlowControlPage} from "../pages/dashboard/flow-controls";
-import {FlowControlList} from "../pages/dashboard/flow-controls/FlowControlList";
+import {FlowControlTypesList} from "../pages/dashboard/flow-controls/FlowControlTypesList";
 import React from "react";
 
 export const FlowControlsRoutes = {
-    path: "flow-controls",
+    path: "flow-control-types",
     element: <FlowControlPage/>,
     handle: {
         breadcrumb: 'Flow Controls'
@@ -11,7 +11,7 @@ export const FlowControlsRoutes = {
     children: [
         {
             path: "",
-            element: <FlowControlList/>,
+            element: <FlowControlTypesList/>,
             handle: {
                 breadcrumb: 'List'
             },

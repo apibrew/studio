@@ -19,10 +19,16 @@ export function ResourceSelect(props: ResourceSelectProps) {
 
     const namespaces = resources.map(r => r.namespace.name).filter((v, i, a) => a.indexOf(v) === i)
 
+    let value = props.value
+
+    if (value?.split('/').length !== 2) {
+        value = 'default/' +  props.value
+    }
+
     return (
         <Select
             {...props as any}
-            value={props.value || ''}
+            value={value || ''}
             onChange={e => {
                 if (e.target.value === '') {
                     props.onChange(e as any, undefined)

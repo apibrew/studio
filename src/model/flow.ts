@@ -1,9 +1,9 @@
-import {FlowControl} from './flow-control';
+import {FlowControlType} from './flow-control-type';
 
 export interface Flow {
     id: string
-    controls: Control[]
     name: string
+    controls: Control[]
     version: number
 }
 
@@ -14,9 +14,10 @@ export const FlowEntityInfo = {
 }
 
 export interface Control {
+    title: string
+    control: FlowControlType
     params: { [key: string]: object }
     stylesOverride: { [key: string]: string }
-    control: FlowControl
 }
 
 export const FlowResource = {
@@ -95,6 +96,11 @@ export const FlowResource = {
           },
           "title": "Styles Override",
           "description": "Styles Override"
+        },
+        "title": {
+          "type": "STRING",
+          "title": "Title",
+          "description": "Title"
         }
       }
     }

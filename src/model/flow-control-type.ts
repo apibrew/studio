@@ -1,34 +1,34 @@
 
-export interface FlowControl {
+export interface FlowControlType {
     id: string
+    shape?: Shape
+    parameters: Parameter[]
+    hasReturn?: boolean
     code: string
     name: string
     description?: string
     kind: Kind
-    shape?: Shape
-    parameters: Parameter[]
-    hasReturn?: boolean
     version: number
 }
 
-export const FlowControlEntityInfo = {
+export const FlowControlTypeEntityInfo = {
     namespace: "nano",
-    resource: "FlowControl",
-    restPath: "nano-flow-control",
+    resource: "FlowControlType",
+    restPath: "nano-flow-control-type",
 }
 
 export interface Parameter {
+    enumValues: string[]
     name: string
     required: boolean
     description: string
     paramKind: ParamKind
-    enumValues: string[]
 }
 
 export interface Shape {
-    styles: { [key: string]: string }
     format: Format
     content: string
+    styles: { [key: string]: string }
 }
 
 export enum Kind {
@@ -52,8 +52,8 @@ export enum Format {
     SVG = "SVG",
 }
 
-export const FlowControlResource = {
-  "name": "FlowControl",
+export const FlowControlTypeResource = {
+  "name": "FlowControlType",
   "namespace": {
     "name": "nano"
   },

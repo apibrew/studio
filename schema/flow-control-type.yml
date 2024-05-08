@@ -1,5 +1,5 @@
 type: resource
-name: FlowControl
+name: FlowControlType
 namespace:
   name: nano
 properties:

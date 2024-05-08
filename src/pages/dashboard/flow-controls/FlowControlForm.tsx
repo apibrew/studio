@@ -1,4 +1,4 @@
-import {FlowControl, Kind, Parameter, ParamKind} from "../../../model/flow-control";
+import {FlowControlType, Kind, Parameter, ParamKind} from "../../../model/flow-control-type";
 import {
     Box,
     FormControl,
@@ -22,8 +22,8 @@ import {TagInput} from "../../../components/TagInput";
 import Checkbox from "@mui/material/Checkbox";
 
 export interface FlowControlFormProps {
-    value: FlowControl;
-    onChange: (value: FlowControl) => void;
+    value: FlowControlType;
+    onChange: (value: FlowControlType) => void;
 }
 
 export function FlowControlForm(props: FlowControlFormProps) {

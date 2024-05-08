@@ -1,11 +1,11 @@
 import {Outlet} from "react-router-dom";
 import {ensureResource} from "../../../logic/ensure-resource";
 import {Resource, useClient} from "@apibrew/react";
-import {FlowControlResource} from "../../../model/flow-control";
+import {FlowControlTypeResource} from "../../../model/flow-control-type";
 
 export function FlowControlPage() {
     const client = useClient()
-    ensureResource(client, FlowControlResource as Resource, true)
+    ensureResource(client, FlowControlTypeResource as Resource, true)
 
     return <>
         <Outlet/>

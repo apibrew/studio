@@ -10,21 +10,21 @@ import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer";
 import {ValueDrawerComponent} from "../../../components/common/ValueDrawerComponent";
-import {FlowControl, FlowControlEntityInfo, Kind, Parameter} from "../../../model/flow-control";
+import {FlowControlType, FlowControlTypeEntityInfo, Kind, Parameter} from "../../../model/flow-control-type";
 import {FlowControlForm} from "./FlowControlForm";
 
-export function FlowControlList() {
+export function FlowControlTypesList() {
     const drawer = useDrawer()
-    const data = useDataProvider<FlowControl>(FlowControlEntityInfo)
+    const data = useDataProvider<FlowControlType>(FlowControlTypeEntityInfo)
     const navigate = useNavigate()
     const confirmation = useConfirmation()
-    const repository = useRepository<FlowControl>(FlowControlEntityInfo)
+    const repository = useRepository<FlowControlType>(FlowControlTypeEntityInfo)
 
     if (data.loading) {
         return <LoadingOverlay/>
     }
 
-    function handleDelete(item: FlowControl) {
+    function handleDelete(item: FlowControlType) {
         confirmation.open({
             title: 'Delete',
             message: 'Are you sure you want to delete this item?',
@@ -54,7 +54,7 @@ export function FlowControlList() {
                                 kind: Kind.STATEMENT,
                                 parameters: [] as Parameter[],
                                 code: `function execute(args) {\n\n\n}\n`
-                            } as FlowControl}
+                            } as FlowControlType}
                             onChange={async updated => {
                                 await toast.promise(repository.create(updated), {
                                     loading: 'Creating...',
@@ -95,7 +95,7 @@ export function FlowControlList() {
                                                 value={{
                                                     ...item,
                                                     name: 'flow-control-' + data.records.length,
-                                                } as FlowControl}
+                                                } as FlowControlType}
                                                 onChange={async updated => {
                                                     await toast.promise(repository.create(updated), {
                                                         loading: 'Creating...',

@@ -12,7 +12,10 @@ export function FlowNew() {
              height={'100%'}>
             <Box flexGrow={1}>
                 <FlowDesigner flow={{
+                    id: '',
                     name: '',
+                    controls: [],
+                    version: 0,
                 } as Flow}/>
             </Box>
         </Box>
