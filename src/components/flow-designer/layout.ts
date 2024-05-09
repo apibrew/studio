@@ -1,18 +1,18 @@
 import {Edge, Node, Position} from "reactflow";
 import dagre from 'dagre';
+import {Control} from "../../model/flow";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
 const nodeWidth = 200;
-const nodeHeight = 300;
 
-export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => {
+export const getLayoutedElements = (nodes: Node<Control>[], edges: Edge[], direction = 'TB') => {
     const isHorizontal = direction === 'LR';
     dagreGraph.setGraph({rankdir: direction});
 
     nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, {width: nodeWidth, height: nodeHeight});
+        dagreGraph.setNode(node.id, {width: nodeWidth, height: calculateNodeHeight(node)});
     });
 
     edges.forEach((edge) => {
@@ -20,8 +20,6 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'T
     });
 
     dagre.layout(dagreGraph);
-
-    console.log(nodes)
 
     nodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
@@ -32,7 +30,7 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'T
         // so it matches the React Flow node anchor point (top left).
         node.position = {
             x: nodeWithPosition.x - nodeWidth / 2,
-            y: nodeWithPosition.y - nodeHeight / 2,
+            y: nodeWithPosition.y - calculateNodeHeight(node) / 2,
         };
 
         console.log(node.position)
@@ -42,3 +40,13 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'T
 
     return {nodes, edges};
 };
+
+function calculateNodeHeight(node: Node<Control>) {
+    let height = 50;
+
+    if (node.data.controlType) {
+        height += node.data.controlType.parameters.length * 30;
+    }
+
+    return height
+}

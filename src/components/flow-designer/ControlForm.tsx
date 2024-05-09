@@ -47,7 +47,7 @@ export const ControlForm = (props: ValueDrawerComponentFormProps<Control>) => {
             <InputLabel shrink={true}>Control*</InputLabel>
             <Select
                 size='small'
-                value={props.value?.controlType?.id}
+                value={props.value?.controlType?.id || ''}
                 onChange={e => {
                     props.onChange({
                         ...props.value,
@@ -55,7 +55,7 @@ export const ControlForm = (props: ValueDrawerComponentFormProps<Control>) => {
                     })
                 }}
             >
-                {flowControls.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)}
+                {flowControls.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
             </Select>
         </FormControl>
         {selectedControlType && <>
@@ -63,14 +63,17 @@ export const ControlForm = (props: ValueDrawerComponentFormProps<Control>) => {
             <br/>
             <Table>
                 <TableHead>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Current</TableCell>
-                    <TableCell>Update</TableCell>
+                   <TableRow>
+                       <TableCell>Name</TableCell>
+                       <TableCell>Current</TableCell>
+                       <TableCell>Update</TableCell>
+                   </TableRow>
                 </TableHead>
                 <TableBody>
                     {selectedControlType.parameters.map(param => {
                         return <ParameterRow
                             param={param}
+                            key={param.name}
                             value={props.value.params[param.name]}
                             onChange={newValue => {
                                 props.onChange({
@@ -113,7 +116,7 @@ function ParameterRow({param, value, onChange}: ParameterRowProps) {
                     onChange(e.target.value)
                 }}
             >
-                {param.enumValues.map(value => <MenuItem value={value}>{value}</MenuItem>)}
+                {param.enumValues.map(value => <MenuItem key={value} value={value}>{value}</MenuItem>)}
             </Select>}
             {param.paramKind === 'BOOLEAN' && <Checkbox
                 sx={{width: '100%'}}

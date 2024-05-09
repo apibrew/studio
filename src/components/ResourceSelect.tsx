@@ -21,7 +21,7 @@ export function ResourceSelect(props: ResourceSelectProps) {
 
     let value = props.value
 
-    if (value?.split('/').length !== 2) {
+    if (value && value?.split('/').length !== 2) {
         value = 'default/' +  props.value
     }
 

@@ -1,52 +1,44 @@
 import {Control, Flow} from "../../model/flow";
 
-import React, {type MouseEvent as ReactMouseEvent, useMemo, useState} from 'react';
-import ReactFlow, {Background, Controls, Edge, MiniMap, Node} from 'reactflow';
+import React, {useEffect, useState} from 'react';
+import ReactFlow, {Background, Controls, Edge, MiniMap, Node, Panel} from 'reactflow';
 import 'reactflow/dist/style.css';
 import './Customize.scss';
 import './colors.scss';
 import toast from "react-hot-toast";
-import {Box, TextField} from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import {nodeTypes} from "./node-types";
 import {useDrawer} from "../../hooks/use-drawer";
 import {ControlFormDrawer} from "./ControlForm";
-import {prepare, prepareNodeFromControl} from "./prepare";
 import {getLayoutedElements} from "./layout";
+import {FlowController} from "./FlowController";
 
 export interface FlowDesignerProps {
     flow: Flow
     onSave: (flow: Flow) => void
 }
 
+const controller = new FlowController();
+
 export function FlowDesigner(props: FlowDesignerProps) {
     const [selectedNodes, setSelectedNodes] = useState<Node<Control>[]>([])
-    const [name, setName] = useState(props.flow.name || '')
     const drawer = useDrawer()
+    const [nodes, setNodes] = useState<Node<Control>[]>([])
+    const [edges, setEdges] = useState<Edge[]>([])
 
-    const preparedData = useMemo(() => prepare(props.flow), [props.flow])
+    const triggerUpdate = () => {
+        const layout = getLayoutedElements(controller.getNodes(), controller.getEdges())
 
-    const [nodes, setNodes] = useState<Node[]>(preparedData.nodes)
-    const [edges, setEdges] = useState<Edge[]>(preparedData.edges)
+        console.log('Trigger Update', layout)
 
-    async function handleSave() {
-        // recreate flow
-    }
+        setNodes([...layout.nodes])
+        setEdges([...layout.edges])
 
-    const layout = useMemo(() => getLayoutedElements(nodes, edges), [nodes, edges])
-
-    const selectedNode = selectedNodes.length === 1 ? selectedNodes[0] : undefined;
-    const selectedControl = selectedNode?.data
-    const selectedControlType = selectedControl?.controlType
-
-    async function nodeClick(event: ReactMouseEvent, node: Node) {
-        if (node.id === 'start-here') {
+        if (layout.nodes.length === 0) {
             drawer.open(<ControlFormDrawer
                 title={'Setup Starting Control'}
-                value={{
-                    id: 'control-' + Math.random(),
-                    params: {}
-                } as Control}
+                value={controller.newControl()}
                 onChange={(control: Control) => {
                     if (!control.controlType) {
                         toast.error('Control is required')
@@ -56,115 +48,123 @@ export function FlowDesigner(props: FlowDesignerProps) {
                         toast.error('Control must be an entry point')
                         return Promise.reject()
                     }
-                    setNodes([prepareNodeFromControl(control)])
+                    controller.clear()
+                    controller.addRootControl(control)
                     drawer.close()
+                    triggerUpdate()
                 }}
-                onClose={drawer.close}
-            />)
-        } else {
-
+                onClose={() => {
+                    if (controller.getNodes().length == 0) {
+                        toast.error('You must choose initial control')
+                    }
+                }}
+            />, {
+                allowClose: false
+            })
         }
     }
 
-    console.log('layout', layout)
+    useEffect(() => {
+        controller.setFlow(props.flow)
+        triggerUpdate()
+    }, [props.flow]);
 
-    if (nodes.length === 0) {
-        const startNode = {
-            id: 'start-here',
-            position: {x: 0, y: 0},
-            data: {label: 'Start Here'},
-            ariaLabel: "Start Here",
-            connectable: true,
-            type: 'startNode',
-        }
-
-        setNodes([startNode])
+    async function handleSave() {
+        // recreate flow
+        props.onSave(controller.getFlow())
     }
+
+
+    const selectedNode = selectedNodes.length === 1 ? selectedNodes[0] : undefined;
+    const selectedControl = selectedNode?.data
+    const selectedControlType = selectedControl?.controlType
 
     return <>
         {drawer.render()}
-        <Box className='flow-designer-toolbar'>
-            <TextField
-                title={'Flow Name'}
-                value={name || ''}
-                onChange={e => {
-                    setName(e.target.value)
-                }}
-            />
-            <Button onClick={handleSave} variant='contained'>Save</Button>
-            {selectedNode && <>
-                <Button onClick={() => {
-                    setNodes(nodes.filter(item => item.id !== selectedNode.id))
-                    setEdges(edges.filter(item => item.source !== selectedNode.id && item.target !== selectedNode.id))
-                }} variant='contained'>Delete</Button>
-                <Button onClick={() => {
-                    drawer.open(<ControlFormDrawer
-                        title={'Update: ' + selectedNode.data.title}
-                        value={selectedNode.data as Control}
-                        onChange={(control: Control) => {
-                            if (!control.controlType) {
-                                toast.error('Control is required')
-                                return Promise.reject()
-                            }
-
-                            setNodes(nodes.map(item => {
-                                if (item.id === selectedNode.id) {
-                                    return prepareNodeFromControl(control)
-                                }
-                                return item
-                            }))
-
-                            drawer.close()
-                        }}
-                        onClose={drawer.close}
-                    />)
-                }} variant='contained'>Edit</Button>
-
-                {selectedControlType?.parameters.filter(item => item.paramKind === 'BLOCK').map(param => {
-                    return <Button onClick={() => {
-                        drawer.open(<ControlFormDrawer
-                            title={'Add: ' + param.name}
-                            value={{
-                                id: 'control-' + Math.random(),
-                                params: {}
-                            } as Control}
-                            onChange={(control: Control) => {
-                                if (!control.controlType) {
-                                    toast.error('Control is required')
-                                    return Promise.reject()
-                                }
-
-                                setNodes([...nodes, prepareNodeFromControl(control)])
-                                setEdges([...edges, {
-                                    id: 'edge-' + selectedNode.id + '-' + 'control-' + control.id,
-                                    source: selectedNode.id,
-                                    target: 'control-' + control.id
-                                }])
-
-                                drawer.close()
-                            }}
-                            onClose={drawer.close}
-                        />)
-                    }} variant='contained'>Add {param.name}</Button>
-                })}
-            </>}
-        </Box>
         <ReactFlow
             className='flow-designer'
             nodeTypes={nodeTypes}
-            fitView={false}
+            fitView={true}
             draggable={true}
             onSelectionChange={e => {
                 setSelectedNodes(e.nodes)
             }}
             nodesDraggable={true}
-            nodesConnectable={false}
-            onNodeDoubleClick={nodeClick}
-            nodes={layout.nodes}
-            edges={layout.edges}>
+            nodesConnectable={true}
+            nodes={nodes}
+            edges={edges}>
             <Background/>
             <Controls/>
             <MiniMap/>
+            <Panel position={'top-left'}>
+                <Stack spacing={2} direction='row'>
+                    <TextField
+                        title={'Flow Name'}
+                        value={controller.getFlow().name || ''}
+                        onChange={e => {
+                            controller.setFlowName(e.target.value)
+                            triggerUpdate()
+                        }}
+                    />
+                    <Button onClick={handleSave} variant='contained'>Save</Button>
+                    {selectedNode && <>
+                        <Button onClick={() => {
+                            controller.removeNode(selectedNode)
+                            triggerUpdate()
+                        }} variant='contained'>Delete</Button>
+                        <Button onClick={() => {
+                            drawer.open(<ControlFormDrawer
+                                title={'Update: ' + selectedNode.data.title}
+                                value={selectedNode.data as Control}
+                                onChange={(control: Control) => {
+                                    if (!control.controlType) {
+                                        toast.error('Control is required')
+                                        return Promise.reject()
+                                    }
+
+                                    controller.updateNode(selectedNode, control)
+                                    triggerUpdate()
+
+                                    drawer.close()
+                                }}
+                                onClose={drawer.close}
+                            />)
+                        }} variant='contained'>Edit</Button>
+
+                        {selectedControlType?.parameters
+                            .filter(item => item.paramKind === 'BLOCK')
+                            .map(param => {
+                                return <Button
+                                    key={param.name}
+                                    onClick={() => {
+                                        drawer.open(<ControlFormDrawer
+                                            title={'Add: ' + param.name}
+                                            value={controller.newControl()}
+                                            onChange={(control: Control) => {
+                                                if (!control.controlType) {
+                                                    toast.error('Control is required')
+                                                    return Promise.reject()
+                                                }
+
+                                                controller.addNodeToLastPlaceOfBase(selectedNode, param, control)
+                                                triggerUpdate()
+
+                                                drawer.close()
+
+                                                toast.success('Control added')
+                                            }}
+                                            onClose={() => {
+                                                drawer.close()
+                                            }}
+                                        />)
+                                    }} variant='contained'>Add Next {param.name}</Button>
+                            })}
+                    </>}
+                </Stack>
+            </Panel>
+            <Panel position={'top-right'}>
+                <span>Selected: {selectedNodes.length}</span>
+            </Panel>
         </ReactFlow>
     </>
 }

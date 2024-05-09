@@ -3,8 +3,6 @@ import {Box, Table, TableBody, TableCell, TableRow} from "@mui/material";
 import {Control} from "../../../model/flow";
 import React from "react";
 import {Handle, Position} from "reactflow";
-import Button from "@mui/material/Button";
-
 
 export const ControlNode = (props: NodeProps<Control>) => {
     let title = props.data.title || props.data.controlType?.name
@@ -26,7 +24,7 @@ export const ControlNode = (props: NodeProps<Control>) => {
             <Handle type="target" position={Position.Top}/>
         </>}
         <Box className='node-header'>
-            {title}
+            {title} [{props.id}]
         </Box>
         <Box className='node-content'>
             <Table className='node-parameter'>
@@ -55,5 +53,6 @@ export const ControlNode = (props: NodeProps<Control>) => {
                 </TableBody>
             </Table>
         </Box>
+        <Handle type="source" position={Position.Bottom}/>
     </Box>
 }
