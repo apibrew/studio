@@ -108,10 +108,8 @@ export function TableRecordLine(props: TableRecordLineProps) {
                     </IconButton>}
                     <IconButton onClick={() => {
                         drawer.open(<RecordExpand resource={props.resource}
-                                                  title={props.record.id === 'new' ? 'New ' + props.resource.name : 'Edit ' + props.resource.name}
-                                                  value={{...props.record, ...props.updated}}
-                                                  onClose={() => drawer.close()}
-                                                  onApply={props.onUpdate}/>)
+                                                  title={'View ' + props.resource.name}
+                                                  value={{...props.record, ...props.updated}}/>)
                     }}>
                         <OpenInFullRounded/>
                     </IconButton>

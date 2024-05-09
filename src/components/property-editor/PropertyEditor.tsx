@@ -6,6 +6,13 @@ import {getAnnotation} from "../../util/annotation";
 import {PropertyEditorAnnotation} from "../../util/base-annotations";
 import Editor from "./block-editor/Editor";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
+import TextEditor from "./text-editor/TextEditor";
+import JsonEditor from "./json-editor/JsonEditor";
+
+const NanoCodeName = 'Nano Code'
+const TextEditorName = 'Text Editor'
+const BlockEditorName = 'Block Editor'
+const JsonEditorName = 'Json Editor'
 
 export interface PropertyEditorProps {
     resource: Resource
@@ -20,11 +27,13 @@ export function getPropertyEditorList(property: Property): string[] {
     switch (property.type) {
         case 'STRING':
             return [
-                'NanoCode',
+                NanoCodeName,
+                TextEditorName,
             ]
         case 'OBJECT':
             return [
-                'BlockEditor',
+                BlockEditorName,
+                JsonEditorName,
             ]
         default:
             return []
@@ -33,6 +42,7 @@ export function getPropertyEditorList(property: Property): string[] {
 }
 
 export function PropertyEditor(props: PropertyEditorProps) {
+    const [valid, setValid] = React.useState(true)
     const [value, setValue] = React.useState(props.value)
     let propertyEditorAnnotation = getAnnotation(props.property.annotations, PropertyEditorAnnotation)
 
@@ -52,17 +62,22 @@ export function PropertyEditor(props: PropertyEditorProps) {
                 flexGrow: 1,
             }}>
                 <Box p={3}>
-                    {propertyEditorAnnotation === 'BlockEditor' && <Editor value={value || {}} onChange={setValue}/>}
-                    {propertyEditorAnnotation === 'NanoCode' && <MonacoNanoForm code={value || ''}
-                                                                                language='JAVASCRIPT'
-                                                                                onChange={setValue}/>}
+                    {propertyEditorAnnotation === BlockEditorName && <Editor value={value || {}} onChange={setValue}/>}
+                    {propertyEditorAnnotation === JsonEditorName &&
+                        <JsonEditor setIsValid={setValid} value={value || {}} onChange={setValue}/>}
+                    {propertyEditorAnnotation === TextEditorName &&
+                        <TextEditor value={value || ''} onChange={setValue}/>}
+                    {propertyEditorAnnotation === NanoCodeName && <MonacoNanoForm code={value || ''}
+                                                                                  language='JAVASCRIPT'
+                                                                                  onChange={setValue}/>}
                 </Box>
             </CardContent>
             <CardActions>
-                <Button onClick={() => {
-                    props.onApply(value);
-                    props.onClose();
-                }}>Apply</Button>
+                <Button disabled={!valid}
+                        onClick={() => {
+                            props.onApply(value);
+                            props.onClose();
+                        }}>Apply</Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>
                 <Button onClick={() => setValue(props.value)}>Reset</Button>
             </CardActions>
@@ -70,13 +85,3 @@ export function PropertyEditor(props: PropertyEditorProps) {
     </Box>
 }
 
-// <TagInput
-//                     autoOpen={Boolean(props.autoOpen)}
-//                     value={updated || []}
-//                     onChange={e => {
-//                         setUpdated(e)
-//                     }}
-//                     onClose={() => {
-//                         props.onChange(updated)
-//                     }}
-//                     inputPros={{}}/>
