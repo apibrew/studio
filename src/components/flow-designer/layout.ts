@@ -42,9 +42,9 @@ export const getLayoutedElements = (nodes: Node<Control>[], edges: Edge[], direc
 };
 
 function calculateNodeHeight(node: Node<Control>) {
-    let height = 50;
+    let height = 10;
 
-    if (node.data.controlType) {
+    if (node.type === 'controlNode' && node.data.controlType) {
         height += node.data.controlType.parameters.length * 30;
     }
 

@@ -4,7 +4,7 @@ import {Control} from "../../../model/flow";
 import React from "react";
 import {Handle, Position} from "reactflow";
 
-export const ControlNode = (props: NodeProps<Control>) => {
+export const ControlNodeCompact = (props: NodeProps<Control>) => {
     let title = props.data.title || props.data.controlType?.name
     const controlType = props.data.controlType
 
@@ -33,33 +33,6 @@ export const ControlNode = (props: NodeProps<Control>) => {
                 {title}
             </span>
             {/*<span>[{props.id}]</span>*/}
-        </Box>
-        <Box className='node-content'>
-            <Table className='node-parameter'>
-                <TableBody>
-                    {controlType.parameters.map(item => {
-                        let value = props.data.params[item.name] as any
-
-                        if (item.paramKind === 'BLOCK') {
-                            value = <>
-                                <Handle type="source" position={Position.Right}/>
-                            </>
-                        } else if (item.paramKind === 'BOOLEAN') {
-                            value = Boolean(value) ? 'True' : 'False'
-                        }
-
-                        return <TableRow key={item.name}>
-                            <TableCell className='node-parameter-label'>
-                                {item.name}
-                            </TableCell>
-                            <TableCell className='node-parameter-value'>
-                                {value}
-                            </TableCell>
-                        </TableRow>
-                    })}
-
-                </TableBody>
-            </Table>
         </Box>
         <Handle type="source" position={Position.Bottom}/>
     </Box>

@@ -6,13 +6,13 @@ import 'reactflow/dist/style.css';
 import './Customize.scss';
 import './colors.scss';
 import toast from "react-hot-toast";
-import {Stack, TextField} from "@mui/material";
-import Button from "@mui/material/Button";
+import {IconButton, Stack, TextField, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {nodeTypes} from "./node-types";
 import {useDrawer} from "../../hooks/use-drawer";
 import {ControlFormDrawer} from "./ControlForm";
 import {getLayoutedElements} from "./layout";
 import {FlowController} from "./FlowController";
+import {Delete, Edit, LastPage, Save, ViewArray, ViewCompact} from "@mui/icons-material";
 
 export interface FlowDesignerProps {
     flow: Flow
@@ -22,13 +22,19 @@ export interface FlowDesignerProps {
 const controller = new FlowController();
 
 export function FlowDesigner(props: FlowDesignerProps) {
-    const [selectedNodes, setSelectedNodes] = useState<Node<Control>[]>([])
+    const [selectedNode, setSelectedNode] = useState<Node<Control>>()
     const drawer = useDrawer()
     const [nodes, setNodes] = useState<Node<Control>[]>([])
     const [edges, setEdges] = useState<Edge[]>([])
+    const [mode, setMode] = useState<'compact' | 'detailed'>('compact')
 
     const triggerUpdate = () => {
-        const layout = getLayoutedElements(controller.getNodes(), controller.getEdges())
+        const layout = getLayoutedElements(controller.getNodes().map(node => {
+            return {
+                ...node,
+                type: mode == 'compact' ? 'controlNodeCompact' : 'controlNode'
+            }
+        }), controller.getEdges())
 
         console.log('Trigger Update', layout)
 
@@ -74,10 +80,10 @@ export function FlowDesigner(props: FlowDesignerProps) {
         props.onSave(controller.getFlow())
     }
 
-
-    const selectedNode = selectedNodes.length === 1 ? selectedNodes[0] : undefined;
     const selectedControl = selectedNode?.data
     const selectedControlType = selectedControl?.controlType
+
+    console.log('Render: ')
 
     return <>
         {drawer.render()}
@@ -86,8 +92,13 @@ export function FlowDesigner(props: FlowDesignerProps) {
             nodeTypes={nodeTypes}
             fitView={true}
             draggable={true}
-            onSelectionChange={e => {
-                setSelectedNodes(e.nodes)
+            onNodeClick={(e, node) => {
+                setSelectedNode(node as Node<Control>)
+                e.preventDefault()
+                e.stopPropagation()
+            }}
+            onClick={e => {
+                setSelectedNode(undefined)
             }}
             nodesDraggable={true}
             nodesConnectable={true}
@@ -96,23 +107,26 @@ export function FlowDesigner(props: FlowDesignerProps) {
             <Background/>
             <Controls/>
             <MiniMap/>
-            <Panel position={'top-left'}>
+            <Panel position={'top-right'}>
                 <Stack spacing={2} direction='row'>
                     <TextField
                         title={'Flow Name'}
+                        size='small'
                         value={controller.getFlow().name || ''}
                         onChange={e => {
                             controller.setFlowName(e.target.value)
                             triggerUpdate()
                         }}
                     />
-                    <Button onClick={handleSave} variant='contained'>Save</Button>
+                    <IconButton onClick={handleSave} size='small'>
+                        <Save/>
+                    </IconButton>
                     {selectedNode && <>
-                        <Button onClick={() => {
+                        <IconButton onClick={() => {
                             controller.removeNode(selectedNode)
                             triggerUpdate()
-                        }} variant='contained'>Delete</Button>
-                        <Button onClick={() => {
+                        }}><Delete/></IconButton>
+                        <IconButton onClick={() => {
                             drawer.open(<ControlFormDrawer
                                 title={'Update: ' + selectedNode.data.title}
                                 value={selectedNode.data as Control}
@@ -129,12 +143,12 @@ export function FlowDesigner(props: FlowDesignerProps) {
                                 }}
                                 onClose={drawer.close}
                             />)
-                        }} variant='contained'>Edit</Button>
+                        }}><Edit/></IconButton>
 
                         {selectedControlType?.parameters
                             .filter(item => item.paramKind === 'BLOCK')
                             .map(param => {
-                                return <Button
+                                return <IconButton
                                     key={param.name}
                                     onClick={() => {
                                         drawer.open(<ControlFormDrawer
@@ -157,13 +171,20 @@ export function FlowDesigner(props: FlowDesignerProps) {
                                                 drawer.close()
                                             }}
                                         />)
-                                    }} variant='contained'>Add Next {param.name}</Button>
+                                    }}><LastPage/></IconButton>
                             })}
                     </>}
+                    <ToggleButtonGroup value={mode} exclusive onChange={(e, value) => {
+                        setMode(value)
+                    }}>
+                        <ToggleButton size='small' value={'compact'}>
+                            <ViewCompact/>
+                        </ToggleButton>
+                        <ToggleButton size='small' value={'detailed'}>
+                            <ViewArray/>
+                        </ToggleButton>
+                    </ToggleButtonGroup>
                 </Stack>
-            </Panel>
-            <Panel position={'top-right'}>
-                <span>Selected: {selectedNodes.length}</span>
             </Panel>
         </ReactFlow>
     </>

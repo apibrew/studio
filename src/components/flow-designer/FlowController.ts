@@ -12,7 +12,7 @@ export class FlowController {
 
     private nodes: Node[] = [];
     private edges: Edge[] = [];
-    private parentMap: Map<string, Control> = new Map<string, Control>();
+    private blockMap: Map<string, Control[]> = new Map<string, Control[]>();
 
     setFlow(flow: Flow) {
         this.flow = flow
@@ -66,6 +66,20 @@ export class FlowController {
 
             return item
         })
+
+        const parentControl = this.blockMap.get(node.id)
+
+        parentControl?.forEach((item, index) => {
+            if (item.id === control.id) {
+                parentControl[index] = control
+            }
+        })
+
+        this.flow.controls.forEach((item, index) => {
+            if (item.id === control.id) {
+                this.flow.controls[index] = control
+            }
+        });
     }
 
     addNodeToLastPlaceOfBase(baseNode: Node<Control>, param: Parameter, control: Control): Node {
@@ -92,7 +106,7 @@ export class FlowController {
 
         const newNode = this.prepareNodeFromControl(control)
         this.nodes.push(newNode)
-        this.parentMap.set(newNode.id, baseNode.data)
+        this.blockMap.set(newNode.id, block)
 
         this.link(prevNode, newNode)
 
@@ -117,14 +131,14 @@ export class FlowController {
     }
 
     prepareSub(baseNode: Node<Control>, param: Parameter) {
-        let controls = baseNode.data.params[param.name] as Control[] || []
+        let block = baseNode.data.params[param.name] as Control[] || []
 
         let lastNode = baseNode
 
-        for (const control of controls) {
+        for (const control of block) {
             const node = this.prepareNodeFromControl(control)
             this.nodes.push(node)
-            this.parentMap.set(node.id, baseNode.data)
+            this.blockMap.set(node.id, block)
 
             this.link(lastNode, node)
             lastNode = node
@@ -161,6 +175,14 @@ export class FlowController {
             data: control,
             ariaLabel: control.title,
             connectable: true,
+            draggable: true,
+            selectable: true,
+            style: {
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                padding: '10px',
+                background: '#effbfb',
+            },
             type: 'controlNode',
         };
     }
