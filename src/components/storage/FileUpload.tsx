@@ -32,6 +32,12 @@ export function FileUploadForm(props: ValueDrawerComponentFormProps<File>) {
 
         let uploadUrl = file$.uploadUrl
 
+        if (!uploadUrl) {
+            file$ = await repository.get(file$.id)
+
+            uploadUrl = file$.uploadUrl
+        }
+
         await fetch(uploadUrl, {
             method: 'PUT',
             body: fileInput
