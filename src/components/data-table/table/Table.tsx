@@ -5,7 +5,7 @@ import {Add, MoreVert} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
 import {TableRecordLine} from "./TableRecordLine";
-import {getPropertyOrder, isSpecialProperty, sortedProperties} from "../../../util/property";
+import {isSpecialProperty, sortedProperties} from "../../../util/property";
 
 import './Table.scss'
 import {Schema} from "../../../types/schema";
@@ -126,8 +126,9 @@ export function DataTableTable(props: DataTableTableProps) {
 
     if (properties.length === 0) return <></>
 
-    return <Box className='data-table-table' display='flex' flexDirection='column' width='1px' overflow='scroll'>
-        <Box display='block' minWidth={Math.max(500, 100 * properties.length + 85)} width={(tableWidth + 85) + 'px'}>
+    return <Box className='data-table-table' display='flex' height='100%' flexDirection='column' width='1px'>
+        <Box display='flex' flexDirection='column' height='100%' minWidth={Math.max(500, 100 * properties.length + 85)}
+             width={(tableWidth + 85) + 'px'}>
             <Box display='flex' flexDirection='row' className='row row-header'>
                 <Box width='75px' className='cell header-cell'>
                     <Box className='cell-inner'>
@@ -197,40 +198,38 @@ export function DataTableTable(props: DataTableTableProps) {
                 </Box>
             </Box>
             {props.loading && <LoadingOverlay/>}
-            <Box display='flex' flexGrow={1} flexDirection='column'>
-                <Box display='flex' flexDirection='column'>
-                    {props.records.map((record, index) => (
-                        <TableRecordLine key={record.id}
-                                         new={record.id === 'new'}
-                                         columnWidths={columnWidths}
-                                         resource={props.resource}
-                                         schema={props.schema}
-                                         selected={Boolean(selectionIdMap[record.id])}
-                                         properties={properties}
-                                         onSelected={selected => {
-                                             if (!selected) {
-                                                 props.setSelectedItems(props.selectedItems.filter(item => item !== record.id))
-                                             } else {
-                                                 props.setSelectedItems([...props.selectedItems, record.id])
-                                             }
-                                         }}
-                                         index={props.offset + index + 1}
-                                         onUpdate={(updated) => {
-                                             if (updated && Object.keys(updated).length > 0) {
-                                                 props.setUpdates({
-                                                     ...props.updates,
-                                                     [record.id]: updated
-                                                 })
-                                             } else {
-                                                 const newUpdates = {...props.updates}
-                                                 delete newUpdates[record.id]
-                                                 props.setUpdates(newUpdates)
-                                             }
-                                         }}
-                                         updated={props.updates[record.id] ?? {}}
-                                         record={record}/>
-                    ))}
-                </Box>
+            <Box display='flex' flexDirection='column' overflow='auto'>
+                {props.records.map((record, index) => (
+                    <TableRecordLine key={record.id}
+                                     new={record.id === 'new'}
+                                     columnWidths={columnWidths}
+                                     resource={props.resource}
+                                     schema={props.schema}
+                                     selected={Boolean(selectionIdMap[record.id])}
+                                     properties={properties}
+                                     onSelected={selected => {
+                                         if (!selected) {
+                                             props.setSelectedItems(props.selectedItems.filter(item => item !== record.id))
+                                         } else {
+                                             props.setSelectedItems([...props.selectedItems, record.id])
+                                         }
+                                     }}
+                                     index={props.offset + index + 1}
+                                     onUpdate={(updated) => {
+                                         if (updated && Object.keys(updated).length > 0) {
+                                             props.setUpdates({
+                                                 ...props.updates,
+                                                 [record.id]: updated
+                                             })
+                                         } else {
+                                             const newUpdates = {...props.updates}
+                                             delete newUpdates[record.id]
+                                             props.setUpdates(newUpdates)
+                                         }
+                                     }}
+                                     updated={props.updates[record.id] ?? {}}
+                                     record={record}/>
+                ))}
             </Box>
         </Box>
     </Box>

@@ -24,7 +24,7 @@ export interface TableContainerProps {
 
 const defaultListParams = {
     offset: 0,
-    limit: 10
+    limit: 100
 }
 
 export function DataTable(props: TableContainerProps) {
@@ -391,7 +391,7 @@ export function DataTable(props: TableContainerProps) {
                      }}/>
         </Popover>
         <Box display='flex' flexDirection='row' flexGrow={1} className='data-table' marginLeft={2}
-             style={{overflow: 'auto', height: '1px'}}>
+             style={{overflow: 'auto'}}>
             <DataTableTable
                 offset={listParams.offset ?? 0}
                 selectedItems={selectedItems}
@@ -412,9 +412,13 @@ export function DataTable(props: TableContainerProps) {
             />
         </Box>
         <TablePagination component="div"
+                         sx={{
+                             overflow: 'unset'
+                         }}
                          count={total || 0}
                          showFirstButton={true}
                          showLastButton={true}
+                         rowsPerPageOptions={[10, 25, 50, 100, 1000]}
                          page={Math.ceil((listParams.offset || 0) / (listParams.limit || defaultListParams.limit))}
                          rowsPerPage={listParams.limit || defaultListParams.limit}
                          onRowsPerPageChange={(event) => {
