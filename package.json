@@ -5,12 +5,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "yarn workspace app build"
+    "build": "yarn workspace core build; yarn workspace app build"
   },
   "author": "",
   "license": "ISC",
   "workspaces": [
     "app",
+    "core",
     "electron"
   ],
   "dependencies": {
