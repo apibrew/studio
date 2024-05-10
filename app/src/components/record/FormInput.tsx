@@ -219,7 +219,9 @@ const ReferenceInput: FormInputType<Entity> = props => {
             required={props.required}
             readOnly={props.readOnly}
             value={props.value}
-            onChange={props.onChange}
+            onChange={updated => {
+                props.onChange(updated)
+            }}
         />}
     </>
 }

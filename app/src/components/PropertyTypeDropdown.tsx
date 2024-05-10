@@ -2,10 +2,7 @@ import {MenuItem, Select} from "@mui/material";
 import {SelectProps} from "@mui/material/Select/Select";
 import {Type} from "@apibrew/client/model/resource";
 
-export interface PropertyTypeDropdownProps extends SelectProps<Type> {
-}
-
-export function PropertyTypeDropdown(props: PropertyTypeDropdownProps) {
+export function PropertyTypeDropdown(props: SelectProps<Type>) {
     return (
         <Select {...props}>
             <MenuItem value={Type.STRING}>String</MenuItem>

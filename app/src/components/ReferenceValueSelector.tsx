@@ -4,14 +4,14 @@ import {LoadingOverlay} from "./LoadingOverlay";
 import {label} from "../util/record";
 import {SelectProps} from "@mui/material/Select/Select";
 
-export interface ReferenceValueSelectorProps extends SelectProps<any> {
+export interface ReferenceValueSelectorProps {
     required: boolean
     reference: string
     value: any
     onChange: (value: any) => void
 }
 
-export function ReferenceValueSelector(props: ReferenceValueSelectorProps) {
+export function ReferenceValueSelector(props: ReferenceValueSelectorProps & SelectProps<any>) {
     const referenceParts = props.reference.split('/')
 
     const namespace = referenceParts.length === 1 ? 'default' : referenceParts[0]

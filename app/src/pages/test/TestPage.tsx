@@ -1,13 +1,6 @@
 import {useState} from "react";
 import {TextField} from "@mui/material";
 
-const container = import('http://localhost:4173/assets/remoteEntry.js')
-
-container.then((container) => {
-    console.log(container)
-})
-
-
 export function TestPage() {
     const [remoteUrl, setRemoteUrl] = useState<string>('http://localhost:4173/assets/remoteEntry.js')
     const [remoteName, setRemoteName] = useState<string>('List')
