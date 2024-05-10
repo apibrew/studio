@@ -5,8 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "app:dev": "yarn app dev -ws",
-    "build": "yarn app dev -ws"
+    "build": "yarn workspace app build"
   },
   "author": "",
   "license": "ISC",
