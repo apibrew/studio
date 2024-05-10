@@ -1,10 +1,3 @@
-export PATH="$PATH:/home/github-runner/.nvm/versions/node/v20.6.1/bin/"
-
-npm install yarn -G || exit 1
-
-yarn install || exit 1
-yarn build  || exit 1
-
 # Determine current Git branch
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
