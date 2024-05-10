@@ -12,6 +12,7 @@
   "workspaces": [
     "app",
     "core",
+    "common",
     "electron"
   ],
   "dependencies": {
