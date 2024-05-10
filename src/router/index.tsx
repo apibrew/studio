@@ -6,7 +6,7 @@ import LogoutPage from "../pages/logout/LogoutPage";
 import ResourcesPage from "../pages/dashboard/resources/ResourcesPage";
 import UserProfilePage from "../pages/dashboard/user-profile/UserProfilePage";
 import {ConnectionsPage} from "../pages/connections/ConnectionsPage";
-import TestPage from "../pages/dashboard/test/TestPage";
+import {TestPage} from "../pages/test/TestPage";
 import {UserAndRolesRoutes} from "./user-and-roles";
 import {SettingsRoutes} from "./settings";
 import {MonitoringRoutes} from "./monitoring";
@@ -39,6 +39,10 @@ export const index = createBrowserRouter([
         path: "/cloud",
         element: <CloudIndex/>,
         children: cloudRoutes,
+    },
+    {
+        path: "/test",
+        element: <TestPage/>,
     },
     {
         path: "/:connectionName/dashboard",
