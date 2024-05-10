@@ -10,7 +10,7 @@ import TestPage from "../pages/dashboard/test/TestPage";
 import {UserAndRolesRoutes} from "./user-and-roles";
 import {SettingsRoutes} from "./settings";
 import {MonitoringRoutes} from "./monitoring";
-import CloudIndex from '../cloud'
+import CloudIndex from '../cloud/index.tsx'
 import {cloudRoutes} from "../cloud/routes";
 import TemplatesPage from "../pages/dashboard/templates/IndexPage";
 import {NanoRoutes} from "./nano";
