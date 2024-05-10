@@ -1,9 +1,10 @@
 import {Namespace, useRepository} from "@apibrew/react";
 import {NamespaceForm} from "../namespace-form/NamespaceForm";
-import React from "react";
+
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import toast from "react-hot-toast";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
+import {useState} from "react";
 
 export interface NamespaceDrawerProps {
     new: boolean
@@ -14,7 +15,7 @@ export interface NamespaceDrawerProps {
 export function NamespaceDrawer(props: NamespaceDrawerProps) {
     const repository = useRepository(NamespaceEntityInfo)
 
-    const [namespace, setNamespace] = React.useState<Namespace>(props.namespace)
+    const [namespace, setNamespace] = useState<Namespace>(props.namespace)
     return (
         <>
             <Box width='600px'>

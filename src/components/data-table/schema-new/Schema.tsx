@@ -1,6 +1,6 @@
 import {Resource} from "@apibrew/react";
 import {Box, IconButton} from "@mui/material";
-import React, {useMemo} from "react";
+import {useMemo} from "react";
 import {SubType, Type} from "@apibrew/client/model/resource";
 import {AccountTree, Add, ChevronRight, ExpandMore, Remove, SchemaRounded, TableChart} from "@mui/icons-material";
 import {TreeItem, TreeView} from "@mui/x-tree-view";

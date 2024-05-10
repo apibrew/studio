@@ -8,8 +8,6 @@ export interface AnnotationsFormProps {
 }
 
 export function AnnotationsForm(props: AnnotationsFormProps) {
-    const annotations: { [key: string]: string } = props.value || {}
-
     const obj = props.value as any || {}
 
     const keys = Object.keys(obj)

@@ -1,13 +1,14 @@
 import {Box, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
 import Container from "@mui/material/Container";
 import {Connection, connectionProvider} from "../../connection-provider";
-import React from "react";
+
 import {LoadingOverlay} from "../../components/LoadingOverlay";
 import {Add} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {useDrawer} from "../../hooks/use-drawer";
 import {ConnectionDrawer} from "../../components/connections/ConnectionDrawer";
 import {Authentication, Server} from "@apibrew/client/config";
+import {useEffect, useState} from "react";
 
 function loadConnections(setConnections: (value: Connection[]) => void) {
     const connections$ = connectionProvider.listConnections
@@ -21,10 +22,10 @@ function loadConnections(setConnections: (value: Connection[]) => void) {
 }
 
 export function ConnectionsPage() {
-    const [connections, setConnections] = React.useState<Connection[]>()
+    const [connections, setConnections] = useState<Connection[]>()
     const drawer = useDrawer()
 
-    React.useEffect(() => {
+    useEffect(() => {
         loadConnections(setConnections);
     }, [])
 

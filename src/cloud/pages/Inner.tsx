@@ -1,7 +1,7 @@
 import {PageLayout} from "../../layout/PageLayout";
 import {useRouteTab} from "../../hooks/use-route-tab";
 import {Outlet, useNavigate} from "react-router-dom";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {LoadingOverlay} from "../../components/LoadingOverlay";
 import {Box, Tab, Tabs} from "@mui/material";
 import Button from "@mui/material/Button";
@@ -46,7 +46,7 @@ export function InnerPage() {
              }}>
             <Tabs
                 value={tab}
-                onChange={(e, newValue) => {
+                onChange={(_, newValue) => {
                     if (newValue === tab) {
                         return
                     }

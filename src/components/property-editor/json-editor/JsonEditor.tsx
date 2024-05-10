@@ -1,6 +1,6 @@
-import React from 'react';
 import JSONInput from "react-json-editor-ajrm";
 import {localeEn} from "../../data-table/table/json-input";
+import {FC} from "react";
 
 type EditorProps = {
     value: any;
@@ -8,7 +8,7 @@ type EditorProps = {
     onChange: (data: any) => void;
 };
 
-const JsonEditor: React.FC<EditorProps> = (props) => {
+const JsonEditor: FC<EditorProps> = (props) => {
     return <JSONInput
         placeholder={props.value}
         locale={localeEn}

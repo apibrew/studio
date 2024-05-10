@@ -1,10 +1,10 @@
-import React from "react";
 import {
     Dataset,
     FunctionsTwoTone,
     Group,
     Handyman,
-    Home, LibraryBooks,
+    Home,
+    LibraryBooks,
     Logout,
     Monitor,
     Person,
@@ -12,12 +12,13 @@ import {
 } from "@mui/icons-material";
 import {ConnectionProvider} from "./connection-provider";
 import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
+import {ReactNode} from "react";
 
 export interface MenuItem {
     title: string;
-    icon?: React.ReactNode;
+    icon?: ReactNode;
     path: string;
-    secondSideBar?: () => React.ReactNode;
+    secondSideBar?: () => ReactNode;
     grow?: boolean;
     delimiter?: boolean;
     conditional?: (connectionProvider: ConnectionProvider) => boolean

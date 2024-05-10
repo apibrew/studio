@@ -2,7 +2,7 @@ import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {Box, FormControl, FormHelperText, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown";
 import {ResourceSelect} from "../ResourceSelect";
 import {TagInput} from "../TagInput";

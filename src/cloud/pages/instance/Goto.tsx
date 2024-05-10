@@ -1,8 +1,8 @@
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useNavigate, useParams} from "react-router-dom";
-import {LocalStorageTokenStorage, useClient, useRecordBy, useRepository} from "@apibrew/react";
+import {LocalStorageTokenStorage, useRecordBy, useRepository} from "@apibrew/react";
 import {DeploymentStatus, Instance, InstanceEntityInfo} from "../../model/instance";
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {Client, ClientImpl} from "@apibrew/client";
 import Alert from "@mui/material/Alert";
@@ -11,7 +11,7 @@ import {ControllerAccessToken, ControllerAccessTokenEntityInfo} from "../../mode
 export function Goto() {
     const params = useParams()
     const navigate = useNavigate()
-    const [message, setMessage] = React.useState('')
+    const [message, setMessage] = useState('')
     const controllerAccessTokenRepository = useRepository<ControllerAccessToken>(ControllerAccessTokenEntityInfo)
 
     const instance = useRecordBy<Instance>(InstanceEntityInfo, {

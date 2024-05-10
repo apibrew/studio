@@ -2,7 +2,7 @@ export interface ApiDoc {
 
 }
 
-export function ApiDoc(props: ApiDoc) {
+export function ApiDoc() {
     return <>
         Under Construction
     </>

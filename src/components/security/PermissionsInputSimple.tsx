@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {ChevronRight, ExpandMore} from "@mui/icons-material";
 import {Checkbox, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Box from "@mui/material/Box";
@@ -148,7 +148,7 @@ export function PermissionsInputSimple(props: PermissionsInputSimpleProps) {
                         }}/>
                     <TableCell/>
                 </TableRow>
-                {namespaces.map(namespace => <React.Fragment key={namespace.name}>
+                {namespaces.map(namespace => <Fragment key={namespace.name}>
                     <TableRow>
                         <TableCell>
                             <span>Namespace: <b>{namespace.name}</b></span>
@@ -168,7 +168,7 @@ export function PermissionsInputSimple(props: PermissionsInputSimpleProps) {
                         <TableCell/>
                     </TableRow>
                     {open[`namespace-${namespace.name}`] && resources.filter(item => item.namespace.name === namespace.name)
-                        .map(resource => <React.Fragment key={resource.name}>
+                        .map(resource => <Fragment key={resource.name}>
                             <TableRow>
                                 <TableCell>
                                     <Box sx={{marginLeft: '30px'}}>
@@ -182,8 +182,8 @@ export function PermissionsInputSimple(props: PermissionsInputSimpleProps) {
                                         updateConstraints({namespace: namespace.name, resource: resource.name}, value)
                                     }}/>
                             </TableRow>
-                        </React.Fragment>)}
-                </React.Fragment>)}
+                        </Fragment>)}
+                </Fragment>)}
             </TableBody>
         </Table>
     </>

@@ -1,8 +1,9 @@
 import {DrawerComponent} from "../common/DrawerComponent";
 import {SubTypesForm} from "../sub-types-form/SubTypesForm";
-import React from "react";
+
 import {SubType} from "@apibrew/client/model/resource";
 import {Button} from "@mui/material";
+import {useState} from "react";
 
 export interface SubTypeDrawerProps {
     type: SubType
@@ -11,7 +12,7 @@ export interface SubTypeDrawerProps {
 }
 
 export function SubTypeDrawer(props: SubTypeDrawerProps) {
-    const [value, setValue] = React.useState<SubType>(props.type)
+    const [value, setValue] = useState<SubType>(props.type)
 
     return (<DrawerComponent title={'Sub Type: ' + value.name}
                              content={<SubTypesForm

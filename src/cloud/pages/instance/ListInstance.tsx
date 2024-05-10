@@ -1,7 +1,7 @@
 import {Instance, InstanceEntityInfo} from "../../model/instance";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {useDataProvider} from "../../../components/data-provider/use-data-provider";
-import React from "react";
+
 import {Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography} from "@mui/material";
 import {checkResourceAccess} from "../../../util/authorization";
 import {Direction, Resource, useRecords, useRepository, useTokenBody, useWatcher} from "@apibrew/react";

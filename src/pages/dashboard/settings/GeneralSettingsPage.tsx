@@ -2,7 +2,7 @@ import {useStateContext} from "../../../context/StateContext";
 import {Settings} from "../../../model/settings";
 
 export function GeneralSettingsPage() {
-    const [settings, setSettings] = useStateContext<Settings>()
+    const [settings, _] = useStateContext<Settings>()
 
     return <div>
         {settings.name}

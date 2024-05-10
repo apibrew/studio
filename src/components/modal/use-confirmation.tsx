@@ -1,4 +1,3 @@
-import React from "react";
 import {useModal} from "./use-modal";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
@@ -12,8 +11,8 @@ export type ConfirmationKind = 'info' | 'confirm' | 'danger'
 
 export interface ConfirmationOptions {
     kind: ConfirmationKind
-    title?: string | React.JSX.Element
-    message: string | React.JSX.Element
+    title?: string | JSX.Element
+    message: string | JSX.Element
     onConfirm: () => void
     buttonMessage?: string
 }
@@ -21,7 +20,7 @@ export interface ConfirmationOptions {
 export interface useConfirmationResult {
     open: (options: ConfirmationOptions) => void
     close: () => void
-    render: () => React.JSX.Element
+    render: () => JSX.Element
 }
 
 export function useConfirmation(): useConfirmationResult {

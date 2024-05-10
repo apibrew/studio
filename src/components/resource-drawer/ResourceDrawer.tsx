@@ -1,11 +1,12 @@
 import {Resource, useClient} from "@apibrew/react";
-import React from "react";
+
 import {Box, Button} from "@mui/material";
 import toast from "react-hot-toast";
 import {useConfirmation} from "../modal/use-confirmation";
 import {DrawerMultiComponent} from "../common/DrawerMultiComponent";
 import {ResourceForm} from "../resource-form/ResourceForm";
 import {SchemaTable} from "../data-table/schema-new/Schema";
+import {useState} from "react";
 
 export interface ResourceDrawerProps {
     new: boolean
@@ -34,7 +35,7 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
         })
     }
 
-    const [resource, setResource] = React.useState<Resource>(props.resource)
+    const [resource, setResource] = useState<Resource>(props.resource)
     return <DrawerMultiComponent
         title={props.new ? 'New resource' : 'Update resource: ' + props.resource.name}
         items={[
@@ -99,11 +100,4 @@ export function ResourceDrawer(props: ResourceDrawerProps) {
                     onClick={() => props.onClose()}>Cancel</Button>
         </>}
     />
-}
-
-function a11yProps(index: number) {
-    return {
-        id: `vertical-tab-${index}`,
-        'aria-controls': `vertical-tabpanel-${index}`,
-    };
 }

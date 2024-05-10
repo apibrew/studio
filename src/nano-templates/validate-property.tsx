@@ -1,4 +1,3 @@
-import React from "react";
 import {NanoCodeTemplate} from "./abs";
 import toast from "react-hot-toast";
 import {Resource} from "@apibrew/react";
@@ -8,6 +7,7 @@ import {sortedProperties} from "../util/property";
 import {ResourceSelect} from "../components/ResourceSelect";
 import {NanoAstModifier} from "../logic/nano-ast/NanoAstModifier";
 import {ResourceHandlerType} from "../logic/nano-ast/abs";
+import {useState} from "react";
 
 export interface RenderParamsProps {
     resource: Resource | undefined
@@ -23,11 +23,11 @@ export interface RenderParamsProps {
 }
 
 function RenderParams(props: RenderParamsProps) {
-    const [resource, setResource] = React.useState<Resource | undefined>(props.resource)
-    const [property, setProperty] = React.useState<string | undefined>(props.property)
-    const [operator, setOperator] = React.useState<string | undefined>(props.operator)
-    const [value, setValue] = React.useState<string | undefined>(props.value)
-    const [errorMessage, setErrorMessage] = React.useState<string | undefined>(props.errorMessage)
+    const [resource, setResource] = useState<Resource | undefined>(props.resource)
+    const [property, setProperty] = useState<string | undefined>(props.property)
+    const [operator, setOperator] = useState<string | undefined>(props.operator)
+    const [value, setValue] = useState<string | undefined>(props.value)
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(props.errorMessage)
 
     const resourceValue = resource ? (resource.namespace.name + '/' + resource.name) : undefined
 
@@ -38,7 +38,7 @@ function RenderParams(props: RenderParamsProps) {
             <FormLabel>Resource:</FormLabel>
             <ResourceSelect
                 value={resourceValue}
-                onChange={(e, resource) => {
+                onChange={(_, resource) => {
                     setResource(resource)
                     props.onResourceChange(resource)
 

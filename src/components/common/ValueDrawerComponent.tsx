@@ -1,6 +1,6 @@
-import React from "react";
 import {DrawerComponent} from "./DrawerComponent";
 import Button from "@mui/material/Button";
+import {ComponentType, useState} from "react";
 
 export interface ValueDrawerComponentFormProps<T = any> {
     value: T;
@@ -12,11 +12,11 @@ export interface ValueDrawerComponentProps<T = any> {
     value: T;
     onChange: (value: T) => void | Promise<void>;
     onClose: () => void;
-    component: React.ComponentType<ValueDrawerComponentFormProps<T>>;
+    component: ComponentType<ValueDrawerComponentFormProps<T>>;
 }
 
 export function ValueDrawerComponent(props: ValueDrawerComponentProps) {
-    const [value, setValue] = React.useState(props.value);
+    const [value, setValue] = useState(props.value);
 
 
     const Component = props.component;

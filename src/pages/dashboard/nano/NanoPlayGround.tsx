@@ -1,5 +1,5 @@
 import {Box, MenuItem, Select, Stack} from "@mui/material";
-import React, {useState} from "react";
+import {useState} from "react";
 import {useRepository} from "@apibrew/react";
 import Button from "@mui/material/Button";
 import {Script, ScriptEntityInfo} from "@apibrew/client/nano/model/script";

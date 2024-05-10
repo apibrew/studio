@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Module, ModuleEntityInfo} from "@apibrew/client/nano/model/module";
 import {Box, Card, CardActions, CardContent, CardHeader, MenuItem, Select, TextField} from "@mui/material";
 import Button from "@mui/material/Button";

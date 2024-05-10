@@ -10,7 +10,7 @@ import {useClient} from '@apibrew/react';
 import {GitHub} from "@mui/icons-material";
 import {Layout} from "../layout/modern-layout";
 import {useNavigate} from "react-router-dom";
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 
 export const LoginPage = () => {
@@ -23,8 +23,8 @@ export const LoginPage = () => {
         }
     }, [client]);
 
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
         const loadingId = toast.loading('Logging in...');

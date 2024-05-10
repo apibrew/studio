@@ -1,6 +1,6 @@
 import {Property, Resource} from "@apibrew/client/model";
 import {makeProperties} from "../../util/property";
-import React, {useMemo} from "react";
+import {useMemo} from "react";
 import {FormInput} from "./FormInput";
 import {FormControl, FormLabel} from "@mui/material";
 import Box from "@mui/material/Box";

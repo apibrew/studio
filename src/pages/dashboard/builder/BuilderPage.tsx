@@ -4,7 +4,7 @@ import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import {Box, FormControl, Grid, MenuItem, Select, Stack} from "@mui/material";
 import {ResourceSchemaView} from "../../../components/resource-schema-view/ResourceSchemaView";
 import {Link} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Button from "@mui/material/Button";
 import {Add, Api, Refresh} from "@mui/icons-material";
 import {ResourceDrawer} from "../../../components/resource-drawer/ResourceDrawer";
@@ -16,8 +16,8 @@ import {NamespaceDrawer} from "../../../components/namespace-drawer/NamespaceDra
 
 export default function BuilderPage() {
     const drawer = useDrawer()
-    const [wi, setWi] = React.useState<number>(0)
-    const [resources, setResources] = React.useState<Resource[] | undefined>(undefined)
+    const [wi, setWi] = useState<number>(0)
+    const [resources, setResources] = useState<Resource[] | undefined>(undefined)
     const analytics = useAnalytics()
     const repository = useRepository<Resource>(ResourceEntityInfo)
 

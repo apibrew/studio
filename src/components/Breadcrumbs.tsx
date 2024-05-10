@@ -1,6 +1,6 @@
-import React from "react";
 import {Typography, useTheme} from "@mui/material";
 import {Link, useMatches, useParams} from "react-router-dom";
+import {Fragment} from "react";
 
 export interface BreadcrumbsProps {
 
@@ -50,7 +50,7 @@ export function Breadcrumbs() {
             const isLast = index === breadcrumbs.length - 1
             const isLink = !isLast && breadcrumb.link
 
-            return <React.Fragment key={index}>
+            return <Fragment key={index}>
                 {index !== 0 && <Typography style={{
                     padding: '4px',
                     margin: '0 5px',
@@ -72,7 +72,7 @@ export function Breadcrumbs() {
                         to={breadcrumb.link}>{breadcrumb.title}</Link>}
                     {!isLink && breadcrumb.title}
                 </Typography>
-            </React.Fragment>
+            </Fragment>
         })}
     </>
 }

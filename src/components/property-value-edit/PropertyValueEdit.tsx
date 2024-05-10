@@ -1,7 +1,7 @@
-import React from "react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
+import {useState} from "react";
 
 export interface PropertyValueEditProps {
     property: Property
@@ -29,7 +29,7 @@ export function isInlineEditSupported(property: Property): boolean {
 }
 
 export function PropertyValueEdit(props: PropertyValueEditProps) {
-    const [updated, setUpdated] = React.useState<any>(props.value)
+    const [updated, setUpdated] = useState<any>(props.value)
 
     switch (props.property.type) {
         case Type.BOOL:
@@ -43,7 +43,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               setUpdated(e.target.checked)
                           }}
-                          onBlur={e => {
+                          onBlur={_ => {
                               props.onChange(updated)
                           }}/>
         case Type.INT32:
@@ -54,7 +54,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               setUpdated(e.target.value)
                           }}
-                          onBlur={e => {
+                          onBlur={_ => {
                               if (!updated) {
                                   setUpdated(undefined)
                                   return
@@ -70,7 +70,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               setUpdated(e.target.value)
                           }}
-                          onBlur={e => {
+                          onBlur={_ => {
                               if (!updated) {
                                   setUpdated(undefined)
                                   return
@@ -85,7 +85,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               setUpdated(e.target.value)
                           }}
-                          onBlur={e => {
+                          onBlur={_ => {
                               props.onChange(updated)
                           }}/>
         case Type.DATE:
@@ -95,7 +95,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               setUpdated(e.target.value)
                           }}
-                          onBlur={e => {
+                          onBlur={_ => {
                               props.onChange(updated)
                           }}/>
         case Type.TIME:
@@ -105,7 +105,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               setUpdated(e.target.value)
                           }}
-                          onBlur={e => {
+                          onBlur={_ => {
                               if (!updated) {
                                   props.onChange(undefined)
                                   return
@@ -126,7 +126,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               setUpdated(e.target.value)
                           }}
-                          onBlur={e => {
+                          onBlur={_ => {
                               if (!updated) {
                                   props.onChange(undefined)
                                   return
@@ -150,7 +150,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                            onChange={e => {
                                setUpdated(e.target.value)
                            }}
-                           onBlur={e => {
+                           onBlur={_ => {
                                if (!updated) {
                                    props.onChange(undefined)
                                    return

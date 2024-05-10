@@ -1,5 +1,5 @@
-import * as React from 'react';
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
+import {Fragment} from "react";
 
 export interface AskAiProps {
     onClose: () => void
@@ -8,7 +8,7 @@ export interface AskAiProps {
 export default function AskAi(props: AskAiProps) {
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Box width='1400px'>
                 <Card>
                     <CardHeader title='Edit Code'/>
@@ -31,6 +31,6 @@ export default function AskAi(props: AskAiProps) {
                     </Stack>
                 </CardActions>
             </Box>
-        </React.Fragment>
+        </Fragment>
     );
 }

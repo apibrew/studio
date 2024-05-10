@@ -1,6 +1,6 @@
 import {FlowControlPage} from "../pages/dashboard/flow-controls";
 import {FlowControlTypesList} from "../pages/dashboard/flow-controls/FlowControlTypesList";
-import React from "react";
+
 
 export const FlowControlsRoutes = {
     path: "flow-control-types",

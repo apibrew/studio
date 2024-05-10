@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {Fragment, useEffect, useState} from 'react';
 import Stack from '@mui/material/Stack';
 import TrapFocus from '@mui/material/Unstable_TrapFocus';
 import Paper from '@mui/material/Paper';
@@ -21,7 +20,7 @@ export interface AiDialogProps {
 
 export default function AiDialog(props: AiDialogProps) {
     const client = useClient()
-    const [bannerOpen, setBannerOpen] = React.useState(true);
+    // const [bannerOpen, setBannerOpen] = useState(true);
     const [message, setMessage] = useState<Message>({
         text: '',
         role: 'USER',
@@ -113,9 +112,9 @@ export default function AiDialog(props: AiDialogProps) {
     }
 
     return (
-        <React.Fragment>
+        <Fragment>
             <TrapFocus open disableAutoFocus disableEnforceFocus>
-                <Fade appear={false} in={bannerOpen}>
+                <Fade appear={false} in={true}>
                     <Paper
                         role="dialog"
                         aria-modal="false"
@@ -196,6 +195,6 @@ export default function AiDialog(props: AiDialogProps) {
                     </Paper>
                 </Fade>
             </TrapFocus>
-        </React.Fragment>
+        </Fragment>
     );
 }

@@ -1,6 +1,4 @@
-import {Resource} from "@apibrew/react";
-import React from "react";
-import {Schema} from "../../../types/schema";
+import {MouseEvent} from 'react'
 
 export class TableResize {
     private property: string = '';
@@ -8,7 +6,7 @@ export class TableResize {
     private width: number = 0;
     private onResizeListener: (property: string, width: number) => void = () => void 0;
 
-    constructor(private resource: Schema, private properties: string[]) {
+    constructor() {
         this.onMouseMove = this.onMouseMove.bind(this)
         this.onMouseUp = this.onMouseUp.bind(this)
     }
@@ -19,7 +17,7 @@ export class TableResize {
         />
     }
 
-    onMouseDown(property: string, e: React.MouseEvent<HTMLDivElement>) {
+    onMouseDown(property: string, e: MouseEvent<HTMLDivElement>) {
         this.property = property
         this.startX = e.clientX
 
@@ -34,12 +32,16 @@ export class TableResize {
 
         e.preventDefault()
 
+        // @ts-ignore
         document.addEventListener('mousemove', this.onMouseMove)
+        // @ts-ignore
         document.addEventListener('mouseup', this.onMouseUp)
     }
 
-    onMouseUp(e: MouseEvent) {
+    onMouseUp(_: MouseEvent) {
+        // @ts-ignore
         document.removeEventListener('mousemove', this.onMouseMove)
+        // @ts-ignore
         document.removeEventListener('mouseup', this.onMouseUp)
     }
 

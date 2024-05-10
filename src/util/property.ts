@@ -1,9 +1,6 @@
 import {Property} from "@apibrew/client/model";
-import {getAnnotation, isAnnotationEnabled, withAnnotation} from "./annotation";
+import {getAnnotation, isAnnotationEnabled} from "./annotation";
 import {Type} from "@apibrew/client/model/resource";
-import {SourceMatchKey} from "./base-annotations";
-import {Resource} from "@apibrew/react";
-import {Schema} from "../types/schema";
 
 export function isSpecialProperty(property: Property): boolean {
     return isAnnotationEnabled(property.annotations as any, 'SpecialProperty');

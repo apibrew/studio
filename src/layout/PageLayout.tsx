@@ -1,9 +1,9 @@
-import React from "react";
 import Container from "@mui/material/Container";
 import {Box} from "@mui/material";
+import {ReactNode} from "react";
 
 export interface PageLayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
     disableTopMargin?: boolean;
 }
 

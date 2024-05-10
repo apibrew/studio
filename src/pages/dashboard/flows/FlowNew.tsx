@@ -1,5 +1,5 @@
 import {Box} from "@mui/material";
-import React from "react";
+
 import {Flow, FlowEntityInfo} from "../../../model/flow";
 import {FlowDesigner} from "../../../components/flow-designer/FlowDesigner";
 import toast from "react-hot-toast";

@@ -1,8 +1,7 @@
 import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import React from "react";
+
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import Button from "@mui/material/Button";
-import {useNavigate} from "react-router-dom";
 import {useDataProvider} from "../../../components/data-provider/use-data-provider";
 import {PageLayout} from "../../../layout/PageLayout";
 import {useConfirmation} from "../../../components/modal/use-confirmation";
@@ -16,7 +15,6 @@ import {FlowControlForm} from "./FlowControlForm";
 export function FlowControlTypesList() {
     const drawer = useDrawer()
     const data = useDataProvider<FlowControlType>(FlowControlTypeEntityInfo)
-    const navigate = useNavigate()
     const confirmation = useConfirmation()
     const repository = useRepository<FlowControlType>(FlowControlTypeEntityInfo)
 

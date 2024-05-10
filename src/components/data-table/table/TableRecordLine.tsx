@@ -1,6 +1,6 @@
 import {Box, Checkbox, IconButton, Menu, MenuItem} from "@mui/material";
 import {PropertyCell} from "./PropertyCell";
-import React, {useState} from "react";
+import {MouseEvent, useState} from "react";
 import {Entity} from "@apibrew/client";
 import {Resource} from "@apibrew/react";
 import {DeleteForever, OpenInFullRounded} from "@mui/icons-material";
@@ -34,7 +34,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
         mouseY: null
     });
 
-    const handleRightClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const handleRightClick = (event: MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
         setMouseXY({
             mouseX: event.clientX - 2,

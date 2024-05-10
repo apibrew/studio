@@ -1,5 +1,5 @@
 import {Box, Stack, Tab, Tabs} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import {PageLayout} from "../../../layout/PageLayout";
 import {useRouteTab} from "../../../hooks/use-route-tab";
@@ -63,7 +63,7 @@ export default function SettingsPage() {
                  }}>
                 <Tabs
                     value={tab}
-                    onChange={(e, newValue) => {
+                    onChange={(_, newValue) => {
                         if (newValue === tab) {
                             return
                         }

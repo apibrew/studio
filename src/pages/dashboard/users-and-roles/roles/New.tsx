@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from "react";
+import {useState} from "react";
 import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {Permission, Role} from "@apibrew/client/model";

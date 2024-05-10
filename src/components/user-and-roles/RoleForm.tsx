@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import {Box, FormControl, FormHelperText, FormLabel, Stack, TextField} from "@mui/material";
 import {PermissionsInput} from "../security/PermissionsInput";
-import React from "react";
+
 import {Role} from "@apibrew/client/model";
 
 export interface RoleFormProps {

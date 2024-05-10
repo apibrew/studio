@@ -1,8 +1,9 @@
 import {Box, Grid, TextField, Typography} from "@mui/material";
-import React from "react";
+
 import Button from "@mui/material/Button";
 import OpenAI from "openai";
 import {Instructions} from "./instructions";
+import {useState} from "react";
 
 const asistantName = 'asst_N4doNhgJCu6FkXWloc42sIkN'
 
@@ -46,10 +47,10 @@ async function run(coreInstructions: string, userInstructions: string, onMessage
     const run = openai.beta.threads.runs.createAndStream(thread.id, {
         assistant_id: assistant.id
     })
-        .on('textCreated', (text) => onMessage('\nassistant > '))
-        .on('textDelta', (textDelta, snapshot) => onMessage(textDelta.value!))
+        .on('textCreated', (_) => onMessage('\nassistant > '))
+        .on('textDelta', (textDelta, _) => onMessage(textDelta.value!))
         .on('toolCallCreated', (toolCall) => onMessage(`\nassistant > ${toolCall.type}\n\n`))
-        .on('toolCallDelta', (toolCallDelta, snapshot) => {
+        .on('toolCallDelta', (toolCallDelta, _) => {
             if (toolCallDelta.type === 'code_interpreter') {
                 if (toolCallDelta.code_interpreter?.input) {
                     onMessage("\nCode: >\n");
@@ -67,10 +68,12 @@ async function run(coreInstructions: string, userInstructions: string, onMessage
                 }
             }
         });
+
+    console.log(run)
 }
 
 export function AIAssistantPage() {
-    const [instructions, setInstructions] = React.useState<string>('')
+    const [instructions, setInstructions] = useState<string>('')
 
     return <Grid container height='100%'>
         <Grid item xs={8} height='100%' borderRight='1px solid gray'>

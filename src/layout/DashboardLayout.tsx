@@ -1,4 +1,3 @@
-import React from "react";
 import {Box, Stack, Typography} from "@mui/material";
 import {DashboardLayoutConfig, DashboardLayoutConfigureContext} from "../context/DashboardLayoutConfig";
 import Button from "@mui/material/Button";
@@ -10,16 +9,17 @@ import {FeedbackWidget} from "../components/FeedbackWidget";
 import {useDrawer} from "../hooks/use-drawer";
 import AskAi from "../components/ask-ai/AiDialog";
 import {useConnection} from "../context/ConnectionContext";
+import {ReactNode, useState} from "react";
 
 export interface DashboardLayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 export function DashboardLayout(props: DashboardLayoutProps) {
-    const [config, setConfig] = React.useState<DashboardLayoutConfig>({
+    const [config, setConfig] = useState<DashboardLayoutConfig>({
         sideBarOpen: true,
     });
-    const [feedbackOpen, setFeedbackOpen] = React.useState(false)
+    const [feedbackOpen, setFeedbackOpen] = useState(false)
 
     const activeItem = useActiveMenuItem()
     const drawer = useDrawer()

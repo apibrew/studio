@@ -1,5 +1,5 @@
 import {Box} from "@mui/material";
-import React, {useState} from "react";
+import {useState, MouseEvent} from "react";
 import {Property} from "@apibrew/client/model";
 import {Resource} from "@apibrew/react";
 import toast from "react-hot-toast";
@@ -20,7 +20,7 @@ export interface PropertyCellProps {
     onUpdate: (updated: any) => void
     width: number
     new?: boolean
-    openContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void
+    openContextMenu?: (e: MouseEvent<HTMLDivElement>) => void
 }
 
 export function PropertyCell(props: PropertyCellProps) {

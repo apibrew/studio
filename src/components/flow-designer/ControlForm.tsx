@@ -1,7 +1,7 @@
 import {ValueDrawerComponent, ValueDrawerComponentFormProps} from "../common/ValueDrawerComponent";
 import {Control} from "../../model/flow";
 import {useRecords} from "@apibrew/react";
-import {FlowControlType, FlowControlTypeEntityInfo, Kind, Parameter} from "../../model/flow-control-type";
+import {FlowControlType, FlowControlTypeEntityInfo, Parameter} from "../../model/flow-control-type";
 import {LoadingOverlay} from "../LoadingOverlay";
 import {
     Box,
@@ -16,7 +16,7 @@ import {
     TableRow,
     TextField
 } from "@mui/material";
-import React from "react";
+
 import {label} from "@apibrew/client/util/record";
 import Checkbox from "@mui/material/Checkbox";
 import {ResourceSelect} from "../ResourceSelect";
@@ -63,11 +63,11 @@ export const ControlForm = (props: ValueDrawerComponentFormProps<Control>) => {
             <br/>
             <Table>
                 <TableHead>
-                   <TableRow>
-                       <TableCell>Name</TableCell>
-                       <TableCell>Current</TableCell>
-                       <TableCell>Update</TableCell>
-                   </TableRow>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Current</TableCell>
+                        <TableCell>Update</TableCell>
+                    </TableRow>
                 </TableHead>
                 <TableBody>
                     {selectedControlType.parameters.map(param => {
@@ -129,7 +129,7 @@ function ParameterRow({param, value, onChange}: ParameterRowProps) {
             {param.paramKind === 'RESOURCE' && <ResourceSelect
                 sx={{width: '100%'}}
                 value={value}
-                onChange={(e, resource) => {
+                onChange={(_, resource) => {
                     if (!resource) {
                         onChange(undefined)
                         return

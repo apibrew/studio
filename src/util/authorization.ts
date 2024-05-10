@@ -7,7 +7,7 @@ export enum AccessLevel {
     READ_WRITE
 }
 
-export function checkResourceAccess(permissions: Permission[], resource: Resource, operation: Permission["operation"], recordId?: string): boolean {
+export function checkResourceAccess(permissions: Permission[], resource: Resource, operation: Permission["operation"]): boolean {
     const matchingConstraints = permissions.filter(constraint => {
         if (constraint.namespace && constraint.namespace !== resource.namespace.name) {
             return false

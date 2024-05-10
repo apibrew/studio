@@ -1,4 +1,4 @@
-import {Namespace, Property, Resource} from "@apibrew/client/model";
+import {Namespace, Resource} from "@apibrew/client/model";
 import {AccessMap, PermissionChecks} from "./model";
 
 export const computeSystemIndeterminate = (accessMap: AccessMap, namespaces: Namespace[]) => {

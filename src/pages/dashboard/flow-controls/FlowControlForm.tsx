@@ -15,11 +15,12 @@ import {
     TextField,
     Tooltip
 } from "@mui/material";
-import React from "react";
+
 import Editor from "@monaco-editor/react";
 import {Add, Delete} from "@mui/icons-material";
 import {TagInput} from "../../../components/TagInput";
 import Checkbox from "@mui/material/Checkbox";
+import {useState} from "react";
 
 export interface FlowControlFormProps {
     value: FlowControlType;
@@ -154,7 +155,7 @@ interface ParameterProps {
 }
 
 function ParameterComponent(props: ParameterProps) {
-    const [value, setValue] = React.useState(props.value)
+    const [value, setValue] = useState(props.value)
 
     const blur = () => {
         props.onChange(value)

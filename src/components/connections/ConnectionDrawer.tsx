@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {
     Box,
     Button,
@@ -30,7 +30,7 @@ export interface ConnectionDrawerProps {
 export function ConnectionDrawer(props: ConnectionDrawerProps) {
     const confirmation = useConfirmation()
     const [authenticationType, setAuthenticationType] = useState<'token' | 'credentials'>('credentials')
-    
+
     function handleDelete() {
         confirmation.open({
             kind: 'confirm',
@@ -42,7 +42,7 @@ export function ConnectionDrawer(props: ConnectionDrawerProps) {
         })
     }
 
-    const [connection, setConnection] = React.useState<Connection>(props.connection)
+    const [connection, setConnection] = useState<Connection>(props.connection)
     return (
         <>
             {confirmation.render()}

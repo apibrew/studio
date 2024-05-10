@@ -78,7 +78,7 @@ export interface AnnotationDef {
 
 export const PropertyEditorAnnotation = "PropertyEditor";
 
-const annotations: AnnotationDef[] = [
+export const annotations: AnnotationDef[] = [
     {name: Enabled, type: Type.BOOL},
     {name: KeepHistory, type: Type.BOOL},
     {name: HistoryResource, type: Type.BOOL},

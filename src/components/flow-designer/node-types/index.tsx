@@ -1,4 +1,4 @@
-import type {NodeTypes} from "@reactflow/core/dist/esm/types";
+import type {NodeTypes} from "@reactflow/core";
 import {StartNode} from "./StartNode";
 import {ControlNode} from "./ControlNode";
 import {ControlNodeCompact} from "./ControlNodeCompact";

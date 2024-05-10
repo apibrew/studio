@@ -1,4 +1,4 @@
-import React from "react";
+import {createContext} from "react";
 
 export interface DashboardLayoutConfig {
 }
@@ -9,5 +9,5 @@ export interface DashboardLayoutConfigureContextProps {
     update(config: Partial<DashboardLayoutConfig>): void;
 }
 
-export const DashboardLayoutConfigureContext = React.createContext<DashboardLayoutConfigureContextProps>({} as DashboardLayoutConfigureContextProps);
+export const DashboardLayoutConfigureContext = createContext<DashboardLayoutConfigureContextProps>({} as DashboardLayoutConfigureContextProps);
 

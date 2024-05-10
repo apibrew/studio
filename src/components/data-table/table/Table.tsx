@@ -1,5 +1,5 @@
 import {Box, Checkbox, IconButton} from "@mui/material";
-import React, {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Resource} from "@apibrew/react";
 import {Add, MoreVert} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
@@ -99,7 +99,7 @@ export function DataTableTable(props: DataTableTableProps) {
     }, [props.schema, properties])
 
     const tableResize = useMemo(() => {
-        return new TableResize(props.schema, properties)
+        return new TableResize()
     }, [props.schema, properties])
 
     tableDnd.onReorderProperties(updatedProperties => {

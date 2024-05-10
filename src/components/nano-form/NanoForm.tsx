@@ -1,7 +1,7 @@
 import {Box, FormLabel, Grid, MenuItem, Select, TextField} from "@mui/material";
 import {Code} from "@apibrew/client/nano/model/code";
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import React, {useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import Button from "@mui/material/Button";
 import {Resource} from "@apibrew/react";
 import {generate, GENERATOR} from "astring";
@@ -54,7 +54,7 @@ export function NanoForm(props: NanoFormProps) {
             comments: true,
             generator: {
                 ...GENERATOR,
-                EmptyStatement(node, state) {
+                EmptyStatement(node, _) {
                     console.log('EmptyStatement', node)
                 }
             }

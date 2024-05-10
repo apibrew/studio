@@ -1,7 +1,7 @@
 import {Box, IconButton, Popover, TextField, TextFieldProps, Typography} from "@mui/material";
 import {label} from "../util/record";
 import {Add, Edit, Remove} from "@mui/icons-material";
-import React, {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Button from "@mui/material/Button";
 
 export interface TagInputProps<T> {
@@ -38,7 +38,7 @@ export function TagInput(props: TagInputProps<unknown>) {
             <Box flexGrow={1}/>
             {<IconButton
                 size='small'
-                onClick={(e) => {
+                onClick={(_) => {
                     setOpen(true)
                 }}>
                 <Edit fontSize='small'/>

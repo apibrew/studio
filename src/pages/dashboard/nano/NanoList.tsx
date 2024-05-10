@@ -1,5 +1,5 @@
 import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import React from "react";
+
 import {Code, CodeEntityInfo} from "@apibrew/client/nano/model/code";
 import {LoadingOverlay} from "../../../components/LoadingOverlay";
 import Button from "@mui/material/Button";

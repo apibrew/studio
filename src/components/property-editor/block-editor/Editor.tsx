@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import {FC, useEffect, useRef} from 'react';
 import EditorJS, {OutputData} from '@editorjs/editorjs';
 
 type EditorProps = {
@@ -6,7 +6,7 @@ type EditorProps = {
     onChange: (data: OutputData) => void;
 };
 
-const Editor: React.FC<EditorProps> = ({value, onChange}) => {
+const Editor: FC<EditorProps> = ({value, onChange}) => {
     const editorContainer = useRef<HTMLDivElement>(null);
     const editorInstance = useRef<EditorJS | null>(null);
 

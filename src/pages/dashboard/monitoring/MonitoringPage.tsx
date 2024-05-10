@@ -1,5 +1,5 @@
 import {Box, Tab, Tabs} from "@mui/material";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import {PageLayout} from "../../../layout/PageLayout";
 import {useRouteTab} from "../../../hooks/use-route-tab";
@@ -28,7 +28,7 @@ export default function MonitoringPage() {
                  }}>
                 <Tabs
                     value={tab}
-                    onChange={(e, newValue) => {
+                    onChange={(_, newValue) => {
                         if (newValue === tab) {
                             return
                         }

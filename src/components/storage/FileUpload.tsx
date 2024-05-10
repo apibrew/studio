@@ -4,19 +4,20 @@ import {
     ValueDrawerComponentProps
 } from "../common/ValueDrawerComponent";
 import {File, FileEntityInfo} from "../../model/file";
-import React from "react";
+
 import {Box, IconButton, TextField} from "@mui/material";
 import {FileUploadOutlined} from "@mui/icons-material";
 import {useRepository} from "@apibrew/react";
 import {randomHex} from "../../util/random";
 import toast from "react-hot-toast";
+import {ChangeEvent, useState} from "react";
 
 export function FileUploadForm(props: ValueDrawerComponentFormProps<File>) {
-    const [file, setFile] = React.useState<File>(props.value)
+    const [file, setFile] = useState<File>(props.value)
 
     const repository = useRepository<File>(FileEntityInfo)
 
-    async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    async function handleUpload(e: ChangeEvent<HTMLInputElement>) {
         const fileInput = e.target.files?.item(0)
         console.log(fileInput)
 

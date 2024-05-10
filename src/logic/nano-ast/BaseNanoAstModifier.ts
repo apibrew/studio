@@ -139,7 +139,7 @@ export abstract class BaseNanoAstModifier {
 
         if (replacements) {
             for (const key of Object.keys(replacements)) {
-                templateProcessed = templateProcessed.replaceAll(key, replacements[key])
+                templateProcessed = templateProcessed.replace(key, replacements[key])
             }
         }
 

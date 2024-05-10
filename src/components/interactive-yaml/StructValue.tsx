@@ -1,5 +1,5 @@
 import {PropertyValue} from "./PropertyValue";
-import React, {useMemo} from "react";
+import {useMemo} from "react";
 import {Resource} from "@apibrew/react";
 import {Schema} from "../../types/schema";
 import {Type} from "@apibrew/client/model/resource";
@@ -35,7 +35,7 @@ export function StructValue(props: StructValueProps) {
             display: 'inline-block'
         }}
         itemRef={props.path}>
-        {properties.map((item, index) => {
+        {properties.map((item, _) => {
             const property = props.schema.properties[item]
             let propertyValue = <PropertyValue
                 new={props.new}

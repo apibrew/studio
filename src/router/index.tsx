@@ -16,7 +16,6 @@ import TemplatesPage from "../pages/dashboard/templates/IndexPage";
 import {NanoRoutes} from "./nano";
 import ResourcePage from "../pages/dashboard/builder/ResourcePage";
 import {AIAssistantPage} from "../pages/dashboard/ai-assistant/AIAssistantPage";
-import {ExperimentsRoutes} from "../pages/experiments/routes";
 import {FlowRoutes} from "./flows";
 import BuilderPage from "../pages/dashboard/builder/BuilderPage";
 import Library from "../pages/dashboard/library";
@@ -95,7 +94,6 @@ export const index = createBrowserRouter([
             UserAndRolesRoutes,
             SettingsRoutes,
             MonitoringRoutes,
-            ExperimentsRoutes,
             FlowRoutes,
             FlowControlsRoutes,
             {

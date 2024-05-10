@@ -10,7 +10,7 @@ import {useClient, useRepository} from '@apibrew/react';
 import {GitHub} from "@mui/icons-material";
 import {Layout} from "../layout/modern-layout";
 import {useNavigate} from "react-router-dom";
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {UserRegistration, UserRegistrationEntityInfo} from "../model/user-registration";
 
@@ -25,9 +25,9 @@ export const RegisterPage = () => {
         }
     }, [client]);
 
-    const [name, setName] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleRegister = async () => {
         const loadingId = toast.loading('Logging in...');

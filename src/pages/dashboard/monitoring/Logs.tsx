@@ -202,6 +202,7 @@ export function LogsPage() {
                         {fieldsMap[field].map(value => <MenuItem value={value}>{value}</MenuItem>)}
                     </Select>
                 </Box>)}
+                <span>{counter}</span>
             </Stack>
             <Box m={2}>
                 {logs.reverse()

@@ -1,12 +1,12 @@
-import React from 'react';
 import {TextField} from "@mui/material";
+import {FC} from "react";
 
 type EditorProps = {
     value: string;
     onChange: (data: string) => void;
 };
 
-const TextEditor: React.FC<EditorProps> = ({value, onChange}) => {
+const TextEditor: FC<EditorProps> = ({value, onChange}) => {
     return <TextField
         value={value}
         onChange={(e) => onChange(e.target.value)}

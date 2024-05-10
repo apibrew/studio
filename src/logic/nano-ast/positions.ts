@@ -2,11 +2,7 @@ import {Statement} from "acorn";
 import {Resource} from "@apibrew/react";
 import {Ast, SectionDetails} from "./abs";
 import {any, astMatcher} from "./matcher";
-import {
-    functionCallMatcher,
-    resourceHandlerMethodMatcher,
-    resourceMatcher,
-} from "./matchers";
+import {functionCallMatcher, resourceHandlerMethodMatcher, resourceMatcher,} from "./matchers";
 
 export const sections: SectionDetails[] = [
     {

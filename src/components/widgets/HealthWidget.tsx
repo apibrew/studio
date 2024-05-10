@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {WidgetLayout} from "../../layout/WidgetLayout";
 import {useClient} from "@apibrew/react";
 import {Typography} from "@mui/material";
@@ -6,7 +6,7 @@ import {Typography} from "@mui/material";
 export function HealthWidget() {
     const client = useClient()
 
-    const [health, setHealth] = React.useState<{ status: string }>()
+    const [health, setHealth] = useState<{ status: string }>()
 
     useEffect(() => {
         fetch(

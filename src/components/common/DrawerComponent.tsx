@@ -1,11 +1,11 @@
-import React from "react";
 import {Box, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
+import {ReactNode} from "react";
 
 export interface DrawerComponentProps {
     title: string
     width?: any
-    content: React.ReactNode;
-    actions: React.ReactNode;
+    content: ReactNode;
+    actions: ReactNode;
 
 }
 

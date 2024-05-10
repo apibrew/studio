@@ -39,6 +39,7 @@ export function PackagePage(props: PackageProps) {
     }
 
     let exports: any = {}
+    // @ts-ignore
     let require = (name: string) => {
         switch (name) {
             case '@mui/material':

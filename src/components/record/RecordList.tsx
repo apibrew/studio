@@ -1,5 +1,5 @@
 import {Resource} from "@apibrew/client/model";
-import {Add, Delete, Description, Edit, Refresh, Search} from "@mui/icons-material";
+import {Add, Delete, Edit, Refresh, Search} from "@mui/icons-material";
 import {useModal} from "../modal/use-modal";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -10,14 +10,13 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import {Entity} from "@apibrew/client";
 import {fromResource, useClient} from "@apibrew/react";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
 import {TableContainer, TablePagination} from "@mui/material";
 import {ListRecordParams} from "@apibrew/client/list-record-params";
 import {useConfirmation} from "../modal/use-confirmation";
-import {toast} from "react-hot-toast";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export interface RecordListProps {
     resource: Resource
@@ -26,7 +25,7 @@ export interface RecordListProps {
 
 export function RecordList(props: RecordListProps) {
     const navigate = useNavigate()
-    const {project} = useParams()
+    // const {project} = useParams()
     const modal = useModal();
     const confirmation = useConfirmation()
     const client = useClient()

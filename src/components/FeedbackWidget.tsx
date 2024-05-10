@@ -1,5 +1,5 @@
 import {Card, CardActions, CardContent, Popover, TextField} from "@mui/material";
-import React, {useState} from "react";
+import {useState} from "react";
 import Button from "@mui/material/Button";
 import {useConnection} from "../context/ConnectionContext";
 import toast from "react-hot-toast";

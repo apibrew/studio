@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useEffect, useState} from "react";
 import {DashboardLayout} from "../../layout/DashboardLayout";
 import {Outlet, useParams} from "react-router-dom";
 import {Connection, connectionProvider} from "../../connection-provider";
@@ -16,7 +16,7 @@ export function DashboardPage() {
     const [client, setClient] = useState<Client>()
     const [connection, setConnection] = useState<Connection>()
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (connectionName === 'manager') {
             const client = new ClientImpl('https://manager.apibrew.io:8443')
             client.useTokenStorage(new LocalStorageTokenStorage('manager'))

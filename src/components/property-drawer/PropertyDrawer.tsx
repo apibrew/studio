@@ -1,6 +1,6 @@
 import {ValueDrawerComponent, ValueDrawerComponentProps} from "../common/ValueDrawerComponent";
 import {Property} from "@apibrew/client/model";
-import React from "react";
+
 import {PropertyForm} from "../property-form/PropertyForm";
 import {Resource} from "@apibrew/react";
 

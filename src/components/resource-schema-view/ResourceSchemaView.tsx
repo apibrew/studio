@@ -1,6 +1,6 @@
 import {Resource} from "@apibrew/react";
 import {sortedProperties} from "../../util/property";
-import React, {useMemo} from "react";
+import {useMemo} from "react";
 import {Box, Card, CardContent} from "@mui/material";
 import {Property} from "@apibrew/client/model";
 

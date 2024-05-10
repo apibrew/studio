@@ -1,7 +1,7 @@
-import type {NodeProps} from "@reactflow/core/dist/esm/types/nodes";
-import {Box, Table, TableBody, TableCell, TableRow} from "@mui/material";
+import type {NodeProps} from "@reactflow/core";
+import {Box} from "@mui/material";
 import {Control} from "../../../model/flow";
-import React from "react";
+
 import {Handle, Position} from "reactflow";
 
 export const ControlNodeCompact = (props: NodeProps<Control>) => {

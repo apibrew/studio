@@ -1,9 +1,9 @@
-import React from "react";
 import {Box, TextField} from "@mui/material";
+import {useState} from "react";
 
 export function DebugBox() {
-    const [width, setWidth] = React.useState<number>(0)
-    const [height, setHeight] = React.useState<number>(0)
+    const [width, setWidth] = useState<number>(0)
+    const [height, setHeight] = useState<number>(0)
 
     return <>
         <TextField label="Width" type="number" value={width} onChange={(e) => setWidth(parseInt(e.target.value))}/>

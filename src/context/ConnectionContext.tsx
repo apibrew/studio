@@ -1,10 +1,10 @@
 import {Connection} from "../connection-provider";
-import React, {createContext} from "react";
+import {createContext, useContext} from "react";
 
 export const ConnectionContext = createContext<Connection | undefined>(undefined);
 
 export function useConnection() {
-    const connection = React.useContext(ConnectionContext);
+    const connection = useContext(ConnectionContext);
 
     if (!connection) {
         throw new Error('useConnection must be used within a ConnectionProvider');

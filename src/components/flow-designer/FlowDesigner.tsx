@@ -1,6 +1,6 @@
 import {Control, Flow} from "../../model/flow";
 
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import ReactFlow, {Background, Controls, Edge, MiniMap, Node, Panel} from 'reactflow';
 import 'reactflow/dist/style.css';
 import './Customize.scss';
@@ -97,7 +97,7 @@ export function FlowDesigner(props: FlowDesignerProps) {
                 e.preventDefault()
                 e.stopPropagation()
             }}
-            onClick={e => {
+            onClick={_ => {
                 setSelectedNode(undefined)
             }}
             nodesDraggable={true}
@@ -174,7 +174,7 @@ export function FlowDesigner(props: FlowDesignerProps) {
                                     }}><LastPage/></IconButton>
                             })}
                     </>}
-                    <ToggleButtonGroup value={mode} exclusive onChange={(e, value) => {
+                    <ToggleButtonGroup value={mode} exclusive onChange={(_, value) => {
                         setMode(value)
                     }}>
                         <ToggleButton size='small' value={'compact'}>

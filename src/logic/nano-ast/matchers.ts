@@ -1,5 +1,5 @@
-import {capture, concat, or} from "./matcher";
-import {Expression, FunctionDeclaration, FunctionExpression, Identifier, Statement, VariableDeclarator} from "acorn";
+import {capture, or} from "./matcher";
+import {Expression, FunctionDeclaration, Identifier, Statement, VariableDeclarator} from "acorn";
 import {Resource} from "@apibrew/react";
 
 export const resourceMatcher = (resource: Resource) => {

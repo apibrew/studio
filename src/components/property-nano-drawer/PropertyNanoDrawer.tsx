@@ -1,7 +1,7 @@
-import React from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Code} from "@apibrew/client/nano/model/code";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
+import {useState} from "react";
 
 export interface PropertyNanoDrawerProps {
     code: string;
@@ -11,7 +11,7 @@ export interface PropertyNanoDrawerProps {
 
 export function PropertyNanoDrawer(props: PropertyNanoDrawerProps) {
 
-    const [code, setCode] = React.useState<Code>({
+    const [code, setCode] = useState<Code>({
         name: '',
         content: props.code ?? '',
     } as Code)

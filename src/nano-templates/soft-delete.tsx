@@ -1,4 +1,3 @@
-import React from "react";
 import {NanoCodeTemplate} from "./abs";
 import toast from "react-hot-toast";
 import {Resource} from "@apibrew/react";
@@ -7,6 +6,7 @@ import {sortedProperties} from "../util/property";
 import {ResourceSelect} from "../components/ResourceSelect";
 import {NanoAstModifier} from "../logic/nano-ast/NanoAstModifier";
 import {ResourceHandlerType} from "../logic/nano-ast/abs";
+import {useState} from "react";
 
 export interface RenderParamsProps {
     resource: Resource | undefined
@@ -16,8 +16,8 @@ export interface RenderParamsProps {
 }
 
 function RenderParams(props: RenderParamsProps) {
-    const [resource, setResource] = React.useState<Resource | undefined>(props.resource)
-    const [property, setProperty] = React.useState<string | undefined>(props.softDeleteProperty)
+    const [resource, setResource] = useState<Resource | undefined>(props.resource)
+    const [property, setProperty] = useState<string | undefined>(props.softDeleteProperty)
 
     const resourceValue = resource ? (resource.namespace.name + '/' + resource.name) : undefined
 
@@ -28,7 +28,7 @@ function RenderParams(props: RenderParamsProps) {
             <FormLabel>Resource:</FormLabel>
             <ResourceSelect
                 value={resourceValue}
-                onChange={(e, resource) => {
+                onChange={(_, resource) => {
                     setResource(resource)
                     props.onResourceChange(resource)
                     setProperty(undefined)

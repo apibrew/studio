@@ -1,5 +1,5 @@
 import {Box, Grid} from "@mui/material";
-import React, {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import Editor, {Monaco} from '@monaco-editor/react';
 import {Resource, useClient, useRecords} from "@apibrew/react";
 import {LoadingOverlay} from "../LoadingOverlay";
@@ -13,9 +13,9 @@ export interface NanoFormProps {
 
 export function MonacoNanoForm(props: NanoFormProps) {
     const client = useClient();
-    const [types, setTypes] = React.useState<string>('');
-    const [apibrewTypes, setApibrewTypes] = React.useState<string>('');
-    const [nanoDefinitions, setNanoDefinitions] = React.useState<string>('')
+    const [types, setTypes] = useState<string>('');
+    const [apibrewTypes, setApibrewTypes] = useState<string>('');
+    const [nanoDefinitions, setNanoDefinitions] = useState<string>('')
 
     const typesUrl = client.getUrl() + '/docs/typescript-types.d.ts';
     const resources = useRecords<Resource>(ResourceEntityInfo)
@@ -42,14 +42,14 @@ export function MonacoNanoForm(props: NanoFormProps) {
 
     const editorRef = useRef<any>(null);
 
-    function handleEditorDidMount(editor: any, monaco: any) {
+    function handleEditorDidMount(editor: any, _: any) {
         editorRef.current = editor;
     }
 
     function handleEditorWillMount(monaco: Monaco) {
         let adjustedTypes = types;
         for (const resource of resources!) {
-            adjustedTypes = adjustedTypes.replaceAll(resource.name, resource.name + 'Resource')
+            adjustedTypes = adjustedTypes.replace(resource.name, resource.name + 'Resource')
         }
 
         monaco.languages.typescript.javascriptDefaults.addExtraLib(apibrewTypes, 'local-types.d.ts');

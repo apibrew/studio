@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown";
 import {Type} from "@apibrew/client/model/resource";
-import React from "react";
+
 import {Property} from "@apibrew/client/model";
 import {Resource} from "@apibrew/react";
 import {PropertyExtras} from "./PropertyExtras";

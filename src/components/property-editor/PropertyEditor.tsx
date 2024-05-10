@@ -1,5 +1,5 @@
 import {Property, Resource} from "@apibrew/client/model"
-import React from "react";
+
 import {Box, Card, CardActions, CardContent, CardHeader} from "@mui/material";
 import Button from "@mui/material/Button";
 import {getAnnotation} from "../../util/annotation";
@@ -8,6 +8,7 @@ import Editor from "./block-editor/Editor";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
 import TextEditor from "./text-editor/TextEditor";
 import JsonEditor from "./json-editor/JsonEditor";
+import {useState} from "react";
 
 const NanoCodeName = 'Nano Code'
 const TextEditorName = 'Text Editor'
@@ -42,8 +43,8 @@ export function getPropertyEditorList(property: Property): string[] {
 }
 
 export function PropertyEditor(props: PropertyEditorProps) {
-    const [valid, setValid] = React.useState(true)
-    const [value, setValue] = React.useState(props.value)
+    const [valid, setValid] = useState(true)
+    const [value, setValue] = useState(props.value)
     let propertyEditorAnnotation = getAnnotation(props.property.annotations, PropertyEditorAnnotation)
 
     if (getPropertyEditorList(props.property).indexOf(propertyEditorAnnotation) === -1) {

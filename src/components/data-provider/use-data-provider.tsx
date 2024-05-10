@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {TablePagination} from "@mui/material";
 import {EntityInfo} from "@apibrew/client/entity-info";
 import {ListRecordParams} from "@apibrew/client";
-import {useRepository} from "@apibrew/react";
+import {useQueryListParams, useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
-import {useQueryListParams} from "@apibrew/react";
 
 export interface useDataProviderResult<T> {
     records: T[]
     loading: boolean
-    renderPagination: () => React.ReactNode
+    renderPagination: () => ReactNode
     listParams: ListRecordParams
     updateParams: (params: Partial<ListRecordParams>) => void
     refresh: () => void
@@ -67,7 +66,7 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
                                                       limit: parseInt(event.target.value)
                                                   })
                                               }}
-                                              onPageChange={(event, page) => {
+                                              onPageChange={(_, page) => {
                                                   setListParams({
                                                       ...listParams,
                                                       offset: (page * listParams.limit!)

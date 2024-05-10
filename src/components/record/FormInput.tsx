@@ -1,7 +1,6 @@
 import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import TextField from "@mui/material/TextField";
-import React, {useState} from "react";
 import Checkbox from "@mui/material/Checkbox";
 
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
@@ -98,11 +97,8 @@ const StringInput: FormInputType<string> = props => {
 }
 
 const UuidInput: FormInputType<string> = props => {
-    const [valid, setValid] = useState(true);
-
     return <TextField value={props.value}
                       sx={props.sx}
-                      error={!valid}
                       required={props.required}
                       disabled={props.readOnly}
                       onChange={e => props.onChange(e.target.value)}

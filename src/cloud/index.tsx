@@ -1,7 +1,7 @@
 import {Outlet} from "react-router-dom";
 import {ClientImpl} from "@apibrew/client";
 import {ClientProvider, LocalStorageTokenStorage} from "@apibrew/react";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 
 
 const client = new ClientImpl('https://manager.apibrew.io:8443')

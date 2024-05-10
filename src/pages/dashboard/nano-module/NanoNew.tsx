@@ -1,6 +1,6 @@
 import {Box, Card, CardActions, CardContent, CardHeader, MenuItem, Select, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
-import React, {useState} from "react";
+import {useState} from "react";
 import toast from "react-hot-toast";
 import {useRepository} from "@apibrew/react";
 import {useNavigate} from "react-router-dom";

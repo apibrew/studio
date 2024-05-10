@@ -1,7 +1,7 @@
 import {Tooltip, Typography} from "@mui/material";
 import {Type} from "@apibrew/client/model/resource";
 import toast from "react-hot-toast";
-import React from "react";
+
 import {Property} from "@apibrew/client/model";
 import {label} from "../../util/record";
 import {SxProps} from "@mui/system";

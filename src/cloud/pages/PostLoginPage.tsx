@@ -1,7 +1,7 @@
 import {LoadingOverlay} from "../../components/LoadingOverlay";
 import {useEffect} from "react";
 import {DeploymentStatus, Instance, InstanceEntityInfo} from "../model/instance";
-import {useClient, useRepository, useTokenBody} from "@apibrew/react";
+import {useRepository, useTokenBody} from "@apibrew/react";
 import {useNavigate} from "react-router-dom";
 import {BooleanExpression} from "@apibrew/client/model/permission";
 import {Database} from "../model/database";

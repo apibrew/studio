@@ -6,10 +6,8 @@ import {ReferenceValue} from "./ReferenceValue";
 import {ListValue} from "./ListValue";
 import {StructValue} from "./StructValue";
 import {ObjectValue} from "./ObjectValue";
-import React from "react";
-import {PropertyValueEdit} from "../property-value-edit/PropertyValueEdit";
+
 import {MapValue} from "./MapValue";
-import toast from "react-hot-toast";
 import {TextField} from "@mui/material";
 
 export interface PropertyValueProps {

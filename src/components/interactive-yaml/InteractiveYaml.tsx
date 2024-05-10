@@ -1,5 +1,5 @@
 import {Schema} from "../../types/schema";
-import React from "react";
+
 import {Box} from "@mui/material";
 import './InteractiveYaml.scss'
 import {dump} from "js-yaml";

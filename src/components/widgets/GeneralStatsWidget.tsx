@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useClient} from "@apibrew/react";
 import {LoadingOverlay} from "../LoadingOverlay";
 import {WidgetLayout} from "../../layout/WidgetLayout";
@@ -10,7 +10,7 @@ import {UserEntityInfo} from "@apibrew/client/model/user";
 export function GeneralStatsWidget() {
     const client = useClient()
 
-    const [stats, setStats] = React.useState<{ [status: string]: number }>({})
+    const [stats, setStats] = useState<{ [status: string]: number }>({})
 
     useEffect(() => {
         let newStats: { [status: string]: number } = {}

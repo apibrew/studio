@@ -1,20 +1,20 @@
-import React from "react";
 import {Box, Tab, Tabs} from "@mui/material";
 import {DrawerComponent} from "./DrawerComponent";
+import {ReactNode, useState} from "react";
 
 export interface DrawerMultiComponentProps {
     title: string
     width?: any
     items: {
         title: string,
-        content: React.ReactNode
+        content: ReactNode
     }[];
-    actions: React.ReactNode;
+    actions: ReactNode;
 
 }
 
 export function DrawerMultiComponent(props: DrawerMultiComponentProps) {
-    const [tabIndex, setTabIndex] = React.useState(0)
+    const [tabIndex, setTabIndex] = useState(0)
     return <DrawerComponent
         title={props.title}
         content={<Box
@@ -25,7 +25,7 @@ export function DrawerMultiComponent(props: DrawerMultiComponentProps) {
                 variant="scrollable"
                 aria-label="Vertical tabs example"
                 value={tabIndex}
-                onChange={(event, newValue) => {
+                onChange={(_, newValue) => {
                     setTabIndex(newValue)
                 }}
                 sx={{borderRight: 1, borderColor: 'divider'}}

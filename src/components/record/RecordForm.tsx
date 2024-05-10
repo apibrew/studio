@@ -14,8 +14,8 @@ export interface RecordFormProps {
 }
 
 export function RecordForm(props: RecordFormProps) {
-  const userProperties = filterMap(props.resource.properties, (key, property) => !isSpecialProperty(property))
-  const systemProperties = filterMap(props.resource.properties, (key, property) => isSpecialProperty(property))
+  const userProperties = filterMap(props.resource.properties, (_, property) => !isSpecialProperty(property))
+  const systemProperties = filterMap(props.resource.properties, (_, property) => isSpecialProperty(property))
 
   return <>
     <h3>Properties:</h3>

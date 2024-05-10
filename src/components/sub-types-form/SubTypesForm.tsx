@@ -1,5 +1,5 @@
 import {Stack, TextField} from "@mui/material";
-import React from "react";
+
 import {SubType} from "@apibrew/client/model/resource";
 
 export interface ResourceFormProps {

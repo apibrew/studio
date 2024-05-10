@@ -1,5 +1,5 @@
 import {fromResource, Resource, useQueryListParams, useRepository} from "@apibrew/react";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Add, Api, Code, Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
@@ -44,7 +44,7 @@ export function DataTable(props: TableContainerProps) {
     const drawer = useDrawer()
     const analytics = useAnalytics()
 
-    function reloadResource(resource: Resource) {
+    function reloadResource(_: Resource) {
         props.reloadResource?.()
         setRefreshIndex(refreshIndex + 1)
     }
@@ -430,7 +430,7 @@ export function DataTable(props: TableContainerProps) {
                              })
                              analytics.click('action', 'change-page', rowsPerPage)
                          }}
-                         onPageChange={(event, page) => {
+                         onPageChange={(_, page) => {
                              setListParams({
                                  ...listParams,
                                  offset: (page * listParams.limit!)

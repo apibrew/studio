@@ -6,7 +6,7 @@ export interface ApiDocModalProps {
     resource?: Resource
 }
 
-export function ApiDocModal(props: ApiDocModalProps) {
+export function ApiDocModal(_: ApiDocModalProps) {
     const client = useClient()
 
     return <Box width={'1000px'}>

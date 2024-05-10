@@ -1,6 +1,6 @@
 import {Grid} from "@mui/material";
 import {PageLayout} from "../../../layout/PageLayout";
-import React from "react";
+
 import {WelcomeWidget} from "../../../components/widgets/WelcomeWidget";
 import {HealthWidget} from "../../../components/widgets/HealthWidget";
 import {IntegrationsWidget} from "../../../components/widgets/IntegrationsWidget";

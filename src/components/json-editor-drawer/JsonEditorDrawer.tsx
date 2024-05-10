@@ -1,8 +1,9 @@
 import {Box, Card, CardActions, CardContent, CardHeader} from "@mui/material";
-import React from "react";
+
 import JSONInput from "react-json-editor-ajrm";
 import {localeEn} from "../data-table/table/json-input";
 import Button from "@mui/material/Button";
+import {useState} from "react";
 
 export interface JsonEditorDrawerProps {
     title: string
@@ -12,7 +13,7 @@ export interface JsonEditorDrawerProps {
 }
 
 export function JsonEditorDrawer(props: JsonEditorDrawerProps) {
-    const [value, setValue] = React.useState(props.value)
+    const [value, setValue] = useState(props.value)
 
     console.log(value)
 

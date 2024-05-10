@@ -1,8 +1,7 @@
-import {NanoForm} from "../nano-form/NanoForm";
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Box, Button, Card, CardActions, CardContent, CardHeader, MenuItem, Select, Stack} from "@mui/material";
 import {Code, CodeEntityInfo, Language} from "@apibrew/client/nano/model/code";
-import {Resource, useRepository, useResourceByName} from "@apibrew/react";
+import {useRepository, useResourceByName} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {LoadingOverlay} from "../LoadingOverlay";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
@@ -25,7 +24,7 @@ export function ResourceNanoDrawer(props: ResourceNanoDrawerProps) {
         type = props.namespace + '/' + props.resource
     }
 
-    const [code, setCode] = React.useState<Code>({
+    const [code, setCode] = useState<Code>({
         name: codeName,
         content: `const ${props.resource} = resource('${type}')
 

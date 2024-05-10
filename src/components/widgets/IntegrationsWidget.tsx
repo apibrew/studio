@@ -1,4 +1,3 @@
-import React from "react";
 import {Box, Stack, Typography} from "@mui/material";
 import {useConnection} from "../../context/ConnectionContext";
 import {WidgetLayout} from "../../layout/WidgetLayout";

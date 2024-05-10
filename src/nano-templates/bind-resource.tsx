@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {NanoCodeTemplate} from "./abs";
 import toast from "react-hot-toast";
 import {Resource} from "@apibrew/react";
@@ -25,7 +25,7 @@ function RenderParams(props: RenderParamsProps) {
             <FormLabel>Resource:</FormLabel>
             <ResourceSelect
                 value={resource ? (resource.namespace.name + '/' + resource.name) : undefined}
-                onChange={(e, resource) => {
+                onChange={(_, resource) => {
                     setResource(resource)
                     props.onResourceChange(resource)
                 }}
@@ -34,7 +34,7 @@ function RenderParams(props: RenderParamsProps) {
             <FormLabel>Bound to Resource:</FormLabel>
             <ResourceSelect
                 value={boundResource ? (boundResource.namespace.name + '/' + boundResource.name) : undefined}
-                onChange={(e, resource) => {
+                onChange={(_, resource) => {
                     setBoundResource(resource)
                     props.onBoundResourceChange(resource)
                 }}

@@ -12,7 +12,7 @@ import {
     Select,
     Typography
 } from "@mui/material";
-import React, {useState} from "react";
+import {useState} from "react";
 import {Namespace, Resource, useRecords} from "@apibrew/react";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
@@ -36,8 +36,8 @@ export function ResourceSelectorPanel() {
         name: 'default'
     } as Namespace)
 
-    const [resourceContextAnchorEl, setResourceContextAnchorEl] = React.useState<HTMLElement>();
-    const [selectedResource, setSelectedResource] = React.useState<Resource>()
+    const [resourceContextAnchorEl, setResourceContextAnchorEl] = useState<HTMLElement>();
+    const [selectedResource, setSelectedResource] = useState<Resource>()
 
     const [wi, setWi] = useState<number>(0)
 

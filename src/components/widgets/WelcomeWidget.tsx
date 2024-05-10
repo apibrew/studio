@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useConnection} from "../../context/ConnectionContext";
 import {WidgetLayout} from "../../layout/WidgetLayout";
 import {Box, Typography} from "@mui/material";
@@ -7,7 +7,7 @@ import {useClient} from "@apibrew/react";
 export function WelcomeWidget() {
     const connection = useConnection()
     const client = useClient()
-    const [version, setVersion] = React.useState<any>()
+    const [version, setVersion] = useState<any>()
 
     useEffect(() => {
         fetch(client.getUrl() + "/_version")

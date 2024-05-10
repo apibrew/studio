@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {PermissionsInputSimple} from "./PermissionsInputSimple";
 import {PermissionsInputAdvanced} from "./PermissionsInputAdvanced";
 import {Tab, Tabs} from "@mui/material";
@@ -13,7 +13,7 @@ export interface PermissionsInputProps {
 }
 
 export function PermissionsInput(props: PermissionsInputProps) {
-  const [tab, setTab] = React.useState(0)
+  const [tab, setTab] = useState(0)
 
   const [constraints, setConstraints] = useState<Permission[]>(props.value)
 

@@ -1,4 +1,4 @@
-import React, {DragEvent} from "react";
+import {DragEvent} from "react";
 import {getTargetColumn} from "./util";
 import {Schema} from "../../../types/schema";
 
@@ -46,7 +46,7 @@ export class TableDnd {
         this.reset();
     }
 
-    private getTarget(e: React.DragEvent<Element>) {
+    private getTarget(e: DragEvent<Element>) {
         return getTargetColumn(e)
     }
 

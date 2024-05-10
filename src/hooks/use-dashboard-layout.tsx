@@ -1,9 +1,9 @@
 import {DashboardLayoutConfig, DashboardLayoutConfigureContext} from "../context/DashboardLayoutConfig";
-import React, {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {deepEqual} from "../util/object";
 
 export function useDashboardLayout(config: Partial<DashboardLayoutConfig>) {
-    const context = React.useContext(DashboardLayoutConfigureContext);
+    const context = useContext(DashboardLayoutConfigureContext);
 
     const currentProps = context.get()
 

@@ -1,8 +1,8 @@
-import React from "react";
 import {Toaster} from "react-hot-toast";
+import {ReactNode} from "react";
 
 export interface RootLayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 export function RootLayout(props: RootLayoutProps) {

@@ -1,6 +1,6 @@
 import {TreeItem} from "@mui/x-tree-view";
 import {ArrowDownward, ArrowUpward, Edit, ListAlt, Remove} from "@mui/icons-material";
-import React from "react";
+
 import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
 import {IconButton} from "@mui/material";

@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import {ReactNode, useState} from "react";
 import {Drawer} from "@mui/material";
 import toast from "react-hot-toast";
 
@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export interface useDrawerResult {
     render(): ReactNode
 
-    open: (content: React.ReactNode, options?: ModalOptions) => void
+    open: (content: ReactNode, options?: ModalOptions) => void
     close: () => void
 }
 
@@ -15,9 +15,9 @@ export interface ModalOptions {
 }
 
 export function useDrawer(): useDrawerResult {
-    const [open, setOpen] = React.useState<boolean>(false)
-    const [content, setContent] = React.useState<React.ReactNode>()
-    const [options, setOptions] = React.useState<ModalOptions>({allowClose: true})
+    const [open, setOpen] = useState<boolean>(false)
+    const [content, setContent] = useState<ReactNode>()
+    const [options, setOptions] = useState<ModalOptions>({allowClose: true})
 
     return {
         render: () => {
@@ -36,7 +36,7 @@ export function useDrawer(): useDrawerResult {
                     variant='temporary'>{content}</Drawer>
             </>
         },
-        open: (content: React.ReactNode, options?: ModalOptions) => {
+        open: (content: ReactNode, options?: ModalOptions) => {
             setOpen(true)
             setContent(content)
             if (options) {

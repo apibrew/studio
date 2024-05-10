@@ -2,12 +2,13 @@ import {Resource, useRepository} from "@apibrew/react";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
-import React from "react";
+
 import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import {Property} from "@apibrew/client/model";
 import {PropertyForm} from "../../property-form/PropertyForm";
 import {getAnnotation, withAnnotation} from "../../../util/annotation";
 import {SourceMatchKey} from "../../../util/base-annotations";
+import {useState} from "react";
 
 export interface ColumnDrawerProps {
     resource: Resource
@@ -19,8 +20,8 @@ export interface ColumnDrawerProps {
 }
 
 export function ColumnDrawer(props: ColumnDrawerProps) {
-    const [propertyName, setPropertyName] = React.useState<string>(props.propertyName)
-    const [property, setProperty] = React.useState<Property>(props.property)
+    const [propertyName, setPropertyName] = useState<string>(props.propertyName)
+    const [property, setProperty] = useState<Property>(props.property)
 
     const repository = useRepository(ResourceEntityInfo)
     const confirmation = useConfirmation()

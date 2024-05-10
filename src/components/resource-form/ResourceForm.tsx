@@ -14,7 +14,7 @@ import {
     Typography
 } from "@mui/material";
 import {AnnotationsForm} from "../annotations-form/AnnotationsForm";
-import React from "react";
+
 import {ArrowDownward} from "@mui/icons-material";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
 import {isAnnotationEnabled, withBooleanAnnotation} from "../../util/annotation";
