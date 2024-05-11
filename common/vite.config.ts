@@ -14,6 +14,9 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, 'lib/index.ts'),
             formats: ['es']
+        },
+        rollupOptions: {
+            external: [/^react/, 'core'],
         }
     }
 })

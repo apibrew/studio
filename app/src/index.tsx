@@ -10,6 +10,9 @@ import {Router} from "./router";
 import {ThemeProvider} from "@mui/material";
 import {theme} from "./theme";
 
+import 'core'
+import 'common'
+
 createRoot(document.getElementById("root")!).render(
     <RootLayout>
         <ThemeProvider theme={theme}>

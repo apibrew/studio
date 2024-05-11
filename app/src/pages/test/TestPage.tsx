@@ -1,11 +1,11 @@
-import {helloAnything, TestXPage} from "core";
+import {container, PageComponentType, PageComponentTypeName, ReactPage} from "core";
 
 export function TestPage() {
-    const data = helloAnything("world");
+    const Page = container.getComponentByType<PageComponentType>(PageComponentTypeName).component
+
+    console.log(ReactPage)
 
     return <div>
-        {data}
-
-        <TestXPage/>
+        <Page/>
     </div>
 }

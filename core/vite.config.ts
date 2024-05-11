@@ -7,13 +7,16 @@ import dts from 'vite-plugin-dts'
 export default defineConfig({
     plugins: [
         react(),
-        dts({include: ['lib']})
+        dts({include: ['lib']}),
     ],
     build: {
         copyPublicDir: false,
         lib: {
             entry: resolve(__dirname, 'lib/index.ts'),
             formats: ['es']
+        },
+        rollupOptions: {
+            external: [/^react/,],
         }
-    }
+    },
 })
