@@ -1,20 +1,26 @@
-import {ComponentType, Container} from "./abs.ts";
+import {AbstractComponentType, Container, FilterPredicate} from "./abs.ts";
 
 class store implements Container {
-    componentMap: Map<string, ComponentType[]> = new Map<string, ComponentType[]>();
+    componentMap: Map<string, AbstractComponentType[]> = new Map<string, AbstractComponentType[]>();
 
-    registerComponent<T extends ComponentType>(value: T, name?: string | undefined, primary?: boolean | undefined): void {
-        if (name === undefined) {
-            if (value.name === undefined) {
-                throw new Error("Component name is required");
-            }
-            name = value.name;
+    registerComponent<T extends AbstractComponentType>(value: T, name?: string, primary?: boolean, order?: number): void {
+        if (name !== undefined) {
+            value.name = name;
         }
-        let components = this.componentMap.get(value.componentType);
+        if (order !== undefined) {
+            value.order = order;
+        }
 
         if (primary !== undefined) {
             value.primary = primary;
         }
+
+
+        if (!value.name) {
+            throw new Error("Component name is required");
+        }
+
+        let components = this.componentMap.get(value.componentType);
 
         if (components === undefined) {
             components = [];
@@ -23,8 +29,12 @@ class store implements Container {
         components.push(value);
     }
 
-    getComponentByType<T extends ComponentType>(componentType: string): T {
-        const components = this.componentMap.get(componentType);
+    getComponentByType<T extends AbstractComponentType>(componentType: string, filters?: FilterPredicate<T>): T {
+        let components = (this.componentMap.get(componentType) || []) as T[];
+
+        if (filters !== undefined) {
+            components = components.filter(filters);
+        }
 
         if (components === undefined) {
             throw new Error("Component not found");
@@ -38,6 +48,20 @@ class store implements Container {
             }
         }
         throw new Error("Primary component not found");
+    }
+
+    getComponentsByType<T extends AbstractComponentType>(componentType: string, filters?: FilterPredicate<T>): T[] {
+        let components = (this.componentMap.get(componentType) || []) as T[];
+
+        if (filters !== undefined) {
+            components = components.filter(filters);
+        }
+
+        if (components === undefined) {
+            throw new Error("Component not found");
+        }
+
+        return components;
     }
 
 }
