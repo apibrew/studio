@@ -50,6 +50,20 @@ class store implements Container {
         throw new Error("Primary component not found");
     }
 
+    getComponentByTypeAndName<T extends AbstractComponentType>(componentType: string, name: string): T {
+        const components = (this.componentMap.get(componentType) || []) as T[];
+
+        if (components === undefined) {
+            throw new Error("Component not found");
+        }
+        for (const component of components) {
+            if (component.name === name) {
+                return component;
+            }
+        }
+        throw new Error("Component not found with type and name: " + componentType + " / " + name);
+    }
+
     getComponentsByType<T extends AbstractComponentType>(componentType: string, filters?: FilterPredicate<T>): T[] {
         let components = (this.componentMap.get(componentType) || []) as T[];
 
