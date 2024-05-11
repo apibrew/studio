@@ -88,3 +88,15 @@ export function getPropertyFormByProperty<T>(property: Property, resource?: Reso
 
     return comp.component;
 }
+
+export function getPropertyFormByType<T>(type: Type): ComponentType<PropertyFormProps<T>> {
+    const comp = container.getComponentByType<PropertyFormType<T>>(PropertyFormTypeName, m => {
+        if (m.type !== type) {
+            return false
+        }
+
+        return !(m.condition && !m.condition({}));
+    });
+
+    return comp.component;
+}
