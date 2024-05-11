@@ -1,6 +1,6 @@
 import {Property, Resource} from "@apibrew/client/model"
 
-import {Box, Card, CardActions, CardContent, CardHeader, TextField} from "@mui/material";
+import {Box, Card, CardActions, CardContent, CardHeader, MenuItem, Select, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useState} from "react";
 import {
@@ -12,10 +12,10 @@ import {
 } from "core";
 import {Type} from "@apibrew/client/model/resource";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm.tsx";
-
-// const TextEditorName = 'Text Editor'
-// const BlockEditorName = 'Block Editor'
-// const JsonEditorName = 'Json Editor'
+import Checkbox from "@mui/material/Checkbox";
+import {DatePicker} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import JsonEditor from "./json-editor/JsonEditor.tsx";
 
 export interface PropertyEditorProps {
     resource: Resource
@@ -38,9 +38,49 @@ const TextEditor = (props: PropertyFormProps<string>) => <TextField
     value={props.value || ''}
     onChange={e => props.onChange(e.target.value, true)}/>
 
+const EnumEditor = (props: PropertyFormProps<string>) => <Select
+    fullWidth
+    value={props.value || ''}
+    onChange={e => props.onChange(e.target.value, true)}>
+    {props.property.enumValues?.map(item => <MenuItem value={item}>{item}</MenuItem>)}
+</Select>
 
-registerDefaultPropertyForm<string>("Text editor", Type.STRING, TextEditor)
+const IntegerEditor = (props: PropertyFormProps<number>) => <TextField
+    type='number'
+    value={props.value || ''}
+    onChange={e => props.onChange(parseInt(e.target.value), true)}/>
+
+const FloatEditor = (props: PropertyFormProps<number>) => <TextField
+    type='number'
+    value={props.value || ''}
+    onChange={e => props.onChange(parseFloat(e.target.value), true)}/>
+
+
+const BooleanEditor = (props: PropertyFormProps<boolean>) => <Checkbox checked={Boolean(props.value)}
+                                                                       onChange={e => props.onChange(e.target.checked, true)}/>
+const DateEditor = (props: PropertyFormProps<string>) => <DatePicker
+    value={props.value ? dayjs(props.value) : undefined}
+    onChange={(e: any) => {
+        console.log(e)
+        props.onChange(e.format('YYYY-MM-DD'), true)
+    }}/>
+//default types
+registerDefaultPropertyForm<boolean>("Bool", Type.BOOL, BooleanEditor)
+registerDefaultPropertyForm<string>("Bytes", Type.BYTES, TextEditor)
+registerDefaultPropertyForm<string>("Date", Type.DATE, DateEditor)
+registerDefaultPropertyForm<string>("Enum", Type.ENUM, EnumEditor)
+
+registerDefaultPropertyForm<string>("String", Type.STRING, TextEditor)
+registerDefaultPropertyForm<number>("Int32", Type.INT32, IntegerEditor)
+registerDefaultPropertyForm<number>("Int64", Type.INT64, IntegerEditor)
+registerDefaultPropertyForm<number>("Float32", Type.FLOAT32, FloatEditor)
+registerDefaultPropertyForm<number>("Float64", Type.FLOAT64, FloatEditor)
+registerDefaultPropertyForm<object>("Object", Type.OBJECT, JsonEditor)
+
+// custom types
 registerCustomPropertyForm<string>("Nano Code", Type.STRING, MonacoNanoEditor)
+registerCustomPropertyForm<object>("Json Editor", Type.OBJECT, JsonEditor)
+
 
 export function PropertyEditor(props: PropertyEditorProps) {
     const [valid, setValid] = useState(true)
@@ -60,18 +100,13 @@ export function PropertyEditor(props: PropertyEditorProps) {
                 flexGrow: 1,
             }}>
                 <Box p={3}>
-                    <Form value={value} onChange={(updated, isValid) => {
-                        setValue(updated)
-                        setValid(Boolean(isValid))
-                    }}/>
-                    {/*{propertyEditorAnnotation === BlockEditorName && <Editor value={value || {}} onChange={setValue}/>}*/}
-                    {/*{propertyEditorAnnotation === JsonEditorName &&*/}
-                    {/*    <JsonEditor setIsValid={setValid} value={value || {}} onChange={setValue}/>}*/}
-                    {/*{propertyEditorAnnotation === TextEditorName &&*/}
-                    {/*    <TextEditor value={value || ''} onChange={setValue}/>}*/}
-                    {/*{propertyEditorAnnotation === NanoCodeName && <MonacoNanoForm code={value || ''}*/}
-                    {/*                                                              language='JAVASCRIPT'*/}
-                    {/*                                                              onChange={setValue}/>}*/}
+                    <Form
+                        property={props.property}
+                        value={value}
+                        onChange={(updated, isValid) => {
+                            setValue(updated)
+                            setValid(Boolean(isValid))
+                        }}/>
                 </Box>
             </CardContent>
             <CardActions>

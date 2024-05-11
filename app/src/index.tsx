@@ -12,11 +12,19 @@ import {theme} from "./theme";
 
 import 'core'
 import 'common'
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {enUS} from "@mui/x-date-pickers";
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
+
 
 createRoot(document.getElementById("root")!).render(
     <RootLayout>
         <ThemeProvider theme={theme}>
-            <Router/>
+            <LocalizationProvider dateAdapter={AdapterDayjs}
+                                  localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+            >
+                <Router/>
+            </LocalizationProvider>;
         </ThemeProvider>
     </RootLayout>
 );

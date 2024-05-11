@@ -1,26 +1,20 @@
 import JSONInput from "react-json-editor-ajrm";
 import {localeEn} from "../../data-table/table/json-input";
 import {FC} from "react";
+import {PropertyFormProps} from "core";
 
-type EditorProps = {
-    value: any;
-    setIsValid: (isValid: boolean) => void;
-    onChange: (data: any) => void;
-};
-
-const JsonEditor: FC<EditorProps> = (props) => {
+const JsonEditor: FC<PropertyFormProps<object>> = (props: PropertyFormProps<object>) => {
     return <JSONInput
-        placeholder={props.value}
+        placeholder={props.value || {}}
         locale={localeEn}
         height='550px'
         width='100%'
         onChange={(e: any) => {
             if (e.error) {
-                props.setIsValid(false)
+                props.onChange(props.value, false)
                 return
             }
-            props.setIsValid(true)
-            props.onChange(e.jsObject)
+            props.onChange(e.jsObject, true)
         }}
     />
 };

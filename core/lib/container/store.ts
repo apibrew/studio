@@ -36,8 +36,8 @@ class store implements Container {
             components = components.filter(filters);
         }
 
-        if (components === undefined) {
-            throw new Error("Component not found");
+        if (components === undefined || components.length === 0) {
+            throw new Error("Component not found: " + componentType);
         }
         if (components.length === 1) {
             return components[0] as T;
@@ -47,7 +47,7 @@ class store implements Container {
                 return component as T;
             }
         }
-        throw new Error("Primary component not found");
+        throw new Error("Primary component not found: " + componentType);
     }
 
     getComponentByTypeAndName<T extends AbstractComponentType>(componentType: string, name: string): T {

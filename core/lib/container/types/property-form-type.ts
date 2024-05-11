@@ -6,6 +6,7 @@ import {getAnnotation} from "@apibrew/client/util/annotation";
 import {withAnnotation} from "app/src/util/annotation.ts";
 
 export interface PropertyFormProps<T> {
+    property: Property
     value: T;
     onChange: (value: T, isValid?: boolean) => void;
 }
