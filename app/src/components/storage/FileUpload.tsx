@@ -54,6 +54,7 @@ export function FileUploadForm(props: ValueDrawerComponentFormProps<File>) {
 
     return <Box width='500px'>
         <TextField
+            fullWidth
             value={file?.name || ''}
             variant="standard"
             type="text"

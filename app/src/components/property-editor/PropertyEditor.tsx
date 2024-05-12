@@ -8,7 +8,8 @@ import {
     listCustomPropertyForms,
     PropertyFormProps,
     registerCustomPropertyForm,
-    registerDefaultPropertyForm
+    registerDefaultPropertyForm,
+    registerSpecialPropertyForm
 } from "core";
 import {Type} from "@apibrew/client/model/resource";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm.tsx";
@@ -18,6 +19,7 @@ import dayjs from "dayjs";
 import JsonEditor from "./json-editor/JsonEditor.tsx";
 import {ReferenceValueSelector} from "../ReferenceValueSelector.tsx";
 import {Add, Delete} from "@mui/icons-material";
+import {FileUploadForm} from "../storage/FileUpload.tsx";
 
 export interface PropertyEditorProps {
     resource: Resource
@@ -37,6 +39,7 @@ const MonacoNanoEditor = (props: PropertyFormProps<string>) => <MonacoNanoForm c
                                                                                onChange={value => props.onChange(value, true)}/>
 
 const TextEditor = (props: PropertyFormProps<string>) => <TextField
+    fullWidth
     value={props.value || ''}
     onChange={e => props.onChange(e.target.value, true)}/>
 
@@ -48,19 +51,25 @@ const EnumEditor = (props: PropertyFormProps<string>) => <Select
 </Select>
 
 const IntegerEditor = (props: PropertyFormProps<number>) => <TextField
+    fullWidth
     type='number'
     value={props.value || ''}
     onChange={e => props.onChange(parseInt(e.target.value), true)}/>
 
 const FloatEditor = (props: PropertyFormProps<number>) => <TextField
+    fullWidth
     type='number'
     value={props.value || ''}
     onChange={e => props.onChange(parseFloat(e.target.value), true)}/>
 
 
-const BooleanEditor = (props: PropertyFormProps<boolean>) => <Checkbox checked={Boolean(props.value)}
-                                                                       onChange={e => props.onChange(e.target.checked, true)}/>
+const BooleanEditor = (props: PropertyFormProps<boolean>) => <Checkbox
+    sx={{width: '100%'}}
+    checked={Boolean(props.value)}
+    onChange={e => props.onChange(e.target.checked, true)}/>
+
 const DateEditor = (props: PropertyFormProps<string>) => <DatePicker
+    sx={{width: '100%'}}
     value={props.value ? dayjs(props.value) : undefined}
     onChange={(e: any) => {
         console.log(e)
@@ -68,6 +77,7 @@ const DateEditor = (props: PropertyFormProps<string>) => <DatePicker
     }}/>
 
 const TimeEditor = (props: PropertyFormProps<string>) => <TimePicker
+    sx={{width: '100%'}}
     value={props.value ? dayjs(props.value) : undefined}
     onChange={(e: any) => {
         console.log(e)
@@ -75,6 +85,7 @@ const TimeEditor = (props: PropertyFormProps<string>) => <TimePicker
     }}/>
 
 const TimestampEditor = (props: PropertyFormProps<string>) => <DateTimePicker
+    sx={{width: '100%'}}
     value={props.value ? dayjs(props.value) : undefined}
     onChange={(e: any) => {
         console.log(e)
@@ -115,6 +126,47 @@ const ListEditor = (props: PropertyFormProps<any[]>) => {
     </Box>
 }
 
+const MapEditor = (props: PropertyFormProps<{ [key: string]: any }>) => {
+    const ItemForm = getPropertyFormByProperty<unknown>(props.property.item)
+
+    const value = props.value || {}
+
+    return <Box>
+        <IconButton onClick={() => {
+            props.onChange({...value, 'new': props.property.item.defaultValue}, true)
+        }}>
+            <Add/>
+        </IconButton>
+        {Object.keys(value).map(key => <Box m={1} style={{
+            border: '1px solid #ccc',
+        }}>
+            <TextField value={key}
+                       onChange={e => {
+                           const updated = {...value}
+                           delete updated[key]
+                           updated[e.target.value] = value[key]
+                           props.onChange(updated, true)
+                       }}/>
+            <ItemForm
+                property={props.property.item}
+                value={value[key]}
+                onChange={(updated, isValid) => {
+                    props.onChange({...value, [key]: updated}, isValid)
+                }}/>
+            <IconButton onClick={() => {
+                const updated = {...value}
+                delete updated[key]
+                props.onChange(updated, true)
+            }}>
+                <Delete/>
+            </IconButton>
+        </Box>)}
+    </Box>
+}
+
+const FileEditor = (props: PropertyFormProps<object>) => <FileUploadForm value={props.value as any}
+                                                                         onChange={updated => props.onChange(updated, true)}/>
+
 
 //default types
 registerDefaultPropertyForm<boolean>("Bool", Type.BOOL, BooleanEditor)
@@ -125,6 +177,7 @@ registerDefaultPropertyForm<string>("Timestamp", Type.TIMESTAMP, TimestampEditor
 registerDefaultPropertyForm<string>("Enum", Type.ENUM, EnumEditor)
 registerDefaultPropertyForm<string>("UUID", Type.UUID, TextEditor)
 registerDefaultPropertyForm<any[]>("List", Type.LIST, ListEditor)
+registerDefaultPropertyForm<{ [key: string]: any }>("Map", Type.MAP, MapEditor)
 
 registerDefaultPropertyForm<string>("String", Type.STRING, TextEditor)
 registerDefaultPropertyForm<number>("Int32", Type.INT32, IntegerEditor)
@@ -137,6 +190,9 @@ registerDefaultPropertyForm<object>("ReferenceEditor", Type.REFERENCE, Reference
 // custom types
 registerCustomPropertyForm<string>("Nano Code", Type.STRING, MonacoNanoEditor)
 registerCustomPropertyForm<object>("Json Editor", Type.OBJECT, JsonEditor)
+
+// special types
+registerSpecialPropertyForm<object>("File Editor", Type.REFERENCE, FileEditor, m => m.property?.reference === 'storage/File')
 
 
 export function PropertyEditor(props: PropertyEditorProps) {
