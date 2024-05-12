@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "yarn workspace core build; yarn workspace app build"
+    "build": "yarn workspace core build; yarn workspace common build; yarn workspace app build"
   },
   "author": "",
   "license": "ISC",
