@@ -1,0 +1,39 @@
+type: resource
+name: Package
+namespace:
+  name: studio
+properties:
+  name:
+    title: Name
+    description: Name
+    type: STRING
+    length: 255
+    required: true
+    unique: true
+  repository:
+    title: Repository
+    description: Repository
+    type: reference
+    reference: Repository
+    required: true
+  path:
+    title: Path
+    description: Path
+    type: string
+    required: true
+  params:
+    title: Params
+    description: Params
+    type: object
+  status:
+    title: Installed
+    description: Installed
+    type: enum
+    required: true
+    enumValues:
+      - READY_TO_INSTALL
+      - INSTALLED
+      - UNINSTALLED
+    defaultValue: READY_TO_INSTALL
+annotations:
+  EnableAudit: "true"

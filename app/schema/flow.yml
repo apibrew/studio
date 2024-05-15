@@ -1,0 +1,51 @@
+type: resource
+name: Flow
+namespace:
+  name: nano
+properties:
+  name:
+    title: Name
+    description: Name
+    type: STRING
+    length: 255
+    required: true
+    unique: true
+  controls:
+    title: Controls
+    description: Controls
+    type: LIST
+    required: true
+    item:
+      type: STRUCT
+      typeRef: Control
+types:
+  - name: Control
+    properties:
+      id:
+        title: ID
+        description: ID
+        type: string
+        required: true
+      title:
+        title: Title
+        description: Title
+        type: string
+      controlType:
+        title: Name
+        description: Name
+        type: REFERENCE
+        reference: FlowControlType
+      params:
+        title: Parameters
+        description: Parameters
+        type: MAP
+        required: true
+        item:
+          type: OBJECT
+      stylesOverride:
+        title: Styles Override
+        description: Styles Override
+        type: MAP
+        required: false
+        item:
+          type: STRING
