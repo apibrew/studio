@@ -9,6 +9,7 @@ export interface NanoFormProps {
     code: string
     language: 'JAVASCRIPT' | 'TYPESCRIPT'
     onChange: (code: string) => void
+    height?: string
 }
 
 export function MonacoNanoForm(props: NanoFormProps) {
@@ -73,7 +74,7 @@ export function MonacoNanoForm(props: NanoFormProps) {
                 }}>
                     <Box flexGrow={1}>
                         <Editor
-                            height="90vh"
+                            height={props.height || '600px'}
                             language={props.language === 'JAVASCRIPT' ? 'javascript' : 'typescript'}
                             theme='vs-dark'
                             options={{

@@ -13,14 +13,27 @@ import {MonitoringRoutes} from "./monitoring";
 import CloudIndex from '../cloud/index.tsx'
 import {cloudRoutes} from "../cloud/routes";
 import TemplatesPage from "../pages/dashboard/templates/IndexPage";
-import {NanoRoutes} from "./nano";
 import ResourcePage from "../pages/dashboard/builder/ResourcePage";
 import {AIAssistantPage} from "../pages/dashboard/ai-assistant/AIAssistantPage";
 import {FlowRoutes} from "./flows";
 import BuilderPage from "../pages/dashboard/builder/BuilderPage";
 import Library from "../pages/dashboard/library";
-import {NanoModuleRoutes} from "./nano-module";
 import {FlowControlsRoutes} from "./flow-controls";
+import {listPageTypes} from "core";
+import {createElement} from "react";
+import {NanoPlayGround} from "../pages/dashboard/nano/NanoPlayGround.tsx";
+
+const pageRoutes = listPageTypes().map(pageType => {
+    return {
+        path: pageType.routerPath,
+        element: createElement(pageType.component),
+        handle: {
+            breadcrumb: pageType.breadcrumb
+        },
+    }
+})
+
+console.log(pageRoutes)
 
 export const index = createBrowserRouter([
     {
@@ -58,6 +71,7 @@ export const index = createBrowserRouter([
                     breadcrumb: 'Home'
                 },
             },
+            ...pageRoutes,
             {
                 path: "builder",
                 element: <BuilderPage/>,
@@ -93,13 +107,18 @@ export const index = createBrowserRouter([
                     breadcrumb: 'Library'
                 }
             },
-            NanoRoutes,
-            NanoModuleRoutes,
             UserAndRolesRoutes,
             SettingsRoutes,
             MonitoringRoutes,
             FlowRoutes,
             FlowControlsRoutes,
+            {
+                path: 'nano-playground',
+                element: <NanoPlayGround/>,
+                handle: {
+                    breadcrumb: 'Nano Playground'
+                }
+            },
             {
                 path: "user-profile",
                 element: <UserProfilePage/>,

@@ -18,7 +18,7 @@ export function ListInstance() {
 
     const wi = useWatcher(InstanceEntityInfo)
     const deploymentTaskRepository = useRepository<DeploymentTask>(DeploymentTaskEntityInfo)
-    const instanceHalthCheck = useRecords<InstanceHealthCheck>(InstanceHealthCheckEntityInfo, {
+    const instanceHealthCheck = useRecords<InstanceHealthCheck>(InstanceHealthCheckEntityInfo, {
         limit: 10000
     })
 
@@ -36,7 +36,7 @@ export function ListInstance() {
                 }
             }
         } as unknown as BooleanExpression,
-        limit: 100,
+        limit: 1000,
         resolveReferences: ['$.plan']
     }, wi)
 
@@ -97,8 +97,6 @@ export function ListInstance() {
         );
     }
 
-    console.log(instanceHalthCheck)
-
     return <Box width='100%'>
         <Box height='600px' width='100%' overflow='auto'>
             <Table width='100%'>
@@ -117,7 +115,7 @@ export function ListInstance() {
                 </TableHead>
                 <TableBody>
                     {instances.map((instance) => {
-                        const healthData = instanceHalthCheck?.find(hc => hc.instance.id === instance.id)
+                        const healthData = instanceHealthCheck?.find(hc => hc.instance.id === instance.id)
 
                         return <TableRow
                             key={instance.id}

@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@apibrew/client@^1.1.67", "@apibrew/client@1.1.67":
-  version "1.1.67"
-  resolved "https://registry.npmjs.org/@apibrew/client/-/client-1.1.67.tgz"
-  integrity sha512-pWFmJMkOfeitWC8qUuw1fxXOqoEXxWf30ZZlyyWkkyf8Ell3R3csWZW2XdG5l3M/cc4mfb4dmL0G/oEsuZOzhg==
+"@apibrew/client@^1.1.67", "@apibrew/client@1.1.69":
+  version "1.1.69"
+  resolved "https://registry.npmjs.org/@apibrew/client/-/client-1.1.69.tgz"
+  integrity sha512-xV9Jz1l50l86vfeQFlYpClqGKtCBiLhJwZr8C5arogYElKKH1DLmSgoh5V5H0ejb6ZXtp3dvoX1TCjjkH4MvqQ==
   dependencies:
     axios "^1.6.1"
     js-yaml "^4.1.0"
@@ -1503,7 +1503,7 @@ anymatch@~3.1.2:
   version "0.1.0"
   resolved "file:app"
   dependencies:
-    "@apibrew/client" "1.1.67"
+    "@apibrew/client" "1.1.68"
     "@apibrew/react" "1.0.77"
     "@editorjs/editorjs" "^2.29.1"
     "@emotion/react" "^11.11.3"

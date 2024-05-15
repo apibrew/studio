@@ -10,17 +10,18 @@ import {
     Person,
     SettingsEthernet
 } from "@mui/icons-material";
-import {ConnectionProvider} from "./connection-provider";
+import {ConnectionProvider} from "@apibrew/react";
 import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
 import {ReactNode} from "react";
 
 export interface MenuItem {
     title: string;
     icon?: ReactNode;
-    path: string;
+    path?: string;
     secondSideBar?: () => ReactNode;
     grow?: boolean;
     delimiter?: boolean;
+    children?: MenuItem[]
     conditional?: (connectionProvider: ConnectionProvider) => boolean
 }
 
@@ -41,51 +42,64 @@ export const menuItems: MenuItem[] = [
         secondSideBar: () => <ResourceSelectorPanel/>,
         icon: <Dataset/>
     },
-    // {
-    //     title: 'Designer',
-    //     path: '/dashboard/designer',
-    //     icon: <DesignServices/>
-    // },
-    // {
-    //     title: 'Flows',
-    //     path: '/dashboard/flows',
-    //     icon: <NetworkCell/>
-    // },
-    // {
-    //     title: 'AI Assistant',
-    //     path: '/dashboard/ai-assistant',
-    //     icon: <Assistant/>
-    // },
     {
-        title: 'Nano Code',
-        path: '/dashboard/nano',
-        icon: <FunctionsTwoTone/>
-    },
-    {
-        title: 'Nano Module',
-        path: '/dashboard/nano-module',
-        icon: <FunctionsTwoTone/>
-    },
-    {
-        title: 'Nano Playground',
-        path: '/dashboard/nano/playground',
-        icon: <FunctionsTwoTone/>
-    },
-    {
-        title: 'Library',
-        path: '/dashboard/library',
-        icon: <LibraryBooks/>
+        title: 'Developer Tools',
+        icon: <FunctionsTwoTone/>,
+        children: [
+            {
+                title: 'Nano Code',
+                path: '/dashboard/nano-code',
+                icon: <FunctionsTwoTone/>
+            },
+            {
+                title: 'Nano Module',
+                path: '/dashboard/nano-module',
+                icon: <FunctionsTwoTone/>
+            },
+            {
+                title: 'Nano Action',
+                path: '/dashboard/nano-action',
+                icon: <FunctionsTwoTone/>
+            },
+            {
+                title: 'Nano Cron Job',
+                path: '/dashboard/nano-cron-job',
+                icon: <FunctionsTwoTone/>
+            },
+            {
+                title: 'Nano Job',
+                path: '/dashboard/nano-job',
+                icon: <FunctionsTwoTone/>
+            },
+            {
+                title: 'Nano Playground',
+                path: '/dashboard/nano-playground',
+                icon: <FunctionsTwoTone/>
+            },
+            {
+                title: 'Library',
+                path: '/dashboard/library',
+                icon: <LibraryBooks/>
+            },
+        ]
     },
     {
         title: 'Users & Roles',
         path: '/dashboard/users-and-roles',
-        icon: <Group/>
+        icon: <Group/>,
+        children: [
+            {
+                title: 'Users',
+                path: '/dashboard/users-and-roles/users',
+                icon: <Group/>,
+            },
+            {
+                title: 'Groups',
+                path: '/dashboard/users-and-roles/roles',
+                icon: <Group/>,
+            },
+        ]
     },
-    // {
-    //     title: 'Templates',
-    //     path: '/dashboard/templates',
-    //     icon: <Pattern/>
-    // },
     {
         title: 'delimeter-1',
         path: '',
@@ -97,11 +111,6 @@ export const menuItems: MenuItem[] = [
         path: '/dashboard/monitoring',
         icon: <Monitor/>
     },
-    // {
-    //     title: 'Settings',
-    //     path: '/dashboard/settings',
-    //     icon: <Settings/>
-    // },
     {
         title: 'User Profile',
         path: '/dashboard/user-profile',

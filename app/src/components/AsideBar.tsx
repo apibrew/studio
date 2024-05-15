@@ -1,13 +1,15 @@
-import {Box, Icon, List, ListItem, ListItemButton, ListItemText, useTheme} from "@mui/material";
+import {Box, Collapse, Icon, List, ListItem, ListItemButton, ListItemText, useTheme} from "@mui/material";
 import {MenuItem, menuItems} from "../menu";
 import {useNavigate, useParams} from "react-router-dom";
 import {connectionProvider} from "../cloud/setup.ts";
+import {useState} from "react";
 
 export interface AsideBarProps {
     activeItem?: MenuItem
 }
 
 export function AsideBar(props: AsideBarProps) {
+    const [activeMenu, setActiveMenu] = useState<MenuItem | undefined>(undefined)
     const navigate = useNavigate()
     const params = useParams()
 
@@ -17,8 +19,8 @@ export function AsideBar(props: AsideBarProps) {
 
     const items = menuItems
 
-    const isActive = (path: MenuItem) => {
-        return props.activeItem === path
+    const isActive = (item: MenuItem) => {
+        return props.activeItem === item || activeMenu == item
     }
 
     return <>
@@ -32,7 +34,7 @@ export function AsideBar(props: AsideBarProps) {
                     return (
                         <ListItem key={item.title}>
                             {item.delimiter && <hr/>}
-                            {!item.delimiter && <>
+                            {!item.delimiter && <Box width='100%'>
                                 <ListItemButton
                                     sx={{
                                         backgroundColor: isActive(item) ? '#D2E6FAFF' : 'transparent',
@@ -42,13 +44,16 @@ export function AsideBar(props: AsideBarProps) {
                                         '&:hover': {
                                             backgroundColor: 'rgb(205, 230, 235)',
                                             color: 'white'
-                                        }
+                                        },
                                     }}
                                     onClick={() => {
-                                        if (!connectionName || item.path === '/connections') {
-                                            navigate(item.path)
-                                        } else {
-                                            navigate(`/${connectionName}${item.path}`)
+                                        setActiveMenu(item)
+                                        if (item.path) {
+                                            if (!connectionName || item.path === '/connections') {
+                                                navigate(item.path!)
+                                            } else {
+                                                navigate(`/${connectionName}${item.path}`)
+                                            }
                                         }
                                     }}>
                                     <Icon sx={{
@@ -57,7 +62,31 @@ export function AsideBar(props: AsideBarProps) {
                                     }}>{item.icon}</Icon>
                                     <ListItemText secondary={item.title}/>
                                 </ListItemButton>
-                            </>}
+                                {item.children && <Collapse in={isActive(item)} timeout='auto' unmountOnExit>
+                                    <Box ml={3} width='100%'>
+                                        {item.children.map(child => (
+                                            <ListItem key={child.title}>
+                                                <ListItemButton
+                                                    sx={{
+                                                        backgroundColor: isActive(child) ? '#D2E6FAFF' : 'transparent',
+                                                        color: isActive(child) ? 'white' : theme.palette.text.primary,
+                                                        borderRadius: '3px',
+                                                        padding: '3px',
+                                                        '&:hover': {
+                                                            backgroundColor: 'rgb(205, 230, 235)',
+                                                            color: 'white'
+                                                        }
+                                                    }}
+                                                    onClick={() => {
+                                                        navigate(`/${connectionName}${child.path}`)
+                                                    }}>
+                                                    <ListItemText secondary={child.title}/>
+                                                </ListItemButton>
+                                            </ListItem>
+                                        ))}
+                                    </Box>
+                                </Collapse>}
+                            </Box>}
                         </ListItem>)
                 })}
             </List>

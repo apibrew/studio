@@ -16,7 +16,7 @@ export function useActiveMenuItem(): MenuItem | undefined {
         if (item.delimiter) {
             continue
         }
-        if (matches.some(match => match.pathname.startsWith(item.path))) {
+        if (matches.some(match => match.pathname.startsWith(item.path!))) {
             activeItem = item
         }
         if (matches.some(match => match.pathname.startsWith(`/${connectionName}${item.path}`))) {
