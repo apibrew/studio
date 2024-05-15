@@ -58,8 +58,13 @@ export function GridPage<T>(props: GridPageProps<T>) {
                         drawer.open(<ValueDrawerComponent
                             title={`New ${resource.name}`}
                             value={{}}
-                            onChange={async (crated: Entity) => {
-                                await toast.promise(repository.create(crated), {
+                            onChange={async (created: Entity) => {
+                                if (created.id) {
+                                    toast.success('Saved')
+                                    data.refresh()
+                                    return
+                                }
+                                await toast.promise(repository.create(created), {
                                     loading: 'Saving...',
                                     success: 'Saved',
                                     error: err => err.message
