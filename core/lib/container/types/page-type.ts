@@ -15,6 +15,7 @@ export function registerPageType(name: string, routerPath: string, component: Co
     container.registerComponent({
         componentType: PageTypeName,
         routerPath: routerPath,
+        breadcrumb: name,
         name,
         component
     } as PageType);

@@ -8,7 +8,7 @@ import {
     Logout,
     Monitor,
     Person,
-    SettingsEthernet
+    SettingsEthernet, Storage
 } from "@mui/icons-material";
 import {ConnectionProvider} from "@apibrew/react";
 import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
@@ -99,6 +99,11 @@ export const menuItems: MenuItem[] = [
                 icon: <Group/>,
             },
         ]
+    },
+    {
+        title: 'Storage',
+        path: '/dashboard/storage',
+        icon: <Storage/>
     },
     {
         title: 'delimeter-1',
