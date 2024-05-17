@@ -14,7 +14,7 @@ import {
     TableRow,
     Tooltip
 } from "@mui/material";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {label} from "../../../util/record";
 import {Search} from "@mui/icons-material";
 import {useModal} from "../../../components/modal/use-modal";

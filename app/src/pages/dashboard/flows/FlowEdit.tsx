@@ -4,7 +4,7 @@ import {useRepository} from "@apibrew/react";
 import {useParams} from "react-router-dom";
 import {Flow, FlowEntityInfo} from "../../../model/flow";
 import {FlowDesigner} from "../../../components/flow-designer/FlowDesigner";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import toast from "react-hot-toast";
 
 export function FlowEdit() {

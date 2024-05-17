@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import {PageLayout} from "../../../layout/PageLayout";
 import {useRouteTab} from "../../../hooks/use-route-tab";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import Button from "@mui/material/Button";
 import {ensureResource} from "../../../logic/ensure-resource";
 import {Resource, useClient} from "@apibrew/react";

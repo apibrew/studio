@@ -1,9 +1,8 @@
 import {Box, Card, CardActions, CardContent, CardHeader} from "@mui/material";
-
-import JSONInput from "react-json-editor-ajrm";
-import {localeEn} from "../data-table/table/json-input";
 import Button from "@mui/material/Button";
 import {useState} from "react";
+import JsonEditor from "../property-editor/json-editor/JsonEditor.tsx";
+import {Property} from "@apibrew/client/model";
 
 export interface JsonEditorDrawerProps {
     title: string
@@ -22,16 +21,7 @@ export function JsonEditorDrawer(props: JsonEditorDrawerProps) {
             <CardHeader title={props.title}/>
         </Card>
         <CardContent>
-            <JSONInput locale={localeEn}
-                       height='400px'
-                       width='100%'
-                       placeholder={value}
-                       onBlur={(e: any) => {
-                           if (e.error) {
-                               return
-                           }
-                           setValue(e.jsObject)
-                       }}/>
+            <JsonEditor property={{} as Property} value={value} onChange={setValue}/>
         </CardContent>
         <CardActions>
             <Button onClick={props.onClose}>Cancel</Button>

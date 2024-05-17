@@ -13,7 +13,8 @@
     "app",
     "core",
     "common",
-    "electron"
+    "electron",
+    "ask-ai"
   ],
   "dependencies": {
     "yarn": "^1.22.22"

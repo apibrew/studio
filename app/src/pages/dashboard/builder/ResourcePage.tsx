@@ -1,7 +1,7 @@
 import {Box} from "@mui/material";
 import {useEffect, useState} from "react";
 import {Resource, useClient} from "@apibrew/react";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {useParams} from "react-router-dom";
 import {DataTable} from "../../../components/data-table/table/DataTable";
 

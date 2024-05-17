@@ -1,1 +1,1 @@
-import './TestXPage.tsx'
+export * from './components'

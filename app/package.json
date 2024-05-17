@@ -12,6 +12,7 @@
   "dependencies": {
     "core": "0.1.0",
     "common": "0.1.0",
+    "ask-ai": "0.1.0",
     "@apibrew/client": "1.1.70",
     "@apibrew/react": "1.0.77",
     "@editorjs/editorjs": "^2.29.1",

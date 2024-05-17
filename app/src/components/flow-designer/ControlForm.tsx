@@ -2,7 +2,7 @@ import {ValueDrawerComponent, ValueDrawerComponentFormProps} from "../common/Val
 import {Control} from "../../model/flow";
 import {useRecords} from "@apibrew/react";
 import {FlowControlType, FlowControlTypeEntityInfo, Parameter} from "../../model/flow-control-type";
-import {LoadingOverlay} from "../LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {
     Box,
     FormControl,

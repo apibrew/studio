@@ -1,6 +1,6 @@
 import {Namespace, Resource, useRecords, useRepository} from "@apibrew/react";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {Box, FormControl, Grid, MenuItem, Select, Stack} from "@mui/material";
 import {ResourceSchemaView} from "../../../components/resource-schema-view/ResourceSchemaView";
 import {Link} from "react-router-dom";

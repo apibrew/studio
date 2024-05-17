@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import {PageLayout} from "../../../layout/PageLayout";
 import {useRouteTab} from "../../../hooks/use-route-tab";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 
 export default function MonitoringPage() {
     const tab = useRouteTab()

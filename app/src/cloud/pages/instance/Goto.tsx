@@ -1,4 +1,4 @@
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {useNavigate, useParams} from "react-router-dom";
 import {LocalStorageTokenStorage, useRecordBy, useRepository} from "@apibrew/react";
 import {DeploymentStatus, Instance, InstanceEntityInfo} from "../../model/instance";

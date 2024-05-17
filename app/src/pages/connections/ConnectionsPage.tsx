@@ -2,7 +2,7 @@ import {Box, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow
 import Container from "@mui/material/Container";
 import {Connection, connectionProvider} from "../../connection-provider";
 
-import {LoadingOverlay} from "../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {Add} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {useDrawer} from "../../hooks/use-drawer";

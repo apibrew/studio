@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import {TextField} from "@mui/material";
 import {Message, MessageEntityInfo, Role} from "./model/message";
 import {getRestPath, Namespace, Resource, useClient, useRepository} from "@apibrew/react";
-import {LoadingOverlay} from "../LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {Chat} from "./model/chat";
 import {EntityInfo} from "@apibrew/client/entity-info";
 

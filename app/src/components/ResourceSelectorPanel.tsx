@@ -16,7 +16,7 @@ import {useState} from "react";
 import {Namespace, Resource, useRecords} from "@apibrew/react";
 import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
-import {LoadingOverlay} from "./LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {MoreVert, TableChart} from "@mui/icons-material";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDrawer} from "../hooks/use-drawer";

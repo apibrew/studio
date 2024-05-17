@@ -26,7 +26,7 @@ createRoot(document.getElementById("root")!).render(
                                   localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
             >
                 <Router/>
-            </LocalizationProvider>;
+            </LocalizationProvider>
         </ThemeProvider>
     </RootLayout>
 );
