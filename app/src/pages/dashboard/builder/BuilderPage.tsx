@@ -92,7 +92,8 @@ export default function BuilderPage() {
                                                         name: 'NewResource1',
                                                         namespace: {
                                                             name: 'default'
-                                                        }
+                                                        },
+                                                        properties: {},
                                                     } as Resource}
                                     />
                                 )

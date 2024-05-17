@@ -154,7 +154,8 @@ export function ResourceSelectorPanel() {
                                             }}
                                             resource={{
                                                 name: 'NewResource1',
-                                                namespace: namespace
+                                                namespace: namespace,
+                                                properties: {},
                                             } as Resource}/>
                         )
                     }}>
