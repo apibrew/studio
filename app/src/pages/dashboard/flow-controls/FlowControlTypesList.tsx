@@ -1,6 +1,6 @@
 import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import Button from "@mui/material/Button";
 import {useDataProvider} from "../../../components/data-provider/use-data-provider";
 import {PageLayout} from "../../../layout/PageLayout";

@@ -2,7 +2,7 @@ import {ListSubheader, MenuItem, Select} from "@mui/material";
 import {SelectProps} from "@mui/material/Select/Select";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {Resource, useRecords} from "@apibrew/react";
-import {LoadingOverlay} from "./LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {SelectChangeEvent} from "@mui/material/Select/SelectInput";
 
 export interface ResourceSelectProps extends Omit<SelectProps<string>, "onChange"> {

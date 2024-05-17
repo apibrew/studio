@@ -1,5 +1,5 @@
 import {useClient} from "@apibrew/react";
-import {LoadingOverlay} from "../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 

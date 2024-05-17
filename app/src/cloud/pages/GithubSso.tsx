@@ -4,7 +4,7 @@ import {useClient, useRepository} from "@apibrew/react";
 import {useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
 import {GithubSso, GithubSsoEntityInfo} from "../model/github-sso";
-import {LoadingOverlay} from "../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 
 export const GithubSsoPage = () => {
     const [searchParams] = useSearchParams();

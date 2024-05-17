@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "yarn workspace core build; yarn workspace common build; yarn workspace app build"
+    "build": "yarn workspace core build; yarn workspace common build; yarn workspace ask-ai build; yarn workspace app build"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +13,8 @@
     "app",
     "core",
     "common",
-    "electron"
+    "electron",
+    "ask-ai"
   ],
   "dependencies": {
     "yarn": "^1.22.22"

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useClient} from "@apibrew/react";
-import {LoadingOverlay} from "../LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {WidgetLayout} from "../../layout/WidgetLayout";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";

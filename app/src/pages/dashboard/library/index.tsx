@@ -3,7 +3,7 @@ import {Package, PackageEntityInfo, PackageResource, Status} from "../../../mode
 import {Resource, useClient} from "@apibrew/react";
 import {Repository, RepositoryEntityInfo, RepositoryResource} from "../../../model/repository";
 import {useEffect, useState} from "react";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {Client} from "@apibrew/client";
 import {Box, Stack, Table, TableCell, TableHead, TableRow} from "@mui/material";
 import {useDrawer} from "../../../hooks/use-drawer";

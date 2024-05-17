@@ -4,7 +4,7 @@ import {Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/mate
 import Button from "@mui/material/Button";
 import {useConfirmation} from "../modal/use-confirmation.tsx";
 import {useRepository, useResourceByName} from "@apibrew/react";
-import {LoadingOverlay} from "../LoadingOverlay.tsx";
+import {LoadingOverlay} from "common";
 import {Entity} from "@apibrew/client";
 import {EntityInfo} from "@apibrew/client/entity-info";
 import {useDataProvider} from "../data-provider/use-data-provider.tsx";

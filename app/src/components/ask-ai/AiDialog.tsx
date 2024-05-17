@@ -18,12 +18,6 @@ export default function AskAi(props: AskAiProps) {
                 </CardContent>
                 <CardActions>
                     <Stack direction='row' spacing={1}>
-                        <Button variant='contained'
-                                size='small'
-                                color='success'
-                                onClick={() => {
-                                    props.onClose()
-                                }}>Apply</Button>
                         <Button variant='outlined'
                                 size='medium'
                                 color='primary'

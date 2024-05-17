@@ -137,9 +137,11 @@ export function PermissionsInputAdvanced(props: PermissionsInputAdvancedProps) {
                                     drawer.open(<JsonEditorDrawer title={'Edit Local Flags for permission'}
                                                                   value={constraint.recordSelector || {}}
                                                                   onClose={drawer.close}
-                                                                  onChange={localFlags => {
+                                                                  onChange={recordSelector => {
+                                                                      console.log(recordSelector)
+
                                                                       const updatedConstraints = [...props.constraints]
-                                                                      updatedConstraints[index].recordSelector = localFlags
+                                                                      updatedConstraints[index].recordSelector = recordSelector
                                                                       props.setConstraints(updatedConstraints)
                                                                   }}/>)
                                 }}>

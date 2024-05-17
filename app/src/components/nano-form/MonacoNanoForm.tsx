@@ -2,7 +2,7 @@ import {Box, Grid} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
 import Editor, {Monaco} from '@monaco-editor/react';
 import {Resource, useClient, useRecords} from "@apibrew/react";
-import {LoadingOverlay} from "../LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 
 export interface NanoFormProps {

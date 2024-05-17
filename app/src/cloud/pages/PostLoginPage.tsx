@@ -1,4 +1,4 @@
-import {LoadingOverlay} from "../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {useEffect} from "react";
 import {DeploymentStatus, Instance, InstanceEntityInfo} from "../model/instance";
 import {useRepository, useTokenBody} from "@apibrew/react";

@@ -11,7 +11,7 @@ import './Table.scss'
 import {Schema} from "../../../types/schema";
 import {ensureGivenPropertiesOrder} from "../../../util/resource";
 import {Type} from "@apibrew/client/model/resource";
-import {LoadingOverlay} from "../../LoadingOverlay";
+import {LoadingOverlay} from "common";
 
 export interface DataTableTableProps {
     resource: Resource

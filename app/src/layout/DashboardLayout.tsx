@@ -1,14 +1,12 @@
 import {Box, Stack, Typography} from "@mui/material";
 import {DashboardLayoutConfig, DashboardLayoutConfigureContext} from "../context/DashboardLayoutConfig";
 import Button from "@mui/material/Button";
-import {Feedback, Help, PsychologyAlt} from "@mui/icons-material";
+import {Feedback, Help} from "@mui/icons-material";
 import {Breadcrumbs} from "../components/Breadcrumbs";
 import {AsideBar} from "../components/AsideBar";
 import {useActiveMenuItem} from "../hooks/active-menu-item";
 import {FeedbackWidget} from "../components/FeedbackWidget";
 import {useDrawer} from "../hooks/use-drawer";
-import AskAi from "../components/ask-ai/AiDialog";
-import {useConnection} from "../context/ConnectionContext";
 import {ReactNode, useState} from "react";
 
 export interface DashboardLayoutProps {
@@ -23,7 +21,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
 
     const activeItem = useActiveMenuItem()
     const drawer = useDrawer()
-    const connection = useConnection()
 
     return <>
         {drawer.render()}
@@ -115,12 +112,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                                 <Feedback fontSize='small'/>
                                 <Typography ml={1}>Feedback</Typography>
                             </Button>
-                            {connection.name === 'local' && <Button onClick={() => {
-                                drawer.open(<AskAi onClose={drawer.close}/>)
-                            }}>
-                                <PsychologyAlt fontSize='small'/>
-                                <Typography ml={1}>Ask AI</Typography>
-                            </Button>}
                             <Button target='_blank' href='https://docs.apibrew.io/getting-started/intro'>
                                 <Help fontSize='small'/>
                                 <Typography ml={1}>Help</Typography>

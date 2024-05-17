@@ -3,7 +3,7 @@ import {Box, Button, Card, CardActions, CardContent, CardHeader, MenuItem, Selec
 import {Code, CodeEntityInfo, Language} from "@apibrew/client/nano/model/code";
 import {useRepository, useResourceByName} from "@apibrew/react";
 import toast from "react-hot-toast";
-import {LoadingOverlay} from "../LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
 
 export interface ResourceNanoDrawerProps {

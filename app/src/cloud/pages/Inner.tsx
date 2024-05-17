@@ -2,7 +2,7 @@ import {PageLayout} from "../../layout/PageLayout";
 import {useRouteTab} from "../../hooks/use-route-tab";
 import {Outlet, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import {LoadingOverlay} from "../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {Box, Tab, Tabs} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useClient} from "@apibrew/react";

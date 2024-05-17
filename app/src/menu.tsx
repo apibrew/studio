@@ -8,7 +8,9 @@ import {
     Logout,
     Monitor,
     Person,
-    SettingsEthernet, Storage
+    PsychologyAlt,
+    SettingsEthernet,
+    Storage
 } from "@mui/icons-material";
 import {ConnectionProvider} from "@apibrew/react";
 import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
@@ -104,6 +106,11 @@ export const menuItems: MenuItem[] = [
         title: 'Storage',
         path: '/dashboard/storage',
         icon: <Storage/>
+    },
+    {
+        title: 'Ask AI',
+        path: '/dashboard/ask-ai',
+        icon: <PsychologyAlt/>
     },
     {
         title: 'delimeter-1',

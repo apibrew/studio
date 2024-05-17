@@ -1,5 +1,5 @@
 import {Instance, InstanceEntityInfo} from "../../model/instance";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {useDataProvider} from "../../../components/data-provider/use-data-provider";
 
 import {Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography} from "@mui/material";

@@ -1,6 +1,6 @@
 import {MenuItem, Select} from "@mui/material";
 import {fromResource, Resource, useRecords} from "@apibrew/react";
-import {LoadingOverlay} from "./LoadingOverlay";
+import {LoadingOverlay} from "common";
 import {label} from "../util/record";
 import {SelectProps} from "@mui/material/Select/Select";
 

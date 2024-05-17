@@ -4,7 +4,7 @@ import {Box, Card, CardActions, CardContent, CardHeader, FormControl, TextField}
 import {PackageDetails, Params, ParamsPage} from "./PackageDetails";
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {LoadingOverlay} from "../../../components/LoadingOverlay";
+import {LoadingOverlay} from "common";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import {loadPackageDetails, readFile} from "./helper";
