@@ -5,7 +5,6 @@ import {Instance} from "./model/instance.ts";
 import {Box, Button, IconButton, List, ListItem, ListItemButton, ListItemText} from "@mui/material";
 import {Chat} from "./Chat.tsx";
 import {toast} from "react-hot-toast";
-import './reset.scss'
 import {Delete} from "@mui/icons-material";
 
 export interface AskAi {

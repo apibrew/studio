@@ -6,6 +6,7 @@ import {LoadingOverlay} from "common";
 import {Fragment, useEffect, useState} from "react";
 import {Run, RunEntityInfo} from "./model/run.ts";
 import Markdown from 'react-markdown'
+import './markdown.scss'
 
 
 export interface ChatProps {
@@ -123,7 +124,7 @@ export function Chat(props: ChatProps) {
                 </Fragment>}
             </Box>
 
-            <Box className='ask-ai-chat' flexGrow={1} overflow='scroll' height='1px'>
+            <Box flexGrow={1} overflow='scroll' height='1px'>
                 {messages.map((message, index) => (
                     <Box key={message.id}
                          ref={index === messages.length - 1 ? (el: HTMLDivElement) => el?.scrollIntoView() : undefined}
@@ -143,7 +144,7 @@ export function Chat(props: ChatProps) {
                         <div style={{
                             textWrap: 'wrap',
                         }}>
-                            <Markdown>{message.content}</Markdown>
+                            <Markdown className='markdown-body'>{message.content}</Markdown>
                         </div>
                     </Box>
                 ))}
