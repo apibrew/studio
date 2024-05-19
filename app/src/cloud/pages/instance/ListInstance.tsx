@@ -4,23 +4,19 @@ import {useDataProvider} from "../../../components/data-provider/use-data-provid
 
 import {Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography} from "@mui/material";
 import {checkResourceAccess} from "../../../util/authorization";
-import {Direction, Resource, useRecords, useRepository, useTokenBody, useWatcher} from "@apibrew/react";
+import {Direction, Resource, useRepository, useTokenBody, useWatcher} from "@apibrew/react";
 import {ExtensionResource} from "@apibrew/client/model/extension";
 import {BooleanExpression, Operation} from "@apibrew/client/model/permission";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import {DeploymentTask, DeploymentTaskEntityInfo, Kind} from "../../model/deployment-task";
 import toast from "react-hot-toast";
-import {InstanceHealthCheck, InstanceHealthCheckEntityInfo} from "../../model/instance-health-check";
 
 export function ListInstance() {
     const navigate = useNavigate()
 
     const wi = useWatcher(InstanceEntityInfo)
     const deploymentTaskRepository = useRepository<DeploymentTask>(DeploymentTaskEntityInfo)
-    const instanceHealthCheck = useRecords<InstanceHealthCheck>(InstanceHealthCheckEntityInfo, {
-        limit: 10000
-    })
 
     const data = useDataProvider<Instance>(InstanceEntityInfo, {
         sorting: [{property: 'deploymentStatus', direction: Direction.ASC}],
@@ -115,8 +111,6 @@ export function ListInstance() {
                 </TableHead>
                 <TableBody>
                     {instances.map((instance) => {
-                        const healthData = instanceHealthCheck?.find(hc => hc.instance.id === instance.id)
-
                         return <TableRow
                             key={instance.id}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}>
@@ -142,14 +136,9 @@ export function ListInstance() {
                                 <Typography variant="body2">{instance.deploymentStatus}</Typography>
                             </TableCell>
                             <TableCell>
-                                {healthData && <Typography variant="body2">
-                                    {healthData.health}
-                                    &nbsp;
-                                    {(healthData.details as any)?.version?.version}
-                                </Typography>}
-                                {!healthData && <Typography variant="body2">
-                                    No Data
-                                </Typography>}
+                                <Typography variant="body2">
+                                    {instance.backendVersion}
+                                </Typography>
                             </TableCell>
                             <TableCell>
                                 {instance.deploymentStatus !== 'DESTROYED' && <Button
