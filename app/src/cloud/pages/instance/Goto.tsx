@@ -41,7 +41,7 @@ export function Goto() {
             setMessage('Awaiting instance[retry]...')
         }
 
-        const guestClient = new ClientImpl(`https://${instance.name}.apibrew.io:8443`)
+        const guestClient = new ClientImpl(`https://${instance.name}.apibrew.io`)
         const tokenStorage = new LocalStorageTokenStorage(instance.name)
         guestClient.useTokenStorage(tokenStorage)
 

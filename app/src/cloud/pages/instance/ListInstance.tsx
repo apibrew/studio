@@ -19,7 +19,6 @@ export function ListInstance() {
     const deploymentTaskRepository = useRepository<DeploymentTask>(DeploymentTaskEntityInfo)
 
     const data = useDataProvider<Instance>(InstanceEntityInfo, {
-        sorting: [{property: 'deploymentStatus', direction: Direction.ASC}],
         query: {
             not: {
                 equal: {
@@ -33,7 +32,11 @@ export function ListInstance() {
             }
         } as unknown as BooleanExpression,
         limit: 1000,
-        resolveReferences: ['$.plan']
+        resolveReferences: ['$.plan'],
+        sorting: [{
+            property: 'auditData.createdOn',
+            direction: Direction.DESC
+        }]
     }, wi)
 
     const tokenBody = useTokenBody()
@@ -44,14 +47,6 @@ export function ListInstance() {
     }
 
     const instances = data.records
-
-    instances.sort((a, b) => {
-        if (a.auditData?.createdOn && b.auditData?.createdOn) {
-            return Date.parse(b.auditData.createdOn as string) - Date.parse(a.auditData.createdOn as string)
-        } else {
-            return 0
-        }
-    })
 
     const handleDeploymentTask = (instance: Instance, kind: Kind) => () => {
         const promise = deploymentTaskRepository.create({

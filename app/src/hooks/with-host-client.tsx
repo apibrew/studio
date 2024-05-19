@@ -4,7 +4,7 @@ import {ClientProvider, LocalStorageTokenStorage} from "@apibrew/react";
 
 
 export function withHostClient<T>(Component: ComponentType<T>): ComponentType<T> {
-    const client = new ClientImpl('https://manager.apibrew.io:8443')
+    const client = new ClientImpl('https://manager.apibrew.io')
     client.useTokenStorage(new LocalStorageTokenStorage('manager'))
 
     return (props: T) => {

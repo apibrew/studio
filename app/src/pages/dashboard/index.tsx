@@ -18,7 +18,7 @@ export function DashboardPage() {
 
     useEffect(() => {
         if (connectionName === 'manager') {
-            const client = new ClientImpl('https://manager.apibrew.io:8443')
+            const client = new ClientImpl('https://manager.apibrew.io')
             client.useTokenStorage(new LocalStorageTokenStorage('manager'))
             setClient(client)
             setConnection({
@@ -53,6 +53,8 @@ export function DashboardPage() {
             }
 
             setConnection(connection)
+
+            connection.serverConfig.httpPort = 443
 
             newClientByServerConfig(connection.serverConfig).then(client => {
                 setClient(client)

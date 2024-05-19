@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@apibrew/client": "1.1.70",
-    "@apibrew/react": "1.0.77",
+    "@apibrew/react": "1.0.80",
     "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.4",
     "@mui/x-date-pickers": "^6.19.3",

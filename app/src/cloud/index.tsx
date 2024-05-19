@@ -4,7 +4,7 @@ import {ClientProvider, LocalStorageTokenStorage} from "@apibrew/react";
 import {useEffect} from "react";
 
 
-const client = new ClientImpl('https://manager.apibrew.io:8443')
+const client = new ClientImpl('https://manager.apibrew.io')
 client.useTokenStorage(new LocalStorageTokenStorage('manager'))
 
 export default function () {

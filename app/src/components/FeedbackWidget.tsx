@@ -14,7 +14,7 @@ export function FeedbackWidget(props: FeedbackWidgetProps) {
     const connection = useConnection()
 
     function handleSubmit() {
-        fetch('https://manager.apibrew.io:8443/feedback', {
+        fetch('https://manager.apibrew.io/feedback', {
             method: 'POST',
             body: JSON.stringify({
                 connection: connection.name,
