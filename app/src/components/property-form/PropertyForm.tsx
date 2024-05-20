@@ -22,7 +22,7 @@ import {ArrowDownward} from "@mui/icons-material";
 import {AnnotationsForm} from "../annotations-form/AnnotationsForm";
 import {PropertyValueEdit} from "../property-value-edit/PropertyValueEdit";
 import {getAnnotation, isAnnotationEnabled, withAnnotation, withBooleanAnnotation} from "../../util/annotation";
-import {CascadeReference, PropertyEditorAnnotation} from "../../util/base-annotations";
+import {ActionApi, ActionOutputProperty, CascadeReference, PropertyEditorAnnotation} from "../../util/base-annotations";
 import {getPropertyEditorList} from "../property-editor/PropertyEditor";
 
 export interface PropertyFormProps {
@@ -208,6 +208,27 @@ export function PropertyForm(props: PropertyFormProps) {
                 <FormHelperText>
                     If enabled, when the referenced record is deleted, this record will also be deleted. This is
                     useful for cascading deletes.
+                </FormHelperText>
+            </FormControl>}
+            {isAnnotationEnabled(props.resource.annotations, ActionApi) && <FormControl fullWidth>
+                <FormLabel>
+                    Action Output Property
+                </FormLabel>
+                <Checkbox
+                    size='small'
+                    sx={{
+                        display: 'inline-block',
+                        width: '40px'
+                    }}
+                    checked={isAnnotationEnabled(props.property.annotations, ActionOutputProperty)}
+                    onChange={(event) => {
+                        props.onChange({
+                            ...props.property,
+                            annotations: withBooleanAnnotation(props.property.annotations, ActionOutputProperty, event.target.checked)
+                        })
+                    }}/>
+                <FormHelperText>
+                    If enabled, this property will be behaved as an output property of an action.
                 </FormHelperText>
             </FormControl>}
             <hr/>

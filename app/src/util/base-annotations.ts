@@ -10,6 +10,7 @@ export const NormalizedResource = "NormalizedResource";
 export const AutoCreated = "AutoCreated";
 export const EnableAudit = "EnableAudit";
 export const CascadeReference = "CascadeReference";
+export const ActionOutputProperty = "ActionOutputProperty";
 export const DisableVersion = "DisableVersion";
 export const DisableBackup = "DisableBackup";
 
@@ -48,6 +49,7 @@ export const CommonType = "CommonType";
 
 // REST API
 export const RestApiDisabled = "RestApiDisabled";
+export const ActionApi = "ActionApi";
 
 // OpenAPI
 export const OpenApiGroup = "OpenApiGroup";
@@ -109,6 +111,7 @@ export const annotations: AnnotationDef[] = [
     {name: AllowEmptyPrimitive, type: Type.BOOL},
     {name: CommonType, type: Type.BOOL},
     {name: RestApiDisabled, type: Type.BOOL},
+    {name: ActionApi, type: Type.BOOL},
     {name: OpenApiGroup, type: Type.BOOL},
     {name: OpenApiHide, type: Type.BOOL},
     {name: OpenApiRestPath, type: Type.BOOL},

@@ -25,7 +25,13 @@ import Button from "@mui/material/Button";
 import {ResourceDrawer} from "./resource-drawer/ResourceDrawer";
 import {useAnalytics} from "../hooks/use-analytics";
 
-export function ResourceSelectorPanel() {
+export interface ResourceSelectorPanelProps {
+    filter?: (resource: Resource) => boolean
+    baseResourcePath?: string
+}
+
+export function ResourceSelectorPanel(props: ResourceSelectorPanelProps) {
+    const baseResourcePath = props.baseResourcePath || '/dashboard/resources'
     const params = useParams()
     const navigate = useNavigate()
     const drawer = useDrawer()
@@ -48,8 +54,14 @@ export function ResourceSelectorPanel() {
         limit: 1000,
     }, wi)
 
-    const namespaces = namespacesAll ? namespacesAll.filter(item => item.name !== 'nano' && item.name !== 'testing') : undefined
-    const resources = resourcesAll ? resourcesAll.filter(item => item.namespace.name === namespace.name) : undefined
+    const filteredResources = resourcesAll?.filter(item => (!props.filter || props.filter(item))) ?? []
+
+    const resources = filteredResources.filter(item => item.namespace.name === namespace.name)
+
+    const namespaces = namespacesAll ? namespacesAll
+            .filter(item => item.name !== 'nano' && item.name !== 'testing')
+            .filter(namespace => filteredResources.some(item => item.namespace.name === namespace.name))
+        : undefined
 
     const loaded = namespaces && resources
 
@@ -118,7 +130,7 @@ export function ResourceSelectorPanel() {
                             backgroundColor: isActive ? '#D2E6FAFF' : 'transparent',
                         }}
                                         onClick={() => {
-                                            const url = (connectionName ? `/${connectionName}` : ``) + `/dashboard/resources/${namespace.name}/${resource.name}`
+                                            const url = (connectionName ? `/${connectionName}` : ``) + `${baseResourcePath}/${namespace.name}/${resource.name}`
                                             navigate(url)
 
                                             analytics.click('resource', resource.name)

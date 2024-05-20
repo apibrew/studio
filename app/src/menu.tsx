@@ -1,4 +1,5 @@
 import {
+    Commit,
     Dataset,
     FunctionsTwoTone,
     Group,
@@ -15,6 +16,8 @@ import {
 import {ConnectionProvider} from "@apibrew/react";
 import {ResourceSelectorPanel} from "./components/ResourceSelectorPanel";
 import {ReactNode} from "react";
+import {isAnnotationEnabled} from "@apibrew/client/util/annotation";
+import {ActionApi} from "./util/base-annotations.ts";
 
 export interface MenuItem {
     title: string;
@@ -41,8 +44,14 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Resources',
         path: '/dashboard/resources',
-        secondSideBar: () => <ResourceSelectorPanel/>,
+        secondSideBar: () => <ResourceSelectorPanel filter={resource => !isAnnotationEnabled(resource.annotations, ActionApi)} />,
         icon: <Dataset/>
+    },
+    {
+        title: 'Action Pages',
+        path: '/dashboard/action-pages',
+        secondSideBar: () => <ResourceSelectorPanel baseResourcePath='/dashboard/action-pages' filter={resource => isAnnotationEnabled(resource.annotations, ActionApi)} />,
+        icon: <Commit/>
     },
     {
         title: 'Developer Tools',

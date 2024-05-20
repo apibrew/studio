@@ -19,6 +19,7 @@ import {ArrowDownward} from "@mui/icons-material";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
 import {isAnnotationEnabled, withBooleanAnnotation} from "../../util/annotation";
 import {
+    ActionApi,
     AllowPublicAccess,
     AllowPublicCreateAccess,
     AllowPublicDeleteAccess,
@@ -173,6 +174,28 @@ export function ResourceForm(props: ResourceFormProps) {
                         <FormHelperText>
                             If you enable audit, All changes on Resource will be kept in AuditLog (you can find them in
                             Monitoring / Audit page)
+                        </FormHelperText>
+                    </FormControl>
+                    <FormControl fullWidth>
+                        <FormLabel>
+                            Action Api
+                        </FormLabel>
+                        <Checkbox
+                            size='small'
+                            sx={{
+                                display: 'inline-block',
+                                width: '40px'
+                            }}
+                            checked={isAnnotationEnabled(props.resource.annotations, ActionApi)}
+                            onChange={(event) => {
+                                props.onChange({
+                                    ...props.resource,
+                                    annotations: withBooleanAnnotation(props.resource.annotations, ActionApi, event.target.checked)
+                                })
+                            }}/>
+                        <FormHelperText>
+                            If you enable Action Api, you can create custom actions based on this resource.
+                            This Resource will only have POST api available
                         </FormHelperText>
                     </FormControl>
                     <FormControl fullWidth>

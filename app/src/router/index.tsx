@@ -25,7 +25,7 @@ import {NanoPlayGround} from "../pages/dashboard/nano/NanoPlayGround.tsx";
 
 const pageRoutes = listPageTypes().map(pageType => {
     return {
-        path: pageType.routerPath,
+        path: pageType.routerPath + '/*',
         element: createElement(pageType.component),
         handle: {
             breadcrumb: pageType.breadcrumb
