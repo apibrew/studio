@@ -1,5 +1,4 @@
 import {createRoot} from "react-dom/client";
-import {RootLayout} from "./layout/RootLayout";
 
 import 'core'
 import 'common'
@@ -14,17 +13,26 @@ import {theme} from "./theme";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {enUS} from "@mui/x-date-pickers";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {HomePage} from "./pages/HomePage.tsx";
 
+export const index = createBrowserRouter([
+    {
+        path: "/",
+        element: <HomePage/>,
+    },
+])
+
+export function Router() {
+    return <RouterProvider router={index}/>
+}
 
 createRoot(document.getElementById("root")!).render(
-    <RootLayout>
-        <ThemeProvider theme={theme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}
-                                  localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
-            >
-                <HomePage/>
-            </LocalizationProvider>
-        </ThemeProvider>
-    </RootLayout>
+    <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}
+                              localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+        >
+            <Router/>
+        </LocalizationProvider>
+    </ThemeProvider>
 );

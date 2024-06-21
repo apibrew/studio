@@ -1,6 +1,8 @@
+import {RootLayout} from "../layout/RootLayout.tsx";
+
 export function HomePage() {
     return (
-        <>
+        <RootLayout>
             <div className="user-info">
                 <div>Welcome back, Faiza Rzayeva</div>
                 <div>Lorem Ipsum dolor sit amet lorem Ipsum dolor sit amet</div>
@@ -200,6 +202,6 @@ export function HomePage() {
                 </div>
             </div>
             <div style={{marginTop: 400}}>xxxxxxx</div>
-        </>
+        </RootLayout>
     );
 }

@@ -1,5 +1,4 @@
 import {
-    Commit,
     Dataset,
     FunctionsTwoTone,
     Group,
@@ -41,11 +40,11 @@ export const menuItems: MenuItem[] = [
         path: '/dashboard/resources',
         icon: <Dataset/>
     },
-    {
-        title: 'Action Pages',
-        path: '/dashboard/action-pages',
-        icon: <Commit/>
-    },
+    // {
+    //     title: 'Action Pages',
+    //     path: '/dashboard/action-pages',
+    //     icon: <Commit/>
+    // },
     {
         title: 'Developer Tools',
         icon: <FunctionsTwoTone/>,
@@ -91,18 +90,18 @@ export const menuItems: MenuItem[] = [
         title: 'Users & Roles',
         path: '/dashboard/users-and-roles',
         icon: <Group/>,
-        children: [
-            {
-                title: 'Users',
-                path: '/dashboard/users-and-roles/users',
-                icon: <Group/>,
-            },
-            {
-                title: 'Groups',
-                path: '/dashboard/users-and-roles/roles',
-                icon: <Group/>,
-            },
-        ]
+        // children: [
+        //     {
+        //         title: 'Users',
+        //         path: '/dashboard/users-and-roles/users',
+        //         icon: <Group/>,
+        //     },
+        //     {
+        //         title: 'Groups',
+        //         path: '/dashboard/users-and-roles/roles',
+        //         icon: <Group/>,
+        //     },
+        // ]
     },
     {
         title: 'Storage',
