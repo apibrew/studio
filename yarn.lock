@@ -18,15 +18,7 @@
     axios "^1.6.1"
     js-yaml "^4.1.0"
 
-"@apibrew/react@1.0.77", "@apibrew/react@^1.0.77":
-  version "1.0.77"
-  resolved "https://registry.npmjs.org/@apibrew/react/-/react-1.0.77.tgz"
-  integrity sha512-zI651dY9jt++zn0bYZHP59VGSyQIq2we1fH9/2eI1gC5cCiFCUdRiIs4DXR6UjLg5X8IuxxJyISz4wiIdhMhGQ==
-  dependencies:
-    "@apibrew/client" "^1.1.67"
-    react-router-dom "^6.22.0"
-
-"@apibrew/react@1.0.80`":
+"@apibrew/react@1.0.80", "@apibrew/react@1.0.80`", "@apibrew/react@^1.0.80":
   version "1.0.80"
   resolved "https://registry.yarnpkg.com/@apibrew/react/-/react-1.0.80.tgz#ab9f87f863c370b71a666fbe929c43ad2e0f3b57"
   integrity sha512-P56yTKI0bG+8B9smuM8qwQPpSro/VQWvqeDOkJ4lwPDWhMqpRZfiHjnYiZK601WmeqAk7SuMM9PkODXEb6tFBQ==

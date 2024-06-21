@@ -1,8 +1,8 @@
-import {Box, Collapse, Icon, List, ListItem, ListItemButton, ListItemText, useTheme} from "@mui/material";
-import {MenuItem, menuItems} from "../menu";
-import {useNavigate, useParams} from "react-router-dom";
-import {connectionProvider} from "../cloud/setup.ts";
-import {useState} from "react";
+import { Box, Collapse, Icon, List, ListItem, ListItemButton, ListItemText, useTheme } from "@mui/material";
+import { MenuItem, menuItems } from "../menu";
+import { useNavigate, useParams } from "react-router-dom";
+import { connectionProvider } from "../cloud/setup.ts";
+import { useState } from "react";
 
 export interface AsideBarProps {
     activeItem?: MenuItem
@@ -33,7 +33,7 @@ export function AsideBar(props: AsideBarProps) {
 
                     return (
                         <ListItem key={item.title}>
-                            {item.delimiter && <hr/>}
+                            {item.delimiter && <hr />}
                             {!item.delimiter && <Box width='100%'>
                                 <ListItemButton
                                     sx={{
@@ -60,7 +60,7 @@ export function AsideBar(props: AsideBarProps) {
                                         color: 'rgb(60, 120, 160)',
                                         marginRight: 1
                                     }}>{item.icon}</Icon>
-                                    <ListItemText secondary={item.title}/>
+                                    <ListItemText secondary={item.title} />
                                 </ListItemButton>
                                 {item.children && <Collapse in={isActive(item)} timeout='auto' unmountOnExit>
                                     <Box ml={3} width='100%'>
@@ -80,7 +80,7 @@ export function AsideBar(props: AsideBarProps) {
                                                     onClick={() => {
                                                         navigate(`/${connectionName}${child.path}`)
                                                     }}>
-                                                    <ListItemText secondary={child.title}/>
+                                                    <ListItemText secondary={child.title} />
                                                 </ListItemButton>
                                             </ListItem>
                                         ))}

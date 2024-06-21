@@ -42,6 +42,20 @@ export function DashboardPage() {
             return;
         }
 
+        if (connectionName === 'analytics') {
+            const client = new ClientImpl('https://analytics.tisserv.net')
+            client.useTokenStorage(new LocalStorageTokenStorage('local'))
+            if (!client.isAuthenticated()) {
+                client.authenticateWithUsernameAndPassword('admin', 'c79161cc6c77341a0a2ccaf879ad9699')
+            }
+            setClient(client)
+            setConnection({
+                name: 'local',
+                serverConfig: {}
+            } as Connection)
+            return;
+        }
+
         const connection = connectionProvider.getConnection(connectionName)
 
         connection.then(connection => {
