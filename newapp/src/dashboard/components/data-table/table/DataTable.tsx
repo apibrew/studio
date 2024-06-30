@@ -2,7 +2,7 @@ import {fromResource, Resource, useQueryListParams, useRepository} from "@apibre
 import {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
+import {Domain, FilterList, Refresh, Remove, Search, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import {useConfirmation} from "../../modal/use-confirmation";
@@ -211,7 +211,7 @@ export function DataTable(props: TableContainerProps) {
                 <Button size='medium' onClick={() => {
                     refresh()
                 }}>
-                    <Refresh fontSize='small'/>
+                    <Search fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Search</span>
                 </Button>
 

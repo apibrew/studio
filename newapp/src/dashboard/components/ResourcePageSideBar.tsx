@@ -1,5 +1,5 @@
 import {Box, Button, List, ListItem, TextField, Typography} from "@mui/material";
-import {Add, CalendarViewMonth, Folder, MoreVert, Search} from "@mui/icons-material";
+import {Add, CalendarViewMonth, FolderOutlined, MoreVert, Search} from "@mui/icons-material";
 import {useClient} from "@apibrew/react";
 import {LoadingOverlay} from "common";
 import {useNavigate} from "react-router-dom";
@@ -53,7 +53,7 @@ export function ResourcePageSideBar() {
             {namespaces.map(namespace => {
                 return <ListItem>
                     <Button>
-                        <Folder/>
+                        <FolderOutlined/>
                         <span>
                             {namespace}
                         </span>
