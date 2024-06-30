@@ -1,9 +1,9 @@
-import {HomePage} from "./pages/index/HomePage.tsx";
 import {listPageTypes} from "core";
 import {createElement} from "react";
 import {ThemePage} from "./pages/ThemePage.tsx";
 import {DashboardPage} from "./index.tsx";
 import ResourcesPage from "./pages/resource/ResourcesPage.tsx";
+import HomePage from "./pages/index/HomePage.tsx";
 
 const pageRoutes = listPageTypes().map(pageType => {
     return {
