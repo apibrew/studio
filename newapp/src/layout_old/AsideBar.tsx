@@ -28,7 +28,6 @@ export function AsideBar(props: AsideBarProps) {
             {sideBarOpen && <ArrowLeft />}
             {!sideBarOpen && <ArrowRight />}
         </button>
-
         <ul className="ul-buttons">
             {menuItems.map((item) => {
                 return <li className={'0active ' + (item.children && isActive(item) && 'dropdown')}>
@@ -47,10 +46,12 @@ export function AsideBar(props: AsideBarProps) {
             })}
         </ul>
 
+
         <button>
             <Settings/>
             <span>Settings</span>
         </button>
+
 
         <hr />
 
@@ -63,13 +64,6 @@ export function AsideBar(props: AsideBarProps) {
             </span>
             <ArrowDownward/>
         </button>
-
-
-
-
-
-
-
 
 
 

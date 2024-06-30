@@ -14,12 +14,19 @@ import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {enUS} from "@mui/x-date-pickers";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {HomePage} from "./pages/HomePage.tsx";
+import { lazy } from "react";
+
+const HomePage = lazy(() => import('./pages/HomePage.tsx'))
+const HomePageOld = lazy(() => import('./pages/HomePageOld.tsx'))
 
 export const index = createBrowserRouter([
     {
         path: "/",
         element: <HomePage/>,
+    },
+    {
+        path: "/old",
+        element: <HomePageOld/>
     },
 ])
 

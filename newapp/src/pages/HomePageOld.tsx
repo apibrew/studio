@@ -1,6 +1,6 @@
-import {RootLayout} from "../layout/RootLayout.tsx";
+import {RootLayout} from "../layout_old/RootLayout.tsx";
 
-export default function HomePage() {
+export default function HomePageOld() {
     return (
         <RootLayout>
             <div className="user-info">

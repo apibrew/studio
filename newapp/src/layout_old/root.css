@@ -8,10 +8,11 @@
     src: url(Inter-SemiBold.ttf);
     font-weight: 600;
 }
+
 html, body, #root {
+    display:none;
     height: 100%;
 }
-
 body {
     margin: unset;
     font-family: Inter;
@@ -25,17 +26,6 @@ button {
     text-align: unset;
     cursor: pointer;
 }
-
-
-
-
-
-/* ************************************************************************************************* */
-
-
-
-
-
 
 hr {
 
