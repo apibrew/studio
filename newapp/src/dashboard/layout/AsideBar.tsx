@@ -1,4 +1,4 @@
-import {ArrowLeft, ArrowRight} from "@mui/icons-material";
+import {ArrowDownward, ArrowLeft, ArrowRight, Person, Settings} from "@mui/icons-material";
 import {useState} from "react";
 import {MenuItem, menuItems} from "./menu.tsx";
 import {Link, useParams} from "react-router-dom";
@@ -8,7 +8,7 @@ export interface AsideBarProps {
 }
 
 export function AsideBar(props: AsideBarProps) {
-    const [userSiderBarOpen, setUserSideBarOpen] = useState(true)
+    const [userSideBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
     const params = useParams()
 
@@ -18,7 +18,7 @@ export function AsideBar(props: AsideBarProps) {
         return props.activeItem === item || activeMenu == item
     }
 
-    const sideBarOpen = userSiderBarOpen && (!props.activeItem || !props.activeItem.secondSideBar)
+    const sideBarOpen = userSideBarOpen && (!props.activeItem || !props.activeItem.secondSideBar)
 
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
         <button className="logo">
@@ -48,22 +48,23 @@ export function AsideBar(props: AsideBarProps) {
                 </li>
             })}
         </ul>
-        <div className="sidebar-foter">
-            <button>
-                <img className="sidebar-icon" src="/smvpic.png" alt="png"/>
-                <span>Settings</span>
-            </button>
-            <hr/>
-            <button>
-                <img className="sidebar-photo" src="/photo.png" alt="photo"/>
-                <span>
-            Faiza Rzayeva
-            <br/>
-            faiza@apibrew.com
-          </span>
-                <img className="arrow" src="/smvpic1.png" alt="png"/>
-            </button>
-        </div>
+
+        <button>
+            <Settings/>
+            <span>Settings</span>
+        </button>
+
+        <hr/>
+
+        <button className="sidebar-photo">
+            <Person/>
+            <span>
+                Faiza Rzayeva
+                <br/>
+                faiza@apibrew.com
+            </span>
+            <ArrowDownward/>
+        </button>
     </div>
 }
 
