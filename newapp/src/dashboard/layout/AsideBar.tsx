@@ -9,7 +9,6 @@ export interface AsideBarProps {
 
 export function AsideBar(props: AsideBarProps) {
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
-
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
     const params = useParams()
 
