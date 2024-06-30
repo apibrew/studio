@@ -6,7 +6,6 @@ import {Link, useParams} from "react-router-dom";
 export interface AsideBarProps {
     activeItem?: MenuItem
 }
-111
 export function AsideBar(props: AsideBarProps) {
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
