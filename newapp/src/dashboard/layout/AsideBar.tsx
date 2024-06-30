@@ -6,10 +6,8 @@ import {Link, useParams} from "react-router-dom";
 export interface AsideBarProps {
     activeItem?: MenuItem
 }
-
 export function AsideBar(props: AsideBarProps) {
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
-
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
     const params = useParams()
 
@@ -82,9 +80,3 @@ function prepareItemPath(connectionName: string, path: string | undefined): stri
         return `/${connectionName}/dashboard`
     }
 }
-
-
-
-
-
-xxxxx11111111222222
