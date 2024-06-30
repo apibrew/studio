@@ -1,0 +1,77 @@
+.react-flow__node {
+  &.kind-assign {
+    background: rgba(255, 0, 0, 0.1);
+  }
+
+  &.kind-api_create {
+    background: rgba(0, 255, 0, 0.1);
+  }
+
+  &.kind-api_get {
+    background: rgba(0, 0, 255, 0.1);
+  }
+
+  &.kind-api_load {
+    background: rgba(255, 255, 0, 0.1);
+  }
+
+  &.kind-api_update {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-api_delete {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-api_delete_all {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-api_list {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-api_exists {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-authentication {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-transaction {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-code {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-assign {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-condition {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-http_call {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-function_call {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-loop {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-group {
+    background: rgba(128, 0, 128, 0.1);
+  }
+
+  &.kind-fail {
+    background: rgba(128, 0, 128, 0.1);
+  }
+}

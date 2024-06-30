@@ -1,9 +1,9 @@
-import {DashboardLayout} from "./layout/DashboardLayout.tsx";
 import {HomePage} from "./pages/index/HomePage.tsx";
 import {listPageTypes} from "core";
 import {createElement} from "react";
-import {ResourcesPage} from "./pages/resource/ResourcesPage.tsx";
 import {ThemePage} from "./pages/ThemePage.tsx";
+import {DashboardPage} from "./index.tsx";
+import ResourcesPage from "./pages/resource/ResourcesPage.tsx";
 
 const pageRoutes = listPageTypes().map(pageType => {
     return {
@@ -17,7 +17,7 @@ const pageRoutes = listPageTypes().map(pageType => {
 export const dashboardRotes = [
     {
         path: "/:connectionName/dashboard",
-        element: <DashboardLayout/>,
+        element: <DashboardPage/>,
         handle: {
             breadcrumb: 'Dashboard'
         },

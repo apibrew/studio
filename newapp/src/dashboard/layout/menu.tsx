@@ -12,6 +12,7 @@ import {
 } from "@mui/icons-material";
 import {ConnectionProvider} from "@apibrew/react";
 import {ReactNode} from "react";
+import {ResourcePageSideBar} from "../components/ResourcePageSideBar";
 
 export interface MenuItem {
     title: string;
@@ -38,6 +39,7 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Resources',
         path: '/dashboard/resources',
+        secondSideBar: () => <ResourcePageSideBar/>,
         icon: <Dataset/>
     },
     // {

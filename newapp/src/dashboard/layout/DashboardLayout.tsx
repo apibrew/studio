@@ -9,7 +9,7 @@ export function DashboardLayout() {
     return <>
         <div className="maindiv">
             <AsideBar activeItem={activeItem}/>
-            {/*second Side bar*/}
+            {activeItem?.secondSideBar && activeItem.secondSideBar()}
             <div className="main1">
                 <div className="main-header">
                     <div className="mh-div1">
