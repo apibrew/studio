@@ -1,4 +1,4 @@
-import {ArrowDownward, ArrowLeft, ArrowRight, Person, Settings} from "@mui/icons-material";
+import {ArrowLeft, ArrowRight, LogoutOutlined, Person, Settings} from "@mui/icons-material";
 import {useState} from "react";
 import {MenuItem, menuItems} from "./menu.tsx";
 import {Link, useParams} from "react-router-dom";
@@ -21,10 +21,10 @@ export function AsideBar(props: AsideBarProps) {
     const sideBarOpen = userSideBarOpen && (!props.activeItem || !props.activeItem.secondSideBar)
 
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
-        <button className="logo">
+        <Link to={prepareItemPath(connectionName, '')} className="logo">
             <img src="/tiapi.png" alt="png"/>
             <span>APIBREW</span>
-        </button>
+        </Link>
         <button className="sidebar-arrow" onClick={() => {
             sideBarOpen ? setUserSideBarOpen(false) : setUserSideBarOpen(true)
         }}>
@@ -34,13 +34,13 @@ export function AsideBar(props: AsideBarProps) {
         <ul className="ul-buttons">
             {menuItems.map((item) => {
                 return <li key={item.title} className={'0active ' + (item.children && isActive(item) && 'dropdown')}>
-                    <Link to={prepareItemPath(connectionName, item.path) as string}>
+                    <Link to={prepareItemPath(connectionName, item.path)}>
                         {item.icon}
                         <span>{item.title}</span>
                     </Link>
                     {item.children && <ul>
                         {item.children?.map(child => <li key={child.title}>
-                            <Link to={prepareItemPath(connectionName, child.path) as string}>
+                            <Link to={prepareItemPath(connectionName, child.path)}>
                                 <span>{child.title}</span>
                             </Link>
                         </li>)}
@@ -49,10 +49,10 @@ export function AsideBar(props: AsideBarProps) {
             })}
         </ul>
 
-        <button>
+        <Link to={prepareItemPath(connectionName, '/dashboard/settings')}>
             <Settings/>
             <span>Settings</span>
-        </button>
+        </Link>
 
         <hr/>
 
@@ -63,17 +63,21 @@ export function AsideBar(props: AsideBarProps) {
                 <br/>
                 faiza@apibrew.com
             </span>
-            <ArrowDownward/>
+        </button>
+        <button className="sidebar-photo">
+            <LogoutOutlined/>
         </button>
     </div>
 }
 
-function prepareItemPath(connectionName: string, path: string | undefined): string | undefined {
+function prepareItemPath(connectionName: string, path: string | undefined): string {
     if (path) {
         if (!connectionName || path === '/connections') {
             return path
         } else {
             return `/${connectionName}${path}`
         }
+    } else {
+        return `/${connectionName}/dashboard`
     }
 }
