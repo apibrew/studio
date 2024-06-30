@@ -1,9 +1,8 @@
-export default function HomePage() {
+import {RootLayout} from "../layout_old/RootLayout.tsx";
+
+export default function HomePageOld() {
     return (
-        <>
-            <div>
-                <hr/>
-            </div>
+        <RootLayout>
             <div className="user-info">
                 <div>Welcome back, Faiza Rzayeva</div>
                 <div>Lorem Ipsum dolor sit amet lorem Ipsum dolor sit amet</div>
@@ -203,6 +202,6 @@ export default function HomePage() {
                 </div>
             </div>
             <div style={{marginTop: 400}}>xxxxxxx</div>
-        </>
+        </RootLayout>
     );
 }
