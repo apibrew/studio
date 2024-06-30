@@ -82,9 +82,3 @@ function prepareItemPath(connectionName: string, path: string | undefined): stri
         return `/${connectionName}/dashboard`
     }
 }
-
-
-
-
-
-xxxxx11111111
