@@ -1,8 +1,8 @@
 import {useContext, useMemo} from "react";
 import {ConnectionContext} from "../context/ConnectionContext";
-import {Connection} from "../connection-provider";
 import {useActiveMenuItem} from "./active-menu-item";
-import {MenuItem} from "../menu";
+import {MenuItem} from "../layout/menu.tsx";
+import {Connection} from "@apibrew/react";
 
 class Analytics implements AnalyticsHelpers {
     constructor(private connection: Connection | undefined,

@@ -32,7 +32,7 @@ export const menuItems: MenuItem[] = [
     },
     {
         title: 'Builder',
-        path: '/dashboard/builder',
+        path: '/dashboard/resources',
         icon: <Handyman/>
     },
     {

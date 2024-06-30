@@ -1,46 +1,13 @@
-import './root.css'
+import {Toaster} from "react-hot-toast";
 import {ReactNode} from "react";
-import {AsideBar} from "./AsideBar.tsx";
-import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 
-export function RootLayout(props: { children: ReactNode }) {
-    const activeItem = useActiveMenuItem()
+export interface RootLayoutProps {
+    children: ReactNode;
+}
 
+export function RootLayout(props: RootLayoutProps) {
     return <>
-        <div className="maindiv">
-            <AsideBar activeItem={activeItem}/>
-            <div className="main1">
-                <div className="main-header">
-                    <div className="mh-div1">
-                        <button>
-                            <img className="mh-icon" src="smvpic.png" alt="png"/>
-                        </button>
-                        <img className="mh-arrow" src="smvpic5.png" alt="png"/>
-                        <button className="mh-text">Dashboard</button>
-                        <img className="mh-arrow" src="smvpic5.png" alt="png"/>
-                        <span className="mh-text">Overview</span>
-                    </div>
-                    <div className="mh-div2">
-                        <button>
-                            <img src="smvpic6.png" alt="png"/>
-                            <span>Notification</span>
-                        </button>
-                        <button>
-                            <img src="smvpic6.png" alt="png"/>
-                            <span>Notification</span>
-                        </button>
-                        <button>
-                            <img src="smvpic6.png" alt="png"/>
-                            <span>Notification</span>
-                        </button>
-                    </div>
-                </div>
-                <div>
-                    <hr/>
-                </div>
-                {props.children}
-            </div>
-        </div>
+        <Toaster position='bottom-right'/>
+        {props.children}
     </>
-
 }

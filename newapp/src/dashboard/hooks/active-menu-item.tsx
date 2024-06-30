@@ -1,5 +1,5 @@
 import {useMatches, useParams} from "react-router-dom";
-import {MenuItem, menuItems} from "../menu";
+import {MenuItem, menuItems} from "../layout/menu";
 
 
 export function useActiveMenuItem(): MenuItem | undefined {

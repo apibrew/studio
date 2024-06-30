@@ -1,7 +1,6 @@
 body {
     margin: unset;
 }
-
 button {
     background-color: unset;
     border: unset;
@@ -9,22 +8,18 @@ button {
     text-align: unset;
     cursor: pointer;
 }
-
 hr {
     margin: 16px 0;
 }
-
 div, button {
     box-sizing: border-box;
 }
-
 .maindiv {
     height: 100%;
     width: 100%;
     display: flex;
-    position: fixed;
+    /* position: fixed; */
 }
-
 .sidebar {
     width: 80px;
     border-right: 1px solid;
@@ -34,70 +29,57 @@ div, button {
     position: relative;
     /* transition: width 2s; */
 }
-
-.sidebar:not(.extended) span, .sidebar:not(.extended) .arrow, .sidebar:not(.extended) ul ul {
+.sidebar:not(.extended) span, .sidebar:not(.extended)  .arrow, .sidebar:not(.extended) ul ul {
     display: none;
 }
-
 .sidebar-arrow img:not(.active) {
     display: none;
 }
-
 .sidebar-arrow {
     position: absolute;
     right: -16px;
     top: 46px;
 }
-
 .sidebar-arrow img {
     height: 12px;
     padding: 12px;
     background-color: #F6F6F9;
     border-radius: 999px;
 }
-
 .ul-buttons {
     flex-grow: 1;
 }
-
 .ul-buttons .arrow:not(.active) {
     display: none;
 }
-
 .sidebar.extended {
     width: 280px;
     padding: 12px;
     align-items: unset;
 }
-
 .sidebar span {
     font-weight: 600;
     font-size: 16px;
     margin: 4px 0 0 10px;
     flex-grow: 1;
 }
-
 .sidebar button.logo img {
     width: 40px;
     height: 38px;
 }
-
 .sidebar button.logo span {
     font-size: 25px;
     vertical-align: 10px;
 
 }
-
 .sidebar button.logo {
     padding: 10px 0 10px 8px;
 }
-
 .sidebar ul, .sidesection ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-
 .ul-buttons button, .sidebar-foter button {
     height: 42px;
     padding: 4px 8px;
@@ -105,134 +87,115 @@ div, button {
     width: 100%;
     align-items: center;
 }
-
 .ul-buttons li.active1 {
     background-color: #F9FAFB;
     border-radius: 6px;
 }
-
 .sidebar-icon {
     width: 24px;
     height: 24px;
 }
-
 .sidebar:not(.extended) .sidebar-icon {
     margin-left: 10px;
 }
-
 .ul-buttons li.active2 {
     background-color: #EAECF0;
+    border-radius: 6px;
 }
-
-.ul-buttons li.dropdown li span {
+.ul-buttons ul {
+    display: none;
+}
+.ul-buttons li.dropdown ul {
+    display: unset;
+}
+.ul-buttons ul span {
     margin-left: 45px;
 }
-
 .sidebar-photo {
     width: 40px;
     height: 40px;
     border-radius: 999px;
 }
-
 .sidebar-photo + span {
     font-size: 14px;
 }
-
 .sidebar-foter {
     margin-bottom: 16px;
 }
-
 .main1 {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     overflow-y: auto;
 }
-
 .main1 > div {
     padding: 0 20px;
 }
-
 .main-header {
     height: 44px;
     display: flex;
     margin-top: 16px;
     margin-bottom: 12px;
 }
-
 .mh-icon {
     width: 20px;
     height: 20px;
     vertical-align: -4px;
 }
-
 .mh-arrow {
     width: 10px;
     height: 10px;
     margin: 0 16px 0 16px;
 }
-
 .mh-text {
     font-size: 14px;
     font-weight: 500;
 }
-
 .mh-div1 {
     flex-grow: 1;
 }
-
 .mh-div2 {
     height: 40px;
     display: flex;
     align-items: center;
 }
-
 .mh-div2 img {
     width: 20px;
     height: 20px;
     vertical-align: -6px;
 }
-
 .mh-div2 span {
     font-size: 14px;
     font-weight: 600;
     margin-left: 6px;
 }
-
 .mh-div2 button:not(:last-child) span {
     margin-right: 42px;
 }
-
 .user-info {
     margin-top: 16px;
     margin-bottom: 16px;
 }
-
 .user-info div:first-child {
     font-size: 30px;
     font-weight: 600;
 }
-
-.user-info div:last-child {
+.user-info div:larst-child {
     font-size: 16px;
     font-weight: 400;
 }
-
 .m1-div1 {
     margin-top: 16px;
     margin-bottom: 16px;
     display: flex;
     /* justify-content: space-between; */
 }
-
 .m1-div1-1 {
     display: flex;
 }
-
 .m1-div1-1:not(:first-child) {
     margin-left: 80px;
 }
-
 .m1-div1-1 div:first-child {
     width: 32px;
     height: 32px;
@@ -241,34 +204,28 @@ div, button {
     background-color: lightgray;
     margin-right: 16px;
 }
-
-.m1-div1-1 button {
+.m1-div1-1 button{
     font-size: 16px;
     font-weight: 600;
 }
-
 .m1-div1-1 span {
     font-size: 14px;
     font-weight: 400;
 }
-
 .m1-div2 {
     display: flex;
     flex-direction: column;
     margin-top: 16px;
     margin-bottom: 16px;
 }
-
 .m1-div2-1 {
     display: flex;
 }
-
 .m1-div2-sp1 {
     font-size: 30px;
     font-weight: 600;
     flex-grow: 1;
 }
-
 .m1-div2-sp2 {
     width: 8px;
     height: 8px;
@@ -276,18 +233,15 @@ div, button {
     display: inline-block;
     border-radius: 9999px;
 }
-
 .m1-div2-sp3 {
     font-size: 14px;
     font-weight: 600;
 }
-
 .m1-div2-1-1 {
     border: 1px solid;
     padding: 10px;
     border-radius: 8px;
 }
-
 .m1-div2-1 button {
     padding: 10px 14px;
     border: 1px solid;
@@ -295,19 +249,16 @@ div, button {
     background-color: #7F56D9;
     margin-left: 4px;
 }
-
 .m1-icon1 {
     width: 20px;
     height: 20px;
     vertical-align: -4px;
     margin-right: 6px;
 }
-
 .m1-div2-2 {
     margin-top: 16px;
     margin-bottom: 16px;
 }
-
 .m1-div2-2 button {
     padding: 10px 14px;
     border: 1px solid #D0D5DD;
@@ -316,121 +267,99 @@ div, button {
     font-weight: 600;
 
 }
-
 .m1-div2-3 {
     display: flex;
 }
-
 .m1-div2-3-1 {
     width: 320px;
     padding: 24px;
     border: 1px solid;
     border-radius: 8px;
 }
-
 .m1-div2-3-1:not(:first-child) {
     margin-left: 20px;
 }
-
 .m1-div2-3-1-1 {
     display: flex;
     margin-bottom: 16px;
 }
-
 .m1-div2-3-1-1 span {
     font-size: 16px;
     font-weight: 600;
     flex-grow: 1;
 }
-
 .m1-div2-3-1-1 img {
     width: 5px;
     height: 20px;
 }
-
 .m1-div2-3-1-2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 .m1-div2-3-1-2 span:first-child {
     font-size: 30px;
     font-weight: 600;
 }
-
 .m1-div2-3-1-2 img:nth-child(2) {
     width: 10px;
     height: 10px;
 }
-
 .m1-div2-3-1-2 span:last-child {
     font-size: 14px;
     font-weight: 500;
 }
-
 .m1-div2-3-1-2 img:nth-child(4) {
     width: 128px;
     height: 64px;
     margin-left: -26px;
 }
-
 .m1-div3 {
     display: flex;
     flex-direction: column;
 }
-
 .m1-div3-1 {
     font-size: 30px;
     font-weight: 600;
 }
-
 .m1-div3-2 {
     width: 320px;
     display: flex;
     flex-direction: column;
 }
-
 .m1-div3-2:not(:first-child) {
     margin-left: 10px;
 }
-
 .m1-div3-2 img {
     width: 48px;
     height: 48px;
     margin-right: 20px;
 }
-
 .m1-div3-2-1 {
     padding: 16px 20px;
     display: flex;
 }
-
 .m1-div3-2-1-1 span:first-child {
     font-size: 18px;
     font-weight: 600;
 }
-
 .m1-div3-2-1-1 span:last-child {
     font-size: 14px;
     font-weight: 400;
     margin-top: 10px;
     display: inline-block;
 }
-
 .m1-div3-2-2 {
     padding: 0 20px;
     display: flex;
     justify-content: end;
 }
-
 .m1-div3-2-2 span {
     font-size: 14px;
     font-weight: 600;
     margin-right: 8px;
     padding: 10px 14px;
 }
-
 .m1-div3-2-2 button {
     font-size: 14px;
     font-weight: 600;
@@ -438,17 +367,14 @@ div, button {
     border: 1px solid #D0D5DD;
     border-radius: 8px;
 }
-
 .div-flex-wrap {
     display: flex;
 }
-
 .m1-div4-1 {
     font-size: 30px;
     font-weight: 600;
     margin-bottom: 16px;
 }
-
 .m1-div4-2 {
     width: 320px;
     padding: 16px 20px;
@@ -456,43 +382,35 @@ div, button {
     border-radius: 8px;
     display: flex;
 }
-
 .m1-div4-2 > img {
     width: 48px;
     height: 48px;
     margin-right: 20px;
 }
-
 .m1-div4-2:not(:first-child) {
     margin-left: 10px;
 }
-
 .m1-div4-2-1 > span {
     font-size: 14px;
     font-weight: 400;
     margin-top: 10px;
     display: inline-block;
 }
-
 .m1-div4-2-1-1 {
     display: flex;
 }
-
 .m1-div4-2-1-1 span {
     font-size: 18px;
     font-weight: 600;
     flex-grow: 1;
 }
-
 .m1-div4-2-1-1 img {
     width: 20px;
     height: 10px;
 
 }
 
-
 /* page2**************************************************************************************************** */
-
 
 .sidesection {
     width: 232px;
@@ -500,34 +418,27 @@ div, button {
     display: flex;
     flex-direction: column;
 }
-
 .sidesect-div1 img {
     width: 14px;
     height: 14px;
     margin-right: 6px;
 }
-
 .sidesect-div1 span {
     font-size: 14px;
     font-weight: 400;
 }
-
 .sidesect-div1 button {
     padding: 10px 14px;
-    border: 1px solid;
+    border: 1px solid ;
 }
-
 .sidesect-div1 button:first-child {
     border-radius: 8px 0 0 8px;
 
 }
-
 .sidesect-div1 button:last-child {
     border-radius: 0 8px 8px 0;
     margin-left: -5px;
-
 }
-
 .sidesect-div2 {
     padding: 12px 12px;
     background-color: #F9FAFB;
@@ -535,33 +446,26 @@ div, button {
     margin-bottom: 30px;
     border-radius: 6px;
     display: flex;
-
 }
-
 .sidesect-div2 img {
     width: 15px;
     height: 15px;
 }
-
 .sidesect-div2 input {
-    font-size: 14px;
+    font-size: 14px;   
     background-color: unset;
     border: none;
     margin-left: 8px;
     font-weight: 400;
 }
-
 .sidesect-div3 {
     font-size: 14px;
     font-weight: 600;
 }
-
 .folder-icon {
     width: 20px;
     height: 20px;
 }
-
-
 .sidesect-ul button {
     height: 42px;
     padding: 4px 8px;
@@ -569,23 +473,137 @@ div, button {
     width: 100%;
     align-items: center;
 }
-
-
 .sidesect-ul span {
     font-weight: 600;
     font-size: 16px;
     margin: 4px 0 0 10px;
     flex-grow: 1;
 }
-
-.ul-buttons li:not(.dropdown) ul {
+.vdots-icon {
+    width: 5px;
+    height: 20px;
     display: none;
+}
+.vdots-icon.active {
+    display: unset;
+}
+.sidesect-ul li.active1 {
+    background-color: #F9FAFB;
+    border-radius: 6px;
+}
+.resource-icon {
+    width: 20px;
+    height: 20px;
+}
+.sidesect-ul ul button img:first-child {
+    margin-left: 30px;
+}
+.sidesect-ul li.active2 {
+    background-color: #EAECF0;
+    border-radius: 6px;
+}
+.sidesect-ul ul {
+    display: none;
+}
+.sidesect-ul li.dropdown ul {
+    display: unset;
 }
 
 
 
 
 
+
+.main2 {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+.main2 > div {
+    padding: 0 20px;
+}
+.m2-div1 {
+    display: flex;
+    align-items: center;
+}
+.m2-div1 > span:first-child {
+    font-size: 20px;
+    font-weight: 600;
+}
+.m2-div1 > span:nth-child(2) {
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 20px;
+    flex-grow: 1;
+}
+.m2-div1 button:not(:last-child) {
+    margin-right: 40px;
+}
+.m2-div1 button img {
+    width: 20px;
+    height: 20px;
+}
+.m2-div1 button span {
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 10px;
+    vertical-align: super;
+}
+.m2-div1 button:last-child {
+    padding: 10px 14px;
+    border: 1px solid #D6BBFB;
+    border-radius: 6px;
+    color: #D6BBFB;
+}
+
+
+
+.m2-div2 {
+    display: flex;
+    margin: 20px 0;
+}
+
+.flex-grow1 {
+    flex-grow: 1;
+}
+
+.m2-div2 button {
+    padding: 10px 14px;
+    border: 1px solid #D0D5DD;
+    border-radius: 8px;
+}
+
+.m2-div2 > :not(:first-child) {
+    margin-left: 30px;
+}
+
+
+.m2-div2 button img {
+    width: 20px;
+    height: 20px;
+}
+
+.m2-div2 button span {
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 10px;
+    vertical-align: super;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* .sidesection {
+    display: none;
+} */
 
 
 

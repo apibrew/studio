@@ -7,12 +7,15 @@ export const theme = createTheme({
         },
     },
     palette: {
-        // primary: {
-        //     main: '#FbFeF0',
-        // },
+        primary: {
+            main: '#7F56D9',
+        },
+        secondary: {
+            main: '#FFF',
+        },
         text: {
-            primary: '#1E3C50FF',
-            secondary: '#0a1414',
+            primary: '#667085',
+            secondary: '#667085',
         },
         background: {
             default: '#f5f5f5', // your desired backdrop color
@@ -23,7 +26,7 @@ export const theme = createTheme({
             defaultProps: {
                 size: 'small',
                 variant: 'contained',
-                color: 'primary',
+                color: 'secondary',
             },
         },
         MuiFilledInput: {
