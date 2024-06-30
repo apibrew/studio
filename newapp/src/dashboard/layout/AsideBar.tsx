@@ -8,7 +8,7 @@ export interface AsideBarProps {
 }
 
 export function AsideBar(props: AsideBarProps) {
-    const [sideBarOpen, setSideBarOpen] = useState(true)
+    const [userSiderBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
     const params = useParams()
 
@@ -18,13 +18,15 @@ export function AsideBar(props: AsideBarProps) {
         return props.activeItem === item || activeMenu == item
     }
 
+    const sideBarOpen = userSiderBarOpen && (!props.activeItem || !props.activeItem.secondSideBar)
+
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
         <button className="logo">
             <img src="/tiapi.png" alt="png"/>
             <span>APIBREW</span>
         </button>
         <button className="sidebar-arrow" onClick={() => {
-            sideBarOpen ? setSideBarOpen(false) : setSideBarOpen(true)
+            sideBarOpen ? setUserSideBarOpen(false) : setUserSideBarOpen(true)
         }}>
             {sideBarOpen && <ArrowLeft/>}
             {!sideBarOpen && <ArrowRight/>}

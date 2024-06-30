@@ -12,6 +12,7 @@ export const theme = createTheme({
         },
         secondary: {
             main: '#FFF',
+            contrastText: '#000',
         },
         text: {
             primary: '#667085',
@@ -27,6 +28,14 @@ export const theme = createTheme({
                 size: 'small',
                 variant: 'contained',
                 color: 'secondary',
+            },
+            styleOverrides: {
+                outlinedSecondary: {
+                    color: '#000', // Set text color to black for outlined secondary buttons
+                },
+                textSecondary: {
+                    color: '#000', // Set text color to black for text secondary buttons
+                },
             },
         },
         MuiFilledInput: {

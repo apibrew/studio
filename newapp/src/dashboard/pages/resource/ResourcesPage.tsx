@@ -1,9 +1,11 @@
-import {Box, Typography} from "@mui/material";
+import {Box, Stack, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
-import {Resource, useClient} from "@apibrew/react";
+import {getRestPath, Resource, useClient} from "@apibrew/react";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {DataTable} from "../../components/data-table/table/DataTable.tsx";
+import Button from "@mui/material/Button";
+import {CalendarViewMonth, CircleOutlined, Code} from "@mui/icons-material";
 
 export default function ResourcesPage() {
     const params = useParams()
@@ -45,6 +47,31 @@ export default function ResourcesPage() {
         <Box display='flex'
              height='100%'
              flexDirection='column'>
+            <Stack direction='row' spacing={2} p={1}>
+                <Typography variant='h5'>
+                    {params.namespace !== 'default' && params.namespace + ' / '}
+                    {params.resource}
+                </Typography>
+                <Typography variant='body2'>
+                    /{getRestPath(resource)}
+                </Typography>
+                <Box flexGrow={1}/>
+                <Button variant='text' size='small' onClick={() => {
+                }}>
+                    <Code/>
+                    <span style={{marginLeft: '3px'}}>Nano Code</span>
+                </Button>
+                <Button variant='text' size='small' onClick={() => {
+                }}>
+                    <CircleOutlined/>
+                    <span style={{marginLeft: '3px'}}>Api Doc</span>
+                </Button>
+                <Button variant='outlined' color='primary' size='small' onClick={() => {
+                }}>
+                    <CalendarViewMonth/>
+                    <span style={{marginLeft: '3px'}}>Update Resource</span>
+                </Button>
+            </Stack>
             <DataTable reloadResource={() => {
                 setWi(wi + 1)
                 alert('loading resource')

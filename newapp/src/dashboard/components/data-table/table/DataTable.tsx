@@ -2,7 +2,7 @@ import {fromResource, Resource, useQueryListParams, useRepository} from "@apibre
 import {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Add, Api, Code, Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
+import {Domain, FilterList, Refresh, Remove, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import {useConfirmation} from "../../modal/use-confirmation";
@@ -12,9 +12,6 @@ import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Property} from "@apibrew/client/model";
 import {Sorting} from "./Sorting";
 import {useAnalytics} from "../../../hooks/use-analytics";
-import {ResourceDrawer} from "../../resource-drawer/ResourceDrawer";
-import {ResourceNanoDrawer} from "../../resource-nano-drawer/ResourceNanoDrawer";
-import {ApiDocModal} from "../../api-doc/ApiDocModal";
 import {useDrawer} from "../../../../hooks/use-drawer.tsx";
 
 export interface TableContainerProps {
@@ -200,116 +197,26 @@ export function DataTable(props: TableContainerProps) {
     const filterCount = listParams.query ? listParams.query.and ? listParams.query.and.length : 1 : 0
     const sortingCount = listParams.sorting ? listParams.sorting ? listParams.sorting.length : 1 : 0
 
-    const commonButtons = (
-        <Stack direction='row' spacing={1}>
-            <Button color='secondary'
-                    size='small'
-                    onClick={() => {
-                        drawer.open(<ResourceDrawer
-                            new={false}
-                            onClose={() => {
-                                drawer.close()
-                                props.reloadResource?.()
-                            }}
-                            resource={props.resource}/>)
-
-                        analytics.click('update-resource')
-                    }}>
-                <Api fontSize='small'/>
-                <span style={{marginLeft: '3px'}}>Update Resource</span>
-            </Button>
-            <Button color='secondary'
-                    size='small'
-                    onClick={() => {
-                        drawer.open(
-                            <ResourceNanoDrawer
-                                namespace={props.resource.namespace.name}
-                                resource={props.resource.name}
-                                onClose={drawer.close}/>
-                        )
-
-                        analytics.click('nano-code')
-                    }}>
-                <Code fontSize='small'/>
-                <span style={{marginLeft: '3px'}}>Nano code</span>
-            </Button>
-            <Button color='secondary'
-                    size='small'
-                    onClick={() => {
-                        drawer.open(<ApiDocModal
-                            onClose={() => {
-                                drawer.close()
-                            }}
-                            resource={props.resource}/>)
-
-                        analytics.click('api-doc')
-                    }}>
-                <Api fontSize='small'/>
-                <span style={{marginLeft: '3px'}}>Api Doc</span>
-            </Button>
-        </Stack>
-    )
-
     return <>
         {drawer.render()}
         {confirmation.render()}
         <Box className='action-bar' display='flex' p={1}>
-            <Stack direction='row' spacing={1}>
-                <Button size='small' onClick={() => {
+            <Stack direction='row' width='100%' spacing={1}>
+                <Button size='medium' onClick={() => {
                     refresh()
                 }}>
                     <Refresh fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Refresh</span>
                 </Button>
-                <Button size='small' onClick={(event) => {
-                    setFiltersAnchor(event.currentTarget);
-                    analytics.click('action', 'filters-open')
+                <Button size='medium' onClick={() => {
+                    refresh()
                 }}>
-                    <FilterList fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Filter</span>
-                    {listParams.query && <span style={{marginLeft: '3px'}}>({filterCount})</span>}
+                    <Refresh fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Search</span>
                 </Button>
-                <Button size='small' onClick={(event) => {
-                    setSortingAnchor(event.currentTarget);
-                    analytics.click('action', 'sorting-open')
-                }}>
-                    <Sort fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Sorting</span>
-                    {listParams.sorting && <span style={{marginLeft: '3px'}}>({sortingCount})</span>}
-                </Button>
-                {selectedItems.length === 0 && <>
-                    <Button color='success'
-                            size='small'
-                            onClick={() => {
-                                if (updates['new']) {
-                                    toast.error('Please save the new record first')
-                                    return
-                                }
 
-                                const newRecord: any = {
-                                    id: 'new',
-                                }
-
-                                for (const propertyName of Object.keys(resource.properties)) {
-                                    const property = resource.properties[propertyName]
-
-                                    if (property.defaultValue) {
-                                        newRecord[propertyName] = property.defaultValue
-                                    }
-                                }
-
-                                setRecords([newRecord, ...records!])
-                                setUpdates({
-                                    ...updates,
-                                    new: {}
-                                })
-                            }}>
-                        <Add fontSize='small'/>
-                        <span style={{marginLeft: '3px'}}>Add</span>
-                    </Button>
-                </>}
                 {!resource.immutable && selectedItems.length > 0 && <>
-                    <Button color='error' size='small' onClick={() => {
+                    <Button color='error' size='medium' onClick={() => {
                         handleDelete()
                     }}>
                         <Remove fontSize='small'/>
@@ -325,12 +232,12 @@ export function DataTable(props: TableContainerProps) {
                             handleSave()
                         }}
                         color='success'
-                        size='small'>
+                        size='medium'>
                         <Domain fontSize='small'/>
                         <span style={{marginLeft: '3px'}}>Save</span>
                         <span style={{marginLeft: '3px'}}>({Object.keys(updates).length})</span>
                     </Button>
-                    <Button color='warning' size='small'
+                    <Button color='warning' size='medium'
                             onClick={() => {
                                 setUpdates({})
                             }}>
@@ -338,9 +245,24 @@ export function DataTable(props: TableContainerProps) {
                         <span style={{marginLeft: '3px'}}>Revert</span>
                     </Button>
                 </>}
+                <Box flexGrow={1}/>
+                <Button size='medium' onClick={(event) => {
+                    setFiltersAnchor(event.currentTarget);
+                    analytics.click('action', 'filters-open')
+                }}>
+                    <FilterList fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Filter</span>
+                    {listParams.query && <span style={{marginLeft: '3px'}}>({filterCount})</span>}
+                </Button>
+                <Button size='medium' onClick={(event) => {
+                    setSortingAnchor(event.currentTarget);
+                    analytics.click('action', 'sorting-open')
+                }}>
+                    <Sort fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Sorting</span>
+                    {listParams.sorting && <span style={{marginLeft: '3px'}}>({sortingCount})</span>}
+                </Button>
             </Stack>
-            <Box flexGrow={1}/>
-            {commonButtons}
         </Box>
         <Popover
             open={Boolean(filtersAnchor)}
