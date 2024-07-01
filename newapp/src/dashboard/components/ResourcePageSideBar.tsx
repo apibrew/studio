@@ -19,7 +19,7 @@ export function ResourcePageSideBar() {
         .filter((value, index, self) => self.indexOf(value) === index)
 
     return <Box className='sidesection'>
-        <Typography variant='h6'>Resources</Typography>
+        <Typography variant='h5' >Resources</Typography>
         <Box className='sidesect-div1'>
             <Button>
                 <Add/> Resource
