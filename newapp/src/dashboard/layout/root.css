@@ -5,12 +5,12 @@
 }
 @font-face {
     font-family: Inter;
-    src: url(D:\studio\newapp\public\Inter-SemiBold.ttf);
+    src: url(/Inter-SemiBold.ttf);
     font-weight: 600;
 }
 @font-face {
     font-family: Inter;
-    src: url(D:\studio\newapp\public\Inter-Regular.ttf);
+    src: url(/Inter-Regular.ttf);
     font-weight: 400;
 }
 html, body, #root {
