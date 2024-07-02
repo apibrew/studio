@@ -13,6 +13,7 @@
     "app",
     "newapp",
     "standalone",
+    "analytics",
     "core",
     "common",
     "electron",

@@ -1,3 +1,5 @@
+export * from "./menu.tsx";
+
 export {RootLayout} from "./layout/RootLayout";
 import './index.css'
 
@@ -11,7 +13,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 export {theme} from "./theme";
-
 
 export {dashboardRoutes} from './router/dashboard-routes'
 
