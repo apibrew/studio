@@ -3,9 +3,9 @@ import IndexPage from "../pages/IndexPage";
 import LogoutPage from "../pages/logout/LogoutPage";
 import {ConnectionsPage} from "../pages/connections/ConnectionsPage";
 import {TestPage} from "../pages/test/TestPage";
-import CloudIndex from '../cloud/index.tsx'
+import CloudIndex from '../cloud'
 import {cloudRoutes} from "../cloud/routes";
-import {dashboardRoutes} from "./dashboard-routes.tsx";
+import {dashboardRoutes} from "./dashboard-routes";
 
 export const index = createBrowserRouter([
     {

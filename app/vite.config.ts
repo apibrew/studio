@@ -9,7 +9,7 @@ export default defineConfig(env => {
     if (env.mode === 'lib') {
         return libConfig() as any;
     } else {
-        return libConfig() as any;
+        return appConfig() as any;
     }
 });
 
@@ -45,7 +45,22 @@ function libConfig() {
                 formats: ['es']
             },
             rollupOptions: {
-                external: [/^react/, 'core'],
+                external: (dep: string) => {
+                    if (dep.indexOf('studio/app') !== -1) {
+                        // console.log(dep + ' is internal')
+                        return false
+                    }
+                    if (dep.indexOf('./') === 0) {
+                        // console.log(dep + ' is internal')
+                        return false
+                    }
+                    if (dep.indexOf('../') === 0) {
+                        // console.log(dep + ' is internal')
+                        return false
+                    }
+                    // console.log(dep + ' is external')
+                    return true
+                },
             }
         }
     }

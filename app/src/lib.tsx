@@ -1,4 +1,4 @@
-import {RootLayout} from "./layout/RootLayout";
+export {RootLayout} from "./layout/RootLayout";
 import './index.css'
 
 import 'core'
@@ -9,28 +9,12 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import {Router} from "./router";
-import {ThemeProvider} from "@mui/material";
-import {theme} from "./theme";
 
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {enUS} from "@mui/x-date-pickers";
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
+export {theme} from "./theme";
 
-export function gtag() {
-    return null
-}
 
-export function AppExternal() {
-    return (
-        <RootLayout>
-            <ThemeProvider theme={theme}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}
-                                      localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
-                >
-                    <Router/>
-                </LocalizationProvider>
-            </ThemeProvider>
-        </RootLayout>
-    )
-}
+export {dashboardRoutes} from './router/dashboard-routes'
+
+export {ConnectionContext} from './context/ConnectionContext'
+export {type Connection, connectionProvider} from './connection-provider'
+export {DashboardLayout} from './layout/DashboardLayout'
