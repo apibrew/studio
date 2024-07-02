@@ -4,6 +4,10 @@ import {Connection} from "../connection-provider";
 import {useActiveMenuItem} from "./active-menu-item";
 import {MenuItem} from "../menu";
 
+function gtag(..._: unknown[]) {
+    // noop
+}
+
 class Analytics implements AnalyticsHelpers {
     constructor(private connection: Connection | undefined,
                 private activeMenu: MenuItem | undefined) {

@@ -12,6 +12,7 @@
   "workspaces": [
     "app",
     "newapp",
+    "standalone",
     "core",
     "common",
     "electron",
