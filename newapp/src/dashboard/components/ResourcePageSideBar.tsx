@@ -19,26 +19,34 @@ export function ResourcePageSideBar() {
         .filter((value, index, self) => self.indexOf(value) === index)
 
     return <Box className='sidesection'>
-        <Typography variant='h5' >Resources</Typography>
+
+        <Typography variant='body2'>Resources</Typography>
+
         <Box className='sidesect-div1'>
             <Button>
-                <Add/> Resource
+                <Add/>
+                <span>Resource</span>
             </Button>
             <Button>
-                <Add/> Folder
+                <Add/>
+                <span>Folder</span>
             </Button>
         </Box>
+
         <Box className='sidesect-div2'>
             <Search/>
-            <TextField placeholder="Search"/>
+            <TextField placeholder="Search" />
         </Box>
+
         <Box className='sidesect-div3'>
             <Typography variant='body2'>Folders</Typography>
         </Box>
+
+
         <List className='sidesect-ul'>
             {resources.filter(item => item.namespace.name === 'default')
                 .map(item => {
-                    return <ListItem>
+                    return <ListItem sx={{ display: 'list-item' }}>
                         <Button onClick={() => {
                             navigate(`resources/default/${item.name}`)
                         }}>

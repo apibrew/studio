@@ -138,8 +138,22 @@ NEW
 ********************************************************************************************
  */
  .sidebar a {
-    text-decoration:unset
+    text-decoration:unset;
+    webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
  }
+ .sidebar a:not(.logo):hover {
+    background-color: rgb(178, 178, 178);
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+.ul-buttons ul a {
+    height: 26px;
+    display: flex;
+    align-items: center;
+}
+
+
+
 button {
     font-family: Inter;
     background-color: unset;
@@ -160,10 +174,6 @@ OLD
 hr {
     width: 100%;
 }
-.sidebar-arrow img:not(.active) {
-    /* display: none; */
-}
-
 
 .ul-buttons .arrow:not(.active) {
     display: none;
@@ -198,15 +208,16 @@ hr {
     margin-left: 45px;
 }
 
-.sidebar-photo {
-    /* margin-bottom: 16px; */
-}
-
 
 .sidebar-photo + span {
     font-size: 14px;
 }
-/* SIDEBAR-END ****************************************** */
+
+
+
+
+/* SIDEBAR-END *******************************************************************************
+*********************************************************************************************** */
 
 
 
@@ -563,83 +574,99 @@ hr {
 }
 
 
-/* page2**************************************************************************************************** */
-
+/* page1 sidesection************************************************************************************
+******************************************************************************************** */
 
 .sidesection {
     width: 232px;
-    padding: 12px;
+    min-width: 232px;
+    padding: 0 8px;
     display: flex;
     flex-direction: column;
 }
-
-.sidesect-div1 img {
-    width: 14px;
-    height: 14px;
-    margin-right: 6px;
+.sidesection span {
+    color: #667085;
 }
-
+.sidesection > p:first-child {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 28px 0 28px 12px;
+}
+.sidesection svg {
+    width: 26px;
+    height: 26px;
+    color: #667085;
+}
+.sidesect-div1 svg {
+    width: 28px;
+    height: 28px;
+    margin-right: 4px;
+}
 .sidesect-div1 span {
     font-size: 14px;
     font-weight: 400;
+    color: #344054;
 }
-
 .sidesect-div1 button {
-    padding: 10px 14px;
-    border: 1px solid;
+    padding: 8px 10px;
+    border: 1px solid #D0D5DD;
 }
-
 .sidesect-div1 button:first-child {
     border-radius: 8px 0 0 8px;
-
 }
-
 .sidesect-div1 button:last-child {
     border-radius: 0 8px 8px 0;
-    margin-left: -5px;
-
+    border-left: 0;
 }
-
 .sidesect-div2 {
-    padding: 12px 12px;
+    padding: 4px 4px;
     background-color: #F9FAFB;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
     border-radius: 6px;
     display: flex;
-
+    align-items: center;
 }
-
-.sidesect-div2 img {
-    width: 15px;
-    height: 15px;
+.sidesect-div2 svg {
+    width: 32px;
+    height: 32px;
 }
-
 .sidesect-div2 input {
-    font-size: 14px;
-    background-color: unset;
-    border: none;
-    margin-left: 8px;
-    font-weight: 400;
+    font: 400 14px Inter;
+    margin-left: 10px;
+    padding: unset;
+}
+.sidesect-div2 fieldset {
+    border: unset;
+}
+.sidesect-div3 p {
+    font: 600 14px Inter;
+    margin: 25px 0 15px;
+    color: #667085;
 }
 
-.sidesect-div3 {
-    font-size: 14px;
-    font-weight: 600;
+
+.sidesection .sidesect-ul {
+    margin: 0  0 16px 4px;
+    overflow-y: auto;
+
 }
 
-.folder-icon {
-    width: 20px;
-    height: 20px;
+
+.sidesection li {
+    padding: unset;
+    display: list-item;
 }
+
+
+/* sidesection************************************************************************************* */
+
 
 
 .sidesect-ul button {
-    height: 42px;
-    padding: 4px 8px;
-    display: flex;
     width: 100%;
-    align-items: center;
+    padding: unset;
+    margin-top: 4px;
+    box-shadow:unset
 }
 
 
@@ -650,8 +677,9 @@ hr {
     flex-grow: 1;
 }
 
-
-
+.sidesect-ul ul {
+    margin-left: 34px;
+}
 
 
 
