@@ -13,15 +13,16 @@ import {ThemeProvider} from "@mui/material";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {enUS} from "@mui/x-date-pickers";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
-import {Router} from "./router.tsx";
 import {ClientProvider, Connection, LocalStorageTokenStorage} from "@apibrew/react";
 import {newClientByServerConfig} from "@apibrew/client/client";
 import toast from "react-hot-toast";
 import {useEffect, useState} from "react";
 import {Client} from "@apibrew/client";
 import {LoadingOverlay} from "common";
+import {createBrowserRouter, RouteObject, RouterProvider} from "react-router-dom";
 
 export interface AppProps {
+    routes: RouteObject[]
     connection: Connection
 }
 
@@ -33,6 +34,7 @@ export function App(props: AppProps) {
             setClient(cl)
             cl.useTokenStorage(new LocalStorageTokenStorage(props.connection.name))
         }, err => {
+            console.error(err)
             toast.error(err.message)
             return;
         })
@@ -52,7 +54,7 @@ export function App(props: AppProps) {
                         <LocalizationProvider dateAdapter={AdapterDayjs}
                                               localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
                         >
-                            <Router/>
+                            <RouterProvider router={createBrowserRouter(props.routes)}/>
                         </LocalizationProvider>
                     </ThemeProvider>
                 </RootLayout>

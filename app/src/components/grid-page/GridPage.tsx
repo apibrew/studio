@@ -1,11 +1,11 @@
-import {ComponentType} from "react";
+import {ComponentType, ReactNode} from "react";
 import {PageLayout} from "../../layout/PageLayout.tsx";
 import {Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useConfirmation} from "../modal/use-confirmation.tsx";
 import {useRepository, useResourceByName} from "@apibrew/react";
 import {LoadingOverlay} from "common";
-import {Entity} from "@apibrew/client";
+import {Entity, ListRecordParams} from "@apibrew/client";
 import {EntityInfo} from "@apibrew/client/entity-info";
 import {useDataProvider} from "../data-provider/use-data-provider.tsx";
 import toast from "react-hot-toast";
@@ -16,7 +16,11 @@ import {label} from "../../util/record.ts";
 export interface GridPageProps<T> {
     entityInfo: EntityInfo
     recordForm: ComponentType<ValueDrawerComponentFormProps<T>>
-    gridColumns: string[]
+    gridColumns: string[],
+    defaultParams?: Partial<ListRecordParams>
+    actions?: (item: T) => ReactNode
+    wi?: number
+    disableDefaultActions?: boolean
 }
 
 export function GridPage<T>(props: GridPageProps<T>) {
@@ -24,7 +28,7 @@ export function GridPage<T>(props: GridPageProps<T>) {
     const drawer = useDrawer()
 
     const resource = useResourceByName(props.entityInfo.resource, props.entityInfo.namespace)
-    const data = useDataProvider<Entity>(props.entityInfo)
+    const data = useDataProvider<Entity>(props.entityInfo, props.defaultParams, props.wi)
     const repository = useRepository<Entity>(props.entityInfo)
 
     if (data.loading || !resource) {
@@ -92,35 +96,38 @@ export function GridPage<T>(props: GridPageProps<T>) {
                         <TableRow key={item.id}>
                             <TableCell>{item.id}</TableCell>
                             {props.gridColumns.map(column => <TableCell>
-                                {(item as any)[column]}
+                                {label((item as any)[column])}
                             </TableCell>)}
                             <TableCell>
                                 <Stack direction='row' spacing={1}>
-                                    <Button onClick={() => {
-                                        drawer.open(<ValueDrawerComponent
-                                            title={`Update ${resource.name} / ${label(item)}`}
-                                            value={item}
-                                            onChange={async (updated: Entity) => {
-                                                await toast.promise(repository.update(updated), {
-                                                    loading: 'Saving...',
-                                                    success: 'Saved',
-                                                    error: err => err.message
-                                                }).then(() => {
-                                                    data.refresh()
-                                                })
-                                            }}
-                                            onClose={() => {
-                                                drawer.close()
-                                            }}
-                                            component={props.recordForm}/>)
-                                    }} color='primary' size='small'>
-                                        Edit
-                                    </Button>
-                                    <Button onClick={() => {
-                                        handleDelete(item)
-                                    }} color='error' size='small'>
-                                        Delete
-                                    </Button>
+                                    {props.actions && props.actions(item as T)}
+                                    {!props.disableDefaultActions && <>
+                                        <Button onClick={() => {
+                                            drawer.open(<ValueDrawerComponent
+                                                title={`Update ${resource.name} / ${label(item)}`}
+                                                value={item}
+                                                onChange={async (updated: Entity) => {
+                                                    await toast.promise(repository.update(updated), {
+                                                        loading: 'Saving...',
+                                                        success: 'Saved',
+                                                        error: err => err.message
+                                                    }).then(() => {
+                                                        data.refresh()
+                                                    })
+                                                }}
+                                                onClose={() => {
+                                                    drawer.close()
+                                                }}
+                                                component={props.recordForm}/>)
+                                        }} color='primary' size='small'>
+                                            Edit
+                                        </Button>
+                                        <Button onClick={() => {
+                                            handleDelete(item)
+                                        }} color='error' size='small'>
+                                            Delete
+                                        </Button>
+                                    </>}
                                 </Stack>
                             </TableCell>
                         </TableRow>
