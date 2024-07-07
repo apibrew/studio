@@ -1,16 +1,16 @@
 import {TaskRun} from './task-run';
 
 export interface TaskRunProgress {
-    itemCount?: number
-    version: number
-    timestamp?: string | Date
-    total?: number
-    step?: number
-    duration?: number
-    completed?: number
     id: string
+    step?: number
+    itemCount?: number
+    completed?: number
     taskRun: TaskRun
+    timestamp?: string | Date
     cumDuration?: number
+    total?: number
+    version: number
+    duration?: number
 }
 
 export const TaskRunProgressEntityInfo = {
@@ -24,7 +24,7 @@ export const TaskRunProgressResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T10:25:08Z"
+    "updatedOn": "2024-07-05T15:08:21Z"
   },
   "name": "TaskRunProgress",
   "namespace": {
@@ -34,19 +34,19 @@ export const TaskRunProgressResource = {
     "completed": {
       "type": "INT64",
       "annotations": {
-        "SourceMatchKey": "94d05c8ba5ed"
+        "SourceMatchKey": "824eceefc8f8"
       }
     },
     "cumDuration": {
       "type": "INT64",
       "annotations": {
-        "SourceMatchKey": "09522552105c"
+        "SourceMatchKey": "2314b7988db8"
       }
     },
     "duration": {
       "type": "INT64",
       "annotations": {
-        "SourceMatchKey": "b619aa6333f1"
+        "SourceMatchKey": "8b6d9e2d4b14"
       }
     },
     "id": {
@@ -56,20 +56,20 @@ export const TaskRunProgressResource = {
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "annotations": {
-        "SourceMatchKey": "ba19471f90e8",
+        "SourceMatchKey": "07a3a510a0a5",
         "SpecialProperty": "true"
       }
     },
     "itemCount": {
       "type": "INT64",
       "annotations": {
-        "SourceMatchKey": "cd7d9d54d38b"
+        "SourceMatchKey": "95d3492ad6a7"
       }
     },
     "step": {
       "type": "INT32",
       "annotations": {
-        "SourceMatchKey": "82a37d077614"
+        "SourceMatchKey": "e5f413fe4adc"
       }
     },
     "taskRun": {
@@ -77,19 +77,19 @@ export const TaskRunProgressResource = {
       "required": true,
       "reference": "task-scheduler/TaskRun",
       "annotations": {
-        "SourceMatchKey": "cd453ee7717f"
+        "SourceMatchKey": "d042baaa7242"
       }
     },
     "timestamp": {
       "type": "TIMESTAMP",
       "annotations": {
-        "SourceMatchKey": "36fa57de9561"
+        "SourceMatchKey": "028539a15f98"
       }
     },
     "total": {
       "type": "INT64",
       "annotations": {
-        "SourceMatchKey": "5f8ee7495f88"
+        "SourceMatchKey": "2957bda82484"
       }
     },
     "version": {
@@ -99,10 +99,11 @@ export const TaskRunProgressResource = {
       "exampleValue": 1,
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "f1d99b6f0bd3",
+        "SourceMatchKey": "f5c922f78a10",
         "SpecialProperty": "true"
       }
     }
-  }
+  },
+  "immutable": true
 } as unknown
 

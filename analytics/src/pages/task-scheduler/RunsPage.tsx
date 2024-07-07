@@ -4,7 +4,7 @@ import {ValueDrawerComponentFormProps} from "app/src/components/common/ValueDraw
 import {TaskRun, TaskRunEntityInfo} from "../../model/task-scheduler/task-run.ts";
 import {ReferenceValueSelector} from "app/src/components/ReferenceValueSelector.tsx";
 import {useNavigate} from "react-router-dom";
-import {useRepository} from "@apibrew/react";
+import {Direction, useRepository} from "@apibrew/react";
 import {useState} from "react";
 
 export function RunsPage() {
@@ -17,7 +17,14 @@ export function RunsPage() {
             wi={wi}
             entityInfo={TaskRunEntityInfo}
             defaultParams={{
-                resolveReferences: ['$.task']
+                resolveReferences: ['$.task'],
+                limit: 100,
+                sorting: [
+                    {
+                        property: 'startTime',
+                        direction: Direction.DESC
+                    }
+                ]
             }}
             gridColumns={['task', 'status', 'startTime', 'endTime']}
             disableDefaultActions={true}

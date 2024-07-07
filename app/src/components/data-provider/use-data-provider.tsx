@@ -36,7 +36,7 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
         }, err => {
             toast.error(err.message)
         })
-    }, [entityInfo.restPath, listParams, wi]);
+    }, [entityInfo.restPath, listParams, wi, gwi]);
 
     return {
         updateParams: (params: Partial<ListRecordParams>) => {

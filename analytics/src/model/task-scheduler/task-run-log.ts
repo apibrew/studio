@@ -1,12 +1,12 @@
 import {TaskRun} from './task-run';
 
 export interface TaskRunLog {
+    message?: string
     taskRun: TaskRun
     version: number
     timestamp?: string | Date
     id: string
     level: Level
-    message?: string
 }
 
 export const TaskRunLogEntityInfo = {
@@ -28,7 +28,7 @@ export const TaskRunLogResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T10:25:08Z"
+    "updatedOn": "2024-07-05T15:08:21Z"
   },
   "name": "TaskRunLog",
   "namespace": {
@@ -42,7 +42,7 @@ export const TaskRunLogResource = {
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "annotations": {
-        "SourceMatchKey": "ba19471f90e8",
+        "SourceMatchKey": "07a3a510a0a5",
         "SpecialProperty": "true"
       }
     },
@@ -58,27 +58,28 @@ export const TaskRunLogResource = {
         "FATAL"
       ],
       "annotations": {
-        "SourceMatchKey": "3eb5f109ced1"
+        "SourceMatchKey": "3c56e6f138c6"
       }
     },
     "message": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "2bad5905d57f"
+        "SourceMatchKey": "34a70c5deed9"
       }
     },
     "taskRun": {
       "type": "REFERENCE",
       "required": true,
+      "immutable": true,
       "reference": "task-scheduler/TaskRun",
       "annotations": {
-        "SourceMatchKey": "407599a2a129"
+        "SourceMatchKey": "6b9da0de8418"
       }
     },
     "timestamp": {
       "type": "TIMESTAMP",
       "annotations": {
-        "SourceMatchKey": "5bd25bd08c90"
+        "SourceMatchKey": "bd68d4771e94"
       }
     },
     "version": {
@@ -88,10 +89,11 @@ export const TaskRunLogResource = {
       "exampleValue": 1,
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "f1d99b6f0bd3",
+        "SourceMatchKey": "f5c922f78a10",
         "SpecialProperty": "true"
       }
     }
-  }
+  },
+  "immutable": true
 } as unknown
 

@@ -1,14 +1,14 @@
 import {TaskKind} from './task-kind';
 
 export interface Task {
-    lastExecutionTime?: string | Date
-    id: string
-    kind: TaskKind
     name: string
     tags?: string[]
     version: number
     arguments?: { [key: string]: object }
     auditData?: AuditData
+    lastExecutionTime?: string | Date
+    id: string
+    kind: TaskKind
 }
 
 export const TaskEntityInfo = {
@@ -29,7 +29,7 @@ export const TaskResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T10:25:08Z"
+    "updatedOn": "2024-07-05T15:08:21Z"
   },
   "name": "Task",
   "namespace": {
@@ -42,7 +42,7 @@ export const TaskResource = {
         "type": "OBJECT"
       },
       "annotations": {
-        "SourceMatchKey": "667441817c51"
+        "SourceMatchKey": "14edcc38ce30"
       }
     },
     "auditData": {
@@ -50,12 +50,12 @@ export const TaskResource = {
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-07-05T10:57:39+04:00",
+        "createdOn": "2024-07-05T19:06:59+04:00",
         "updatedBy": "admin",
-        "updatedOn": "2024-07-05T10:57:39+04:00"
+        "updatedOn": "2024-07-05T19:06:59+04:00"
       },
       "annotations": {
-        "SourceMatchKey": "e73ec79768ba",
+        "SourceMatchKey": "dfea312029e6",
         "SpecialProperty": "true"
       }
     },
@@ -66,22 +66,23 @@ export const TaskResource = {
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "annotations": {
-        "SourceMatchKey": "ba19471f90e8",
+        "SourceMatchKey": "07a3a510a0a5",
         "SpecialProperty": "true"
       }
     },
     "kind": {
       "type": "REFERENCE",
       "required": true,
+      "immutable": true,
       "reference": "task-scheduler/TaskKind",
       "annotations": {
-        "SourceMatchKey": "2d9edb21c109"
+        "SourceMatchKey": "d01aa99462c0"
       }
     },
     "lastExecutionTime": {
       "type": "TIMESTAMP",
       "annotations": {
-        "SourceMatchKey": "69c732c4b9f1"
+        "SourceMatchKey": "717b0fc76254"
       }
     },
     "name": {
@@ -89,7 +90,7 @@ export const TaskResource = {
       "required": true,
       "unique": true,
       "annotations": {
-        "SourceMatchKey": "64b662615e69"
+        "SourceMatchKey": "d8d12176196f"
       }
     },
     "tags": {
@@ -98,7 +99,7 @@ export const TaskResource = {
         "type": "STRING"
       },
       "annotations": {
-        "SourceMatchKey": "5864ff644a1d"
+        "SourceMatchKey": "30adfdcd3d0f"
       }
     },
     "version": {
@@ -108,7 +109,7 @@ export const TaskResource = {
       "exampleValue": 1,
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "f1d99b6f0bd3",
+        "SourceMatchKey": "f5c922f78a10",
         "SpecialProperty": "true"
       }
     }
@@ -131,7 +132,7 @@ export const TaskResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-07-05T10:57:39+04:00",
+          "exampleValue": "2024-07-05T19:06:59+04:00",
           "annotations": {
             "SpecialProperty": "true"
           }
@@ -146,7 +147,7 @@ export const TaskResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-07-05T10:57:39+04:00",
+          "exampleValue": "2024-07-05T19:06:59+04:00",
           "annotations": {
             "SpecialProperty": "true"
           }

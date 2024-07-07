@@ -1,10 +1,10 @@
 
 export interface TaskKind {
+    version: number
+    parameters?: string[]
     description?: string
     id: string
     name: string
-    version: number
-    parameters?: string[]
 }
 
 export const TaskKindEntityInfo = {
@@ -18,7 +18,7 @@ export const TaskKindResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T10:25:08Z"
+    "updatedOn": "2024-07-05T15:08:21Z"
   },
   "name": "TaskKind",
   "namespace": {
@@ -29,7 +29,7 @@ export const TaskKindResource = {
       "type": "STRING",
       "unique": true,
       "annotations": {
-        "SourceMatchKey": "0d282b7df900"
+        "SourceMatchKey": "bcc80791ccfc"
       }
     },
     "id": {
@@ -39,7 +39,7 @@ export const TaskKindResource = {
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "annotations": {
-        "SourceMatchKey": "ba19471f90e8",
+        "SourceMatchKey": "07a3a510a0a5",
         "SpecialProperty": "true"
       }
     },
@@ -49,7 +49,7 @@ export const TaskKindResource = {
       "unique": true,
       "immutable": true,
       "annotations": {
-        "SourceMatchKey": "7354e6779dc7"
+        "SourceMatchKey": "367dc092b382"
       }
     },
     "parameters": {
@@ -58,7 +58,7 @@ export const TaskKindResource = {
         "type": "STRING"
       },
       "annotations": {
-        "SourceMatchKey": "08ec9fe45a43"
+        "SourceMatchKey": "73e419522190"
       }
     },
     "version": {
@@ -68,7 +68,7 @@ export const TaskKindResource = {
       "exampleValue": 1,
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "f1d99b6f0bd3",
+        "SourceMatchKey": "f5c922f78a10",
         "SpecialProperty": "true"
       }
     }

@@ -34,5 +34,19 @@ export function TasksPageRecordForm(props: ValueDrawerComponentFormProps<Task>) 
                 })
             }}
         />
+
+        {props.value.kind?.parameters?.map((parameter, index) => {
+            return <TextField
+                key={index}
+                label={parameter}
+                value={props.value.arguments?.[parameter] || ''}
+                onChange={e => props.onChange({
+                    ...props.value,
+                    arguments: {
+                        ...props.value.arguments,
+                        [parameter]: e.target.value as unknown as object
+                    }
+                })}/>
+        })}
     </Stack>
 }
