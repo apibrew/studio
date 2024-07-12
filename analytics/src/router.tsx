@@ -2,6 +2,8 @@ import {dashboardRoutes} from "app";
 import {DashboardPage} from "./dashboard.tsx";
 import {TaskSchedulerPage} from "./pages/task-scheduler/TaskScheduler.tsx";
 import {RunPage} from "./pages/task-scheduler/RunPage.tsx";
+import {CalculatorPage} from "./pages/calculator/CalculatorPage.tsx";
+import {portfolioAnalysis} from "./modules/portfolio-analysis/router.tsx";
 
 export const routes = [
     {
@@ -24,7 +26,12 @@ export const routes = [
             {
                 path: 'task-scheduler/runs/:id',
                 element: <RunPage/>
-            }
+            },
+            {
+                path: 'calculator',
+                element: <CalculatorPage/>
+            },
+            ...portfolioAnalysis
         ]
     }
 ]

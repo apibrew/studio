@@ -8,7 +8,7 @@ import {useDataProvider} from "app/src/components/data-provider/use-data-provide
 import {LoadingOverlay} from "common";
 import {LineChart} from '@mui/x-charts/LineChart';
 import {useInterval} from "../../hooks/use-interval.ts";
-import {Box} from "@mui/material";
+import {Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 export function RunPage() {
     const wi = useInterval(5000)
@@ -81,7 +81,7 @@ export function TaskProgressChart(props: TaskProgressChartProps) {
         filters: {
             taskRun: props.taskRun.id
         },
-        limit: 100,
+        limit: 10000,
         sorting: [
             {
                 property: 'timestamp',
@@ -94,7 +94,7 @@ export function TaskProgressChart(props: TaskProgressChartProps) {
         return <LoadingOverlay/>
     }
 
-    const records = taskRunProgresses.records
+    const records = sampleArray(taskRunProgresses.records, 100, e => 0 - new Date(e.timestamp!).getTime())
 
     records.reverse()
 
@@ -122,10 +122,28 @@ export function TaskProgressChart(props: TaskProgressChartProps) {
 
     return <>
         <h2>Progress [{Math.round(percentage * 100) / 100}%]</h2>
-        <h5>Last Speed: {Math.floor(lastSpeed * 100000) / 100} item/s</h5>
-        <h5>Average Speed: {Math.floor(averageSpeed * 100000) / 100} item/s</h5>
-        <h5>Remaining Time: {formatDuration(remainingTime)}</h5>
-        <h5>Expected Finish Time: {expectedFinishTime ? new Date(expectedFinishTime).toLocaleString() : ''}</h5>
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Last Speed</TableCell>
+                    <TableCell>Average Speed</TableCell>
+                    <TableCell>Passed Time</TableCell>
+                    <TableCell>Remaining Time</TableCell>
+                    <TableCell>Expected Finish Time</TableCell>
+                    <TableCell>Last Step</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                <TableRow>
+                    <TableCell>{Math.floor(lastSpeed * 100000) / 100} item/s</TableCell>
+                    <TableCell>{Math.floor(averageSpeed * 100000) / 100} item/s</TableCell>
+                    <TableCell>{formatDuration(lastRecord?.cumDuration as number)}</TableCell>
+                    <TableCell>{formatDuration(remainingTime)}</TableCell>
+                    <TableCell>{expectedFinishTime ? new Date(expectedFinishTime).toLocaleString() : ''}</TableCell>
+                    <TableCell>{lastRecord?.step}</TableCell>
+                </TableRow>
+            </TableBody>
+        </Table>
 
         <LineChart
             xAxis={[
@@ -173,6 +191,32 @@ function formatDuration(ms: number) {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 
-// Example usage:
-const duration = 3661; // 1 hour, 1 minute, 1 second
-console.log(formatDuration(duration)); // Output: "01:01:01"
+function sampleArray<T>(array: T[], sampleSize: number, sortKeyFunc: (elem: T) => number): T[] {
+    if (sampleSize < 2) {
+        throw new Error("Sample size must be at least 2 to include first and last elements.");
+    }
+    if (array.length <= sampleSize) {
+        return array.slice().sort((a, b) => sortKeyFunc(a) - sortKeyFunc(b)); // Return the whole sorted array if it's smaller than or equal to the sample size
+    }
+
+    const firstElement = array[0];
+    const lastElement = array[array.length - 1];
+
+    // Get the elements in between
+    const middleElements = array.slice(1, -1);
+
+    // Shuffle the middle elements
+    for (let i = middleElements.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [middleElements[i], middleElements[j]] = [middleElements[j], middleElements[i]];
+    }
+
+    // Select random elements from the shuffled middle elements
+    const selectedMiddleElements = middleElements.slice(0, sampleSize - 2);
+
+    // Combine first, selected middle, and last elements
+    const result = [firstElement, ...selectedMiddleElements, lastElement];
+
+    // Sort the result array using the provided sortKeyFunc
+    return result.sort((a, b) => sortKeyFunc(a) - sortKeyFunc(b));
+}
