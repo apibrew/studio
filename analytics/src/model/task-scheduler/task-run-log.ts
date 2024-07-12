@@ -1,12 +1,12 @@
 import {TaskRun} from './task-run';
 
 export interface TaskRunLog {
+    timestamp?: string
+    id: string
+    level: Level
     message?: string
     taskRun: TaskRun
     version: number
-    timestamp?: string | Date
-    id: string
-    level: Level
 }
 
 export const TaskRunLogEntityInfo = {
@@ -28,7 +28,7 @@ export const TaskRunLogResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T15:08:21Z"
+    "updatedOn": "2024-07-09T18:06:24Z"
   },
   "name": "TaskRunLog",
   "namespace": {

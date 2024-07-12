@@ -1,10 +1,10 @@
 
 export interface TaskKind {
-    version: number
-    parameters?: string[]
     description?: string
     id: string
     name: string
+    version: number
+    parameters?: string[]
 }
 
 export const TaskKindEntityInfo = {
@@ -18,7 +18,7 @@ export const TaskKindResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T15:08:21Z"
+    "updatedOn": "2024-07-09T18:06:24Z"
   },
   "name": "TaskKind",
   "namespace": {

@@ -1,14 +1,14 @@
 import {Task} from './task';
 
 export interface TaskRun {
-    status: Status
-    endTime?: string | Date
     version: number
     auditData?: AuditData
-    startTime?: string | Date
+    startTime?: string
     id: string
     task: Task
     error?: string
+    status: Status
+    endTime?: string
 }
 
 export const TaskRunEntityInfo = {
@@ -19,9 +19,9 @@ export const TaskRunEntityInfo = {
 
 export interface AuditData {
     createdBy: string
-    createdOn: string | Date
+    createdOn: string
     updatedBy: string
-    updatedOn: string | Date
+    updatedOn: string
 }
 
 export enum Status {
@@ -38,7 +38,7 @@ export const TaskRunResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T15:08:21Z"
+    "updatedOn": "2024-07-09T18:06:24Z"
   },
   "name": "TaskRun",
   "namespace": {

@@ -1,16 +1,16 @@
 import {TaskRun} from './task-run';
 
 export interface TaskRunProgress {
-    id: string
-    step?: number
-    itemCount?: number
     completed?: number
-    taskRun: TaskRun
-    timestamp?: string | Date
     cumDuration?: number
     total?: number
     version: number
+    id: string
+    step?: number
+    taskRun: TaskRun
     duration?: number
+    itemCount?: number
+    timestamp?: string
 }
 
 export const TaskRunProgressEntityInfo = {
@@ -24,7 +24,7 @@ export const TaskRunProgressResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-05T15:08:21Z"
+    "updatedOn": "2024-07-09T18:06:24Z"
   },
   "name": "TaskRunProgress",
   "namespace": {
