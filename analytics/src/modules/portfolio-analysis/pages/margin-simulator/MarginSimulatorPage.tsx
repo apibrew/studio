@@ -4,6 +4,8 @@ import {Box, Button, Table, TableBody, TableHead, TableRow} from "@mui/material"
 import {useState} from "react";
 import {UserInputGroup} from "../../../../components/user-input-group.tsx";
 import {StockData} from "../../../../model/fmp/stock-data.ts";
+import {LineChart} from "@mui/x-charts/LineChart";
+import {sampleArray} from "../../../../../util/util.ts";
 
 export interface MarginSimulatorParams {
     symbol: string
@@ -13,6 +15,7 @@ export interface MarginSimulatorParams {
     minMargin: number
     initialInvestment: number
     monthlyAddition?: number
+    monthlyAdditionCount?: number
 }
 
 export interface Movement {
@@ -32,32 +35,24 @@ export interface Movement {
     sma: number
 }
 
-export function MarginSimulatorPage() {
-    const [params, setParams] = useState<MarginSimulatorParams>({
-        symbol: 'QQQ',
-        fromDate: '2020-01-01',
-        maxMargin: 100,
-        minMargin: 60,
-        initialInvestment: 40000,
-        monthlyAddition: 0
-        // monthlyAddition: 6500
-    })
-
-    const dp = useStockDataProvider({
-        symbols: ['QQQ'],
-        fromDate: '2024-06-01'
-    })
-
-    if (dp.loading) {
-        return <LoadingOverlay/>
+function calculateOverall(movements: Movement[]): {
+    totalMovement: number
+    totalPl: number
+    endBalance: number
+    returnRate: number
+    annualReturnRate: number
+    returnRateWithoutMargin: number
+    annualReturnRateWithoutMargin: number
+    totalInvestment: number
+} {
+    if (movements.length == 0) {
+        return {} as never
     }
-
-    const movements = calculateMovements(params, dp.data)
-
     const totalMovement = movements[movements.length - 1].currentPrice - movements[0].currentPrice
     const totalPl = movements[movements.length - 1].totalPl
     const endBalance = movements[movements.length - 1].equity
-    const returnRate = endBalance / (endBalance - totalPl)
+    const totalInvestment = endBalance - totalPl
+    const returnRate = endBalance / (totalInvestment)
     const annualReturnRate = Math.pow(returnRate, 1 / (movements.length / 252)) - 1
 
     const returnRateWithoutMargin = movements[movements.length - 1].currentPrice / movements[0].currentPrice
@@ -70,8 +65,35 @@ export function MarginSimulatorPage() {
         returnRate: returnRate,
         annualReturnRate: annualReturnRate,
         returnRateWithoutMargin: returnRateWithoutMargin,
-        annualReturnRateWithoutMargin: annualReturnRateWithoutMargin
+        annualReturnRateWithoutMargin: annualReturnRateWithoutMargin,
+        totalInvestment: totalInvestment
     }
+    return overall;
+}
+
+export function MarginSimulatorPage() {
+    const [movements, setMovements] = useState<Movement[]>([])
+    const [params, setParams] = useState<MarginSimulatorParams>({
+        symbol: 'QQQ',
+        fromDate: '2010-01-01',
+        maxMargin: 100,
+        minMargin: 60,
+        initialInvestment: 80000,
+        monthlyAddition: 6500,
+        monthlyAdditionCount: 12 * 5,
+    })
+
+    const dp = useStockDataProvider({
+        symbols: ['QQQ'],
+        fromDate: '2024-06-01'
+    })
+
+    if (dp.loading) {
+        return <LoadingOverlay/>
+    }
+
+
+    const overall = calculateOverall(movements);
 
     return <>
         <Box m={1}>
@@ -88,6 +110,7 @@ export function MarginSimulatorPage() {
                     {name: 'minMargin', type: 'number', label: 'Min Margin'},
                     {name: 'initialInvestment', type: 'number', label: 'Initial Investment'},
                     {name: 'monthlyAddition', type: 'number', label: 'Monthly Addition'},
+                    {name: 'monthlyAdditionCount', type: 'number', label: 'Monthly Addition Count'},
                 ]}/>
         </Box>
         <Button onClick={() => {
@@ -97,43 +120,57 @@ export function MarginSimulatorPage() {
                 toDate: params.toDate
             })
         }}>
+            Load Data ({dp.total})
+        </Button>
+        <Button onClick={() => {
+            setMovements(calculateMovements(params, dp.data))
+        }}>
             Calculate
         </Button>
 
         <h1>Margin Simulator</h1>
         <h3>Overall</h3>
-        <Table>
-            <TableBody>
-                <TableRow>
-                    <th>Total Movement</th>
-                    <td>{formatNumber(overall.totalMovement)}</td>
-                </TableRow>
-                <TableRow>
-                    <th>Total PL</th>
-                    <td>{formatNumber(overall.totalPl)}</td>
-                </TableRow>
-                <TableRow>
-                    <th>End Balance</th>
-                    <td>{formatNumber(overall.endBalance)}</td>
-                </TableRow>
-                <TableRow>
-                    <th>Return Rate</th>
-                    <td>{formatNumber(overall.returnRate * 100)}%</td>
-                </TableRow>
-                <TableRow>
-                    <th>Annual Return Rate</th>
-                    <td>{formatNumber(annualReturnRate * 100)}%</td>
-                </TableRow>
-                <TableRow>
-                    <th>Return Rate Without Margin</th>
-                    <td>{formatNumber(overall.returnRateWithoutMargin * 100)}%</td>
-                </TableRow>
-                <TableRow>
-                    <th>Annual Return Rate Without Margin</th>
-                    <td>{formatNumber(annualReturnRateWithoutMargin * 100)}%</td>
-                </TableRow>
-            </TableBody>
-        </Table>
+        <Box>
+            <Box width='400px'>
+                <Table>
+                    <TableBody>
+                        <TableRow>
+                            <td>Total Movement</td>
+                            <td>{formatNumber(overall.totalMovement)}</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>Total PL</td>
+                            <td>{formatNumber(overall.totalPl)}</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>Total Investment</td>
+                            <td>{formatNumber(overall.totalInvestment)}</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>End Balance</td>
+                            <td>{formatNumber(overall.endBalance)}</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>Return Rate</td>
+                            <td>{formatNumber(overall.returnRate * 100)}%</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>Annual Return Rate</td>
+                            <td>{formatNumber(overall.annualReturnRate * 100)}%</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>Return Rate Without Margin</td>
+                            <td>{formatNumber(overall.returnRateWithoutMargin * 100)}%</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>Annual Return Rate Without Margin</td>
+                            <td>{formatNumber(overall.annualReturnRateWithoutMargin * 100)}%</td>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </Box>
+            <PortfolioProgressChart movements={movements}/>
+        </Box>
 
         <h3>Movements</h3>
         <Table>
@@ -197,6 +234,7 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
     let additionalEquity = 0;
     let totalPl = 0
     let i = 0;
+    let remMonthlyAdditionCount = params.monthlyAdditionCount
 
     for (const item of stockDataItems) {
         const pl = (item.close - previousPrice) * count
@@ -209,8 +247,9 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
         }
         const marginUsagePercentage = marginUsage * 100 / equity
 
-        if (i % 30 == 0) {
+        if (i % 30 == 0 && remMonthlyAdditionCount > 0) {
             additionalEquity += params.monthlyAddition
+            remMonthlyAdditionCount--
         }
 
         const movement: Movement = {
@@ -230,14 +269,14 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
             sma: 0
         }
 
-        console.log(item.date, movement)
-
         result.push(movement)
 
         const currentNeededMargin = 1 + (params.maxMargin + params.minMargin) / 200
         const goodCount = Math.round(equity * currentNeededMargin / item.close)
 
-        // count = goodCount
+        console.log(movement)
+        console.log('goodCount', goodCount)
+        console.log('currentNeededMargin', currentNeededMargin)
 
         if (marginUsagePercentage > params.maxMargin) {
             count = goodCount
@@ -252,8 +291,27 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
 }
 
 function formatNumber(n: number): string {
-    if (!n.toFixed) {
+    if (!n || !n.toFixed) {
         return '---'
     }
     return n.toFixed(2)
+}
+
+interface PortfolioProgressChartProps {
+    movements: Movement[]
+}
+
+function PortfolioProgressChart(props: PortfolioProgressChartProps) {
+    const sampleMovements = sampleArray(props.movements, 100, e => new Date(e.date).getTime())
+
+    return <>
+        <LineChart
+            series={[
+                {
+                    data: sampleMovements.map(item => item.equity)
+                },
+            ]}
+            height={300}
+        />
+    </>
 }

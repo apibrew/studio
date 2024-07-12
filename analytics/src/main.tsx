@@ -4,7 +4,7 @@ import {App} from "../lib/App.tsx";
 import {MenuItem, menuItems} from "app";
 import {Calculate, InventorySharp, Search, Task} from '@mui/icons-material'
 import {routes} from "./router.tsx";
-import {prodConfig} from "./config.ts";
+import {localConfig, prodConfig} from "./config.ts";
 
 menuItems.splice(5, 10)
 menuItems.splice(3, 1)
