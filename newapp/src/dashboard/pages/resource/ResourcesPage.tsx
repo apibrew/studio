@@ -44,10 +44,10 @@ export default function ResourcesPage() {
     }
 
     return <>
-        <Box display='flex'
-             height='100%'
-             flexDirection='column'>
-            <Stack direction='row' spacing={2} p={1}>
+        <Box className="m2-div1" display='flex'
+            height='100%'
+            flexDirection='column'>
+            <Stack className="m2-div1-1" direction='row' spacing={2} p={1}>
                 <Typography variant='h5'>
                     {params.namespace !== 'default' && params.namespace + ' / '}
                     {params.resource}
@@ -55,27 +55,27 @@ export default function ResourcesPage() {
                 <Typography variant='body2'>
                     /{getRestPath(resource)}
                 </Typography>
-                <Box flexGrow={1}/>
+                <Box flexGrow={1} />
                 <Button variant='text' size='small' onClick={() => {
                 }}>
-                    <Code/>
-                    <span style={{marginLeft: '3px'}}>Nano Code</span>
+                    <Code />
+                    <span style={{ marginLeft: '3px' }}>Nano Code</span>
                 </Button>
                 <Button variant='text' size='small' onClick={() => {
                 }}>
-                    <CircleOutlined/>
-                    <span style={{marginLeft: '3px'}}>Api Doc</span>
+                    <CircleOutlined />
+                    <span style={{ marginLeft: '3px' }}>Api Doc</span>
                 </Button>
                 <Button variant='outlined' color='primary' size='small' onClick={() => {
                 }}>
-                    <CalendarViewMonth/>
-                    <span style={{marginLeft: '3px'}}>Update Resource</span>
+                    <CalendarViewMonth />
+                    <span style={{ marginLeft: '3px' }}>Update Resource</span>
                 </Button>
             </Stack>
             <DataTable reloadResource={() => {
                 setWi(wi + 1)
                 alert('loading resource')
-            }} resource={resource}/>
+            }} resource={resource} />
         </Box>
     </>
 }

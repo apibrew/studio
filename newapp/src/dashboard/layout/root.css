@@ -144,7 +144,7 @@ NEW
  }
  .sidebar a:not(.logo):hover {
     background-color: rgb(178, 178, 178);
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    /* box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); */
 }
 .ul-buttons ul a {
     height: 26px;
@@ -225,39 +225,35 @@ hr {
 
 
 
-.main1 {
+.main {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     overflow-y: auto;
 }
 
-.main1 > div {
+/* .main > div {
     padding: 0 20px;
-}
+} */
 
 .main-header {
-    height: 44px;
-    display: flex;
-    margin-top: 16px;
-    margin-bottom: 12px;
-}
+    margin: 20px 24px;}
 
 .mh-icon {
     width: 20px;
     height: 20px;
-    vertical-align: -4px;
 }
 
 .mh-arrow {
     width: 10px;
     height: 10px;
-    margin: 0 16px 0 16px;
+    margin: 0 16px;
 }
 
 .mh-text {
     font-size: 14px;
     font-weight: 500;
+    color: #475467;
 }
 
 .mh-div1 {
@@ -265,9 +261,7 @@ hr {
 }
 
 .mh-div2 {
-    height: 40px;
-    display: flex;
-    align-items: center;
+    /* height: 40px; */
 }
 
 .mh-div2 img {
@@ -280,6 +274,7 @@ hr {
     font-size: 14px;
     font-weight: 600;
     margin-left: 6px;
+    color: #344054;
 }
 
 .mh-div2 button:not(:last-child) span {
@@ -643,45 +638,82 @@ hr {
     margin: 25px 0 15px;
     color: #667085;
 }
-
-
 .sidesection .sidesect-ul {
     margin: 0  0 16px 4px;
     overflow-y: auto;
-
 }
-
-
 .sidesection li {
     padding: unset;
     display: list-item;
 }
-
-
-/* sidesection************************************************************************************* */
-
-
-
 .sidesect-ul button {
     width: 100%;
     padding: unset;
     margin-top: 4px;
     box-shadow:unset
 }
-
-
 .sidesect-ul span {
     font-weight: 600;
     font-size: 16px;
     margin: 4px 0 0 10px;
     flex-grow: 1;
 }
-
 .sidesect-ul ul {
     margin-left: 34px;
 }
+.sidesect-ul button:not(:hover) svg:last-of-type {
+    display: none;
+}
 
 
+
+
+/* ****************************************************** */
+.m2-div1 {
+    padding: 0 20px;
+}
+.m2-div1 > div {
+    padding: unset;
+    align-items: center;
+}
+.m2-div1-1 h5 {
+    font: 600 20px Inter;
+    color: #101828;
+}
+.m2-div1-1 p {
+    font: 400 16px Inter;
+    color: #475467;
+}
+.m2-div1-1 button:not(:last-child) {
+    color: #475467;
+}
+.m2-div1-1 button:last-child {
+    height: 40px;
+    border: 1px solid #D6BBFB;
+    border-radius: 8px;
+    color: #6941C6;
+}
+.m2-div1-1 button span {
+    font: 600 14px Inter;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* .sidesection {
+    display: none;
+}
+.sidebar {
+    display: none;
+} */
 
 
 

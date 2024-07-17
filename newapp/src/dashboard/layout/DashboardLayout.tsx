@@ -10,9 +10,9 @@ export function DashboardLayout() {
         <div className="maindiv">
             <AsideBar activeItem={activeItem}/>
             {activeItem?.secondSideBar && activeItem.secondSideBar()}
-            <div className="main1">
-                <div className="main-header">
-                    <div className="mh-div1">
+            <div className="main">
+                <div className="main-header flex-center">
+                    <div className="mh-div1 flex-center">
                         <button>
                             <img className="mh-icon" src="/smvpic.png" alt="png"/>
                         </button>
@@ -21,16 +21,16 @@ export function DashboardLayout() {
                         <img className="mh-arrow" src="/smvpic5.png" alt="png"/>
                         <span className="mh-text">Overview</span>
                     </div>
-                    <div className="mh-div2">
-                        <button>
+                    <div className="mh-div2 flex-center">
+                        <button className="flex-center">
                             <img src="/smvpic6.png" alt="png"/>
                             <span>Notification</span>
                         </button>
-                        <button>
+                        <button className="flex-center">
                             <img src="/smvpic6.png" alt="png"/>
                             <span>Notification</span>
                         </button>
-                        <button>
+                        <button className="flex-center">
                             <img src="/smvpic6.png" alt="png"/>
                             <span>Notification</span>
                         </button>

@@ -130,9 +130,9 @@ export function DataTableTable(props: DataTableTableProps) {
         <Box display='flex' flexDirection='column' height='100%' minWidth={Math.max(500, 100 * properties.length + 85)}
              width={(tableWidth + 85) + 'px'}>
             <Box display='flex' flexDirection='row' className='row row-header'>
-                <Box width='75px' className='cell header-cell'>
+                <Box width='82px' className='cell header-cell'>
                     <Box className='cell-inner'>
-                        <Checkbox
+                        <Checkbox className="check-icon1"
                             checked={props.selectedItems.length > 0 && props.selectedItems.length === props.records.length}
                             sx={{
                                 padding: 0

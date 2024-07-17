@@ -91,7 +91,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
         <Box display='flex' flexDirection='row' className='row row-body'>
             <Box width='75px' className='cell body-cell'>
                 <Box className='cell-inner'>
-                    {!edited && <Checkbox checked={props.selected}
+                    {!edited && <Checkbox  className="check-icon1" checked={props.selected}
                                           sx={{
                                               padding: 0
                                           }}
