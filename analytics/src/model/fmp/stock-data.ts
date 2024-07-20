@@ -1,20 +1,20 @@
 
 export interface StockData {
-    changeOverTime: number
-    vwap: number
-    volume: number
-    low: number
-    changePercent: number
-    close: number
-    change: number
-    adjClose: number
-    version: number
-    high: number
-    date: string
-    symbol: string
     id: string
+    low: number
     unadjustedVolume: number
     open: number
+    close: number
+    volume: number
+    changePercent: number
+    change: number
+    changeOverTime: number
+    symbol: string
+    version: number
+    adjClose: number
+    vwap: number
+    date: string
+    high: number
 }
 
 export const StockDataEntityInfo = {
@@ -28,7 +28,7 @@ export const StockDataResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-06T21:32:27Z",
-    "updatedOn": "2024-07-09T18:06:24Z"
+    "updatedOn": "2024-07-18T09:31:09Z"
   },
   "name": "StockData",
   "namespace": {
@@ -39,49 +39,49 @@ export const StockDataResource = {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "604ad91d2879"
+        "SourceMatchKey": "99ddc8678151"
       }
     },
     "change": {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "efd073f1871c"
+        "SourceMatchKey": "6f5023a1bb6e"
       }
     },
     "changeOverTime": {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "72d05ee78844"
+        "SourceMatchKey": "c62fd9d97141"
       }
     },
     "changePercent": {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "fb82aade0dca"
+        "SourceMatchKey": "f1104a14d346"
       }
     },
     "close": {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "804fe99461cc"
+        "SourceMatchKey": "e85c4464bf2a"
       }
     },
     "date": {
       "type": "DATE",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "5c2dab8a9fbb"
+        "SourceMatchKey": "f622082a0db2"
       }
     },
     "high": {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "9af237906063"
+        "SourceMatchKey": "459a73927d96"
       }
     },
     "id": {
@@ -91,7 +91,7 @@ export const StockDataResource = {
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "annotations": {
-        "SourceMatchKey": "e197b65b1e18",
+        "SourceMatchKey": "bc511e62f73e",
         "SpecialProperty": "true"
       }
     },
@@ -99,28 +99,28 @@ export const StockDataResource = {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "50e047f9bc68"
+        "SourceMatchKey": "2e48dcfc201f"
       }
     },
     "open": {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "b594001eb0dc"
+        "SourceMatchKey": "f73a5ee73962"
       }
     },
     "symbol": {
       "type": "STRING",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "b185efc1546c"
+        "SourceMatchKey": "02fe8230d928"
       }
     },
     "unadjustedVolume": {
       "type": "INT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "3dca3251958e"
+        "SourceMatchKey": "51c175fa6b7f"
       }
     },
     "version": {
@@ -130,7 +130,7 @@ export const StockDataResource = {
       "exampleValue": 1,
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "4c76b7e4d56a",
+        "SourceMatchKey": "0ac3d91c97a6",
         "SpecialProperty": "true"
       }
     },
@@ -138,14 +138,14 @@ export const StockDataResource = {
       "type": "INT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "290e5caf530a"
+        "SourceMatchKey": "7f8c0f14deec"
       }
     },
     "vwap": {
       "type": "FLOAT64",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "3b2aff451c03"
+        "SourceMatchKey": "930501d56933"
       }
     }
   },

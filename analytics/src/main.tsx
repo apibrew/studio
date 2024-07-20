@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import {App} from "../lib/App.tsx";
-import {MenuItem, menuItems} from "app";
+import {MenuItem, menuItems, StandaloneApp} from "app";
 import {Calculate, InventorySharp, Search, Task} from '@mui/icons-material'
-import {routes} from "./router.tsx";
 import {localConfig, prodConfig} from "./config.ts";
+import {Router} from "./router.tsx";
 
 menuItems.splice(5, 10)
 menuItems.splice(3, 1)
@@ -36,11 +35,12 @@ menuItems.splice(1, 0, {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <App
-            routes={routes}
+        <StandaloneApp
             connection={{
                 name: 'analytics',
                 serverConfig: prodConfig,
-            }}/>
+            }}>
+            <Router/>
+        </StandaloneApp>
     </React.StrictMode>,
 )

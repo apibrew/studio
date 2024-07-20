@@ -4,12 +4,12 @@ import {TaskRun, TaskRunEntityInfo} from "../../model/task-scheduler/task-run.ts
 import {TaskRunLog, TaskRunLogEntityInfo} from "../../model/task-scheduler/task-run-log.ts";
 import {TaskRunProgress, TaskRunProgressEntityInfo} from "../../model/task-scheduler/task-run-progress.ts";
 import {useEffect, useState} from "react";
-import {useDataProvider} from "app/src/components/data-provider/use-data-provider";
-import {LoadingOverlay} from "common";
+import {useDataProvider} from "app";
+import {LoadingOverlay} from "app";
 import {LineChart} from '@mui/x-charts/LineChart';
 import {useInterval} from "../../hooks/use-interval.ts";
 import {Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import {sampleArray} from "../../../util/util.ts";
+import {sampleArray} from "../../util.ts";
 
 export function RunPage() {
     const wi = useInterval(5000)

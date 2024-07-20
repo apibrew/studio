@@ -6,8 +6,8 @@ import {resolve} from "path";
 import dts from 'vite-plugin-dts'
 
 export default defineConfig(env => {
-    if (env.mode === 'lib') {
-        return libConfig() as any;
+    if (env.mode === 'standalone') {
+        return standaloneConfig() as any;
     } else {
         return appConfig() as any;
     }
@@ -32,7 +32,7 @@ function appConfig() {
     }
 }
 
-function libConfig() {
+function standaloneConfig() {
     return {
         plugins: [
             react(),
@@ -41,13 +41,22 @@ function libConfig() {
         build: {
             copyPublicDir: false,
             lib: {
-                entry: resolve(__dirname, 'src/lib.tsx'),
+                entry: resolve(__dirname, 'src/standalone/index.ts'),
                 formats: ['es']
             },
             rollupOptions: {
                 external: (dep: string) => {
-                    if (dep.indexOf('studio/app') !== -1) {
+                    if (dep.indexOf('studio/') !== -1) {
                         // console.log(dep + ' is internal')
+                        return false
+                    }
+                    if (dep.indexOf('common') == 0) {
+                        return false
+                    }
+                    if (dep.indexOf('core') == 0) {
+                        return false
+                    }
+                    if (dep.indexOf('ask-ai') == 0) {
                         return false
                     }
                     if (dep.indexOf('./') === 0) {
@@ -58,7 +67,7 @@ function libConfig() {
                         // console.log(dep + ' is internal')
                         return false
                     }
-                    // console.log(dep + ' is external')
+                    console.log(dep + ' is external')
                     return true
                 },
             }

@@ -21,9 +21,15 @@ export function UserInputGroup<T>(props: UserInputGroupProps<T>) {
                            label={input.label}
                            value={(props.value)[input.name] as string || ''}
                            onChange={e => {
+                               let value = e.target.value as unknown
+
+                               if (input.type === 'number') {
+                                   value = parseFloat(e.target.value)
+                               }
+
                                props.onChange({
                                    ...props.value,
-                                   [input.name]: e.target.value
+                                   [input.name]: value
                                })
                            }}/>
             ))}

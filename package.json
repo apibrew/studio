@@ -12,7 +12,6 @@
   "workspaces": [
     "app",
     "newapp",
-    "standalone",
     "analytics",
     "core",
     "common",

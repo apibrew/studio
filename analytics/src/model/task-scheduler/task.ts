@@ -1,14 +1,14 @@
 import {TaskKind} from './task-kind';
 
 export interface Task {
-    auditData?: AuditData
-    lastExecutionTime?: string
-    id: string
-    kind: TaskKind
     name: string
     tags?: string[]
     version: number
     arguments?: { [key: string]: any }
+    auditData?: AuditData
+    lastExecutionTime?: string
+    id: string
+    kind: TaskKind
 }
 
 export const TaskEntityInfo = {
@@ -29,7 +29,7 @@ export const TaskResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-05T06:27:31Z",
-    "updatedOn": "2024-07-09T18:06:24Z"
+    "updatedOn": "2024-07-18T09:31:08Z"
   },
   "name": "Task",
   "namespace": {

@@ -1,8 +1,8 @@
 import {Box, Stack, TextField} from "@mui/material";
-import {GridPage} from "app/src/components/grid-page/GridPage.tsx";
+import {GridPage} from "app";
 import {Task, TaskEntityInfo} from "../../model/task-scheduler/task.ts";
-import {ValueDrawerComponentFormProps} from "app/src/components/common/ValueDrawerComponent.tsx";
-import {ReferenceValueSelector} from "app/src/components/ReferenceValueSelector";
+import {ValueDrawerComponentFormProps} from "app";
+import {ReferenceValueSelector} from "app";
 
 export function TasksPage() {
     return <Box>

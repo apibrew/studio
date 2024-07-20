@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "main": "dist/app.js",
-  "types": "dist/lib.d.ts",
+  "types": "dist/standalone/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

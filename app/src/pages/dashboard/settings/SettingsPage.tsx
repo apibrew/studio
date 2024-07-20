@@ -9,6 +9,7 @@ import {ensureResource} from "../../../logic/ensure-resource";
 import {Resource, useClient} from "@apibrew/react";
 import {Settings, SettingsEntityInfo, SettingsResource} from "../../../model/settings";
 import {StateContext} from "../../../context/StateContext";
+import {Client} from "@apibrew/client";
 
 export default function SettingsPage() {
     const tab = useRouteTab()
@@ -38,7 +39,7 @@ export default function SettingsPage() {
     }
 
     useEffect(() => {
-        ensureResource(client, SettingsResource as Resource, true)
+        ensureResource(client as Client, SettingsResource as Resource, true)
             .then(() => {
                 return load()
             })

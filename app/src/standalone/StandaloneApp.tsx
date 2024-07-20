@@ -1,5 +1,3 @@
-import {ConnectionContext, RootLayout, theme} from 'app'
-
 import 'app/dist/style.css'
 import 'core'
 import 'common'
@@ -16,17 +14,19 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {ClientProvider, Connection, LocalStorageTokenStorage} from "@apibrew/react";
 import {newClientByServerConfig} from "@apibrew/client/client";
 import toast from "react-hot-toast";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {Client} from "@apibrew/client";
 import {LoadingOverlay} from "common";
-import {createBrowserRouter, RouteObject, RouterProvider} from "react-router-dom";
+import {RootLayout} from "../layout/RootLayout";
+import {theme} from "../theme";
+import {ConnectionContext} from "../context/ConnectionContext";
 
 export interface AppProps {
-    routes: RouteObject[]
     connection: Connection
+    children: ReactNode
 }
 
-export function App(props: AppProps) {
+export function StandaloneApp(props: AppProps) {
     const [client, setClient] = useState<Client>()
 
     useEffect(() => {
@@ -34,7 +34,6 @@ export function App(props: AppProps) {
             setClient(cl)
             cl.useTokenStorage(new LocalStorageTokenStorage(props.connection.name))
         }, err => {
-            console.error(err)
             toast.error(err.message)
             return;
         })
@@ -44,8 +43,6 @@ export function App(props: AppProps) {
         return <LoadingOverlay/>
     }
 
-    console.log('client', client)
-
     return (
         <ClientProvider value={client}>
             <ConnectionContext.Provider value={props.connection}>
@@ -54,7 +51,7 @@ export function App(props: AppProps) {
                         <LocalizationProvider dateAdapter={AdapterDayjs}
                                               localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
                         >
-                            <RouterProvider router={createBrowserRouter(props.routes)}/>
+                            {props.children}
                         </LocalizationProvider>
                     </ThemeProvider>
                 </RootLayout>

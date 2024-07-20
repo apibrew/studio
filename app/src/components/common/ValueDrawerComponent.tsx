@@ -29,14 +29,17 @@ export function ValueDrawerComponent(props: ValueDrawerComponentProps) {
                 onClick={() => {
                     const res = props.onChange(value)
 
-                    if (res === void 0 || res === null || !res.then) {
+                    if (res === void 0 || res === null || !(res as Promise<void>).then) {
                         props.onClose()
                         return
                     }
 
-                    res.then(() => {
-                        props.onClose()
-                    }).catch(() => {})
+                    if ((res as Promise<void>).then) {
+                        (res as Promise<void>).then(() => {
+                            props.onClose()
+                        }).catch(() => {
+                        })
+                    }
                 }}
             >
                 Save

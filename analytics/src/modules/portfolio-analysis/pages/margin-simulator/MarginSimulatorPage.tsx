@@ -1,17 +1,18 @@
 import {useStockDataProvider} from "../../../../data-provider/use-stock-data-provider.tsx";
-import {LoadingOverlay} from "common";
+import {LoadingOverlay} from "app";
 import {Box, Button, Table, TableBody, TableHead, TableRow} from "@mui/material";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {UserInputGroup} from "../../../../components/user-input-group.tsx";
 import {StockData} from "../../../../model/fmp/stock-data.ts";
 import {LineChart} from "@mui/x-charts/LineChart";
-import {sampleArray} from "../../../../../util/util.ts";
+import {sampleArray} from "../../../../util.ts";
 
 export interface MarginSimulatorParams {
     symbol: string
     fromDate: string
     toDate?: string
     maxMargin: number
+    expectedMargin: number
     minMargin: number
     initialInvestment: number
     monthlyAddition?: number
@@ -24,7 +25,6 @@ export interface Movement {
     currentPrice: number
     count: number
     marketValue: number
-    cash: number
     pl: number
     totalPl: number
     equity: number
@@ -44,6 +44,8 @@ function calculateOverall(movements: Movement[]): {
     returnRateWithoutMargin: number
     annualReturnRateWithoutMargin: number
     totalInvestment: number
+    maxLost: number
+    maxTotalLost: number
 } {
     if (movements.length == 0) {
         return {} as never
@@ -57,8 +59,10 @@ function calculateOverall(movements: Movement[]): {
 
     const returnRateWithoutMargin = movements[movements.length - 1].currentPrice / movements[0].currentPrice
     const annualReturnRateWithoutMargin = Math.pow(returnRateWithoutMargin, 1 / (movements.length / 252)) - 1
+    const maxLost = Math.min(0, ...movements.filter(item => item.pl < 0).map(item => item.pl))
+    const maxTotalLost = Math.min(0, ...movements.filter(item => item.totalPl < 0).map(item => item.totalPl))
 
-    const overall = {
+    return {
         totalMovement: totalMovement,
         totalPl: totalPl,
         endBalance: endBalance,
@@ -66,26 +70,28 @@ function calculateOverall(movements: Movement[]): {
         annualReturnRate: annualReturnRate,
         returnRateWithoutMargin: returnRateWithoutMargin,
         annualReturnRateWithoutMargin: annualReturnRateWithoutMargin,
-        totalInvestment: totalInvestment
-    }
-    return overall;
+        totalInvestment: totalInvestment,
+        maxLost: maxLost,
+        maxTotalLost: maxTotalLost,
+    };
 }
 
 export function MarginSimulatorPage() {
     const [movements, setMovements] = useState<Movement[]>([])
     const [params, setParams] = useState<MarginSimulatorParams>({
         symbol: 'QQQ',
-        fromDate: '2010-01-01',
-        maxMargin: 100,
+        fromDate: '2020-01-01',
+        maxMargin: 250,
+        expectedMargin: 80,
         minMargin: 60,
         initialInvestment: 80000,
-        monthlyAddition: 6500,
-        monthlyAdditionCount: 12 * 5,
+        monthlyAddition: 0,
+        monthlyAdditionCount: 0,
     })
 
     const dp = useStockDataProvider({
         symbols: ['QQQ'],
-        fromDate: '2024-06-01'
+        fromDate: '2020-01-01'
     })
 
     if (dp.loading) {
@@ -107,6 +113,7 @@ export function MarginSimulatorPage() {
                     {name: 'fromDate', type: 'text', label: 'From Date'},
                     {name: 'toDate', type: 'text', label: 'To Date'},
                     {name: 'maxMargin', type: 'number', label: 'Max Margin'},
+                    {name: 'expectedMargin', type: 'number', label: 'Expected Margin'},
                     {name: 'minMargin', type: 'number', label: 'Min Margin'},
                     {name: 'initialInvestment', type: 'number', label: 'Initial Investment'},
                     {name: 'monthlyAddition', type: 'number', label: 'Monthly Addition'},
@@ -166,6 +173,14 @@ export function MarginSimulatorPage() {
                             <td>Annual Return Rate Without Margin</td>
                             <td>{formatNumber(overall.annualReturnRateWithoutMargin * 100)}%</td>
                         </TableRow>
+                        <TableRow>
+                            <td>Max Lost</td>
+                            <td>{formatNumber(overall.maxLost)}</td>
+                        </TableRow>
+                        <TableRow>
+                            <td>Max Total Lost</td>
+                            <td>{formatNumber(overall.maxTotalLost)}</td>
+                        </TableRow>
                     </TableBody>
                 </Table>
             </Box>
@@ -179,9 +194,9 @@ export function MarginSimulatorPage() {
                     <th>Date</th>
                     <th>Previous Price</th>
                     <th>Current Price</th>
-                    <th>Count</th>
                     <th>Market Value</th>
-                    <th>Cash</th>
+                    <th>Count</th>
+                    <th>Change</th>
                     <th>PL</th>
                     <th>Total PL</th>
                     <th>Equity</th>
@@ -193,24 +208,33 @@ export function MarginSimulatorPage() {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {movements.map(movement => (
-                    <TableRow key={movement.date}>
-                        <td>{movement.date}</td>
-                        <td>{formatNumber(movement.previousPrice)}</td>
-                        <td>{formatNumber(movement.currentPrice)}</td>
-                        <td>{movement.count}</td>
-                        <td>{formatNumber(movement.marketValue)}</td>
-                        <td>{formatNumber(movement.cash)}</td>
-                        <td>{formatNumber(movement.pl)}</td>
-                        <td>{formatNumber(movement.totalPl)}</td>
-                        <td>{formatNumber(movement.equity)}</td>
-                        <td>{formatNumber(movement.marginUsage)}</td>
-                        <td>{formatNumber(movement.marginUsagePercentage)}</td>
-                        {/*<td>{formatNumber(movement.maintenanceMargin)}</td>*/}
-                        {/*<td>{formatNumber(movement.excessEquity)}</td>*/}
-                        {/*<td>{formatNumber(movement.sma)}</td>*/}
-                    </TableRow>
-                ))}
+                {movements.map((movement, index) => {
+                    const prev = index > 0 ? movements[index - 1] : null
+                    return (
+                        <TableRow key={movement.date}>
+                            <td>{movement.date}</td>
+                            <td>{formatNumber(movement.previousPrice)}</td>
+                            <td>{formatNumber(movement.currentPrice)}</td>
+                            <td>{formatNumber(movement.marketValue)}</td>
+                            <td>
+                            <span style={{
+                                backgroundColor: prev && prev.count < movement.count ? 'green' : prev && prev.count > movement.count ? 'red' : 'transparent'
+                            }}>
+                                {movement.count}
+                            </span>
+                            </td>
+                            <td>{formatNumber(movement.currentPrice - movement.previousPrice)}</td>
+                            <td>{formatNumber(movement.pl)}</td>
+                            <td>{formatNumber(movement.totalPl)}</td>
+                            <td>{formatNumber(movement.equity)}</td>
+                            <td>{formatNumber(movement.marginUsage)}</td>
+                            <td>{formatNumber(movement.marginUsagePercentage)}</td>
+                            {/*<td>{formatNumber(movement.maintenanceMargin)}</td>*/}
+                            {/*<td>{formatNumber(movement.excessEquity)}</td>*/}
+                            {/*<td>{formatNumber(movement.sma)}</td>*/}
+                        </TableRow>
+                    )
+                })}
             </TableBody>
         </Table>
     </>
@@ -225,7 +249,7 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
 
     // Calculate movements here
 
-    const avgNeededMargin = 1 + (params.maxMargin + params.minMargin) / 200
+    const avgNeededMargin = 1 + params.expectedMargin / 100
 
     let count: number = Math.round(params.initialInvestment * avgNeededMargin / stockDataItems[0].close)
 
@@ -240,7 +264,6 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
         const pl = (item.close - previousPrice) * count
         totalPl += pl
         const equity = additionalEquity + initialEquity + totalPl
-        const cash = equity - count * item.close
         let marginUsage = count * item.close - equity
         if (marginUsage < 0) {
             marginUsage = 0
@@ -261,7 +284,6 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
             equity: equity,
             pl: pl,
             totalPl: totalPl,
-            cash: cash,
             marginUsage: marginUsage,
             marginUsagePercentage: marginUsagePercentage,
             maintenanceMargin: 0,
@@ -271,20 +293,30 @@ function calculateMovements(params: MarginSimulatorParams, stockDataItems: Stock
 
         result.push(movement)
 
-        const currentNeededMargin = 1 + (params.maxMargin + params.minMargin) / 200
+        const currentNeededMargin = 1 + params.expectedMargin / 100
         const goodCount = Math.round(equity * currentNeededMargin / item.close)
 
-        console.log(movement)
-        console.log('goodCount', goodCount)
-        console.log('currentNeededMargin', currentNeededMargin)
+        // console.log(movement)
+        // console.log('goodCount', goodCount)
+        // console.log('currentNeededMargin', currentNeededMargin)
 
         if (marginUsagePercentage > params.maxMargin) {
+            console.log('marginUsagePercentage > params.maxMargin', marginUsagePercentage, params.maxMargin)
+            console.log('count', count)
+            console.log('goodCount', goodCount)
             count = goodCount
         } else if (marginUsagePercentage < params.minMargin) {
+            console.log('marginUsagePercentage < params.minMargin', marginUsagePercentage, params.minMargin)
+            console.log('count', count)
+            console.log('goodCount', goodCount)
             count = goodCount
         }
         previousPrice = item.close
         i++
+
+        if (equity < 0) {
+            break
+        }
     }
 
     return result;
@@ -302,7 +334,7 @@ interface PortfolioProgressChartProps {
 }
 
 function PortfolioProgressChart(props: PortfolioProgressChartProps) {
-    const sampleMovements = sampleArray(props.movements, 100, e => new Date(e.date).getTime())
+    const sampleMovements = useMemo(() => sampleArray(props.movements, 100, item => item.equity), [props.movements])
 
     return <>
         <LineChart

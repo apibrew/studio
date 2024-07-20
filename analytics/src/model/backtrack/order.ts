@@ -1,44 +1,38 @@
+import {Simulation} from './simulation';
 
-export interface Stock {
-    version: number
-    exchange: string
-    exchangeShortName?: string
+export interface Order {
+    simulation: Simulation
     id: string
-    kind: string
-    name: string
+    date: string
     price: number
     symbol: string
+    version: number
+    quantity: number
 }
 
-export const StockEntityInfo = {
-    namespace: "fmp",
-    resource: "Stock",
-    restPath: "fmp-stock",
+export const OrderEntityInfo = {
+    namespace: "backtrack",
+    resource: "Order",
+    restPath: "backtrack-order",
 }
 
-export const StockResource = {
+export const OrderResource = {
   "auditData": {
     "createdBy": "system",
     "updatedBy": "system",
-    "createdOn": "2024-07-06T14:48:12Z",
+    "createdOn": "2024-07-18T09:27:55Z",
     "updatedOn": "2024-07-18T09:31:08Z"
   },
-  "name": "Stock",
+  "name": "Order",
   "namespace": {
-    "name": "fmp"
+    "name": "backtrack"
   },
   "properties": {
-    "exchange": {
-      "type": "STRING",
+    "date": {
+      "type": "DATE",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "aead290e2aaf"
-      }
-    },
-    "exchangeShortName": {
-      "type": "STRING",
-      "annotations": {
-        "SourceMatchKey": "ee687b61ddfb"
+        "SourceMatchKey": "e23e0eb30728"
       }
     },
     "id": {
@@ -48,37 +42,37 @@ export const StockResource = {
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "annotations": {
-        "SourceMatchKey": "bc511e62f73e",
+        "SourceMatchKey": "54cb3d263539",
         "SpecialProperty": "true"
       }
     },
-    "kind": {
-      "type": "STRING",
-      "required": true,
-      "annotations": {
-        "SourceMatchKey": "f441414736a2"
-      }
-    },
-    "name": {
-      "type": "STRING",
-      "required": true,
-      "annotations": {
-        "SourceMatchKey": "10f6331dd7ce"
-      }
-    },
     "price": {
-      "type": "FLOAT64",
+      "type": "FLOAT32",
       "required": true,
       "annotations": {
-        "SourceMatchKey": "bd448afdcebd"
+        "SourceMatchKey": "5b4d94597995"
+      }
+    },
+    "quantity": {
+      "type": "INT32",
+      "required": true,
+      "annotations": {
+        "SourceMatchKey": "f3192e523cdb"
+      }
+    },
+    "simulation": {
+      "type": "REFERENCE",
+      "required": true,
+      "reference": "backtrack/Simulation",
+      "annotations": {
+        "SourceMatchKey": "7169083283a4"
       }
     },
     "symbol": {
       "type": "STRING",
       "required": true,
-      "unique": true,
       "annotations": {
-        "SourceMatchKey": "afcec5293fd1"
+        "SourceMatchKey": "738905649f28"
       }
     },
     "version": {
@@ -88,11 +82,10 @@ export const StockResource = {
       "exampleValue": 1,
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "0ac3d91c97a6",
+        "SourceMatchKey": "f4cc1acac487",
         "SpecialProperty": "true"
       }
     }
-  },
-  "description": "Stock"
+  }
 } as unknown
 

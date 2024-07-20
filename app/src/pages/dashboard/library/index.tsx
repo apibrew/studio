@@ -26,12 +26,12 @@ export default function Page() {
 
     useEffect(() => {
         const promises = [
-            ensureResource(client, PackageResource as Resource),
-            ensureResource(client, RepositoryResource as Resource),
+            ensureResource(client as Client, PackageResource as Resource),
+            ensureResource(client as Client, RepositoryResource as Resource),
             client.listRecords<Package>(PackageEntityInfo, {limit: 100, resolveReferences: ['$.repository']})
                 .then(resp => resp.content)
                 .then(setExistingPackages),
-            listCandidatePackages(client).then(setCandidatePackages)
+            listCandidatePackages(client as Client).then(setCandidatePackages)
         ]
 
         Promise.all(promises).then(() => {
@@ -49,7 +49,7 @@ export default function Page() {
             params={pkg.params || {}}
             cancel={() => drawer.close()}
             install={(name, params) => {
-                install(client, {...pkg, name: name, params: params}).then(installed => {
+                install(client as Client, {...pkg, name: name, params: params}).then(installed => {
                     if (installed) {
                         toast.success('Package installed')
                         drawer.close()
@@ -67,7 +67,7 @@ export default function Page() {
             title: 'Uninstall Package',
             message: 'Are you sure you want to uninstall this package?',
             onConfirm: () => {
-                uninstall(client, pkg).then(installed => {
+                uninstall(client as Client, pkg).then(installed => {
                     if (installed) {
                         toast.success('Package Uninstalled')
                         drawer.close()
@@ -106,7 +106,7 @@ export default function Page() {
                                 openInstaller(pkg)
                             }}>Configure</Button>}
                             {pkg.status === Status.INSTALLED && <Button color='secondary' onClick={() => {
-                                install(client, pkg).then(installed => {
+                                install(client as Client, pkg).then(installed => {
                                     if (installed) {
                                         toast.success('Package reinstalled')
                                         drawer.close()

@@ -1,43 +1,43 @@
 
 export interface CompanyProfile {
-    phone?: string
-    city?: string
-    cik?: string
-    address?: string
-    country?: string
-    cusip?: string
-    defaultImage?: boolean
-    ceo?: string
-    symbol: string
     companyName?: string
     state?: string
-    id: string
-    beta?: number
-    isin?: string
-    fullTimeEmployees?: string
-    dcf?: number
-    image?: string
-    volAvg?: number
-    dcfDiff?: number
-    currency?: string
-    isFund?: boolean
-    isActivelyTrading?: boolean
-    mktCap?: number
-    range?: string
-    website?: string
-    changes?: number
     industry?: string
-    description?: string
-    price?: number
     isEtf?: boolean
-    exchangeShortName?: string
+    image?: string
+    description?: string
+    isFund?: boolean
+    dcf?: number
+    id: string
+    dcfDiff?: number
+    volAvg?: number
+    defaultImage?: boolean
+    isActivelyTrading?: boolean
+    currency?: string
+    symbol: string
     exchange?: string
-    ipoDate?: string
+    address?: string
     sector?: string
+    isin?: string
+    ceo?: string
+    changes?: number
+    beta?: number
     isAdr?: boolean
-    lastDiv?: number
+    city?: string
+    range?: string
+    exchangeShortName?: string
+    cusip?: string
+    ipoDate?: string
+    country?: string
     zip?: string
     version: number
+    fullTimeEmployees?: string
+    lastDiv?: number
+    website?: string
+    price?: number
+    mktCap?: number
+    phone?: string
+    cik?: string
 }
 
 export const CompanyProfileEntityInfo = {
@@ -51,7 +51,7 @@ export const CompanyProfileResource = {
     "createdBy": "system",
     "updatedBy": "system",
     "createdOn": "2024-07-06T15:16:31Z",
-    "updatedOn": "2024-07-09T18:06:24Z"
+    "updatedOn": "2024-07-18T09:31:09Z"
   },
   "name": "CompanyProfile",
   "namespace": {
@@ -61,104 +61,104 @@ export const CompanyProfileResource = {
     "address": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "f4975c3428c7"
+        "SourceMatchKey": "15a882df2299"
       }
     },
     "beta": {
       "type": "FLOAT64",
       "annotations": {
-        "SourceMatchKey": "a3818d7a70f4"
+        "SourceMatchKey": "7611aa168948"
       }
     },
     "ceo": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "f06decd88931"
+        "SourceMatchKey": "f64e251bd744"
       }
     },
     "changes": {
       "type": "FLOAT64",
       "annotations": {
-        "SourceMatchKey": "2295dc01a0fa"
+        "SourceMatchKey": "f1ef4f52b87f"
       }
     },
     "cik": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "b157a8c31c51"
+        "SourceMatchKey": "b6d7ecb436a0"
       }
     },
     "city": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "37616f9d572c"
+        "SourceMatchKey": "ffd1978eebea"
       }
     },
     "companyName": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "aee8bebf3dde"
+        "SourceMatchKey": "a8e5e8e41723"
       }
     },
     "country": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "d8f0816fc599"
+        "SourceMatchKey": "6579424e5634"
       }
     },
     "currency": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "bf54f807ebd5"
+        "SourceMatchKey": "b10fe4fc0a2d"
       }
     },
     "cusip": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "69798eabce67"
+        "SourceMatchKey": "fbea9516c2ec"
       }
     },
     "dcf": {
       "type": "FLOAT64",
       "annotations": {
-        "SourceMatchKey": "dc55af229ff0"
+        "SourceMatchKey": "c2e6f29974f2"
       }
     },
     "dcfDiff": {
       "type": "FLOAT64",
       "annotations": {
-        "SourceMatchKey": "63ccb67ea859"
+        "SourceMatchKey": "4ade3ba170d1"
       }
     },
     "defaultImage": {
       "type": "BOOL",
       "annotations": {
-        "SourceMatchKey": "376fc4207e90"
+        "SourceMatchKey": "d766e9f97c89"
       }
     },
     "description": {
       "type": "STRING",
       "length": 50000,
       "annotations": {
-        "SourceMatchKey": "f134dc3c9fde"
+        "SourceMatchKey": "ff026447b6eb"
       }
     },
     "exchange": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "a94c79ff7e87"
+        "SourceMatchKey": "4cbaad89a972"
       }
     },
     "exchangeShortName": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "27c2119e0d6f"
+        "SourceMatchKey": "1e29485c858b"
       }
     },
     "fullTimeEmployees": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "e4b8e1d4cfbc"
+        "SourceMatchKey": "867462f69f23"
       }
     },
     "id": {
@@ -168,98 +168,98 @@ export const CompanyProfileResource = {
       "immutable": true,
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "annotations": {
-        "SourceMatchKey": "e197b65b1e18",
+        "SourceMatchKey": "bc511e62f73e",
         "SpecialProperty": "true"
       }
     },
     "image": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "2764034f76d8"
+        "SourceMatchKey": "579371cfe765"
       }
     },
     "industry": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "1adb2d399b68"
+        "SourceMatchKey": "340b43969c94"
       }
     },
     "ipoDate": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "f5747cb7eedc"
+        "SourceMatchKey": "c74e24dd5afb"
       }
     },
     "isActivelyTrading": {
       "type": "BOOL",
       "annotations": {
-        "SourceMatchKey": "a3cfff1bc86a"
+        "SourceMatchKey": "373f71d48fcf"
       }
     },
     "isAdr": {
       "type": "BOOL",
       "annotations": {
-        "SourceMatchKey": "66e874f819e2"
+        "SourceMatchKey": "e54b82c65004"
       }
     },
     "isEtf": {
       "type": "BOOL",
       "annotations": {
-        "SourceMatchKey": "cd35f09338c3"
+        "SourceMatchKey": "ccc941ff7131"
       }
     },
     "isFund": {
       "type": "BOOL",
       "annotations": {
-        "SourceMatchKey": "13bddc4b2205"
+        "SourceMatchKey": "445d3bb7594b"
       }
     },
     "isin": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "6740a698764f"
+        "SourceMatchKey": "6fb656e85eac"
       }
     },
     "lastDiv": {
       "type": "FLOAT64",
       "annotations": {
-        "SourceMatchKey": "6739b19aa900"
+        "SourceMatchKey": "b6fc7bbb80e0"
       }
     },
     "mktCap": {
       "type": "INT64",
       "annotations": {
-        "SourceMatchKey": "f868f14a5e71"
+        "SourceMatchKey": "f1ab428ae0dd"
       }
     },
     "phone": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "35ea9f789445"
+        "SourceMatchKey": "0be07209acb7"
       }
     },
     "price": {
       "type": "FLOAT64",
       "annotations": {
-        "SourceMatchKey": "9704b29cf194"
+        "SourceMatchKey": "7d8693d76fb0"
       }
     },
     "range": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "08efe43dbc5d"
+        "SourceMatchKey": "39e0a11b10e8"
       }
     },
     "sector": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "3a7aa4a3c04f"
+        "SourceMatchKey": "e02e292ff683"
       }
     },
     "state": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "396bf2bbf223"
+        "SourceMatchKey": "68fe3705523f"
       }
     },
     "symbol": {
@@ -267,7 +267,7 @@ export const CompanyProfileResource = {
       "required": true,
       "unique": true,
       "annotations": {
-        "SourceMatchKey": "90a0b8d00a12"
+        "SourceMatchKey": "a68b22eba18d"
       }
     },
     "version": {
@@ -277,26 +277,26 @@ export const CompanyProfileResource = {
       "exampleValue": 1,
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "4c76b7e4d56a",
+        "SourceMatchKey": "0ac3d91c97a6",
         "SpecialProperty": "true"
       }
     },
     "volAvg": {
       "type": "FLOAT64",
       "annotations": {
-        "SourceMatchKey": "c7df573d24bd"
+        "SourceMatchKey": "c6dfde05233f"
       }
     },
     "website": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "d015df76db09"
+        "SourceMatchKey": "00fd6a75aedf"
       }
     },
     "zip": {
       "type": "STRING",
       "annotations": {
-        "SourceMatchKey": "b56b77734df9"
+        "SourceMatchKey": "6c9afb6342a7"
       }
     }
   },
