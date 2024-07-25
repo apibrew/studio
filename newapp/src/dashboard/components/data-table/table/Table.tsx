@@ -230,6 +230,22 @@ export function DataTableTable(props: DataTableTableProps) {
                                      updated={props.updates[record.id] ?? {}}
                                      record={record}/>
                 ))}
+                <Box display='flex' flexDirection='row' className='row row-body'>
+                    <Box width='300px' className='cell body-cell'>
+                        <Box className='cell-inner add-new-record'>
+                            <IconButton size='small' onClick={() => {
+                                props.records.push({id: 'new', properties: {}})
+                                props.setUpdates({
+                                    ...props.updates,
+                                    'new': {}
+                                })
+                            }}>
+                                <Add/>
+                            </IconButton>
+                            Add new record
+                        </Box>
+                    </Box>
+                </Box>
             </Box>
         </Box>
     </Box>

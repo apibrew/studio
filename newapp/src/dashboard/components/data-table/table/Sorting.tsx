@@ -1,8 +1,9 @@
-import {Box, IconButton, MenuItem, Select, Typography} from "@mui/material";
+import {Box, IconButton, MenuItem, Typography} from "@mui/material";
 import {useMemo, useState} from "react";
-import {Add, Remove} from "@mui/icons-material";
+import {Add, Clear} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {Resource, SortingItem} from "@apibrew/react";
+import TextField from "@mui/material/TextField";
 
 export interface SortingProps {
     resource: Resource
@@ -26,28 +27,37 @@ export function Sorting(props: SortingProps) {
         {sorts.map((sort, index) => {
             return <Box key={index} p={1} display='flex' alignItems='center'>
                 <Box flex={4} marginRight={1}>
-                    <Select
+                    <TextField
+                        className='sorting-property'
+                        select
                         fullWidth
-                        value={sort.property}
+                        label="Property"
+                        value={sort.property ?? ''}
                         onChange={e => {
                             sort.property = e.target.value as string
                             setSorts([...sorts])
                             setChanged(true)
-                        }}
-                        size='small'>
+                        }}>
                         <MenuItem/>
                         {properties.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
-                    </Select>
+                    </TextField>
                 </Box>
                 <Box flex={1}>
-                    <Select size='small' value={sort.direction ?? 'ASC'} onChange={e => {
-                        sort.direction = e.target.value as any
-                        setSorts([...sorts])
-                        setChanged(true)
-                    }}>
+                    <TextField
+                        select
+                        className='sorting-order'
+                        fullWidth
+                        label="Order"
+                        size='small'
+                        value={sort.direction ?? 'ASC'}
+                        onChange={e => {
+                            sort.direction = e.target.value as any
+                            setSorts([...sorts])
+                            setChanged(true)
+                        }}>
                         <MenuItem value='ASC'>ASC</MenuItem>
                         <MenuItem value='DESC'>DESC</MenuItem>
-                    </Select>
+                    </TextField>
                 </Box>
                 <Box marginLeft={1}>
                     <IconButton size='small' onClick={() => {
@@ -55,13 +65,12 @@ export function Sorting(props: SortingProps) {
                         setSorts([...sorts])
                         setChanged(true)
                     }}>
-                        <Remove/>
+                        <Clear/>
                     </IconButton>
                 </Box>
             </Box>
         })}
 
-        <hr/>
         <Box display='flex'>
             <Button size='small' onClick={() => {
                 setSorts([...sorts, {
@@ -71,15 +80,24 @@ export function Sorting(props: SortingProps) {
                 setChanged(true)
             }}>
                 <Add/>
-                <span style={{marginLeft: '3px'}}>Add Sort</span>
+                <span style={{marginLeft: '3px'}}>Add</span>
             </Button>
             <Box flexGrow={1}/>
 
-            <Button disabled={!changed} onClick={() => {
+            <Button color='secondary'
+                    variant='text'
+                    disabled={!changed} onClick={() => {
                 props.onApply(sorts)
                 setChanged(false)
             }}>
-                <span style={{marginLeft: '3px'}}>Apply sorts</span>
+                <span style={{marginLeft: '3px'}}>Reset</span>
+            </Button>
+
+            <Button color='primary' disabled={!changed} onClick={() => {
+                props.onApply(sorts)
+                setChanged(false)
+            }}>
+                <span style={{marginLeft: '3px'}}>Sort</span>
             </Button>
         </Box>
     </Box>

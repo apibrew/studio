@@ -334,9 +334,6 @@ export function DataTable(props: TableContainerProps) {
             />
         </Box>
         <TablePagination component="div"
-                         sx={{
-                             overflow: 'unset'
-                         }}
                          count={total || 0}
                          showFirstButton={true}
                          showLastButton={true}

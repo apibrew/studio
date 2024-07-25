@@ -1,6 +1,6 @@
-import {Box, IconButton, MenuItem, Select, TextField, Typography} from "@mui/material";
+import {Box, IconButton, MenuItem, TextField, Typography} from "@mui/material";
 import {useMemo, useState} from "react";
-import {Add, Remove} from "@mui/icons-material";
+import {Add, Clear} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {PairExpression, Resource} from "@apibrew/react";
 import {isComparableProperty} from "../../../../util/property";
@@ -35,7 +35,10 @@ export function Filters(props: FiltersProps) {
             const property = props.resource.properties[filter.property]
             return <Box key={index} p={1} display='flex' alignItems='center'>
                 <Box flex={1} marginRight={1}>
-                    <Select
+                    <TextField
+                        className='filter-property'
+                        select
+                        label='Property'
                         fullWidth
                         value={filter.property}
                         onChange={e => {
@@ -46,10 +49,13 @@ export function Filters(props: FiltersProps) {
                         size='small'>
                         <MenuItem/>
                         {properties.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
-                    </Select>
+                    </TextField>
                 </Box>
                 <Box flex={1} marginRight={1}>
-                    <Select
+                    <TextField
+                        className='filter-operator'
+                        select
+                        label='Operator'
                         fullWidth
                         value={filter.operator}
                         onChange={e => {
@@ -68,14 +74,20 @@ export function Filters(props: FiltersProps) {
                         </>}
                         <MenuItem value='is-null'>is null</MenuItem>
                         <MenuItem value='is-not-null'>is not null</MenuItem>
-                    </Select>
+                    </TextField>
                 </Box>
                 <Box flex={4}>
-                    <TextField fullWidth size='small' value={filter.value} onChange={e => {
-                        filter.value = e.target.value
-                        setFilters([...filters])
-                        setChanged(true)
-                    }}/>
+                    <TextField
+                        label='Value'
+                        className='filter-value'
+                        fullWidth
+                        size='small'
+                        value={filter.value}
+                        onChange={e => {
+                            filter.value = e.target.value
+                            setFilters([...filters])
+                            setChanged(true)
+                        }}/>
                 </Box>
                 <Box marginLeft={1}>
                     <IconButton size='small' onClick={() => {
@@ -83,32 +95,64 @@ export function Filters(props: FiltersProps) {
                         setFilters([...filters])
                         setChanged(true)
                     }}>
-                        <Remove/>
+                        <Clear/>
                     </IconButton>
                 </Box>
             </Box>
         })}
 
         <hr/>
+
         <Box display='flex'>
-            <Button size='small' onClick={() => {
-                setFilters([...filters, {
-                    property: '',
-                    operator: '=',
-                    value: ''
-                } as any])
-                setChanged(true)
-            }}>
+            <Button
+                color='primary'
+                variant='text'
+                size='small'
+                onClick={() => {
+                    setFilters([...filters, {
+                        property: '',
+                        operator: '=',
+                        value: ''
+                    } as any])
+                    setChanged(true)
+                }}>
                 <Add/>
                 <span style={{marginLeft: '3px'}}>Add Filter</span>
             </Button>
+            <Button
+                color='primary'
+                variant='text'
+                size='small'
+                onClick={() => {
+                    // setFilters([...filters, {
+                    //     property: '',
+                    //     operator: '=',
+                    //     value: ''
+                    // } as any])
+                    // setChanged(true)
+                    alert('Not implemented')
+                }}>
+                <Add/>
+                <span style={{marginLeft: '3px'}}>Add Group</span>
+            </Button>
             <Box flexGrow={1}/>
 
-            <Button disabled={!changed} onClick={() => {
-                props.onApply(prepareBooleanExpressionFromFilters(filters))
+            <Button color='secondary'
+                    variant='text'
+                    disabled={!changed} onClick={() => {
+                props.onApply(undefined)
                 setChanged(false)
             }}>
-                <span style={{marginLeft: '3px'}}>Apply filters</span>
+                <span style={{marginLeft: '3px'}}>Reset</span>
+            </Button>
+
+            <Button color='primary'
+                    disabled={!changed}
+                    onClick={() => {
+                        props.onApply(prepareBooleanExpressionFromFilters(filters))
+                        setChanged(false)
+                    }}>
+                <span style={{marginLeft: '3px'}}>Filter</span>
             </Button>
         </Box>
     </Box>
