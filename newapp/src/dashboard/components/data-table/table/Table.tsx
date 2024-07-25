@@ -187,7 +187,7 @@ export function DataTableTable(props: DataTableTableProps) {
                         </>
                     </Box>
                 })}
-                <Box width='50px' className='cell header-cell'>
+                <Box width='40px' className='cell header-cell'>
                     <IconButton
                         size='small'
                         onClick={() => {

@@ -1,4 +1,5 @@
 import './root.css'
+import './dark.scss'
 import {AsideBar} from "./AsideBar.tsx";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Outlet} from "react-router-dom";
@@ -7,7 +8,7 @@ export function DashboardLayout() {
     const activeItem = useActiveMenuItem()
 
     return <>
-        <div className="maindiv">
+        <div className="maindiv dark">
             <AsideBar activeItem={activeItem}/>
             {activeItem?.secondSideBar && activeItem.secondSideBar()}
             <div className="main">
