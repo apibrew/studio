@@ -6,9 +6,10 @@ import {Outlet} from "react-router-dom";
 
 export function DashboardLayout() {
     const activeItem = useActiveMenuItem()
+    const isDarkModeEnabled = false
 
     return <>
-        <div className="maindiv dark">
+        <div className={`maindiv ${isDarkModeEnabled ? 'dark' : ''}`}>
             <AsideBar activeItem={activeItem}/>
             {activeItem?.secondSideBar && activeItem.secondSideBar()}
             <div className="main">

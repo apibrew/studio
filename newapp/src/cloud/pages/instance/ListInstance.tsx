@@ -40,7 +40,7 @@ export function ListInstance() {
     }, wi)
 
     const tokenBody = useTokenBody()
-    const isExtensionController = checkResourceAccess(tokenBody.permissions, ExtensionResource as Resource, Operation.FULL)
+    const isExtensionController = checkResourceAccess(tokenBody.permissions as any, ExtensionResource as Resource, Operation.FULL)
 
     if (data.loading) {
         return <LoadingOverlay/>

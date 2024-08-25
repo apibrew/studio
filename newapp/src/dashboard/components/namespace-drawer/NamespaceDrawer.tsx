@@ -1,62 +1,49 @@
-import {Namespace, useRepository} from "@apibrew/react";
+import {Namespace} from "@apibrew/react";
 import {NamespaceForm} from "../namespace-form/NamespaceForm";
 
-import {Box, Button, Card, CardActions, CardContent, CardHeader, Stack} from "@mui/material";
 import toast from "react-hot-toast";
-import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
-import {useState} from "react";
+import {MultiDrawerProps} from "../multi-drawer/MultiDrawer.tsx";
+import {Repository} from "@apibrew/client";
+import {handleErrorMessage} from "../../../util/errors.ts";
 
-export interface NamespaceDrawerProps {
-    new: boolean
-    namespace: Namespace
-    onClose: () => void
+
+export function namespaceDrawerMultiDrawer(repository: Repository<Namespace>, isNew: boolean, initialValue: Partial<Namespace>, onClose?: () => void): MultiDrawerProps<Namespace> {
+    return {
+        title: isNew ? 'New Namespace' : 'Update Namespace: ' + initialValue.name,
+        tabs: [
+            {
+                name: '',
+                component: NamespaceForm
+            }
+        ],
+        initialValue: initialValue,
+        sx: {
+            width: '600px'
+        },
+        onClose: onClose,
+        onSave: (namespace, onClose) => {
+            if (isNew) {
+                toast.promise(repository.create(namespace), {
+                    loading: 'Creating namespace...',
+                    success: 'Namespace created',
+                    error: err => handleErrorMessage(err)
+                }).then(() => {
+                    if (onClose) {
+                        onClose()
+                    }
+                }, console.error)
+            } else {
+                toast.promise(repository.update(namespace), {
+                    loading: 'Updating namespace...',
+                    success: 'Namespace updated',
+                    error: err => handleErrorMessage(err)
+                }).then(() => {
+                    if (onClose) {
+                        onClose()
+                    }
+                }, console.error)
+            }
+        }
+    }
 }
 
-export function NamespaceDrawer(props: NamespaceDrawerProps) {
-    const repository = useRepository(NamespaceEntityInfo)
-
-    const [namespace, setNamespace] = useState<Namespace>(props.namespace)
-    return (
-        <>
-            <Box width='600px'>
-                <Card>
-                    <CardHeader title={props.new ? 'New namespace' : 'Update namespace: ' + props.namespace.name}/>
-                </Card>
-                <CardContent>
-                    <NamespaceForm namespace={namespace} onChange={setNamespace}/>
-                </CardContent>
-                <CardActions>
-                    <Stack direction='row' spacing={1}>
-                        <Button variant='contained'
-                                size='small'
-                                color='success'
-                                onClick={() => {
-                                    if (props.new) {
-                                        toast.promise(repository.create(namespace), {
-                                            loading: 'Creating namespace...',
-                                            success: 'Namespace created',
-                                            error: err => err.message
-                                        }).then(() => {
-                                            props.onClose()
-                                        }, console.error)
-                                    } else {
-                                        toast.promise(repository.update(namespace), {
-                                            loading: 'Updating namespace...',
-                                            success: 'Namespace updated',
-                                            error: err => err.message
-                                        }).then(() => {
-                                            props.onClose()
-                                        }, console.error)
-                                    }
-                                }
-                                }>Save</Button>
-                        <Button variant='outlined'
-                                size='medium'
-                                color='primary'
-                                onClick={() => props.onClose()}>Cancel</Button>
-                    </Stack>
-                </CardActions>
-            </Box>
-        </>
-    )
-}

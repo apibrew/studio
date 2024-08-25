@@ -16,13 +16,16 @@ import {enUS} from "@mui/x-date-pickers";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 
 import {Router} from "./router.tsx";
+import {RootLayout} from "./layout/RootLayout.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs}
                               localeText={enUS.components.MuiLocalizationProvider.defaultProps.localeText}
         >
-            <Router/>
+            <RootLayout>
+                <Router/>
+            </RootLayout>
         </LocalizationProvider>
     </ThemeProvider>
 );

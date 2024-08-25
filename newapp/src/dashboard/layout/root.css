@@ -133,7 +133,7 @@ body * {
 
 
 
-/* 
+/*
 NEW
 ********************************************************************************************
  */
@@ -167,7 +167,7 @@ button {
 }
 
 
-/* 
+/*
  ********************************************************************************************
 OLD
  */
@@ -648,21 +648,26 @@ hr {
 }
 .sidesect-ul button {
     width: 100%;
-    padding: unset;
+    padding: unset!important;
+    border: unset !important;
     margin-top: 4px;
     box-shadow:unset
 }
 .sidesect-ul span {
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px;
     margin: 4px 0 0 10px;
     flex-grow: 1;
+    padding: unset;
 }
 .sidesect-ul ul {
     margin-left: 34px;
 }
-.sidesect-ul button:not(:hover) svg:last-of-type {
+.sidesect-ul button svg:last-of-type {
     display: none;
+}
+.sidesect-ul button:hover svg:last-of-type {
+    display: unset!important;
 }
 
 

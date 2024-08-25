@@ -1,4 +1,5 @@
 import {createTheme} from "@mui/material";
+import './theme-override.scss'
 
 export const theme = createTheme({
     typography: {
@@ -28,14 +29,6 @@ export const theme = createTheme({
                 size: 'small',
                 variant: 'contained',
                 color: 'secondary',
-            },
-            styleOverrides: {
-                outlinedSecondary: {
-                    color: '#000', // Set text color to black for outlined secondary buttons
-                },
-                textSecondary: {
-                    color: '#000', // Set text color to black for text secondary buttons
-                },
             },
         },
         MuiFilledInput: {

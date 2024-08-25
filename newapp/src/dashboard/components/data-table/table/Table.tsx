@@ -12,6 +12,8 @@ import {Schema} from "../../../../types/schema";
 import {ensureGivenPropertiesOrder} from "../../../../util/resource";
 import {Type} from "@apibrew/client/model/resource";
 import {LoadingOverlay} from "common";
+import {toTitleCase} from "../../../../util/case.ts";
+import Button from "@mui/material/Button";
 
 export interface DataTableTableProps {
     resource: Resource
@@ -133,22 +135,28 @@ export function DataTableTable(props: DataTableTableProps) {
                 <Box width='82px' className='cell header-cell'>
                     <Box className='cell-inner'>
                         <Checkbox className="check-icon1"
-                            checked={props.selectedItems.length > 0 && props.selectedItems.length === props.records.length}
-                            sx={{
-                                padding: 0
-                            }}
-                            indeterminate={props.selectedItems.length > 0 && props.selectedItems.length < props.records.length}
-                            onChange={() => {
-                                if (props.selectedItems.length === props.records.length) {
-                                    props.setSelectedItems([])
-                                } else {
-                                    props.setSelectedItems(props.records.map(item => item.id))
-                                }
-                            }}
-                            size='small'/>
+                                  checked={props.selectedItems.length > 0 && props.selectedItems.length === props.records.length}
+                                  sx={{
+                                      padding: 0
+                                  }}
+                                  indeterminate={props.selectedItems.length > 0 && props.selectedItems.length < props.records.length}
+                                  onChange={() => {
+                                      if (props.selectedItems.length === props.records.length) {
+                                          props.setSelectedItems([])
+                                      } else {
+                                          props.setSelectedItems(props.records.map(item => item.id))
+                                      }
+                                  }}
+                                  size='small'/>
                     </Box>
                 </Box>
                 {properties.map((property, index) => {
+                    let propertyName = toTitleCase(property)
+
+                    if (property == 'id') {
+                        propertyName = 'ID'
+                    }
+
                     return <Box className='property-th draggable-cell cell header-cell'
                                 display='flex'
                                 draggable
@@ -166,11 +174,11 @@ export function DataTableTable(props: DataTableTableProps) {
                         <>
                             <Box className='cell-inner'>
                                 <Box className='property-name'>
-                                    {property}
-                                    {props.schema.properties[property].required && <span style={{
-                                        marginLeft: '1px',
-                                        color: 'red'
-                                    }}>*</span>}
+                                    {propertyName}
+                                    {/*{props.schema.properties[property].required && <span style={{*/}
+                                    {/*    marginLeft: '1px',*/}
+                                    {/*    color: 'red'*/}
+                                    {/*}}>*</span>}*/}
                                 </Box>
                                 <Box flexGrow={1}/>
                                 <Box className='property-actions'>
@@ -233,16 +241,16 @@ export function DataTableTable(props: DataTableTableProps) {
                 <Box display='flex' flexDirection='row' className='row row-body'>
                     <Box width='300px' className='cell body-cell'>
                         <Box className='cell-inner add-new-record'>
-                            <IconButton size='small' onClick={() => {
-                                props.records.push({id: 'new', properties: {}})
+                            <Button size='small' onClick={() => {
+                                props.records.unshift({id: 'new', properties: {}})
                                 props.setUpdates({
                                     ...props.updates,
                                     'new': {}
                                 })
                             }}>
                                 <Add/>
-                            </IconButton>
-                            Add new record
+                                Add new record
+                            </Button>
                         </Box>
                     </Box>
                 </Box>

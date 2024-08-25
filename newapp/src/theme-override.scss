@@ -1,0 +1,28 @@
+.MuiButton-root {
+  .MuiButton-text, .MuiButton-outlined {
+    &.MuiButton-colorSecondary {
+      display: none;
+    }
+  }
+
+  &.MuiButton-text {
+    &.MuiButton-colorPrimary {
+      color: #0070D2;
+    }
+
+    &.MuiButton-colorSecondary {
+      color: black;
+    }
+  }
+
+  &.MuiButton-contained {
+    padding: 8px 10px;
+    border: 1px solid #D0D5DD;
+  }
+
+  &:hover:not(.MuiButton-colorPrimary) {
+    background-color: rgb(240, 240, 240)!important;
+  }
+
+  box-shadow: none!important;
+}
