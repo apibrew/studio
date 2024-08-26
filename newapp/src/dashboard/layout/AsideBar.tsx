@@ -1,11 +1,12 @@
-import { ArrowLeft, ArrowRight, LogoutOutlined, Person, Settings } from "@mui/icons-material";
-import { useState } from "react";
-import { MenuItem, menuItems } from "./menu.tsx";
-import { Link, useParams } from "react-router-dom";
+import {ArrowLeft, ArrowRight, LogoutOutlined, Person, Settings} from "@mui/icons-material";
+import {useState} from "react";
+import {MenuItem, menuItems} from "./menu.tsx";
+import {Link, useParams} from "react-router-dom";
 
 export interface AsideBarProps {
     activeItem?: MenuItem
 }
+
 export function AsideBar(props: AsideBarProps) {
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
@@ -20,18 +21,16 @@ export function AsideBar(props: AsideBarProps) {
     const sideBarOpen = userSideBarOpen && (!props.activeItem || !props.activeItem.secondSideBar)
 
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
-
-
         <Link to={prepareItemPath(connectionName, '')} className="logo flex-center">
-            <img src="/tiapi.png" alt="png" />
+            <img src="/tiapi.png" alt="png"/>
             <span>APIBREW</span>
         </Link>
 
         <button className="sidebar-arrow" onClick={() => {
             sideBarOpen ? setUserSideBarOpen(false) : setUserSideBarOpen(true)
         }}>
-            {sideBarOpen && <ArrowLeft />}
-            {!sideBarOpen && <ArrowRight />}
+            {sideBarOpen && <ArrowLeft/>}
+            {!sideBarOpen && <ArrowRight/>}
         </button>
         <ul className="ul-buttons">
             {menuItems.map((item) => {
@@ -52,18 +51,18 @@ export function AsideBar(props: AsideBarProps) {
         </ul>
 
         <Link className="flex-center" to={prepareItemPath(connectionName, '/dashboard/settings')}>
-            <Settings />
+            <Settings/>
             <span>Settings</span>
         </Link>
 
-        <hr />
+        <hr/>
 
         <div className="flex-center">
             <button className="sidebar-photo flex-center">
-                <Person />
+                <Person/>
                 <div>
                     <span>Faiza Rzayeva</span>
-                    <br />
+                    <br/>
                     <span>faiza@apibrew.com</span>
                 </div>
             </button>
@@ -71,33 +70,11 @@ export function AsideBar(props: AsideBarProps) {
             <div style={{flexGrow: 1}}></div>
 
             <button className="logout">
-                <LogoutOutlined />
+                <LogoutOutlined/>
             </button>
-
-
         </div>
-
-
-
-
-
-
     </div>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function prepareItemPath(connectionName: string, path: string | undefined): string {
