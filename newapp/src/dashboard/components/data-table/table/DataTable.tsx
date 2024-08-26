@@ -11,8 +11,7 @@ import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Sorting} from "./Sorting";
 import {useAnalytics} from "../../../hooks/use-analytics";
 import {useDrawer} from "../../../../hooks/use-drawer.tsx";
-import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
-import {propertyDrawerMultiDrawer} from "../../property-drawer/PropertyDrawer.tsx";
+import {handleErrorMessage} from "../../../../util/errors.ts";
 
 export interface TableContainerProps {
     resource: Resource
@@ -126,20 +125,6 @@ export function DataTable(props: TableContainerProps) {
         } else if (sc > 0) {
             toast.error('Records partially saved')
         }
-    }
-
-    function handleAddColumnClick() {
-        analytics.click('action', 'add-column-open')
-        openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, 'new', true, resource, () => {
-            reloadResource()
-        }))
-    }
-
-    function handleEditColumnClick(property: string) {
-        analytics.click('action', 'edit-column-open')
-        openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, property, true, resource, () => {
-            reloadResource()
-        }))
     }
 
     useEffect(() => {
@@ -303,16 +288,20 @@ export function DataTable(props: TableContainerProps) {
                 resource={resource}
                 schema={resource}
                 updateSchema={resource => {
-                    setResource(resource as Resource)
-                    resourceRepository.update(resource as Resource)
-                    refresh()
+                    toast.promise(resourceRepository.update(resource as Resource), {
+                        loading: 'Updating resource...',
+                        success: 'Resource updated',
+                        error: err => handleErrorMessage(err)
+                    }).then(() => {
+                        setResource(resource as Resource)
+                        refresh()
+                    })
                 }}
+                reload={reloadResource}
                 loading={loading}
                 updates={updates}
                 setUpdates={setUpdates}
                 records={records}
-                onAddColumnClick={handleAddColumnClick}
-                onEditColumnClick={handleEditColumnClick}
             />
         </Box>
         <TablePagination component="div"

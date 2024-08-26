@@ -28,6 +28,10 @@ export function propertyDrawerMultiDrawer(repository: Repository<Resource>, prop
         }, true)
     }
 
+    const defaultProperty = {
+        type: 'STRING'
+    }
+
     return {
         title: isNew ? 'Add Property' : 'Update Property: ' + propertyPath,
         tabs: [
@@ -35,7 +39,7 @@ export function propertyDrawerMultiDrawer(repository: Repository<Resource>, prop
                 name: 'Main',
                 component: props => <PropertyForm
                     resource={props.value}
-                    property={props.value.properties[propertyPath] || {} as Property}
+                    property={props.value.properties[propertyPath] || {...defaultProperty} as Property}
                     propertyName={propertyPath}
                     onChange={(propertyName, property) => {
                         handlePropertyUpdate(propertyName, property, props);
@@ -46,7 +50,7 @@ export function propertyDrawerMultiDrawer(repository: Repository<Resource>, prop
                 name: 'Details',
                 component: props => <PropertyDetailsForm
                     resource={props.value}
-                    property={props.value.properties[propertyPath] || {} as Property}
+                    property={props.value.properties[propertyPath] || {...defaultProperty} as Property}
                     onChange={(property) => {
                         handlePropertyUpdate(propertyPath, property, props);
                     }}
@@ -56,7 +60,7 @@ export function propertyDrawerMultiDrawer(repository: Repository<Resource>, prop
                 name: 'Advanced',
                 component: props => <PropertyAdvancedForm
                     resource={props.value}
-                    property={props.value.properties[propertyPath] || {} as Property}
+                    property={props.value.properties[propertyPath] || {...defaultProperty} as Property}
                     onChange={(property) => {
                         handlePropertyUpdate(propertyPath, property, props);
                     }}
@@ -70,12 +74,19 @@ export function propertyDrawerMultiDrawer(repository: Repository<Resource>, prop
         onClose: onClose,
         onSave: async (resource, onClose) => {
             let updatedProperties = {...resource.properties}
-            const property = resource.properties[propertyPath]
+            let property = resource.properties[propertyPath]
+
+            if (property === undefined) {
+                property = defaultProperty as Property
+            }
+
+            updatedProperties[propertyPath] = property
 
             if (!isNew && propertyPath !== propertyPath && getAnnotation(property.annotations, SourceMatchKey) === "") {
-                updatedProperties[propertyPath] = property
                 property.annotations = withAnnotation(property.annotations, SourceMatchKey, propertyPath)
             }
+
+            console.log(updatedProperties)
 
             toast.promise(repository.update(resource), {
                 loading: 'Updating resource...',

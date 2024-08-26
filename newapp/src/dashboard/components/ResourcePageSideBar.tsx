@@ -108,7 +108,7 @@ export function ResourcePageSideBar() {
         </List>
 
         <Box className='sidesect-div3'>
-            <Typography variant='body2'>Folders</Typography>
+            <span>Folders</span>
         </Box>
 
 

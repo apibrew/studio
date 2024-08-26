@@ -61,21 +61,21 @@ export default function ResourcesPage() {
                     {params.namespace !== 'default' && params.namespace + ' / '}
                     {params.resource}
                 </Typography>
+                <Box flexGrow={1} />
                 <Typography ml={10} variant='body2'>
                     GET /{getRestPath(resource)}
                 </Typography>
-                <Box flexGrow={1} />
-                <Button variant='text' size='small' onClick={() => {
-                    drawer.open(<ResourceNanoDrawer resource={resource.name} namespace={resource.namespace.name} onClose={drawer.close}/>)
-                }}>
-                    <Code />
-                    <span style={{ marginLeft: '3px' }}>Nano Code</span>
-                </Button>
                 <Button variant='text' size='small' onClick={() => {
                     drawer.open(<ApiDocModal onClose={drawer.close}/>)
                 }}>
                     <CircleOutlined />
                     <span style={{ marginLeft: '3px' }}>Api Doc</span>
+                </Button>
+                <Button variant='text' size='small' onClick={() => {
+                    drawer.open(<ResourceNanoDrawer resource={resource.name} namespace={resource.namespace.name} onClose={drawer.close}/>)
+                }}>
+                    <Code />
+                    <span style={{ marginLeft: '3px' }}>Nano Code</span>
                 </Button>
                 <Button variant='outlined' color='primary' size='small' onClick={() => {
                     openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, false, resource, () => {

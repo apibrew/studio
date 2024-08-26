@@ -1,6 +1,6 @@
-import {Box, Checkbox, IconButton} from "@mui/material";
+import {Box, Checkbox, IconButton, Menu} from "@mui/material";
 import {useEffect, useMemo, useState} from "react";
-import {Resource} from "@apibrew/react";
+import {Resource, useRepository} from "@apibrew/react";
 import {Add, MoreVert} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
@@ -10,10 +10,16 @@ import {isSpecialProperty, sortedProperties} from "../../../../util/property";
 import './Table.scss'
 import {Schema} from "../../../../types/schema";
 import {ensureGivenPropertiesOrder} from "../../../../util/resource";
-import {Type} from "@apibrew/client/model/resource";
+import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {LoadingOverlay} from "common";
 import {toTitleCase} from "../../../../util/case.ts";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import {useDrawer} from "../../../../hooks/use-drawer.tsx";
+import {useConfirmation} from "../../modal/use-confirmation.tsx";
+import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
+import {propertyDrawerMultiDrawer} from "../../property-drawer/PropertyDrawer.tsx";
+import {useAnalytics} from "../../../hooks/use-analytics.ts";
 
 export interface DataTableTableProps {
     resource: Resource
@@ -25,16 +31,18 @@ export interface DataTableTableProps {
     offset: number
     selectedItems: string[]
     setSelectedItems: (selectedItems: string[]) => void
-    onAddColumnClick: () => void
-    onEditColumnClick: (property: string) => void
+    reload: () => void
     loading?: boolean
 }
 
 export function DataTableTable(props: DataTableTableProps) {
     let [wi, setWi] = useState<number>(0)
     const [tableWidth, setTableWidth] = useState<number>(0)
-
+    const drawer = useDrawer()
+    const confirmation = useConfirmation()
+    const analytics = useAnalytics()
     const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
+    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
 
     const properties = useMemo(() => {
         const newProperties = sortedProperties(props.schema.properties).filter(property => !isSpecialProperty(props.schema.properties[property]))
@@ -46,6 +54,10 @@ export function DataTableTable(props: DataTableTableProps) {
         return newProperties
 
     }, [props.resource, props.schema, wi]);
+
+    // menu anchor
+    const [columnMenuAnchor, setColumnMenuAnchor] = useState<null | HTMLElement>(null)
+    const [selectedProperty, setSelectedProperty] = useState<string | null>(null)
 
     useEffect(() => {
         let modifiedWidth = columnWidths
@@ -129,6 +141,8 @@ export function DataTableTable(props: DataTableTableProps) {
     if (properties.length === 0) return <></>
 
     return <Box className='data-table-table' display='flex' height='100%' flexDirection='column' width='1px'>
+        {drawer.render()}
+        {confirmation.render()}
         <Box display='flex' flexDirection='column' height='100%' minWidth={Math.max(500, 100 * properties.length + 85)}
              width={(tableWidth + 85) + 'px'}>
             <Box display='flex' flexDirection='row' className='row row-header'>
@@ -184,8 +198,9 @@ export function DataTableTable(props: DataTableTableProps) {
                                 <Box className='property-actions'>
                                     <IconButton
                                         size='small'
-                                        onClick={() => {
-                                            props.onEditColumnClick(property)
+                                        onClick={(e) => {
+                                            setSelectedProperty(property)
+                                            setColumnMenuAnchor(e.currentTarget)
                                         }}>
                                         <MoreVert/>
                                     </IconButton>
@@ -195,11 +210,60 @@ export function DataTableTable(props: DataTableTableProps) {
                         </>
                     </Box>
                 })}
+                <Menu
+                    id="column-menu"
+                    anchorEl={columnMenuAnchor}
+                    open={Boolean(columnMenuAnchor)}
+                    onClose={() => {
+                        setColumnMenuAnchor(null)
+                        setSelectedProperty(null)
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                >
+                    <MenuItem onClick={() => {
+                        openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, selectedProperty!, false, props.resource, () => {
+                            props.reload()
+                            setWi(wi + 1)
+                        }))˚
+
+                        setColumnMenuAnchor(null)
+                        setSelectedProperty(null)
+                    }}>Update</MenuItem>
+                    <MenuItem onClick={() => {
+                        confirmation.open({
+                            kind: 'danger',
+                            title: 'Delete Property: ' + selectedProperty!,
+                            message: 'Are you sure you want to delete this resource?',
+                            onConfirm: () => {
+                                const updatedProperties = {...props.resource.properties}
+                                delete updatedProperties[selectedProperty!]
+
+                                props.updateSchema({
+                                    ...props.schema,
+                                    properties: updatedProperties,
+                                })
+                            },
+                        })
+                        setColumnMenuAnchor(null)
+                        setSelectedProperty(null)
+                    }}>Delete</MenuItem>
+                </Menu>
                 <Box width='40px' className='cell header-cell'>
                     <IconButton
                         size='small'
                         onClick={() => {
-                            props.onAddColumnClick()
+                            analytics.click('action', 'add-column-open')
+                            openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, 'prop-' + Object.keys(props.resource.properties).length + 1, true, props.resource, () => {
+                                props.reload()
+                                setWi(wi + 1)
+                            }))
                         }}>
                         <Add/>
                     </IconButton>
