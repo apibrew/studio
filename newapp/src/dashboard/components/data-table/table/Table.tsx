@@ -231,7 +231,7 @@ export function DataTableTable(props: DataTableTableProps) {
                         openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, selectedProperty!, false, props.resource, () => {
                             props.reload()
                             setWi(wi + 1)
-                        }))˚
+                        }))
 
                         setColumnMenuAnchor(null)
                         setSelectedProperty(null)
