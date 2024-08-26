@@ -7,12 +7,12 @@ import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
-import {propertyDrawerMultiDrawer} from "../column-drawer/ColumnDrawer";
 import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Sorting} from "./Sorting";
 import {useAnalytics} from "../../../hooks/use-analytics";
 import {useDrawer} from "../../../../hooks/use-drawer.tsx";
 import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
+import {propertyDrawerMultiDrawer} from "../../property-drawer/PropertyDrawer.tsx";
 
 export interface TableContainerProps {
     resource: Resource
