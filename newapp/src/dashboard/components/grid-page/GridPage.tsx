@@ -1,6 +1,6 @@
 import {ComponentType} from "react";
 import {PageLayout} from "../../../layout/PageLayout.tsx";
-import {Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useConfirmation} from "../modal/use-confirmation.tsx";
 import {useRepository, useResourceByName} from "@apibrew/react";
@@ -79,54 +79,56 @@ export function GridPage<T>(props: GridPageProps<T>) {
                     }}
                     color='success'>New</Button>
             </Stack>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>#</TableCell>
-                        {props.gridColumns.map(column => <TableCell>{column}</TableCell>)}
-                        <TableCell>Actions</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.records.map(item => (
-                        <TableRow key={item.id}>
-                            <TableCell>{item.id}</TableCell>
-                            {props.gridColumns.map(column => <TableCell>
-                                {(item as any)[column]}
-                            </TableCell>)}
-                            <TableCell>
-                                <Stack direction='row' spacing={1}>
-                                    <Button onClick={() => {
-                                        drawer.open(<ValueDrawerComponent
-                                            title={`Update ${resource.name} / ${label(item)}`}
-                                            value={item}
-                                            onChange={async (updated: Entity) => {
-                                                await toast.promise(repository.update(updated), {
-                                                    loading: 'Saving...',
-                                                    success: 'Saved',
-                                                    error: err => err.message
-                                                }).then(() => {
-                                                    data.refresh()
-                                                })
-                                            }}
-                                            onClose={() => {
-                                                drawer.close()
-                                            }}
-                                            component={props.recordForm}/>)
-                                    }} color='primary' size='small'>
-                                        Edit
-                                    </Button>
-                                    <Button onClick={() => {
-                                        handleDelete(item)
-                                    }} color='error' size='small'>
-                                        Delete
-                                    </Button>
-                                </Stack>
-                            </TableCell>
+            <Box mt={3}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>#</TableCell>
+                            {props.gridColumns.map(column => <TableCell>{column}</TableCell>)}
+                            <TableCell>Actions</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {data.records.map(item => (
+                            <TableRow key={item.id}>
+                                <TableCell>{item.id}</TableCell>
+                                {props.gridColumns.map(column => <TableCell>
+                                    {(item as any)[column]}
+                                </TableCell>)}
+                                <TableCell>
+                                    <Stack direction='row' spacing={1}>
+                                        <Button onClick={() => {
+                                            drawer.open(<ValueDrawerComponent
+                                                title={`Update ${resource.name} / ${label(item)}`}
+                                                value={item}
+                                                onChange={async (updated: Entity) => {
+                                                    await toast.promise(repository.update(updated), {
+                                                        loading: 'Saving...',
+                                                        success: 'Saved',
+                                                        error: err => err.message
+                                                    }).then(() => {
+                                                        data.refresh()
+                                                    })
+                                                }}
+                                                onClose={() => {
+                                                    drawer.close()
+                                                }}
+                                                component={props.recordForm}/>)
+                                        }} color='primary' size='small'>
+                                            Edit
+                                        </Button>
+                                        <Button onClick={() => {
+                                            handleDelete(item)
+                                        }} color='error' size='small'>
+                                            Delete
+                                        </Button>
+                                    </Stack>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Box>
             {data.renderPagination()}
         </PageLayout>
     </>

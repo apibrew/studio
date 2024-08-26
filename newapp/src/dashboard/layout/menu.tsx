@@ -2,9 +2,7 @@ import {
     Dataset,
     FunctionsTwoTone,
     Group,
-    Handyman,
     Home,
-    LibraryBooks,
     Monitor,
     SettingsEthernet,
     Storage
@@ -29,11 +27,6 @@ export const menuItems: MenuItem[] = [
         title: 'Home',
         path: '/dashboard',
         icon: <Home/>
-    },
-    {
-        title: 'Builder',
-        path: '/dashboard/resources',
-        icon: <Handyman/>
     },
     {
         title: 'Resources',
@@ -80,11 +73,11 @@ export const menuItems: MenuItem[] = [
                 path: '/dashboard/nano-playground',
                 icon: <FunctionsTwoTone/>
             },
-            {
-                title: 'Library',
-                path: '/dashboard/library',
-                icon: <LibraryBooks/>
-            },
+            // {
+            //     title: 'Library',
+            //     path: '/dashboard/library',
+            //     icon: <LibraryBooks/>
+            // },
         ]
     },
     {

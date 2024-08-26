@@ -5,7 +5,6 @@ import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Outlet} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {
-    ArrowForward,
     ArrowForwardIos,
     ChatOutlined,
     HelpOutline,

@@ -1,9 +1,14 @@
 import {listPageTypes} from "core";
 import {createElement} from "react";
-import {ThemePage} from "./pages/ThemePage.tsx";
-import {DashboardPage} from "./index.tsx";
-import ResourcesPage from "./pages/resource/ResourcesPage.tsx";
-import HomePage from "./pages/index/HomePage.tsx";
+import {DashboardPage} from "../index.tsx";
+import HomePage from "../pages/index/HomePage.tsx";
+import ResourcesPage from "../pages/resource/ResourcesPage.tsx";
+import {ThemePage} from "../pages/ThemePage.tsx";
+import {NanoPlayGround} from "../pages/nano/NanoPlayGround.tsx";
+import UserProfilePage from "../pages/user-profile/UserProfilePage.tsx";
+import {UserAndRolesRoutes} from "./user-and-roles.tsx";
+import {SettingsRoutes} from "./settings.tsx";
+import {MonitoringRoutes} from "./monitoring.tsx";
 
 const pageRoutes = listPageTypes().map(pageType => {
     return {
@@ -14,6 +19,7 @@ const pageRoutes = listPageTypes().map(pageType => {
         },
     }
 })
+
 export const dashboardRotes = [
     {
         path: "/:connectionName/dashboard",
@@ -58,6 +64,23 @@ export const dashboardRotes = [
                     breadcrumb: 'Theme elements'
                 }
             },
+            {
+                path: 'nano-playground',
+                element: <NanoPlayGround/>,
+                handle: {
+                    breadcrumb: 'Nano Playground'
+                }
+            },
+            {
+                path: "user-profile",
+                element: <UserProfilePage/>,
+                handle: {
+                    breadcrumb: 'Users Profile'
+                }
+            },
+            UserAndRolesRoutes,
+            SettingsRoutes,
+            MonitoringRoutes,
         ]
     },
 ]

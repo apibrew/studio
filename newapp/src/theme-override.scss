@@ -21,8 +21,35 @@
   }
 
   &:hover:not(.MuiButton-colorPrimary) {
-    background-color: rgb(240, 240, 240)!important;
+    background-color: rgb(240, 240, 240) !important;
   }
 
-  box-shadow: none!important;
+  box-shadow: none !important;
+}
+
+.MuiTable-root {
+  border-radius: 12px 12px 0 0;
+  border: 2px solid #EAECF0;
+  border-collapse: separate!important;
+
+  .MuiTableHead-root {
+    background-color: #F9FAFB;
+    border-radius: 12px 12px 0 0;
+    height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #101828;
+    border: 2px solid #EAECF0;
+    border-bottom: 0;
+
+    .MuiTableRow-head {
+      border-radius: 12px 12px 0 0;
+    }
+  }
+
+  .MuiTableBody-root {
+    border-width: 1px 2px 0;
+    border-style: solid;
+    border-color: #EAECF0;
+  }
 }

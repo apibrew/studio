@@ -1,9 +1,9 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {ConnectionsPage} from "./pages/connections/ConnectionsPage";
-import CloudIndex from './cloud/index.tsx'
+import CloudIndex from './cloud/index'
 import {cloudRoutes} from "./cloud/routes";
-import {dashboardRotes} from "./dashboard/routes.tsx";
-import IndexPage from "./pages/IndexPage.tsx";
+import {dashboardRotes} from "./dashboard/routes";
+import IndexPage from "./pages/IndexPage";
 
 export const index = createBrowserRouter([
     {
