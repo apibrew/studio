@@ -10,6 +10,8 @@ import {openMultiDrawer} from "../../components/multi-drawer/MultiDrawer.tsx";
 import {resourceDrawerMultiDrawer} from "../../components/resource-drawer/ResourceDrawer.tsx";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
+import {ApiDocModal} from "../../components/api-doc/ApiDocModal.tsx";
+import {ResourceNanoDrawer} from "../../components/resource-nano-drawer/ResourceNanoDrawer.tsx";
 
 export default function ResourcesPage() {
     const params = useParams()
@@ -64,11 +66,13 @@ export default function ResourcesPage() {
                 </Typography>
                 <Box flexGrow={1} />
                 <Button variant='text' size='small' onClick={() => {
+                    drawer.open(<ResourceNanoDrawer resource={resource.name} namespace={resource.namespace.name} onClose={drawer.close}/>)
                 }}>
                     <Code />
                     <span style={{ marginLeft: '3px' }}>Nano Code</span>
                 </Button>
                 <Button variant='text' size='small' onClick={() => {
+                    drawer.open(<ApiDocModal onClose={drawer.close}/>)
                 }}>
                     <CircleOutlined />
                     <span style={{ marginLeft: '3px' }}>Api Doc</span>
