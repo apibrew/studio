@@ -13,6 +13,7 @@ export interface TabComponentProps<T> {
 export interface MultiDrawerTab<T> {
     name: string
     component: (props: TabComponentProps<T>) => ReactNode
+    isInitiallyValid?: boolean
 }
 
 export interface MultiDrawerProps<T> {
@@ -27,9 +28,10 @@ export interface MultiDrawerProps<T> {
 export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
     const [currentTab, setCurrentTab] = useState<MultiDrawerTab<T>>(props.tabs[0])
     const [value, setValue] = useState<T>(props.initialValue as T)
-    const [isValid, setIsValid] = useState<boolean>(false)
+    const [isValid, setIsValid] = useState<{[tabName: string]: boolean}>(Object.fromEntries(props.tabs.map(tab => [tab.name, tab.isInitiallyValid ?? true])))
     const currentTabIndex = props.tabs.indexOf(currentTab)
 
+    const isAllTabsValid = props.tabs.every(tab => isValid[tab.name])
 
     if (props.tabs.length === 0) {
         throw new Error('At least one tab is required')
@@ -40,34 +42,43 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
             margin: 3,
             ...props.sx,
         }} display='flex' flexDirection='row'>
-            {props.tabs.length > 1 && <Box>
+            {props.tabs.length > 1 && <Box width='160px'>
+                <span>{props.title}</span>
                 <Tabs
                     orientation="vertical"
+                    value={currentTabIndex}
                     onChange={(_, tab) => {
                         setCurrentTab(props.tabs[tab])
                     }}>
                     {props.tabs.map(tab => {
-                        return <Tab title={tab.name}/>
+                        return <Tab label={tab.name + (isValid[tab.name] ? '' : '❌')}/>
                     })}
                 </Tabs>
             </Box>}
-            <Box flexGrow={1}>
+            <Box p={1} flexGrow={1}>
                 <span>{currentTab.name == '' ? props.title : currentTab.name}</span>
-               <Box mt={2}>
+               <Box minHeight='200px' mt={2}>
                    {currentTab.component({
                        value: value,
-                       onChange: (value, isValid) => {
+                       onChange: (value, isTabValid) => {
                            setValue(value)
-                           setIsValid(isValid)
+                           setIsValid({
+                               ...isValid,
+                               [currentTab.name]: isTabValid,
+                           })
                        }
                    })}
                </Box>
                 <Box mt={2} display='flex' flexDirection='row'>
-                    {currentTabIndex > 0 && <Button variant='contained'>
+                    {currentTabIndex > 0 && <Button variant='contained' onClick={() => {
+                        setCurrentTab(props.tabs[currentTabIndex - 1])
+                    }}>
                         Prev
                     </Button>}
                     {currentTabIndex < props.tabs.length - 1 && props.tabs.length > 1 &&
-                        <Button sx={{marginLeft: 1}} variant='contained'>
+                        <Button sx={{marginLeft: 1}} variant='contained' onClick={() => {
+                            setCurrentTab(props.tabs[currentTabIndex + 1])
+                        }}>
                             Next
                         </Button>}
                     <Box flexGrow={1}/>
@@ -79,12 +90,12 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                             }}>
                         Cancel
                     </Button>
-                    <Button disabled={!isValid}
+                    <Button disabled={!isAllTabsValid}
                             sx={{marginLeft: 1}}
                             variant='contained'
                             color='primary'
                             onClick={() => {
-                                if (!isValid) {
+                                if (!isAllTabsValid) {
                                     toast.error('Form is not valid, please check the form fields')
                                     return
                                 }

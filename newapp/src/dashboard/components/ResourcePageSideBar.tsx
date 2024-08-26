@@ -13,10 +13,14 @@ import {useState} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {useConfirmation} from "./modal/use-confirmation.tsx";
+import {resourceDrawerMultiDrawer} from "./resource-drawer/ResourceDrawer.tsx";
+import toast from "react-hot-toast";
+import {handleErrorMessage} from "../../util/errors.ts";
 
 export function ResourcePageSideBar() {
     const [wi, setWi] = useState<number>(0)
     const namespaceRepository = useRepository<Namespace>(NamespaceEntityInfo)
+    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const navigate = useNavigate()
     const resources = useRecords<Resource>(ResourceEntityInfo, {limit: 1000}, wi)
     const allNamespaces = useRecords<Resource>(NamespaceEntityInfo, {limit: 1000}, wi)
@@ -26,6 +30,8 @@ export function ResourcePageSideBar() {
     // menu anchors
     const [namespaceMenuAnchor, setNamespaceMenuAnchor] = useState<null | HTMLElement>(null)
     const [selectedNamespace, setSelectedNamespace] = useState<Namespace | null>(null)
+    const [resourceMenuAnchor, setResourceMenuAnchor] = useState<null | HTMLElement>(null)
+    const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
 
     if (!resources || !allNamespaces) {
         return <LoadingOverlay/>
@@ -46,7 +52,14 @@ export function ResourcePageSideBar() {
         <Typography variant='body2'>Resources</Typography>
 
         <Box className='sidesect-div1'>
-            <Button>
+            <Button onClick={() => {
+                openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, true, {
+                    name: '',
+                    namespace: {name: 'default'}
+                } as Resource, () => {
+                    reload()
+                }))
+            }}>
                 <Add/>
                 <span>Resource</span>
             </Button>
@@ -71,18 +84,24 @@ export function ResourcePageSideBar() {
 
         <List className='sidesect-ul'>
             {resources.filter(item => item.namespace.name === 'default')
-                .map(item => {
+                .map(resource => {
                     return <ListItem sx={{display: 'list-item'}}>
                         <Button onClick={() => {
-                            navigate(`resources/default/${item.name}`)
+                            navigate(`resources/default/${resource.name}`)
                         }}>
                             <TableChart/>
                             <span>
-                                {item.name}
+                                {resource.name}
                             </span>
-                            <MoreVert onClick={e => {
-                                e.stopPropagation()
-                            }}/>
+                            <MoreVert
+                                aria-controls={Boolean(resourceMenuAnchor) ? 'resource-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={Boolean(resourceMenuAnchor) ? 'true' : undefined}
+                                onClick={(e) => {
+                                    setSelectedResource(resource)
+                                    setResourceMenuAnchor(e.currentTarget as any);
+                                    e.stopPropagation()
+                                }}/>
                         </Button>
                     </ListItem>
                 })}
@@ -114,17 +133,25 @@ export function ResourcePageSideBar() {
 
                     <List>
                         {resources.filter(item => item.namespace.name === namespace)
-                            .map(item => {
+                            .map(resource => {
                                 return <ListItem>
                                     <Button
                                         onClick={() => {
-                                            navigate(`resources/${namespace}/${item.name}`)
+                                            navigate(`resources/${namespace}/${resource.name}`)
                                         }}>
                                         <TableChart/>
                                         <span>
-                                            {item.name}
+                                            {resource.name}
                                         </span>
-                                        <MoreVert/>
+                                        <MoreVert
+                                            aria-controls={Boolean(resourceMenuAnchor) ? 'resource-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={Boolean(resourceMenuAnchor) ? 'true' : undefined}
+                                            onClick={(e) => {
+                                                setSelectedResource(resource)
+                                                setResourceMenuAnchor(e.currentTarget as any);
+                                                e.stopPropagation()
+                                            }}/>
                                     </Button>
                                 </ListItem>
                             })}
@@ -138,6 +165,7 @@ export function ResourcePageSideBar() {
                 open={Boolean(namespaceMenuAnchor)}
                 onClose={() => {
                     setNamespaceMenuAnchor(null)
+                    setSelectedNamespace(null)
                 }}
                 anchorOrigin={{
                     vertical: 'top',
@@ -148,6 +176,16 @@ export function ResourcePageSideBar() {
                     horizontal: 'left',
                 }}
             >
+                <MenuItem onClick={() => {
+                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, true, {
+                        name: '',
+                        namespace: selectedNamespace as Namespace
+                    } as Resource, () => {
+                        reload()
+                    }))
+                    setNamespaceMenuAnchor(null)
+                    setSelectedNamespace(null)
+                }}>New Resource</MenuItem>
                 <MenuItem onClick={() => {
                     openMultiDrawer(drawer, namespaceDrawerMultiDrawer(namespaceRepository, false, selectedNamespace as Namespace, () => {
                         reload()
@@ -161,13 +199,65 @@ export function ResourcePageSideBar() {
                         title: 'Delete Namespace: ' + selectedNamespace?.name,
                         message: 'Are you sure you want to delete this namespace?',
                         onConfirm: () => {
-                            namespaceRepository.delete(selectedNamespace?.id as string).then(() => {
+                            toast.promise(namespaceRepository.delete(selectedNamespace?.id as string), {
+                                loading: 'Deleting namespace...',
+                                success: 'Namespace deleted',
+                                error: err => handleErrorMessage(err, {
+                                    'REFERENCE_VIOLATION': 'Namespace is not empty, you must delete all resources first.',
+                                })
+                            }).then(() => {
                                 reload()
                             })
                         },
                     })
                     setNamespaceMenuAnchor(null)
                     setSelectedNamespace(null)
+                }}>Delete</MenuItem>
+            </Menu>
+
+            <Menu
+                id="resource-menu"
+                anchorEl={resourceMenuAnchor}
+                open={Boolean(resourceMenuAnchor)}
+                onClose={() => {
+                    setResourceMenuAnchor(null)
+                    setSelectedResource(null)
+                }}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <MenuItem onClick={() => {
+                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, false, selectedResource as Resource, () => {
+                        reload()
+                    }))
+                    setResourceMenuAnchor(null)
+                    setSelectedResource(null)
+                }}>Update</MenuItem>
+                <MenuItem onClick={() => {
+                    confirmation.open({
+                        kind: 'danger',
+                        title: 'Delete Resource: ' + selectedNamespace?.name,
+                        message: 'Are you sure you want to delete this resource?',
+                        onConfirm: () => {
+                            toast.promise(resourceRepository.delete(selectedResource?.id as string), {
+                                loading: 'Deleting resource...',
+                                success: 'Resource deleted',
+                                error: err => handleErrorMessage(err, {
+                                    'REFERENCE_VIOLATION': 'Resource is not empty, you must delete all records first.',
+                                })
+                            }).then(() => {
+                                reload()
+                            })
+                        },
+                    })
+                    setResourceMenuAnchor(null)
+                    setSelectedResource(null)
                 }}>Delete</MenuItem>
             </Menu>
 

@@ -4,7 +4,7 @@ import {fromResource, Resource, useClient, useRepository} from "@apibrew/react";
 import {LoadingOverlay} from "common";
 import {Box, FormControl, FormLabel, Stack} from "@mui/material";
 import Button from "@mui/material/Button";
-import {ResourceDrawer} from "../resource-drawer/ResourceDrawer.tsx";
+import {resourceDrawerMultiDrawer} from "../resource-drawer/ResourceDrawer.tsx";
 import {Api, Code, PlayCircle, RemoveCircle} from "@mui/icons-material";
 import {ResourceNanoDrawer} from "../resource-nano-drawer/ResourceNanoDrawer.tsx";
 import {ApiDocModal} from "../api-doc/ApiDocModal.tsx";
@@ -13,6 +13,8 @@ import {useAnalytics} from "../../hooks/use-analytics.ts";
 import {isSpecialProperty, sortedProperties} from "@apibrew/client/util/property";
 import {getPropertyFormByProperty} from "core";
 import toast from "react-hot-toast";
+import {openMultiDrawer} from "../multi-drawer/MultiDrawer.tsx";
+import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 
 const emptyResource = {
     namespace: {name: ''},
@@ -22,6 +24,7 @@ const emptyResource = {
 export function ActionResourcePage() {
     const [wi, setWi] = useState<number>(0)
     const [resource, setResource] = useState<Resource>()
+    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const [actionData, setActionData] = useState<any>({})
     const client = useClient()
     const drawer = useDrawer()
@@ -65,13 +68,9 @@ export function ActionResourcePage() {
             <Button color='secondary'
                     size='small'
                     onClick={() => {
-                        drawer.open(<ResourceDrawer
-                            new={false}
-                            onClose={() => {
-                                drawer.close()
-                                setWi(wi + 1)
-                            }}
-                            resource={resource}/>)
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, false, resource, () => {
+                            setWi(wi + 1)
+                        }))
 
                         analytics.click('update-resource')
                     }}>

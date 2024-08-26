@@ -7,12 +7,12 @@ import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
-import {ColumnDrawer} from "../column-drawer/ColumnDrawer";
+import {propertyDrawerMultiDrawer} from "../column-drawer/ColumnDrawer";
 import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
-import {Property} from "@apibrew/client/model";
 import {Sorting} from "./Sorting";
 import {useAnalytics} from "../../../hooks/use-analytics";
 import {useDrawer} from "../../../../hooks/use-drawer.tsx";
+import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
 
 export interface TableContainerProps {
     resource: Resource
@@ -26,7 +26,7 @@ const defaultListParams = {
 
 export function DataTable(props: TableContainerProps) {
     const [resource, setResource] = useState<Resource>(props.resource)
-    const resourceRepository = useRepository(ResourceEntityInfo)
+    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const repository = useRepository(fromResource(resource))
     const [refreshIndex, setRefreshIndex] = useState<number>(0)
     const [listParams, setListParams] = useQueryListParams(defaultListParams)
@@ -41,7 +41,7 @@ export function DataTable(props: TableContainerProps) {
     const drawer = useDrawer()
     const analytics = useAnalytics()
 
-    function reloadResource(_: Resource) {
+    function reloadResource() {
         props.reloadResource?.()
         setRefreshIndex(refreshIndex + 1)
     }
@@ -130,34 +130,16 @@ export function DataTable(props: TableContainerProps) {
 
     function handleAddColumnClick() {
         analytics.click('action', 'add-column-open')
-        drawer.open(
-            <ColumnDrawer new={true}
-                          propertyName={'new'}
-                          property={{
-                              type: Type.STRING
-                          } as Property}
-                          onUpdateResource={reloadResource}
-                          onClose={() => {
-                              drawer.close()
-                              refresh()
-                          }}
-                          resource={resource}/>
-        )
+        openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, 'new', true, resource, () => {
+            reloadResource()
+        }))
     }
 
     function handleEditColumnClick(property: string) {
         analytics.click('action', 'edit-column-open')
-        drawer.open(
-            <ColumnDrawer new={false}
-                          propertyName={property}
-                          property={resource.properties[property]}
-                          onUpdateResource={setResource}
-                          onClose={() => {
-                              drawer.close()
-                              refresh()
-                          }}
-                          resource={resource}/>
-        )
+        openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, property, true, resource, () => {
+            reloadResource()
+        }))
     }
 
     useEffect(() => {

@@ -24,16 +24,17 @@ import {PropertyValueEdit} from "../property-value-edit/PropertyValueEdit";
 import {getAnnotation, isAnnotationEnabled, withAnnotation, withBooleanAnnotation} from "../../../util/annotation";
 import {ActionApi, ActionOutputProperty, CascadeReference, PropertyEditorAnnotation} from "../../../util/base-annotations";
 import {getPropertyEditorList} from "../property-editor/PropertyEditor";
+import {useState} from "react";
 
 export interface PropertyFormProps {
     resource: Resource
     propertyName: string
-    onChangeName: (propertyName: string) => void
     property: Property;
-    onChange: (property: Property) => void
+    onChange: (propertyName: string, property: Property) => void
 }
 
 export function PropertyForm(props: PropertyFormProps) {
+    const [propertyName, setPropertyName] = useState(props.propertyName)
     const propertyEditors = getPropertyEditorList(props.property)
 
     return (
@@ -41,10 +42,11 @@ export function PropertyForm(props: PropertyFormProps) {
             <FormControl fullWidth>
                 <TextField
                     size='small'
-                    value={props.propertyName}
+                    value={propertyName}
                     label='Name'
                     variant='outlined'
                     onChange={(event) => {
+                        setPropertyName(event.target.value)
                         props.onChangeName(event.target.value)
                     }}/>
             </FormControl>
