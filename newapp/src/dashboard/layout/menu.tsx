@@ -6,7 +6,6 @@ import {
     Home,
     LibraryBooks,
     Monitor,
-    PsychologyAlt,
     SettingsEthernet,
     Storage
 } from "@mui/icons-material";
@@ -109,11 +108,6 @@ export const menuItems: MenuItem[] = [
         title: 'Storage',
         path: '/dashboard/storage',
         icon: <Storage/>
-    },
-    {
-        title: 'Ask AI',
-        path: '/dashboard/ask-ai',
-        icon: <PsychologyAlt/>
     },
     {
         title: 'Monitoring',

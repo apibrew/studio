@@ -3,6 +3,15 @@ import './dark.scss'
 import {AsideBar} from "./AsideBar.tsx";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Outlet} from "react-router-dom";
+import Button from "@mui/material/Button";
+import {
+    ArrowForward,
+    ArrowForwardIos,
+    ChatOutlined,
+    HelpOutline,
+    Home,
+    NotificationsNoneOutlined
+} from "@mui/icons-material";
 
 export function DashboardLayout() {
     const activeItem = useActiveMenuItem()
@@ -15,27 +24,24 @@ export function DashboardLayout() {
             <div className="main">
                 <div className="main-header flex-center">
                     <div className="mh-div1 flex-center">
-                        <button>
-                            <img className="mh-icon" src="/smvpic.png" alt="png"/>
-                        </button>
-                        <img className="mh-arrow" src="/smvpic5.png" alt="png"/>
+                        <Button variant='text'>
+                            <Home/>
+                        </Button>
+                        <ArrowForwardIos/>
                         <button className="mh-text">Dashboard</button>
-                        <img className="mh-arrow" src="/smvpic5.png" alt="png"/>
+                        <ArrowForwardIos/>
                         <span className="mh-text">Overview</span>
                     </div>
                     <div className="mh-div2 flex-center">
-                        <button className="flex-center">
-                            <img src="/smvpic6.png" alt="png"/>
-                            <span>Notification</span>
-                        </button>
-                        <button className="flex-center">
-                            <img src="/smvpic6.png" alt="png"/>
-                            <span>Notification</span>
-                        </button>
-                        <button className="flex-center">
-                            <img src="/smvpic6.png" alt="png"/>
-                            <span>Notification</span>
-                        </button>
+                        <Button variant='text'>
+                            <NotificationsNoneOutlined/> Notifications
+                        </Button>
+                        <Button variant='text'>
+                            <ChatOutlined/> Feedback
+                        </Button>
+                        <Button variant='text'>
+                            <HelpOutline/> Help
+                        </Button>
                     </div>
                 </div>
                 <Outlet/>
