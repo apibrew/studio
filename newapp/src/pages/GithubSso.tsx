@@ -3,8 +3,8 @@
 import {useClient, useRepository} from "@apibrew/react";
 import {useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
-import {GithubSso, GithubSsoEntityInfo} from "../model/github-sso";
 import {LoadingOverlay} from "common";
+import {GithubSso, GithubSsoEntityInfo} from "../cloud/model/github-sso.ts";
 
 export const GithubSsoPage = () => {
     const [searchParams] = useSearchParams();

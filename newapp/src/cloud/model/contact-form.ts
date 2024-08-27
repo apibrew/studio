@@ -1,16 +1,16 @@
 
 export interface ContactForm {
-    source?: string
-    fullName: string
     subject?: string
-    category?: string
-    companyName?: string
+    fullName: string
     auditData?: AuditData
-    phoneNumber?: string
-    email: string
     message?: string
+    companyName?: string
     version: number
+    category?: string
     id: string
+    email: string
+    phoneNumber?: string
+    source?: string
 }
 
 export const ContactFormEntityInfo = {
@@ -20,10 +20,10 @@ export const ContactFormEntityInfo = {
 }
 
 export interface AuditData {
+    createdOn: string
     updatedBy: string
-    updatedOn: string | Date
+    updatedOn: string
     createdBy: string
-    createdOn: string | Date
 }
 
 export const ContactFormResource = {

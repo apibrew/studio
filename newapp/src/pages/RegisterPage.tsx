@@ -6,22 +6,22 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import {useClient, useRepository} from '@apibrew/react';
 import {GitHub} from "@mui/icons-material";
-import {Layout} from "../layout/modern-layout";
+import {Layout} from "./modern-layout";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
-import {UserRegistration, UserRegistrationEntityInfo} from "../model/user-registration";
+import {UserRegistration, UserRegistrationEntityInfo} from "../cloud/model/user-registration.ts";
+import {useHostClient} from "../hooks/use-host-client.tsx";
 
 export const RegisterPage = () => {
-    const client = useClient();
+    const client = useHostClient();
     const navigate = useNavigate()
-    const userRegistrationRepository = useRepository<UserRegistration>(UserRegistrationEntityInfo);
+    const userRegistrationRepository = client.repository<UserRegistration>(UserRegistrationEntityInfo);
 
     useEffect(() => {
         if (client.isAuthenticated()) {
-            navigate('../post-login')
+            navigate('/cloud')
         }
     }, [client]);
 
@@ -39,7 +39,7 @@ export const RegisterPage = () => {
             } as UserRegistration)
 
             await client.authenticateWithUsernameAndPassword(email, password);
-            navigate('../post-login')
+            navigate('/cloud')
         } catch (err: any) {
             toast.error(err.message);
         } finally {

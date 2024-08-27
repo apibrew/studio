@@ -1,35 +1,43 @@
+import {Instance} from './instance';
 
-export interface DestroyAccount {
+export interface InstanceServerConfig {
+    helmValues?: string
+    builderConfig?: string
     id: string
-    email: string
-    details?: any
+    config?: string
+    modules?: string
     version: number
+    instance: Instance
 }
 
-export const DestroyAccountEntityInfo = {
-    namespace: "ops",
-    resource: "DestroyAccount",
-    restPath: "ops-destroy-account",
+export const InstanceServerConfigEntityInfo = {
+    namespace: "default",
+    resource: "InstanceServerConfig",
+    restPath: "instance-server-config",
 }
 
-export const DestroyAccountResource = {
+export const InstanceServerConfigResource = {
   "auditData": {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin@admin.com",
-    "createdOn": "2024-04-14T06:35:35Z",
-    "updatedOn": "2024-04-14T06:37:42Z"
+    "createdOn": "2024-04-20T19:05:13Z",
+    "updatedOn": "2024-05-02T09:07:46Z"
   },
-  "name": "DestroyAccount",
+  "name": "InstanceServerConfig",
   "namespace": {
-    "name": "ops"
+    "name": "default"
   },
   "properties": {
-    "details": {
-      "type": "OBJECT"
+    "builderConfig": {
+      "type": "STRING"
     },
-    "email": {
+    "config": {
       "type": "STRING",
-      "required": true
+      "length": 10000
+    },
+    "helmValues": {
+      "type": "STRING",
+      "length": 10000
     },
     "id": {
       "type": "UUID",
@@ -41,6 +49,16 @@ export const DestroyAccountResource = {
       "annotations": {
         "SpecialProperty": "true"
       }
+    },
+    "instance": {
+      "type": "REFERENCE",
+      "required": true,
+      "unique": true,
+      "reference": "default/Instance"
+    },
+    "modules": {
+      "type": "STRING",
+      "length": 10000
     },
     "version": {
       "type": "INT32",

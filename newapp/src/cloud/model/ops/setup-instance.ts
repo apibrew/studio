@@ -1,26 +1,25 @@
+import {Instance} from './instance';
 
-export interface ControllerAccessToken {
-    version: number
-    instance: string
-    username?: string
+export interface SetupInstance {
     id: string
-    token?: string
+    version: number
+    instance: Instance
 }
 
-export const ControllerAccessTokenEntityInfo = {
+export const SetupInstanceEntityInfo = {
     namespace: "ops",
-    resource: "ControllerAccessToken",
-    restPath: "ops-controller-access-token",
+    resource: "SetupInstance",
+    restPath: "ops-setup-instance",
 }
 
-export const ControllerAccessTokenResource = {
+export const SetupInstanceResource = {
   "auditData": {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin",
-    "createdOn": "2024-04-12T11:53:00Z",
-    "updatedOn": "2024-05-20T15:08:16Z"
+    "createdOn": "2024-04-20T19:06:17Z",
+    "updatedOn": "2024-05-20T15:08:33Z"
   },
-  "name": "ControllerAccessToken",
+  "name": "SetupInstance",
   "namespace": {
     "name": "ops"
   },
@@ -34,31 +33,16 @@ export const ControllerAccessTokenResource = {
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
-        "Order": "0",
-        "SourceMatchKey": "2bf89d484358",
+        "SourceMatchKey": "f0ca7120d2f5",
         "SpecialProperty": "true"
       }
     },
     "instance": {
-      "type": "STRING",
+      "type": "REFERENCE",
       "required": true,
+      "reference": "default/Instance",
       "annotations": {
-        "Order": "1",
-        "SourceMatchKey": "2bb9f21aca35"
-      }
-    },
-    "token": {
-      "type": "STRING",
-      "annotations": {
-        "Order": "3",
-        "SourceMatchKey": "e68ca5cf1061"
-      }
-    },
-    "username": {
-      "type": "STRING",
-      "annotations": {
-        "Order": "2",
-        "SourceMatchKey": "a5f70bfa69f4"
+        "SourceMatchKey": "4e375a7189a0"
       }
     },
     "version": {
@@ -70,7 +54,7 @@ export const ControllerAccessTokenResource = {
       "description": "The version of the resource/record. It is incremented on every update.",
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "70d751f40ff3",
+        "SourceMatchKey": "d4d3185a205c",
         "SpecialProperty": "true"
       }
     }

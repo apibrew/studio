@@ -1,18 +1,21 @@
-import {Box, Card, CardHeader, Grid, IconButton} from "@mui/material";
+import {Box, ButtonGroup, Card, CardHeader, Grid, IconButton, Switch} from "@mui/material";
 import {getUserDisplayName, useCurrentUser} from "../../../context/current-user.tsx";
 import {useConnection} from "../../context/ConnectionContext.tsx";
 import Button from "@mui/material/Button";
-import {CalendarToday, FiberManualRecord, FilterList, MoreVert} from "@mui/icons-material";
+import {FiberManualRecord, MoreVert} from "@mui/icons-material";
 import {useClient} from "@apibrew/react";
 import {useEffect, useState} from "react";
 import {switchCase} from "../../../util/switch.ts";
-import {TrafficMetricWidget} from "../../components/widgets/TrafficMetricWidget.tsx";
-import {CountsWidget} from "../../components/widgets/CountsWidged.tsx";
+import {MetricWidget} from "../../components/widgets/MetricWidget.tsx";
+import {Duration, Metric} from "../../../cloud/model/metrics/instance-usage.ts";
+import {useDrawer} from "../../../hooks/use-drawer.tsx";
+import {MetricsDrawer} from "../../components/metrics-drawer/MetricsDrawer.tsx";
 
 export default function HomePage() {
     const user = useCurrentUser()
     const connection = useConnection()
     const client = useClient()
+    const drawer = useDrawer()
 
     const [health, setHealth] = useState<{ status: string }>()
 
@@ -28,23 +31,14 @@ export default function HomePage() {
         ).then(response => response.json()).then(data => {
             setHealth(data as any)
         })
-        fetch(
-            `${client.getUrl()}/_metrics`,
-            {
-                method: 'GET',
-                headers: {
-                    ...client.headers()
-                },
-            }
-        ).then(response => response.json()).then(data => {
-            console.log('metrics', data)
-        })
     }, []);
 
-    console.log(health)
+    const [metricsDuration, setMetricsDuration] = useState<Duration>(Duration.THIS_MONTH)
+    const [cumulative, setCumulative] = useState<boolean>(false)
 
     return (
         <Box m={3} mt={0}>
+            {drawer.render()}
             <div>
                 <hr/>
             </div>
@@ -110,38 +104,103 @@ export default function HomePage() {
                     </Button>
                 </div>
                 <div className="m1-div2-2">
-                    <Button>
-                        <CalendarToday sx={{marginRight: '5px'}} fontSize='small'/>
-                        <span>Select dates</span>
-                    </Button>
-                    <Button sx={{marginLeft: '10px'}}>
-                        <FilterList sx={{marginRight: '5px'}} fontSize='small'/>
-                        <span>Filters</span>
-                    </Button>
+                    <ButtonGroup
+                        color='secondary'
+                        variant="contained"
+                        aria-label="Metric Duration">
+                        <Button color={metricsDuration == Duration.LAST_YEAR ? 'success' : 'secondary'}
+                                onClick={() => {
+                                    setMetricsDuration(Duration.LAST_YEAR)
+                                }}>Last Year</Button>
+                        <Button color={metricsDuration == Duration.LAST_6_MONTHS ? 'success' : 'secondary'}
+                                onClick={() => {
+                                    setMetricsDuration(Duration.LAST_6_MONTHS)
+                                }}>Last 6 Month</Button>
+                        <Button color={metricsDuration == Duration.THIS_MONTH ? 'success' : 'secondary'}
+                                onClick={() => {
+                                    setMetricsDuration(Duration.THIS_MONTH)
+                                }}>This Month</Button>
+                        <Button color={metricsDuration == Duration.THIS_WEEK ? 'success' : 'secondary'}
+                                onClick={() => {
+                                    setMetricsDuration(Duration.THIS_WEEK)
+                                }}>This Week</Button>
+                        <Button color={metricsDuration == Duration.TODAY ? 'success' : 'secondary'}
+                                onClick={() => {
+                                    setMetricsDuration(Duration.TODAY)
+                                }}>Today</Button>
+                    </ButtonGroup>
+
+                    <span style={{
+                        marginLeft: 30
+                    }}>Cumulative:</span>
+                    <Switch
+                        checked={cumulative}
+                        onChange={(_, value) => {
+                            setCumulative(value)
+                        }}/>
                 </div>
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Card>
                             <CardHeader title={<Box display='flex'>
-                                <span>Traffic</span>
+                                <span>Requests</span>
                                 <Box flexGrow={1}/>
-                                <IconButton>
+                                <IconButton onClick={() => {
+                                    drawer.open(<MetricsDrawer
+                                        metric={Metric.REQUEST}
+                                        title='Request Metrics'
+                                        onClose={drawer.close}/>)
+                                }}>
                                     <MoreVert/>
                                 </IconButton>
                             </Box>}/>
-                            <TrafficMetricWidget/>
+                            <MetricWidget
+                                metric={Metric.REQUEST}
+                                duration={metricsDuration}
+                                cumulative={cumulative}
+                            />
                         </Card>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Card>
                             <CardHeader title={<Box display='flex'>
-                                <span>Counts</span>
+                                <span>Nano Executions</span>
                                 <Box flexGrow={1}/>
-                                <IconButton>
+                                <IconButton onClick={() => {
+                                    drawer.open(<MetricsDrawer
+                                        metric={Metric.NANO_EXECUTION}
+                                        title='Nano Metrics'
+                                        onClose={drawer.close}/>)
+                                }}>
                                     <MoreVert/>
                                 </IconButton>
                             </Box>}/>
-                            <CountsWidget/>
+                            <MetricWidget
+                                metric={Metric.NANO_EXECUTION}
+                                duration={metricsDuration}
+                                cumulative={cumulative}
+                            />
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card>
+                            <CardHeader title={<Box display='flex'>
+                                <span>Storage</span>
+                                <Box flexGrow={1}/>
+                                <IconButton onClick={() => {
+                                    drawer.open(<MetricsDrawer
+                                        metric={Metric.STORAGE}
+                                        title='Storage Metrics'
+                                        onClose={drawer.close}/>)
+                                }}>
+                                    <MoreVert/>
+                                </IconButton>
+                            </Box>}/>
+                            <MetricWidget
+                                metric={Metric.STORAGE}
+                                duration={metricsDuration}
+                                cumulative={cumulative}
+                            />
                         </Card>
                     </Grid>
                 </Grid>

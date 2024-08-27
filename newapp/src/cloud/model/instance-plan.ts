@@ -1,13 +1,13 @@
 
 export interface InstancePlan {
+    attributes?: { [key: string]: string }
+    id: string
     name: string
     amount: number
     limits?: PlanLimits
     version: number
     currency: string
     auditData?: AuditData
-    attributes?: { [key: string]: string }
-    id: string
 }
 
 export const InstancePlanEntityInfo = {
@@ -24,10 +24,10 @@ export interface PlanLimits {
 }
 
 export interface AuditData {
+    updatedOn: string
     createdBy: string
-    createdOn: string | Date
+    createdOn: string
     updatedBy: string
-    updatedOn: string | Date
 }
 
 export const InstancePlanResource = {

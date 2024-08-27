@@ -3,6 +3,9 @@ import CloudIndex from './cloud/index'
 import {cloudRoutes} from "./cloud/routes";
 import {dashboardRote} from "./dashboard/routes";
 import Redirect from "./cloud/Redirect.tsx";
+import {LoginPage} from "./pages/LoginPage.tsx";
+import {RegisterPage} from "./pages/RegisterPage.tsx";
+import {GithubSsoPage} from "./pages/GithubSso.tsx";
 
 export const index = createBrowserRouter([
     {
@@ -13,6 +16,18 @@ export const index = createBrowserRouter([
         path: "/cloud",
         element: <CloudIndex/>,
         children: cloudRoutes,
+    },
+    {
+        path: 'login',
+        element: <LoginPage/>
+    },
+    {
+        path: 'register',
+        element: <RegisterPage/>
+    },
+    {
+        path: 'github-sso',
+        element: <GithubSsoPage/>
     },
     dashboardRote,
 ]);

@@ -1,16 +1,16 @@
 
 export interface Payment {
-    token?: string
     amount: number
-    paymentId?: string
-    responses?: string[]
-    paymentDate?: string | Date
-    id: string
-    version: number
+    paymentDate?: string
     currency: string
     auditData?: AuditData
+    responses?: string[]
+    id: string
+    token?: string
+    paymentId?: string
     user: string
     status: Status
+    version: number
     returnUrl?: string
 }
 
@@ -21,10 +21,10 @@ export const PaymentEntityInfo = {
 }
 
 export interface AuditData {
-    updatedOn: string | Date
     createdBy: string
-    createdOn: string | Date
+    createdOn: string
     updatedBy: string
+    updatedOn: string
 }
 
 export enum Status {

@@ -1,11 +1,11 @@
 import {ArrowLeft, ArrowRight, LogoutOutlined, Person, Settings} from "@mui/icons-material";
 import {useState} from "react";
 import {MenuItem, menuItems} from "./menu.tsx";
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {getClassName} from "../../util/classes.ts";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {getUserDisplayName, useCurrentUser} from "../../context/current-user.tsx";
-import {useConfirmation} from "../components/modal/use-confirmation.tsx";
+import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 
 export function AsideBar() {
     const {activeItem, activeSubItem} = useActiveMenuItem()
@@ -13,9 +13,7 @@ export function AsideBar() {
 
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
-    const params = useParams()
 
-    const connectionName = params['connectionName']!
     const confirmation = useConfirmation()
 
     const isActive = (item: MenuItem) => {
@@ -30,7 +28,7 @@ export function AsideBar() {
 
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
         {confirmation.render()}
-        <Link to={prepareItemPath(connectionName, '')} className="logo flex-center">
+        <Link to={'/'} className="logo flex-center">
             <img src="/tiapi.png" alt="png"/>
             <span>APIBREW</span>
         </Link>
@@ -50,7 +48,7 @@ export function AsideBar() {
                                'active1': active,
                                'dropdown': Boolean(item.children && active)
                            })}>
-                    <Link className="flex-center" to={prepareItemPath(connectionName, item.path)}>
+                    <Link className="flex-center" to={item.path!}>
                         {item.icon}
                         <span>{item.title}</span>
                     </Link>
@@ -63,7 +61,7 @@ export function AsideBar() {
                                 className={getClassName({
                                     'active2': subActive,
                                 })}>
-                                <Link to={prepareItemPath(connectionName, child.path)}>
+                                <Link to={child.path!}>
                                     <span>{child.title}</span>
                                 </Link>
                             </li>
@@ -73,9 +71,9 @@ export function AsideBar() {
             })}
         </ul>
 
-        <Link className="flex-center" to={prepareItemPath(connectionName, '/dashboard/settings')}>
+        <Link className="flex-center" to={'/cloud/account'}>
             <Settings/>
-            <span>Settings</span>
+            <span>Account Settings</span>
         </Link>
 
         <hr/>
@@ -107,17 +105,4 @@ export function AsideBar() {
             </button>
         </div>
     </div>
-}
-
-
-function prepareItemPath(connectionName: string, path: string | undefined): string {
-    if (path) {
-        if (!connectionName || path.startsWith('/cloud')) {
-            return path
-        } else {
-            return `/${connectionName}${path}`
-        }
-    } else {
-        return `/${connectionName}/dashboard`
-    }
 }

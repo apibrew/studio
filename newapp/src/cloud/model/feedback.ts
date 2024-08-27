@@ -1,11 +1,11 @@
 
 export interface Feedback {
+    connection: string
+    parameters?: any
     id: string
     message?: string
     version: number
-    connection: string
-    parameters?: object
-    p?: string
+    location?: string
 }
 
 export const FeedbackEntityInfo = {
@@ -17,9 +17,9 @@ export const FeedbackEntityInfo = {
 export const FeedbackResource = {
   "auditData": {
     "createdBy": "admin",
-    "updatedBy": "system",
+    "updatedBy": "admin@admin.com",
     "createdOn": "2024-02-15T16:52:33Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "updatedOn": "2024-04-28T17:41:38Z"
   },
   "name": "Feedback",
   "namespace": {
@@ -41,10 +41,10 @@ export const FeedbackResource = {
         "SpecialProperty": "true"
       }
     },
-    "message": {
+    "location": {
       "type": "STRING"
     },
-    "p": {
+    "message": {
       "type": "STRING"
     },
     "parameters": {

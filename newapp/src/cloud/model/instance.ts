@@ -1,27 +1,29 @@
-import {Database} from './database';
 import {InstancePlan} from './instance-plan';
+import {Database} from './database';
 
 export interface Instance {
-    description?: string
-    deploymentStatus: DeploymentStatus
-    owner?: string
-    auditData?: AuditData
-    replicaCount: number
-    adminPassword?: string
-    paidPlanUntil?: string | Date
-    title?: string
-    name: string
-    namespace: string
-    database: Database
-    id: string
-    additionalConfig?: object
-    modules?: { [key: string]: string }
+    plan?: InstancePlan
+    domain?: string
     version: number
+    id: string
+    owner?: string
+    modules?: any
     cluster: string
-    backendVersion: string
+    title?: string
+    database: Database
+    additionalConfig?: any
     controllerAccessToken?: string
     health: Health
-    plan?: InstancePlan
+    auditData?: AuditData
+    namespace: string
+    description?: string
+    branch: string
+    adminPassword?: string
+    paidPlanUntil?: string
+    backendVersion: string
+    deploymentStatus: DeploymentStatus
+    name: string
+    replicaCount: number
 }
 
 export const InstanceEntityInfo = {
@@ -32,9 +34,14 @@ export const InstanceEntityInfo = {
 
 export interface AuditData {
     createdBy: string
-    createdOn: string | Date
+    createdOn: string
     updatedBy: string
-    updatedOn: string | Date
+    updatedOn: string
+}
+
+export enum Health {
+    HEALTHY = "HEALTHY",
+    UNHEALTHY = "UNHEALTHY",
 }
 
 export enum DeploymentStatus {
@@ -47,17 +54,12 @@ export enum DeploymentStatus {
     DESTROY_FAILED = "DESTROY_FAILED",
 }
 
-export enum Health {
-    HEALTHY = "HEALTHY",
-    UNHEALTHY = "UNHEALTHY",
-}
-
 export const InstanceResource = {
   "auditData": {
     "createdBy": "admin",
-    "updatedBy": "system",
+    "updatedBy": "admin",
     "createdOn": "2024-01-06T21:56:15Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "updatedOn": "2024-05-19T12:00:33Z"
   },
   "name": "Instance",
   "namespace": {
@@ -65,11 +67,17 @@ export const InstanceResource = {
   },
   "properties": {
     "additionalConfig": {
-      "type": "OBJECT"
+      "type": "OBJECT",
+      "annotations": {
+        "SourceMatchKey": "5f6adbbcac19"
+      }
     },
     "adminPassword": {
       "type": "STRING",
-      "description": "The admin password of the instance"
+      "description": "The admin password of the instance",
+      "annotations": {
+        "SourceMatchKey": "8dddaca3e3bf"
+      }
     },
     "auditData": {
       "type": "STRUCT",
@@ -83,6 +91,7 @@ export const InstanceResource = {
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
       "annotations": {
+        "SourceMatchKey": "87b0f72756b1",
         "SpecialProperty": "true"
       }
     },
@@ -90,23 +99,43 @@ export const InstanceResource = {
       "type": "STRING",
       "required": true,
       "defaultValue": "1.0.0",
-      "description": "The version of the api-brew"
+      "description": "The version of the api-brew",
+      "annotations": {
+        "SourceMatchKey": "6386270a55af"
+      }
+    },
+    "branch": {
+      "type": "STRING",
+      "required": true,
+      "defaultValue": "master",
+      "annotations": {
+        "SourceMatchKey": "6a71a6452ca2"
+      }
     },
     "cluster": {
       "type": "STRING",
       "required": true,
       "defaultValue": "default",
-      "description": "The cluster of the instance"
+      "description": "The cluster of the instance",
+      "annotations": {
+        "SourceMatchKey": "c170e66ed095"
+      }
     },
     "controllerAccessToken": {
       "type": "STRING",
       "length": 5000,
-      "description": "The controller access token of the instance"
+      "description": "The controller access token of the instance",
+      "annotations": {
+        "SourceMatchKey": "b51bec60e577"
+      }
     },
     "database": {
       "type": "REFERENCE",
       "required": true,
-      "reference": "default/Database"
+      "reference": "default/Database",
+      "annotations": {
+        "SourceMatchKey": "e51947811ae9"
+      }
     },
     "deploymentStatus": {
       "type": "ENUM",
@@ -120,10 +149,22 @@ export const InstanceResource = {
         "PENDING_DESTROY",
         "DESTROYED",
         "DESTROY_FAILED"
-      ]
+      ],
+      "annotations": {
+        "SourceMatchKey": "ec942fc5e6f1"
+      }
     },
     "description": {
-      "type": "STRING"
+      "type": "STRING",
+      "annotations": {
+        "SourceMatchKey": "c0686c19184a"
+      }
+    },
+    "domain": {
+      "type": "STRING",
+      "annotations": {
+        "SourceMatchKey": "b3c55bda0d78"
+      }
     },
     "health": {
       "type": "ENUM",
@@ -132,7 +173,10 @@ export const InstanceResource = {
       "enumValues": [
         "HEALTHY",
         "UNHEALTHY"
-      ]
+      ],
+      "annotations": {
+        "SourceMatchKey": "ff1e0040c646"
+      }
     },
     "id": {
       "type": "UUID",
@@ -142,46 +186,67 @@ export const InstanceResource = {
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
+        "SourceMatchKey": "890fd5543be7",
         "SpecialProperty": "true"
       }
     },
     "modules": {
-      "type": "MAP",
-      "item": {
-        "type": "STRING"
+      "type": "OBJECT",
+      "annotations": {
+        "SourceMatchKey": "600e68f98eb8"
       }
     },
     "name": {
       "type": "STRING",
       "required": true,
       "unique": true,
-      "immutable": true,
-      "description": "The name of the account"
+      "description": "The name of the account",
+      "annotations": {
+        "SourceMatchKey": "abc550bb27f4"
+      }
     },
     "namespace": {
       "type": "STRING",
       "required": true,
       "defaultValue": "instances",
-      "description": "The namespace of the instance"
+      "description": "The namespace of the instance",
+      "annotations": {
+        "SourceMatchKey": "0518f80180c7"
+      }
     },
     "owner": {
-      "type": "STRING"
+      "type": "STRING",
+      "annotations": {
+        "SourceMatchKey": "ae039a7342cc"
+      }
     },
     "paidPlanUntil": {
-      "type": "TIMESTAMP"
+      "type": "TIMESTAMP",
+      "annotations": {
+        "SourceMatchKey": "0946bf23d6fd"
+      }
     },
     "plan": {
       "type": "REFERENCE",
-      "reference": "default/InstancePlan"
+      "reference": "default/InstancePlan",
+      "annotations": {
+        "SourceMatchKey": "246563332373"
+      }
     },
     "replicaCount": {
       "type": "INT32",
       "required": true,
       "defaultValue": 1,
-      "description": "The number of replicas of the instance"
+      "description": "The number of replicas of the instance",
+      "annotations": {
+        "SourceMatchKey": "4a1cbcf7b646"
+      }
     },
     "title": {
-      "type": "STRING"
+      "type": "STRING",
+      "annotations": {
+        "SourceMatchKey": "6a2169ce0f01"
+      }
     },
     "version": {
       "type": "INT32",
@@ -192,6 +257,7 @@ export const InstanceResource = {
       "description": "The version of the resource/record. It is incremented on every update.",
       "annotations": {
         "AllowEmptyPrimitive": "true",
+        "SourceMatchKey": "1dd11388923e",
         "SpecialProperty": "true"
       }
     }

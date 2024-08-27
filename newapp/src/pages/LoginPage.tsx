@@ -6,20 +6,20 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import {useClient} from '@apibrew/react';
 import {GitHub} from "@mui/icons-material";
-import {Layout} from "../layout/modern-layout";
+import {Layout} from "./modern-layout";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
+import {useHostClient} from "../hooks/use-host-client.tsx";
 
 export const LoginPage = () => {
-    const client = useClient();
+    const client = useHostClient();
     const navigate = useNavigate()
 
     useEffect(() => {
         if (client.isAuthenticated()) {
-            navigate('../post-login')
+            navigate('/cloud')
         }
     }, [client]);
 
@@ -30,7 +30,7 @@ export const LoginPage = () => {
         const loadingId = toast.loading('Logging in...');
         try {
             await client.authenticateWithUsernameAndPassword(email, password);
-            navigate('../post-login')
+            navigate('/cloud')
             toast.success('Welcome: ' + client.getTokenBody()?.username);
         } catch (e: any) {
             toast.error(e.message);

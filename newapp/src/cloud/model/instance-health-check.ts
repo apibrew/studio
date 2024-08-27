@@ -1,10 +1,11 @@
 import {Instance} from './instance';
 
 export interface InstanceHealthCheck {
+    username?: string
     auditData?: AuditData
     id: string
     health: Health
-    details?: object
+    details?: any
     version: number
     instance: Instance
 }
@@ -16,10 +17,10 @@ export const InstanceHealthCheckEntityInfo = {
 }
 
 export interface AuditData {
+    updatedOn: string
     createdBy: string
-    createdOn: string | Date
+    createdOn: string
     updatedBy: string
-    updatedOn: string | Date
 }
 
 export enum Health {
@@ -32,7 +33,7 @@ export const InstanceHealthCheckResource = {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin@admin.com",
     "createdOn": "2024-04-15T08:44:20Z",
-    "updatedOn": "2024-04-15T08:54:34Z"
+    "updatedOn": "2024-04-15T09:04:26Z"
   },
   "name": "InstanceHealthCheck",
   "namespace": {
@@ -81,6 +82,9 @@ export const InstanceHealthCheckResource = {
       "required": true,
       "unique": true,
       "reference": "default/Instance"
+    },
+    "username": {
+      "type": "STRING"
     },
     "version": {
       "type": "INT32",

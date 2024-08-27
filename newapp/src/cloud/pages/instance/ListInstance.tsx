@@ -148,7 +148,7 @@ export function ListInstance() {
                                 </Button>}
                                 &nbsp;
                                 {instance.deploymentStatus !== 'DESTROYED' && <Button onClick={() => {
-                                    navigate(`/cloud/instances/${instance.id}/goto`)
+                                    navigate(`/cloud/projects/${instance.id}/goto`)
                                 }}>goto</Button>}
                             </TableCell>
                         </TableRow>

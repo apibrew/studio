@@ -2,20 +2,12 @@ import {Fragment} from "react";
 import {ArrowForwardIos, Home} from "@mui/icons-material";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Link, useParams} from "react-router-dom";
-import {useConnection} from "../context/ConnectionContext.tsx";
 
 export function Breadcrumbs() {
     const {activeItem, activeSubItem} = useActiveMenuItem()
     const params = useParams()
-    const connection = useConnection()
-
-    const connectionBreadcrumpItem = {
-        title: connection?.name,
-        link: undefined
-    }
 
     let breadcrumbs = [
-        connectionBreadcrumpItem,
         {
             title: activeItem?.title,
             link: activeItem?.path
@@ -31,7 +23,6 @@ export function Breadcrumbs() {
 
     if (activeItem?.title === 'Home') {
         breadcrumbs = [
-            connectionBreadcrumpItem,
             {
                 title: 'Dashboard',
                 link: undefined
@@ -45,7 +36,6 @@ export function Breadcrumbs() {
 
     if (activeItem?.title === 'Resources') {
         breadcrumbs = [
-            connectionBreadcrumpItem,
             {
                 title: 'Resources',
                 link: undefined
@@ -71,6 +61,8 @@ export function Breadcrumbs() {
             link: undefined
         })
     }
+
+    console.log(params)
 
     return <>
         <div className="mh-div1 flex-center">

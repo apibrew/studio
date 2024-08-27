@@ -1,35 +1,36 @@
 
-export interface DestroyAccount {
-    id: string
-    email: string
-    details?: any
+export interface Module {
+    enabled?: boolean
     version: number
+    dependencyVersion: string
+    id: string
+    path: string
 }
 
-export const DestroyAccountEntityInfo = {
-    namespace: "ops",
-    resource: "DestroyAccount",
-    restPath: "ops-destroy-account",
+export const ModuleEntityInfo = {
+    namespace: "default",
+    resource: "Module",
+    restPath: "module",
 }
 
-export const DestroyAccountResource = {
+export const ModuleResource = {
   "auditData": {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin@admin.com",
-    "createdOn": "2024-04-14T06:35:35Z",
-    "updatedOn": "2024-04-14T06:37:42Z"
+    "createdOn": "2024-05-01T18:26:38Z",
+    "updatedOn": "2024-05-01T18:27:10Z"
   },
-  "name": "DestroyAccount",
+  "name": "Module",
   "namespace": {
-    "name": "ops"
+    "name": "default"
   },
   "properties": {
-    "details": {
-      "type": "OBJECT"
-    },
-    "email": {
+    "dependencyVersion": {
       "type": "STRING",
       "required": true
+    },
+    "enabled": {
+      "type": "BOOL"
     },
     "id": {
       "type": "UUID",
@@ -41,6 +42,10 @@ export const DestroyAccountResource = {
       "annotations": {
         "SpecialProperty": "true"
       }
+    },
+    "path": {
+      "type": "STRING",
+      "required": true
     },
     "version": {
       "type": "INT32",

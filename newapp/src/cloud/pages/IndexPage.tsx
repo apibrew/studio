@@ -9,9 +9,9 @@ export function IndexPage() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('instances');
+            navigate('projects');
         } else {
-            navigate('login');
+            navigate('/login');
         }
     }, []);
 

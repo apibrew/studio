@@ -17,8 +17,12 @@
 
   &.MuiButton-contained {
     &.MuiButton-colorSecondary {
-        background-color: white;
-        color: black;
+      background-color: white;
+      color: black;
+    }
+
+    &.MuiButton-colorSuccess:hover {
+      color: black;
     }
   }
 
@@ -37,7 +41,7 @@
 .MuiTable-root {
   border-radius: 12px 12px 0 0;
   border: 2px solid #EAECF0;
-  border-collapse: separate!important;
+  border-collapse: separate !important;
 
   .MuiTableHead-root {
     background-color: #F9FAFB;

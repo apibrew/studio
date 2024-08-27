@@ -1,35 +1,35 @@
+import {Instance} from './instance';
 
-export interface DestroyAccount {
-    id: string
-    email: string
-    details?: any
+export interface Domain {
+    host: string
     version: number
+    instance: Instance
+    namespace: string
+    id: string
 }
 
-export const DestroyAccountEntityInfo = {
-    namespace: "ops",
-    resource: "DestroyAccount",
-    restPath: "ops-destroy-account",
+export const DomainEntityInfo = {
+    namespace: "default",
+    resource: "Domain",
+    restPath: "domain",
 }
 
-export const DestroyAccountResource = {
+export const DomainResource = {
   "auditData": {
     "createdBy": "admin@admin.com",
     "updatedBy": "admin@admin.com",
-    "createdOn": "2024-04-14T06:35:35Z",
-    "updatedOn": "2024-04-14T06:37:42Z"
+    "createdOn": "2024-05-06T11:41:47Z",
+    "updatedOn": "2024-05-06T11:47:47Z"
   },
-  "name": "DestroyAccount",
+  "name": "Domain",
   "namespace": {
-    "name": "ops"
+    "name": "default"
   },
   "properties": {
-    "details": {
-      "type": "OBJECT"
-    },
-    "email": {
+    "host": {
       "type": "STRING",
-      "required": true
+      "required": true,
+      "unique": true
     },
     "id": {
       "type": "UUID",
@@ -41,6 +41,15 @@ export const DestroyAccountResource = {
       "annotations": {
         "SpecialProperty": "true"
       }
+    },
+    "instance": {
+      "type": "REFERENCE",
+      "required": true,
+      "reference": "default/Instance"
+    },
+    "namespace": {
+      "type": "STRING",
+      "required": true
     },
     "version": {
       "type": "INT32",

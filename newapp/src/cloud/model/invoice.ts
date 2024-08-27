@@ -3,18 +3,18 @@ import {InstancePlan} from './instance-plan';
 import {Instance} from './instance';
 
 export interface Invoice {
-    currency: string
-    user: string
-    notes?: string
-    id: string
-    amount: number
-    status: Status
-    payment?: Payment
-    version: number
     auditData?: AuditData
-    paymentDate?: string | Date
+    paymentDate?: string
     executionStatus: ExecutionStatus
+    user: string
+    amount: number
+    payment?: Payment
+    status: Status
+    currency: string
+    version: number
+    id: string
     items: InvoiceItem[]
+    notes?: string
 }
 
 export const InvoiceEntityInfo = {
@@ -24,23 +24,18 @@ export const InvoiceEntityInfo = {
 }
 
 export interface InvoiceItem {
-    instancePreviousPlanUntil: string | Date
-    plan: InstancePlan
-    instance: Instance
     monthCount: number
     instancePreviousPlanName: string
+    instancePreviousPlanUntil: string
+    plan: InstancePlan
+    instance: Instance
 }
 
 export interface AuditData {
-    createdBy: string
-    createdOn: string | Date
     updatedBy: string
-    updatedOn: string | Date
-}
-
-export enum Status {
-    PENDING = "PENDING",
-    PAID = "PAID",
+    updatedOn: string
+    createdBy: string
+    createdOn: string
 }
 
 export enum ExecutionStatus {
@@ -48,6 +43,11 @@ export enum ExecutionStatus {
     EXECUTING = "EXECUTING",
     EXECUTED = "EXECUTED",
     FAILED = "FAILED",
+}
+
+export enum Status {
+    PENDING = "PENDING",
+    PAID = "PAID",
 }
 
 export const InvoiceResource = {

@@ -1,15 +1,15 @@
 import {Instance} from './instance';
 
 export interface DeploymentTask {
-    message?: string
-    instance: Instance
-    kind: Kind
-    user: string
-    status: Status
     version: number
     id: string
-    auditData?: AuditData
+    user: string
     params?: { [key: string]: string }
+    message?: string
+    auditData?: AuditData
+    kind: Kind
+    status: Status
+    instance: Instance
 }
 
 export const DeploymentTaskEntityInfo = {
@@ -20,9 +20,9 @@ export const DeploymentTaskEntityInfo = {
 
 export interface AuditData {
     createdBy: string
-    createdOn: string | Date
+    createdOn: string
     updatedBy: string
-    updatedOn: string | Date
+    updatedOn: string
 }
 
 export enum Kind {
