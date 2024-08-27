@@ -31,6 +31,12 @@ export const theme = createTheme({
                 color: 'secondary',
             },
         },
+        MuiCard: {
+            defaultProps: {
+                elevation: 0,
+                variant: 'outlined',
+            }
+        },
         MuiFilledInput: {
             defaultProps: {
                 margin: 'dense',

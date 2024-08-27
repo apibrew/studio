@@ -5,7 +5,12 @@ import {newClientByServerConfig} from "@apibrew/client/client";
 import {ClientProvider, cloudConnectionProvider, Connection, LocalStorageTokenStorage} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {DashboardLayout} from "./layout/DashboardLayout.tsx";
-import { ConnectionContext } from "./context/ConnectionContext";
+import {ConnectionContext} from "./context/ConnectionContext";
+import {User} from "@apibrew/client/model";
+import {UserEntityInfo} from "@apibrew/client/model/user";
+import {handleErrorMessage} from "../util/errors.ts";
+import {useHostClient} from "../hooks/use-host-client.tsx";
+import {CurrentUserContext} from "../context/current-user.tsx";
 
 
 export function DashboardPage() {
@@ -14,12 +19,24 @@ export function DashboardPage() {
 
     const [client, setClient] = useState<Client>()
     const [connection, setConnection] = useState<Connection>()
+    const hostClient = useHostClient()
+
+    const userRepository = hostClient.repository<User>(UserEntityInfo)
+    const [user, setUser] = useState<User>()
+
+    useEffect(() => {
+        userRepository.load({
+            username: hostClient.getTokenBody()?.username
+        }).then(user => {
+            setUser(user)
+        }).catch(err => {
+            toast.error(handleErrorMessage(err))
+        })
+    }, [hostClient]);
 
     useEffect(() => {
         if (connectionName === 'manager') {
-            const client = new ClientImpl('https://manager.apibrew.io')
-            client.useTokenStorage(new LocalStorageTokenStorage('manager'))
-            setClient(client)
+            setClient(hostClient)
             setConnection({
                 name: 'manager',
                 serverConfig: {}
@@ -32,20 +49,6 @@ export function DashboardPage() {
             client.useTokenStorage(new LocalStorageTokenStorage('local'))
             if (!client.isAuthenticated()) {
                 client.authenticateWithUsernameAndPassword('admin', 'admin')
-            }
-            setClient(client)
-            setConnection({
-                name: 'local',
-                serverConfig: {}
-            } as Connection)
-            return;
-        }
-
-        if (connectionName === 'analytics') {
-            const client = new ClientImpl('https://analytics.tisserv.net')
-            client.useTokenStorage(new LocalStorageTokenStorage('local'))
-            if (!client.isAuthenticated()) {
-                client.authenticateWithUsernameAndPassword('admin', 'c79161cc6c77341a0a2ccaf879ad9699')
             }
             setClient(client)
             setConnection({
@@ -84,7 +87,9 @@ export function DashboardPage() {
     return <>
         <ClientProvider value={client}>
             <ConnectionContext.Provider value={connection}>
-                {client && <DashboardLayout/>}
+                <CurrentUserContext.Provider value={user}>
+                    {client && <DashboardLayout/>}
+                </CurrentUserContext.Provider>
             </ConnectionContext.Provider>
         </ClientProvider>
     </>

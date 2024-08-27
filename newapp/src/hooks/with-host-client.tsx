@@ -1,11 +1,10 @@
 import {ComponentType} from "react";
-import {ClientImpl} from "@apibrew/client";
-import {ClientProvider, LocalStorageTokenStorage} from "@apibrew/react";
+import {ClientProvider} from "@apibrew/react";
+import {getHostClient} from "./use-host-client.tsx";
 
 
 export function withHostClient<T>(Component: ComponentType<T>): ComponentType<T> {
-    const client = new ClientImpl('https://manager.apibrew.io')
-    client.useTokenStorage(new LocalStorageTokenStorage('manager'))
+    const client = getHostClient()
 
     return (props: T) => {
         return <>

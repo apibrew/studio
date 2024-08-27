@@ -1,19 +1,17 @@
 import {Outlet} from "react-router-dom";
-import {ClientImpl} from "@apibrew/client";
-import {ClientProvider, LocalStorageTokenStorage} from "@apibrew/react";
+import {ClientProvider} from "@apibrew/react";
 import {useEffect} from "react";
+import {useHostClient} from "../hooks/use-host-client.tsx";
 
-
-const client = new ClientImpl('https://manager.apibrew.io')
-client.useTokenStorage(new LocalStorageTokenStorage('manager'))
 
 export default function () {
+    const hostClient = useHostClient()
     useEffect(() => {
-        client.refreshToken()
+        hostClient.refreshToken()
     }, []);
 
     return <>
-        <ClientProvider value={client}>
+        <ClientProvider value={hostClient}>
             <Outlet/>
         </ClientProvider>
     </>

@@ -2,25 +2,34 @@ import {ArrowLeft, ArrowRight, LogoutOutlined, Person, Settings} from "@mui/icon
 import {useState} from "react";
 import {MenuItem, menuItems} from "./menu.tsx";
 import {Link, useParams} from "react-router-dom";
+import {getClassName} from "../../util/classes.ts";
+import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
+import {getUserDisplayName, useCurrentUser} from "../../context/current-user.tsx";
+import {useConfirmation} from "../components/modal/use-confirmation.tsx";
 
-export interface AsideBarProps {
-    activeItem?: MenuItem
-}
+export function AsideBar() {
+    const {activeItem, activeSubItem} = useActiveMenuItem()
+    const currentUser = useCurrentUser()
 
-export function AsideBar(props: AsideBarProps) {
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
     const params = useParams()
 
     const connectionName = params['connectionName']!
+    const confirmation = useConfirmation()
 
     const isActive = (item: MenuItem) => {
-        return props.activeItem === item || activeMenu == item
+        return activeItem === item || activeMenu == item
     }
 
-    const sideBarOpen = userSideBarOpen && (!props.activeItem || !props.activeItem.secondSideBar)
+    const isSubActive = (child: MenuItem) => {
+        return activeSubItem == child
+    }
+
+    const sideBarOpen = userSideBarOpen && (!activeItem || !activeItem.secondSideBar)
 
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
+        {confirmation.render()}
         <Link to={prepareItemPath(connectionName, '')} className="logo flex-center">
             <img src="/tiapi.png" alt="png"/>
             <span>APIBREW</span>
@@ -34,17 +43,31 @@ export function AsideBar(props: AsideBarProps) {
         </button>
         <ul className="ul-buttons">
             {menuItems.map((item) => {
-                return <li key={item.title} className={'0active ' + (item.children && isActive(item) && 'dropdown')}>
+                const active = isActive(item)
+
+                return <li key={item.title}
+                           className={getClassName({
+                               'active1': active,
+                               'dropdown': Boolean(item.children && active)
+                           })}>
                     <Link className="flex-center" to={prepareItemPath(connectionName, item.path)}>
                         {item.icon}
                         <span>{item.title}</span>
                     </Link>
                     {item.children && <ul>
-                        {item.children?.map(child => <li key={child.title}>
-                            <Link to={prepareItemPath(connectionName, child.path)}>
-                                <span>{child.title}</span>
-                            </Link>
-                        </li>)}
+                        {item.children?.map(child => {
+                            const subActive = isSubActive(child)
+
+                            return <li
+                                key={child.title}
+                                className={getClassName({
+                                    'active2': subActive,
+                                })}>
+                                <Link to={prepareItemPath(connectionName, child.path)}>
+                                    <span>{child.title}</span>
+                                </Link>
+                            </li>
+                        })}
                     </ul>}
                 </li>
             })}
@@ -61,15 +84,25 @@ export function AsideBar(props: AsideBarProps) {
             <button className="sidebar-photo flex-center">
                 <Person/>
                 <div>
-                    <span>Faiza Rzayeva</span>
+                    <span>{getUserDisplayName(currentUser)}</span>
                     <br/>
-                    <span>faiza@apibrew.com</span>
+                    <span>{currentUser?.username}</span>
                 </div>
             </button>
 
             <div style={{flexGrow: 1}}></div>
 
-            <button className="logout">
+            <button onClick={() => {
+                confirmation.open({
+                    title: 'Logout',
+                    kind: 'confirm',
+                    message: 'Are you sure you want to logout?',
+                    onConfirm: () => {
+                        localStorage.removeItem('@apibrew/client/manager/token')
+                        window.location.href = '/cloud/login'
+                    }
+                })
+            }} className="logout">
                 <LogoutOutlined/>
             </button>
         </div>

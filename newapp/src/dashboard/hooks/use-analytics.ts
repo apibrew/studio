@@ -43,8 +43,8 @@ export interface AnalyticsHelpers {
 
 export function useAnalytics(): AnalyticsHelpers {
     const connection = useContext(ConnectionContext);
-    const activeMenu = useActiveMenuItem()
+    const {activeItem} = useActiveMenuItem()
 
-    return useMemo(() => new Analytics(connection, activeMenu), [connection, activeMenu])
+    return useMemo(() => new Analytics(connection, activeItem!), [connection, activeItem])
 }
 

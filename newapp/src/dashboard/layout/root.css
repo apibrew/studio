@@ -3,31 +3,38 @@
     src: url(/ClashDisplay-Semibold.otf);
     font-weight: 600;
 }
+
 @font-face {
     font-family: Inter;
     src: url(/Inter-SemiBold.ttf);
     font-weight: 600;
 }
+
 @font-face {
     font-family: Inter;
     src: url(/Inter-Regular.ttf);
     font-weight: 400;
 }
+
 html, body, #root {
     height: 100%;
 }
+
 body {
     margin: unset;
 }
+
 body * {
     font-family: Inter;
     box-sizing: border-box;
 }
+
 .maindiv {
     height: 100%;
     width: 100%;
     display: flex;
 }
+
 .sidebar {
     width: 80px;
     min-width: 80px;
@@ -38,30 +45,36 @@ body * {
     align-items: center;
     position: relative;
 }
+
 .flex-center {
     display: flex;
     align-items: center;
 }
+
 .sidebar svg {
     width: 28px;
     height: 28px;
     color: #667085;
 }
+
 .sidebar-arrow {
     position: absolute;
     right: -14px;
     top: 60px;
 }
+
 .sidebar-arrow svg {
     background-color: #F6F6F9;
     border-radius: 999px;
 }
+
 .sidebar.extended {
     width: 280px;
     min-width: 280px;
     padding-left: 16px;
     align-items: unset;
 }
+
 .sidebar span {
     font-weight: 600;
     font-size: 16px;
@@ -69,61 +82,73 @@ body * {
     color: #344054;
     flex-grow: 1;
 }
+
 .sidebar .logo img {
     width: 40px;
     height: 34px;
 }
+
 .sidebar .logo span {
     font: 600 27px ClashDisplay;
     color: #000;
 }
+
 .sidebar ul, .sidesection ul {
     list-style: none;
     margin: unset;
     padding: unset;
 }
+
 .sidebar .ul-buttons {
     height: 100%;
     overflow-y: auto;
     margin: 20px 0;
     flex-grow: 1;
 }
+
 .sidebar .ul-buttons li {
     margin-top: 16px;
 }
+
 .sidebar .ul-buttons ul li {
     margin-left: 28px;
 }
+
 .sidebar hr {
     width: 80%;
     margin: 20px 0 15px;
     border-color: #EAECF0;
 }
+
 .sidebar.extended hr {
     width: unset;
     margin-right: 16px;
 }
+
 .sidebar-photo svg {
     width: 48px;
     height: 48px;
 }
+
 .sidebar.extended .sidebar-photo svg {
     width: 40px;
     height: 40px;
     margin-left: -6px;
 }
+
 .sidebar-photo div span:first-child {
     font-size: 14px;
 }
+
 .sidebar-photo div span:last-child {
     font-size: 14px;
     font-weight: 400;
 }
+
 .sidebar:not(.extended) span, .sidebar:not(.extended) .arrow, .sidebar:not(.extended) ul ul,
- .sidebar:not(.extended) .logout svg {
+.sidebar:not(.extended) .logout svg {
     display: none;
 }
-
 
 
 .sidebar.extended .ul-buttons, .sidebar.extended .logout {
@@ -131,27 +156,26 @@ body * {
 }
 
 
-
-
 /*
 NEW
 ********************************************************************************************
  */
- .sidebar a {
-    text-decoration:unset;
+.sidebar a {
+    text-decoration: unset;
     webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
- }
- .sidebar a:not(.logo):hover {
+}
+
+.sidebar a:not(.logo):hover {
     background-color: rgb(178, 178, 178);
     /* box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); */
 }
+
 .ul-buttons ul a {
     height: 26px;
     display: flex;
     align-items: center;
 }
-
 
 
 button {
@@ -162,6 +186,7 @@ button {
     text-align: unset;
     cursor: pointer;
 }
+
 .ul-buttons li:not(.dropdown) ul {
     /* display: none; */
 }
@@ -214,15 +239,8 @@ hr {
 }
 
 
-
-
 /* SIDEBAR-END *******************************************************************************
 *********************************************************************************************** */
-
-
-
-
-
 
 
 .main {
@@ -237,7 +255,8 @@ hr {
 } */
 
 .main-header {
-    margin: 20px 24px;}
+    margin: 20px 24px;
+}
 
 .mh-icon {
     width: 20px;
@@ -300,7 +319,7 @@ hr {
     margin-top: 16px;
     margin-bottom: 16px;
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
 }
 
 .m1-div1-1 {
@@ -397,6 +416,7 @@ hr {
 
 .m1-div2-3 {
     display: flex;
+    justify-content: space-between;
 }
 
 .m1-div2-3-1 {
@@ -519,6 +539,7 @@ hr {
 
 .div-flex-wrap {
     display: flex;
+    justify-content: space-between;
 }
 
 .m1-div4-1 {
@@ -579,40 +600,49 @@ hr {
     display: flex;
     flex-direction: column;
 }
+
 .sidesection span {
     color: #667085;
 }
+
 .sidesection > p:first-child {
     font-size: 30px;
     font-weight: 600;
     margin: 28px 0 28px 12px;
 }
+
 .sidesection svg {
     width: 26px;
     height: 26px;
     color: #667085;
 }
+
 .sidesect-div1 svg {
     width: 28px;
     height: 28px;
     margin-right: 4px;
 }
+
 .sidesect-div1 span {
     font-size: 14px;
     font-weight: 400;
     color: #344054;
 }
+
 .sidesect-div1 button {
     padding: 8px 10px;
     border: 1px solid #D0D5DD;
 }
+
 .sidesect-div1 button:first-child {
     border-radius: 8px 0 0 8px;
 }
+
 .sidesect-div1 button:last-child {
     border-radius: 0 8px 8px 0;
     border-left: 0;
 }
+
 .sidesect-div2 {
     padding: 4px 4px;
     background-color: #F9FAFB;
@@ -621,38 +651,46 @@ hr {
     display: flex;
     align-items: center;
 }
+
 .sidesect-div2 svg {
     width: 32px;
     height: 32px;
 }
+
 .sidesect-div2 input {
     font: 400 14px Inter;
     margin-left: 10px;
     padding: unset;
 }
+
 .sidesect-div2 fieldset {
     border: unset;
 }
+
 .sidesect-div3 p {
     font: 600 14px Inter;
     margin: 25px 0 15px;
     color: #667085;
 }
+
 .sidesection .sidesect-ul {
-    margin: 0  0 16px 4px;
+    margin: 0 0 16px 4px;
     overflow-y: auto;
 }
+
 .sidesection li {
     padding: unset;
     display: list-item;
 }
+
 .sidesect-ul button {
     width: 100%;
-    padding: unset!important;
+    padding: unset !important;
     border: unset !important;
     margin-top: 4px;
-    box-shadow:unset
+    box-shadow: unset
 }
+
 .sidesect-ul span {
     font-weight: 400;
     font-size: 16px;
@@ -660,57 +698,54 @@ hr {
     flex-grow: 1;
     padding: unset;
 }
+
 .sidesect-ul ul {
     margin-left: 34px;
 }
+
 .sidesect-ul button svg:last-of-type {
     display: none;
 }
+
 .sidesect-ul button:hover svg:last-of-type {
-    display: unset!important;
+    display: unset !important;
 }
-
-
 
 
 /* ****************************************************** */
 .m2-div1 {
     padding: 0 20px;
 }
+
 .m2-div1 > div {
     padding: unset;
     align-items: center;
 }
+
 .m2-div1-1 h5 {
     font: 600 20px Inter;
     color: #101828;
 }
+
 .m2-div1-1 p {
     font: 400 16px Inter;
     color: #475467;
 }
+
 .m2-div1-1 button:not(:last-child) {
     color: #475467;
 }
+
 .m2-div1-1 button:last-child {
     height: 40px;
     border: 1px solid #D6BBFB;
     border-radius: 8px;
     color: #6941C6;
 }
+
 .m2-div1-1 button span {
     font: 600 14px Inter;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 /* .sidesection {

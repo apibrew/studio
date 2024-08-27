@@ -1,4 +1,4 @@
-import {Box, Stack, Typography} from "@mui/material";
+import {Box, Stack, Tooltip, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {getRestPath, Resource, useClient, useRepository} from "@apibrew/react";
 import {useEffect, useState} from "react";
@@ -61,6 +61,13 @@ export default function ResourcesPage() {
                     {params.namespace !== 'default' && params.namespace + ' / '}
                     {params.resource}
                 </Typography>
+                <Tooltip title={resource.id}>
+                    <Typography variant='body2' color='textSecondary'
+                                onClick={() => {
+                                    navigator.clipboard.writeText(resource.id)
+                                    toast.success('Copied to clipboard')
+                                }}>#{resource.id.substring(0, 8)}</Typography>
+                </Tooltip>
                 <Box flexGrow={1} />
                 <Typography ml={10} variant='body2'>
                     GET /{getRestPath(resource)}

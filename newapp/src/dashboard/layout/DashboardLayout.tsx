@@ -4,33 +4,20 @@ import {AsideBar} from "./AsideBar.tsx";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Outlet} from "react-router-dom";
 import Button from "@mui/material/Button";
-import {
-    ArrowForwardIos,
-    ChatOutlined,
-    HelpOutline,
-    Home,
-    NotificationsNoneOutlined
-} from "@mui/icons-material";
+import {ChatOutlined, HelpOutline, NotificationsNoneOutlined} from "@mui/icons-material";
+import {Breadcrumbs} from "../components/Breadcrumbs.tsx";
 
 export function DashboardLayout() {
-    const activeItem = useActiveMenuItem()
+    const {activeItem} = useActiveMenuItem()
     const isDarkModeEnabled = false
 
     return <>
         <div className={`maindiv ${isDarkModeEnabled ? 'dark' : ''}`}>
-            <AsideBar activeItem={activeItem}/>
+            <AsideBar/>
             {activeItem?.secondSideBar && activeItem.secondSideBar()}
             <div className="main">
                 <div className="main-header flex-center">
-                    <div className="mh-div1 flex-center">
-                        <Button variant='text'>
-                            <Home/>
-                        </Button>
-                        <ArrowForwardIos/>
-                        <button className="mh-text">Dashboard</button>
-                        <ArrowForwardIos/>
-                        <span className="mh-text">Overview</span>
-                    </div>
+                    <Breadcrumbs/>
                     <div className="mh-div2 flex-center">
                         <Button variant='text'>
                             <NotificationsNoneOutlined/> Notifications

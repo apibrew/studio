@@ -16,6 +16,13 @@
   }
 
   &.MuiButton-contained {
+    &.MuiButton-colorSecondary {
+        background-color: white;
+        color: black;
+    }
+  }
+
+  &.MuiButton-contained {
     padding: 8px 10px;
     border: 1px solid #D0D5DD;
   }
