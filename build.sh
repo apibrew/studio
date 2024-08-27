@@ -4,6 +4,8 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD)
 # Set the image tag based on the branch
 if [ "$BRANCH" = "develop" ]; then
   TAG="studio-dev"
+elif [ "$BRANCH" = "newapp" ]; then
+  TAG="studio-new"
 else
   TAG="studio"
 fi
