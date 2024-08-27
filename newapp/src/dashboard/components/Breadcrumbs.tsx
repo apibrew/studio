@@ -3,17 +3,6 @@ import {ArrowForwardIos, Home} from "@mui/icons-material";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Link, useParams} from "react-router-dom";
 
-export interface BreadcrumbsProps {
-
-}
-
-export interface RouterWithBreadcrumb {
-    pathname: string
-    handle: {
-        breadcrumb: string
-    }
-}
-
 export function Breadcrumbs() {
     const {activeItem, activeSubItem} = useActiveMenuItem()
     const params = useParams()

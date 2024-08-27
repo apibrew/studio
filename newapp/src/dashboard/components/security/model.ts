@@ -6,7 +6,3 @@ export interface PermissionChecks {
     delete: boolean
     allowOwnedOnly?: boolean
 }
-
-export interface AccessMap {
-    [k: string]: PermissionChecks
-}

@@ -112,7 +112,7 @@ export function AsideBar() {
 
 function prepareItemPath(connectionName: string, path: string | undefined): string {
     if (path) {
-        if (!connectionName || path === '/connections') {
+        if (!connectionName || path.startsWith('/cloud')) {
             return path
         } else {
             return `/${connectionName}${path}`

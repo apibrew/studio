@@ -109,7 +109,7 @@ export const menuItems: MenuItem[] = [
     },
     {
         title: 'Other Instances',
-        path: '/connections',
+        path: '/cloud/instances',
         icon: <SettingsEthernet/>,
         conditional: (cp) => Boolean(cp.allowManageConnections)
     }
