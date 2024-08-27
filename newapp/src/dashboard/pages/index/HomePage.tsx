@@ -151,7 +151,7 @@ export default function HomePage() {
                 <div className="div-flex-wrap">
                     <div className="m1-div3-2">
                         <div className="m1-div3-2-1">
-                            <img src="smvpic9.png" alt="png"/>
+                            <img src="/smvpic9.png" alt="png"/>
                             <div className="m1-div3-2-1-1">
                                 <span>Java Script</span>
                                 <br/>
@@ -169,7 +169,7 @@ export default function HomePage() {
                     </div>
                     <div className="m1-div3-2">
                         <div className="m1-div3-2-1">
-                            <img src="smvpic9.png" alt="png"/>
+                            <img src="/smvpic9.png" alt="png"/>
                             <div className="m1-div3-2-1-1">
                                 <span>Java Script</span>
                                 <br/>
@@ -187,7 +187,7 @@ export default function HomePage() {
                     </div>
                     <div className="m1-div3-2">
                         <div className="m1-div3-2-1">
-                            <img src="smvpic9.png" alt="png"/>
+                            <img src="/smvpic9.png" alt="png"/>
                             <div className="m1-div3-2-1-1">
                                 <span>Java Script</span>
                                 <br/>
@@ -209,12 +209,12 @@ export default function HomePage() {
                 <div className="m1-div4-1">Example Projects</div>
                 <div className="div-flex-wrap">
                     <div className="m1-div4-2">
-                        <img src="smvpic9.png" alt="png"/>
+                        <img src="/smvpic9.png" alt="png"/>
                         <div className="m1-div4-2-1">
                             <div className="m1-div4-2-1-1">
                                 <span>Expo Starter</span>
                                 <button>
-                                    <img src="smvpic1.png" alt="png"/>
+                                    <img src="/smvpic1.png" alt="png"/>
                                 </button>
                             </div>
                             <span>
@@ -224,12 +224,12 @@ export default function HomePage() {
                         </div>
                     </div>
                     <div className="m1-div4-2">
-                        <img src="smvpic9.png" alt="png"/>
+                        <img src="/smvpic9.png" alt="png"/>
                         <div className="m1-div4-2-1">
                             <div className="m1-div4-2-1-1">
                                 <span>Expo Starter</span>
                                 <button>
-                                    <img src="smvpic1.png" alt="png"/>
+                                    <img src="/smvpic1.png" alt="png"/>
                                 </button>
                             </div>
                             <span>
@@ -239,12 +239,12 @@ export default function HomePage() {
                         </div>
                     </div>
                     <div className="m1-div4-2">
-                        <img src="smvpic9.png" alt="png"/>
+                        <img src="/smvpic9.png" alt="png"/>
                         <div className="m1-div4-2-1">
                             <div className="m1-div4-2-1-1">
                                 <span>Expo Starter</span>
                                 <button>
-                                    <img src="smvpic1.png" alt="png"/>
+                                    <img src="/smvpic1.png" alt="png"/>
                                 </button>
                             </div>
                             <span>
