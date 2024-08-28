@@ -1,8 +1,8 @@
 import {RouteObject} from "react-router/dist/lib/context";
 import {IndexPage} from "./pages/IndexPage";
 
-import {ListInstance} from "./pages/instance/ListInstance";
-import {Goto} from "./pages/instance/Goto";
+import {ProjectsPage} from "./pages/projects/ProjectsPage.tsx";
+import {Goto} from "./pages/projects/Goto";
 import {Outlet} from "react-router-dom";
 
 export const cloudRoutes: RouteObject[] = [
@@ -16,7 +16,7 @@ export const cloudRoutes: RouteObject[] = [
         children: [
             {
                 path: '',
-                element: <ListInstance/>
+                element: <ProjectsPage/>
             },
             {
                 path: ':id/goto',

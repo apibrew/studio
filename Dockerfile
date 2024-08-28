@@ -2,7 +2,7 @@ FROM node:21-alpine AS builder
 ENV NODE_ENV production
 
 # Add a work directory
-WORKDIR /newapp
+WORKDIR /app
 
 # Copy newapp files
 COPY . .
@@ -17,7 +17,7 @@ FROM nginx:1.21.0-alpine as production
 ENV NODE_ENV production
 
 # Copy built assets from builder
-COPY --from=builder /newapp/newapp/dist /usr/share/nginx/html
+COPY --from=builder /app/newapp/dist /usr/share/nginx/html
 
 # Add your nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -259,6 +259,16 @@ export function ResourcePageSideBar() {
                     setResourceMenuAnchor(null)
                     setSelectedResource(null)
                 }}>Delete</MenuItem>
+                <MenuItem onClick={() => {
+                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, true, {
+                        ...selectedResource,
+                        id: undefined,
+                    }, () => {
+                        reload()
+                    }))
+                    setNamespaceMenuAnchor(null)
+                    setSelectedNamespace(null)
+                }}>New Copy</MenuItem>
             </Menu>
 
         </List>

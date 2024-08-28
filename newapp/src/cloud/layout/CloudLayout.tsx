@@ -13,7 +13,7 @@ export function CloudLayout() {
     const isDarkModeEnabled = false
 
     return <>
-        <div className={`maindiv ${isDarkModeEnabled ? 'dark' : ''}`}>
+        <div className={`cloud-layout ${isDarkModeEnabled ? 'dark' : ''}`}>
             <AsideBar/>
             {activeItem?.secondSideBar && activeItem.secondSideBar()}
             <div className="main">
