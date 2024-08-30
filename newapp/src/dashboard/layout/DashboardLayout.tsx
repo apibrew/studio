@@ -6,10 +6,17 @@ import {Outlet} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {ChatOutlined, HelpOutline, NotificationsNoneOutlined} from "@mui/icons-material";
 import {Breadcrumbs} from "../components/Breadcrumbs.tsx";
+import {Theme} from "../../cloud/model/account.ts";
+import {useCurrentAccount} from "../../context/current-account.tsx";
 
 export function DashboardLayout() {
     const {activeItem} = useActiveMenuItem()
-    const isDarkModeEnabled = false
+    const account = useCurrentAccount()
+    let isDarkModeEnabled = account?.theme === Theme.DARK
+
+    if (account?.theme === Theme.SYSTEM && window.matchMedia) {
+        isDarkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
 
     return <>
         <div className={`maindiv ${isDarkModeEnabled ? 'dark' : ''}`}>

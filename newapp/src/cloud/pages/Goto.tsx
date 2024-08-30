@@ -1,12 +1,12 @@
 import {LoadingOverlay} from "common";
 import {useNavigate, useParams} from "react-router-dom";
 import {LocalStorageTokenStorage, useRecordBy, useRepository} from "@apibrew/react";
-import {DeploymentStatus, Instance, InstanceEntityInfo} from "../../model/instance";
+import {DeploymentStatus, Instance, InstanceEntityInfo} from "../model/instance";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {Client, ClientImpl} from "@apibrew/client";
 import Alert from "@mui/material/Alert";
-import {ControllerAccessToken, ControllerAccessTokenEntityInfo} from "../../model/ops/controller-access-token";
+import {ControllerAccessToken, ControllerAccessTokenEntityInfo} from "../model/ops/controller-access-token";
 
 export function Goto() {
     const params = useParams()

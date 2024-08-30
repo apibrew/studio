@@ -1,15 +1,15 @@
-import {useCurrentAccount} from "../../../context/current-account.tsx";
+import {useCurrentAccount} from "../../context/current-account.tsx";
 import {Box} from "@mui/material";
 import {LoadingOverlay} from "common";
-import {AccountPlan, AccountPlanEntityInfo} from "../../model/account-plan.ts";
+import {AccountPlan, AccountPlanEntityInfo} from "../model/account-plan.ts";
 import {useRecords, useRepository} from "@apibrew/react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {useState} from "react";
 import Button from "@mui/material/Button";
-import {ChangePlan, ChangePlanEntityInfo} from "../../model/ops/change-plan.ts";
+import {ChangePlan, ChangePlanEntityInfo} from "../model/ops/change-plan.ts";
 import toast from "react-hot-toast";
-import {handleErrorMessage} from "../../../util/errors.ts";
+import {handleErrorMessage} from "../../util/errors.ts";
 
 export function BillingPage() {
     const account = useCurrentAccount()

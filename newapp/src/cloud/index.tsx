@@ -9,12 +9,22 @@ import {handleErrorMessage} from "../util/errors.ts";
 import {UserEntityInfo} from "@apibrew/client/model/user";
 import {CurrentAccountContext} from "../context/current-account.tsx";
 import {Account, AccountEntityInfo} from "./model/account.ts";
+import {useNavigate} from "react-router-dom";
 
 
 export default function () {
     const hostClient = useHostClient()
     const userRepository = hostClient.repository<User>(UserEntityInfo)
     const accountRepository = hostClient.repository<Account>(AccountEntityInfo)
+
+    const isAuthenticated = hostClient.isAuthenticated();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/login');
+        }
+    }, []);
 
     useEffect(() => {
         hostClient.refreshToken().then(() => {

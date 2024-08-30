@@ -7,10 +7,18 @@ import Button from "@mui/material/Button";
 import {ChatOutlined, HelpOutline, NotificationsNoneOutlined} from "@mui/icons-material";
 import {Breadcrumbs} from "../components/Breadcrumbs.tsx";
 import {Box} from "@mui/material";
+import {useCurrentAccount} from "../../context/current-account.tsx";
+import {Theme} from "../model/account.ts";
 
 export function CloudLayout() {
     const {activeItem} = useActiveMenuItem()
-    const isDarkModeEnabled = false
+    const account = useCurrentAccount()
+
+    let isDarkModeEnabled = account?.theme === Theme.DARK
+
+    if (account?.theme === Theme.SYSTEM && window.matchMedia) {
+        isDarkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
 
     return <>
         <div className={`cloud-layout ${isDarkModeEnabled ? 'dark' : ''}`}>

@@ -1,11 +1,12 @@
 import {AccountPlan} from './account-plan';
 
 export interface Account {
+    email: string
+    theme: Theme
     version: number
     id: string
     name?: string
     plan?: AccountPlan
-    email: string
 }
 
 export const AccountEntityInfo = {
@@ -14,12 +15,18 @@ export const AccountEntityInfo = {
     restPath: "account",
 }
 
+export enum Theme {
+    SYSTEM = "SYSTEM",
+    LIGHT = "LIGHT",
+    DARK = "DARK",
+}
+
 export const AccountResource = {
   "auditData": {
     "createdBy": "admin",
     "updatedBy": "admin",
     "createdOn": "2024-01-06T21:56:16Z",
-    "updatedOn": "2024-08-28T20:02:25Z"
+    "updatedOn": "2024-08-30T08:49:45Z"
   },
   "name": "Account",
   "namespace": {
@@ -59,6 +66,19 @@ export const AccountResource = {
       "reference": "default/AccountPlan",
       "annotations": {
         "SourceMatchKey": "64acf811eed7"
+      }
+    },
+    "theme": {
+      "type": "ENUM",
+      "required": true,
+      "defaultValue": "SYSTEM",
+      "enumValues": [
+        "SYSTEM",
+        "LIGHT",
+        "DARK"
+      ],
+      "annotations": {
+        "SourceMatchKey": "99d8b8d228f2"
       }
     },
     "version": {

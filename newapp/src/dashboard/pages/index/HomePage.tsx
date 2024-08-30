@@ -217,9 +217,9 @@ export default function HomePage() {
                                 <span>Java Script</span>
                                 <br/>
                                 <span>
-                  Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem
-                  Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-                </span>
+                                  Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem
+                                  Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit Amet
+                                </span>
                             </div>
                         </div>
                         <hr/>
@@ -235,9 +235,9 @@ export default function HomePage() {
                                 <span>Java Script</span>
                                 <br/>
                                 <span>
-                  Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem
-                  Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-                </span>
+                                  Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem
+                                  Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit Amet
+                                </span>
                             </div>
                         </div>
                         <hr/>
@@ -279,9 +279,9 @@ export default function HomePage() {
                                 </button>
                             </div>
                             <span>
-                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
-                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-              </span>
+                                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
+                                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
+                            </span>
                         </div>
                     </div>
                     <div className="m1-div4-2">
@@ -294,9 +294,9 @@ export default function HomePage() {
                                 </button>
                             </div>
                             <span>
-                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
-                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-              </span>
+                                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
+                                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
+                            </span>
                         </div>
                     </div>
                     <div className="m1-div4-2">
@@ -309,9 +309,9 @@ export default function HomePage() {
                                 </button>
                             </div>
                             <span>
-                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
-                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-              </span>
+                                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
+                                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
+                            </span>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import {Instance, InstanceEntityInfo} from "../../model/instance";
+import {Instance, InstanceEntityInfo} from "../model/instance";
 import {LoadingOverlay} from "common";
 
 import {Box, Card, Grid, IconButton, Popover, Stack, Typography} from "@mui/material";
@@ -10,11 +10,11 @@ import {ArrowForwardIos, FilterList, Info, Refresh, Remove, Search, Settings} fr
 import {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
-import {useDrawer} from "../../../hooks/use-drawer.tsx";
-import {NewProjectDrawer} from "../../components/NewProjectDrawer.tsx";
-import {EditProjectDrawer} from "../../components/EditProjectDrawer.tsx";
+import {useDrawer} from "../../hooks/use-drawer.tsx";
+import {NewProjectDrawer} from "../components/NewProjectDrawer.tsx";
+import {EditProjectDrawer} from "../components/EditProjectDrawer.tsx";
 import {ListRecordParams} from "@apibrew/client";
-import {ProjectInfoDrawer} from "../../components/ProjectInfoDrawer.tsx";
+import {ProjectInfoDrawer} from "../components/ProjectInfoDrawer.tsx";
 
 export function ProjectsPage() {
     const navigate = useNavigate()

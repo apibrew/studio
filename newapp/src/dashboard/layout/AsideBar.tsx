@@ -1,7 +1,7 @@
 import {ArrowLeft, ArrowRight, LogoutOutlined, Person, Settings} from "@mui/icons-material";
 import {useState} from "react";
 import {MenuItem, menuItems} from "./menu.tsx";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {getClassName} from "../../util/classes.ts";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {getUserDisplayName, useCurrentUser} from "../../context/current-user.tsx";
@@ -10,6 +10,7 @@ import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 export function AsideBar() {
     const {activeItem, activeSubItem} = useActiveMenuItem()
     const currentUser = useCurrentUser()
+    const navigate = useNavigate()
 
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
@@ -81,7 +82,10 @@ export function AsideBar() {
         <hr/>
 
         <div className="flex-center">
-            <button className="sidebar-photo flex-center">
+            <button className="sidebar-photo flex-center"
+                    onClick={() => {
+                        navigate('/cloud/account')
+                    }}>
                 <Person/>
                 <div>
                     <span>{getUserDisplayName(currentUser)}</span>
