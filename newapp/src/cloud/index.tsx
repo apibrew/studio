@@ -7,11 +7,14 @@ import {User} from "@apibrew/client/model";
 import toast from "react-hot-toast";
 import {handleErrorMessage} from "../util/errors.ts";
 import {UserEntityInfo} from "@apibrew/client/model/user";
+import {CurrentAccountContext} from "../context/current-account.tsx";
+import {Account, AccountEntityInfo} from "./model/account.ts";
 
 
 export default function () {
     const hostClient = useHostClient()
     const userRepository = hostClient.repository<User>(UserEntityInfo)
+    const accountRepository = hostClient.repository<Account>(AccountEntityInfo)
 
     useEffect(() => {
         hostClient.refreshToken().then(() => {
@@ -22,14 +25,24 @@ export default function () {
             }).catch(err => {
                 toast.error(handleErrorMessage(err))
             })
+            accountRepository.load({
+                email: hostClient.getTokenBody()?.username
+            }, ['$.plan']).then(account => {
+                setAccount(account)
+            }).catch(err => {
+                toast.error(handleErrorMessage(err))
+            })
         })
     }, []);
     const [user, setUser] = useState<User>()
+    const [account, setAccount] = useState<Account>()
 
     return <>
         <ClientProvider value={hostClient}>
             <CurrentUserContext.Provider value={user}>
-                <CloudLayout/>
+                <CurrentAccountContext.Provider value={account}>
+                    <CloudLayout/>
+                </CurrentAccountContext.Provider>
             </CurrentUserContext.Provider>
         </ClientProvider>
     </>

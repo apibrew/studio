@@ -1,38 +1,64 @@
 
-export interface GithubSso {
-    email?: string
-    details?: any
+export interface AccountPlan {
+    amount: number
+    limits?: PlanLimits
     version: number
+    currency: string
     auditData?: AuditData
+    attributes?: { [key: string]: string }
     id: string
-    code?: string
+    name: string
 }
 
-export const GithubSsoEntityInfo = {
+export const AccountPlanEntityInfo = {
     namespace: "default",
-    resource: "GithubSso",
-    restPath: "github-sso",
+    resource: "AccountPlan",
+    restPath: "account-plan",
+}
+
+export interface PlanLimits {
+    maxRecordCount: number
+    maxResourceCount: number
+    requestPerMinute: number
+    maxNamespaceCount: number
 }
 
 export interface AuditData {
+    updatedBy: string
     updatedOn: string
     createdBy: string
     createdOn: string
-    updatedBy: string
 }
 
-export const GithubSsoResource = {
+export const AccountPlanResource = {
   "auditData": {
     "createdBy": "admin",
     "updatedBy": "system",
-    "createdOn": "2024-01-06T21:53:24Z",
+    "createdOn": "2024-08-28T18:13:13Z",
     "updatedOn": "2024-04-12T19:16:01Z"
   },
-  "name": "GithubSso",
+  "name": "AccountPlan",
   "namespace": {
     "name": "default"
   },
   "properties": {
+    "amount": {
+      "type": "INT32",
+      "required": true,
+      "description": "The amount of the payment",
+      "annotations": {
+        "SourceMatchKey": "c32736b1050a"
+      }
+    },
+    "attributes": {
+      "type": "MAP",
+      "item": {
+        "type": "STRING"
+      },
+      "annotations": {
+        "SourceMatchKey": "7878061a4d34"
+      }
+    },
     "auditData": {
       "type": "STRUCT",
       "typeRef": "AuditData",
@@ -45,17 +71,17 @@ export const GithubSsoResource = {
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
       "annotations": {
+        "SourceMatchKey": "962f3e1d248b",
         "SpecialProperty": "true"
       }
     },
-    "code": {
-      "type": "STRING"
-    },
-    "details": {
-      "type": "OBJECT"
-    },
-    "email": {
-      "type": "STRING"
+    "currency": {
+      "type": "STRING",
+      "required": true,
+      "description": "The currency of the payment",
+      "annotations": {
+        "SourceMatchKey": "7b6b707fdab4"
+      }
     },
     "id": {
       "type": "UUID",
@@ -65,7 +91,24 @@ export const GithubSsoResource = {
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
+        "SourceMatchKey": "475c7ce00c0c",
         "SpecialProperty": "true"
+      }
+    },
+    "limits": {
+      "type": "STRUCT",
+      "typeRef": "PlanLimits",
+      "annotations": {
+        "SourceMatchKey": "7ab3af2f6256"
+      }
+    },
+    "name": {
+      "type": "STRING",
+      "required": true,
+      "unique": true,
+      "description": "The user of the payment",
+      "annotations": {
+        "SourceMatchKey": "c5108f7ca4cf"
       }
     },
     "version": {
@@ -77,11 +120,35 @@ export const GithubSsoResource = {
       "description": "The version of the resource/record. It is incremented on every update.",
       "annotations": {
         "AllowEmptyPrimitive": "true",
+        "SourceMatchKey": "918f0d1b9476",
         "SpecialProperty": "true"
       }
     }
   },
   "types": [
+    {
+      "name": "PlanLimits",
+      "title": "",
+      "description": "",
+      "properties": {
+        "maxNamespaceCount": {
+          "type": "INT32",
+          "description": "The max namespace count"
+        },
+        "maxRecordCount": {
+          "type": "INT32",
+          "description": "The max record count"
+        },
+        "maxResourceCount": {
+          "type": "INT32",
+          "description": "The max resource count"
+        },
+        "requestPerMinute": {
+          "type": "INT32",
+          "description": "The request per minute"
+        }
+      }
+    },
     {
       "name": "AuditData",
       "title": "Audit Data",
@@ -131,7 +198,6 @@ export const GithubSsoResource = {
     }
   ],
   "annotations": {
-    "AllowPublicCreateAccess": "true",
     "EnableAudit": "true"
   }
 } as unknown

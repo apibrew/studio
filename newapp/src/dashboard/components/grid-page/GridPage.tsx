@@ -2,7 +2,6 @@ import {ComponentType} from "react";
 import {PageLayout} from "../../../layout/PageLayout.tsx";
 import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Button from "@mui/material/Button";
-import {useConfirmation} from "../modal/use-confirmation.tsx";
 import {useRepository, useResourceByName} from "@apibrew/react";
 import {LoadingOverlay} from "common";
 import {Entity} from "@apibrew/client";
@@ -12,6 +11,7 @@ import toast from "react-hot-toast";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {ValueDrawerComponent, ValueDrawerComponentFormProps} from "../common/ValueDrawerComponent.tsx";
 import {label} from "../../../util/record.ts";
+import {useConfirmation} from "../../../components/modal/use-confirmation.tsx";
 
 export interface GridPageProps<T> {
     entityInfo: EntityInfo

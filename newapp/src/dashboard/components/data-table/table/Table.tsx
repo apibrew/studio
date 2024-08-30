@@ -16,10 +16,10 @@ import {toTitleCase} from "../../../../util/case.ts";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import {useDrawer} from "../../../../hooks/use-drawer.tsx";
-import {useConfirmation} from "../../modal/use-confirmation.tsx";
 import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
 import {propertyDrawerMultiDrawer} from "../../property-drawer/PropertyDrawer.tsx";
 import {useAnalytics} from "../../../hooks/use-analytics.ts";
+import {useConfirmation} from "../../../../components/modal/use-confirmation.tsx";
 
 export interface DataTableTableProps {
     resource: Resource

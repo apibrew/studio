@@ -1,61 +1,61 @@
+import {AccountPlan} from '../account-plan';
+import {Account} from '../account';
 
-export interface GithubSso {
-    email?: string
-    details?: any
+export interface ChangePlan {
     version: number
     auditData?: AuditData
     id: string
-    code?: string
+    plan?: AccountPlan
+    account?: Account
 }
 
-export const GithubSsoEntityInfo = {
-    namespace: "default",
-    resource: "GithubSso",
-    restPath: "github-sso",
+export const ChangePlanEntityInfo = {
+    namespace: "ops",
+    resource: "ChangePlan",
+    restPath: "ops-change-plan",
 }
 
 export interface AuditData {
-    updatedOn: string
     createdBy: string
     createdOn: string
     updatedBy: string
+    updatedOn: string
 }
 
-export const GithubSsoResource = {
+export const ChangePlanResource = {
   "auditData": {
     "createdBy": "admin",
-    "updatedBy": "system",
-    "createdOn": "2024-01-06T21:53:24Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "updatedBy": "admin",
+    "createdOn": "2024-08-29T11:24:38Z",
+    "updatedOn": "2024-08-29T11:27:55Z"
   },
-  "name": "GithubSso",
+  "name": "ChangePlan",
   "namespace": {
-    "name": "default"
+    "name": "ops"
   },
   "properties": {
+    "account": {
+      "type": "REFERENCE",
+      "reference": "default/Account",
+      "annotations": {
+        "SourceMatchKey": "4f6226d930b8"
+      }
+    },
     "auditData": {
       "type": "STRUCT",
       "typeRef": "AuditData",
       "exampleValue": {
         "createdBy": "admin",
-        "createdOn": "2024-04-12T19:16:01Z",
+        "createdOn": "2024-05-19T12:49:19Z",
         "updatedBy": "admin",
-        "updatedOn": "2024-04-12T19:16:01Z"
+        "updatedOn": "2024-05-19T12:49:19Z"
       },
       "title": "Audit Data",
       "description": "The audit data of the resource/record. \nIt contains information about who created the resource/record, when it was created, who last updated the resource/record and when it was last updated.",
       "annotations": {
+        "SourceMatchKey": "de208ef8c9e7",
         "SpecialProperty": "true"
       }
-    },
-    "code": {
-      "type": "STRING"
-    },
-    "details": {
-      "type": "OBJECT"
-    },
-    "email": {
-      "type": "STRING"
     },
     "id": {
       "type": "UUID",
@@ -65,7 +65,15 @@ export const GithubSsoResource = {
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
+        "SourceMatchKey": "8973c36ee184",
         "SpecialProperty": "true"
+      }
+    },
+    "plan": {
+      "type": "REFERENCE",
+      "reference": "default/AccountPlan",
+      "annotations": {
+        "SourceMatchKey": "3b10514d5d32"
       }
     },
     "version": {
@@ -77,6 +85,7 @@ export const GithubSsoResource = {
       "description": "The version of the resource/record. It is incremented on every update.",
       "annotations": {
         "AllowEmptyPrimitive": "true",
+        "SourceMatchKey": "0b23f1f9d15d",
         "SpecialProperty": "true"
       }
     }
@@ -101,7 +110,7 @@ export const GithubSsoResource = {
         "createdOn": {
           "type": "TIMESTAMP",
           "immutable": true,
-          "exampleValue": "2024-04-12T19:16:01Z",
+          "exampleValue": "2024-05-19T12:49:19Z",
           "title": "Created On",
           "description": "The timestamp when the resource/record was created.",
           "annotations": {
@@ -120,7 +129,7 @@ export const GithubSsoResource = {
         },
         "updatedOn": {
           "type": "TIMESTAMP",
-          "exampleValue": "2024-04-12T19:16:01Z",
+          "exampleValue": "2024-05-19T12:49:19Z",
           "title": "Updated On",
           "description": "The timestamp when the resource/record was last updated.",
           "annotations": {
@@ -131,7 +140,6 @@ export const GithubSsoResource = {
     }
   ],
   "annotations": {
-    "AllowPublicCreateAccess": "true",
     "EnableAudit": "true"
   }
 } as unknown

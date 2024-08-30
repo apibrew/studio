@@ -3,14 +3,16 @@ import {ArrowForwardIos, Home} from "@mui/icons-material";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Link, useParams} from "react-router-dom";
 import {useConnection} from "../context/ConnectionContext.tsx";
+import {useCurrentInstance} from "../../context/current-instance.tsx";
 
 export function Breadcrumbs() {
     const {activeItem, activeSubItem} = useActiveMenuItem()
     const params = useParams()
     const connection = useConnection()
+    const instance = useCurrentInstance()
 
     const connectionBreadcrumpItem = {
-        title: connection?.name,
+        title: instance?.title || connection?.name,
         link: undefined
     }
 

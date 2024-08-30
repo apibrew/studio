@@ -1,22 +1,22 @@
-import JSONInput from "react-json-editor-ajrm";
-import {localeEn} from "../../data-table/table/json-input";
+import {JsonEditor as JE} from 'json-edit-react'
+import 'jsoneditor-react/es/editor.min.css';
 import {FC} from "react";
 import {PropertyFormProps} from "core";
+import {Box} from "@mui/material";
 
 const JsonEditor: FC<PropertyFormProps<object>> = (props: PropertyFormProps<object>) => {
-    return <JSONInput
-        placeholder={props.value || {}}
-        locale={localeEn}
-        height='550px'
-        width='100%'
-        onChange={(e: any) => {
-            if (e.error) {
-                props.onChange(props.value, false)
-                return
-            }
-            props.onChange(e.jsObject, true)
-        }}
-    />
+    return <>
+        <Box height='500px'>
+            <JE
+                rootName={''}
+                data={props.value || {}}
+                setData={data => {
+                    props.onChange(data as any, true)
+                }}
+                enableClipboard={true}
+            />
+        </Box>
+    </>
 };
 
 export default JsonEditor;

@@ -4,32 +4,32 @@ import {Instance, InstanceEntityInfo} from "../model/instance.ts";
 import {useState} from "react";
 import Button from "@mui/material/Button";
 import {useExtensionController} from "../../hooks/use-extension-controller.ts";
-import {useRepository, useTokenBody} from "@apibrew/react";
+import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {handleErrorMessage} from "../../util/errors.ts";
+import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
+import {handleDeploymentTask} from "../util/deployment.tsx";
+import {DeploymentTask, DeploymentTaskEntityInfo, Kind} from "../model/deployment-task.ts";
 
-export interface NewProjectDrawerProps {
+export interface EditProjectDrawerProps {
+    instance: Instance
     onClose: () => void
 }
 
-export function NewProjectDrawer(props: NewProjectDrawerProps) {
-    const tokenBody = useTokenBody()
+export function EditProjectDrawer(props: EditProjectDrawerProps) {
     const repository = useRepository<Instance>(InstanceEntityInfo)
+    const deploymentRepository = useRepository<DeploymentTask>(DeploymentTaskEntityInfo)
 
-    const [instance, setInstance] = useState<Instance>({
-        name: '',
-        title: '',
-        description: '',
-        owner: tokenBody.username,
-    } as Instance)
+    const [instance, setInstance] = useState<Instance>(props.instance)
+    const confirmation = useConfirmation()
 
     const extensionController = useExtensionController()
 
-    function createInstance() {
-        toast.promise(repository.create(instance), {
+    function updateInstance() {
+        toast.promise(repository.update(instance), {
             loading: 'Creating project...',
             success: (createdInstance) => {
-                return `Instance ${createdInstance.name} created`
+                return `Instance ${createdInstance.name} updated`
             },
             error: err => handleErrorMessage(err)
         }).then(() => {
@@ -37,8 +37,15 @@ export function NewProjectDrawer(props: NewProjectDrawerProps) {
         })
     }
 
+    function destroyInstance() {
+        handleDeploymentTask(deploymentRepository, instance, Kind.DESTROY).then(() => {
+            props.onClose()
+        })
+    }
+
     return <Box m={3}
                 width='600px'>
+        {confirmation.render()}
         <Typography variant='h5'>
             Create a new project
         </Typography>
@@ -97,6 +104,26 @@ export function NewProjectDrawer(props: NewProjectDrawerProps) {
         </Box>
         <Box m={2} display='flex' justifyContent='flex-end'>
             <Button
+                sx={{
+                    marginLeft: 2
+                }}
+                variant='contained'
+                color='error'
+                onClick={() => {
+                    confirmation.open({
+                        kind: 'danger',
+                        title: 'Are you sure to destroy project?',
+                        message: 'This will destroy your project and all data will be lost. This is irreversible.',
+                        onConfirm: () => {
+                            destroyInstance()
+                        }
+                    })
+                }}
+            >
+                Destroy Project
+            </Button>
+            <Box flexGrow={1}/>
+            <Button
                 variant='contained'
                 color='secondary'
                 onClick={() => {
@@ -112,10 +139,10 @@ export function NewProjectDrawer(props: NewProjectDrawerProps) {
                 variant='contained'
                 color='primary'
                 onClick={() => {
-                    createInstance()
+                    updateInstance()
                 }}
             >
-                Create Project
+                Update Project
             </Button>
         </Box>
     </Box>

@@ -2,27 +2,27 @@ import {InstancePlan} from './instance-plan';
 import {Database} from './database';
 
 export interface Instance {
-    plan?: InstancePlan
     domain?: string
-    version: number
-    id: string
-    owner?: string
-    modules?: any
-    cluster: string
-    title?: string
-    database: Database
-    additionalConfig?: any
-    controllerAccessToken?: string
-    health: Health
-    auditData?: AuditData
-    namespace: string
     description?: string
-    branch: string
     adminPassword?: string
-    paidPlanUntil?: string
-    backendVersion: string
-    deploymentStatus: DeploymentStatus
     name: string
+    auditData?: AuditData
+    backendVersion: string
+    plan?: InstancePlan
+    additionalConfig?: any
+    branch: string
+    health: Health
+    version: number
+    controllerAccessToken?: string
+    title?: string
+    modules?: any
+    deploymentStatus: DeploymentStatus
+    namespace: string
+    cluster: string
+    paidPlanUntil?: string
+    owner?: string
+    id: string
+    database: Database
     replicaCount: number
 }
 
@@ -33,10 +33,10 @@ export const InstanceEntityInfo = {
 }
 
 export interface AuditData {
+    updatedOn: string
     createdBy: string
     createdOn: string
     updatedBy: string
-    updatedOn: string
 }
 
 export enum Health {

@@ -1,13 +1,13 @@
 import {Instance} from './instance';
 
 export interface InstanceServerConfig {
+    instance: Instance
     helmValues?: string
     builderConfig?: string
     id: string
     config?: string
     modules?: string
     version: number
-    instance: Instance
 }
 
 export const InstanceServerConfigEntityInfo = {

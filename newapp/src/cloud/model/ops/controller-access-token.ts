@@ -1,10 +1,10 @@
 
 export interface ControllerAccessToken {
-    version: number
-    instance: string
     username?: string
     id: string
     token?: string
+    version: number
+    instance: string
 }
 
 export const ControllerAccessTokenEntityInfo = {

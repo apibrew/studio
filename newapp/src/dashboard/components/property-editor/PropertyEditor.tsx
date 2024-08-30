@@ -47,13 +47,15 @@ export function PropertyEditor(props: PropertyEditorProps) {
                 </Box>
             </CardContent>
             <CardActions>
-                <Button disabled={!valid}
-                        onClick={() => {
-                            props.onApply(value);
-                            props.onClose();
-                        }}>Apply</Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>
                 <Button onClick={() => setValue(props.value)}>Reset</Button>
+                <Button
+                    color='primary'
+                    disabled={!valid}
+                    onClick={() => {
+                        props.onApply(value);
+                        props.onClose();
+                    }}>Apply</Button>
             </CardActions>
         </Card>
     </Box>

@@ -11,6 +11,10 @@ import {UserEntityInfo} from "@apibrew/client/model/user";
 import {handleErrorMessage} from "../util/errors.ts";
 import {useHostClient} from "../hooks/use-host-client.tsx";
 import {CurrentUserContext} from "../context/current-user.tsx";
+import {CurrentAccountContext} from "../context/current-account.tsx";
+import {Account, AccountEntityInfo} from "../cloud/model/account.ts";
+import {CurrentInstanceContext} from "../context/current-instance.tsx";
+import {Instance, InstanceEntityInfo} from "../cloud/model/instance.ts";
 
 
 export function DashboardPage() {
@@ -22,16 +26,45 @@ export function DashboardPage() {
     const hostClient = useHostClient()
 
     const userRepository = hostClient.repository<User>(UserEntityInfo)
+    const accountRepository = hostClient.repository<Account>(AccountEntityInfo)
+    const instanceRepository = hostClient.repository<Instance>(InstanceEntityInfo)
     const [user, setUser] = useState<User>()
+    const [account, setAccount] = useState<Account>()
+    const [instance, setInstance] = useState<Instance>()
 
     useEffect(() => {
+        const username = hostClient.getTokenBody()?.username
         userRepository.load({
-            username: hostClient.getTokenBody()?.username
+            username: username
         }).then(user => {
             setUser(user)
         }).catch(err => {
+            console.error(err)
             toast.error(handleErrorMessage(err))
         })
+        accountRepository.load({
+            email: username
+        }, ['$.plan']).then(account => {
+            setAccount(account)
+        }).catch(err => {
+            console.error(err)
+            toast.error(handleErrorMessage(err))
+        })
+        accountRepository.load({
+            email: username
+        }, ['$.plan']).then(account => {
+            setAccount(account)
+        }).catch(err => {
+            console.error(err)
+            toast.error(handleErrorMessage(err))
+        })
+        instanceRepository.load({
+            name: connectionName,
+            owner: username
+        }).then(setInstance)
+            .catch(err => {
+                console.error(err)
+            })
     }, [hostClient]);
 
     useEffect(() => {
@@ -88,7 +121,11 @@ export function DashboardPage() {
         <ClientProvider value={client}>
             <ConnectionContext.Provider value={connection}>
                 <CurrentUserContext.Provider value={user}>
-                    {client && <DashboardLayout/>}
+                    <CurrentAccountContext.Provider value={account}>
+                        <CurrentInstanceContext.Provider value={instance}>
+                            {client && <DashboardLayout/>}
+                        </CurrentInstanceContext.Provider>
+                    </CurrentAccountContext.Provider>
                 </CurrentUserContext.Provider>
             </ConnectionContext.Provider>
         </ClientProvider>

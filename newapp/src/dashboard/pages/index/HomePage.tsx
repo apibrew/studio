@@ -10,10 +10,12 @@ import {MetricWidget} from "../../components/widgets/MetricWidget.tsx";
 import {Duration, Metric} from "../../../cloud/model/metrics/instance-usage.ts";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {MetricsDrawer} from "../../components/metrics-drawer/MetricsDrawer.tsx";
+import {useCurrentInstance} from "../../../context/current-instance.tsx";
 
 export default function HomePage() {
     const user = useCurrentUser()
     const connection = useConnection()
+    const instance = useCurrentInstance()
     const client = useClient()
     const drawer = useDrawer()
 
@@ -83,7 +85,7 @@ export default function HomePage() {
             <hr/>
             <div className="m1-div2">
                 <div className="m1-div2-1">
-                    <span className="m1-div2-sp1">{connection.title}</span>
+                    <span className="m1-div2-sp1">{instance?.title || connection.title}</span>
                     <Button variant='contained'
                             size='large'
                             color='secondary'>

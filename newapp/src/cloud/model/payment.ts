@@ -1,17 +1,17 @@
 
 export interface Payment {
     amount: number
-    paymentDate?: string
-    currency: string
-    auditData?: AuditData
+    version: number
     responses?: string[]
     id: string
-    token?: string
-    paymentId?: string
     user: string
+    currency: string
+    token?: string
     status: Status
-    version: number
+    paymentId?: string
     returnUrl?: string
+    auditData?: AuditData
+    paymentDate?: string
 }
 
 export const PaymentEntityInfo = {

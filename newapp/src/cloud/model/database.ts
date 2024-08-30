@@ -1,10 +1,10 @@
 
 export interface Database {
-    config: DbConfig
-    version: number
     auditData?: AuditData
     id: string
     name: string
+    config: DbConfig
+    version: number
 }
 
 export const DatabaseEntityInfo = {
@@ -23,10 +23,10 @@ export interface DbConfig {
 }
 
 export interface AuditData {
-    updatedBy: string
     updatedOn: string
     createdBy: string
     createdOn: string
+    updatedBy: string
 }
 
 export const DatabaseResource = {

@@ -5,7 +5,7 @@ import {Link, useParams} from "react-router-dom";
 import {getClassName} from "../../util/classes.ts";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {getUserDisplayName, useCurrentUser} from "../../context/current-user.tsx";
-import {useConfirmation} from "../components/modal/use-confirmation.tsx";
+import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 
 export function AsideBar() {
     const {activeItem, activeSubItem} = useActiveMenuItem()

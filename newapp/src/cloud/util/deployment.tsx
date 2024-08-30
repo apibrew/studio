@@ -1,7 +1,7 @@
-import {Instance} from "../../model/instance.ts";
-import {DeploymentTask, Kind} from "../../model/deployment-task.ts";
 import toast from "react-hot-toast";
 import {Repository} from "@apibrew/client";
+import {DeploymentTask, Kind} from "../model/deployment-task.ts";
+import {Instance} from "../model/instance.ts";
 
 export const handleDeploymentTask = (deploymentTaskRepository: Repository<DeploymentTask>, instance: Instance, kind: Kind) => {
     const promise = deploymentTaskRepository.create({
@@ -33,7 +33,7 @@ export const handleDeploymentTask = (deploymentTaskRepository: Repository<Deploy
             break;
     }
 
-    toast.promise(promise, {
+    return toast.promise(promise, {
         loading: loadingMessage,
         success: <b>{successMessage} </b>,
         error: 'Failed to save settings - todo fix',

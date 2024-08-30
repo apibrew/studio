@@ -1,18 +1,20 @@
 import {Instance, InstanceEntityInfo} from "../../model/instance";
 import {LoadingOverlay} from "common";
 
-import {Badge, Box, Card, Grid, IconButton, Popover, Stack, Typography} from "@mui/material";
-import {Direction, useWatcher} from "@apibrew/react";
+import {Box, Card, Grid, IconButton, Popover, Stack, Typography} from "@mui/material";
+import {Direction, useRepository, useWatcher} from "@apibrew/react";
 import {BooleanExpression} from "@apibrew/client/model/permission";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import {ArrowForwardIos, FilterList, Info, Refresh, Remove, Search, Settings} from "@mui/icons-material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
-import {useDataProvider} from "../../../dashboard/components/data-provider/use-data-provider.tsx";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {NewProjectDrawer} from "../../components/NewProjectDrawer.tsx";
+import {EditProjectDrawer} from "../../components/EditProjectDrawer.tsx";
+import {ListRecordParams} from "@apibrew/client";
+import {ProjectInfoDrawer} from "../../components/ProjectInfoDrawer.tsx";
 
 export function ProjectsPage() {
     const navigate = useNavigate()
@@ -20,42 +22,62 @@ export function ProjectsPage() {
 
     const wi = useWatcher(InstanceEntityInfo)
     const [showDestroyed, setShowDestroyed] = useState(false)
+    const repository = useRepository<Instance>(InstanceEntityInfo)
+    const [loading, setLoading] = useState(true)
+    var [data, setData] = useState<Instance[]>([])
 
-    let query = {
-        not: {
-            equal: {
-                left: {
-                    property: 'deploymentStatus'
-                },
-                right: {
-                    value: 'DESTROYED'
+    function buildParams(): ListRecordParams {
+        let query = {
+            not: {
+                equal: {
+                    left: {
+                        property: 'deploymentStatus'
+                    },
+                    right: {
+                        value: 'DESTROYED'
+                    }
                 }
             }
+        } as unknown as BooleanExpression
+
+        if (showDestroyed) {
+            query = undefined as unknown as BooleanExpression
         }
-    } as unknown as BooleanExpression
 
-    if (showDestroyed) {
-        query = {} as BooleanExpression
+        return {
+            query: query,
+            limit: 1000,
+            resolveReferences: ['$.plan'],
+            sorting: [{
+                property: 'auditData.createdOn',
+                direction: Direction.DESC
+            }]
+        }
     }
 
-    const params = {
-        query: query,
-        limit: 1000,
-        resolveReferences: ['$.plan'],
-        sorting: [{
-            property: 'auditData.createdOn',
-            direction: Direction.DESC
-        }]
+    function load() {
+        setLoading(true)
+        setData([])
+        const params = buildParams()
+        repository.list(params)
+            .then(resp => {
+                setData(resp.content)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
-    const data = useDataProvider<Instance>(InstanceEntityInfo, params, wi);
+    useEffect(() => {
+        load()
+    }, [showDestroyed, wi]);
 
     const [searchAnchor, setSearchAnchor] = useState<null | HTMLElement>(null)
     const [filtersAnchor, setFiltersAnchor] = useState<null | HTMLElement>(null)
     const [searchValueLocal, setSearchValueLocal] = useState('')
     const [searchValue, setSearchValue] = useState('')
 
-    const projects = (data.records || []).filter(item => {
+    const projects = (data || []).filter(item => {
         if (searchValue === '') {
             return true
         }
@@ -69,14 +91,14 @@ export function ProjectsPage() {
     return <Box width='100%'>
         {drawer.render()}
         <Box justifyContent='space-between' display='flex'>
-            <Typography variant='h5'>Projects ({projects && projects.length})</Typography>
+            <Typography variant='h5'>Projects {!loading && '(' + projects.length + ')'}</Typography>
             <Stack spacing={2} direction='row'>
                 <Button
                     size='small'
                     color='secondary'
                     variant='contained'
                     onClick={() => {
-                        data.refresh()
+                        load()
                     }}
                 >
                     <Refresh/>
@@ -140,7 +162,7 @@ export function ProjectsPage() {
                            flexDirection='row'>
                         Show destroyed: <Checkbox checked={showDestroyed} onChange={(_, value) => {
                         setShowDestroyed(value)
-                        data.refresh()
+                        load()
                     }}/>
                     </Stack>
                 </Popover>
@@ -160,7 +182,7 @@ export function ProjectsPage() {
                     onClick={() => {
                         drawer.open(<NewProjectDrawer onClose={() => {
                             drawer.close()
-                            data.refresh()
+                            load()
                         }}/>)
                     }}
                 >
@@ -169,7 +191,7 @@ export function ProjectsPage() {
             </Stack>
         </Box>
 
-        {data.loading && <LoadingOverlay/>}
+        {loading && <LoadingOverlay/>}
 
         <Grid mt={2} container spacing={2}>
             {projects.map((item) => <Grid item xs={12} sm={3} lg={3} xl={2}>
@@ -194,16 +216,30 @@ export function ProjectsPage() {
                         <Box display='flex' flexDirection='row' p={1}>
                             <IconButton
                                 onClick={() => {
-
+                                    drawer.open(<EditProjectDrawer
+                                        instance={item}
+                                        onClose={() => {
+                                            drawer.close()
+                                            load()
+                                        }}/>)
                                 }}
                             >
                                 <Settings/>
                             </IconButton>
                             <Box flexGrow={1}/>
-                            <Badge>
-                                <Typography variant="body2">{item.deploymentStatus}</Typography>
-                            </Badge>
-                            <Info/>
+                            <Typography variant="body2">{item.deploymentStatus}</Typography>
+                            <IconButton
+                                onClick={() => {
+                                    drawer.open(<ProjectInfoDrawer
+                                        instance={item}
+                                        onClose={() => {
+                                            drawer.close()
+                                            load()
+                                        }}/>)
+                                }}
+                            >
+                                <Info/>
+                            </IconButton>
                         </Box>
                     </Box>
                 </Card>

@@ -14,8 +14,6 @@ export interface JsonEditorDrawerProps {
 export function JsonEditorDrawer(props: JsonEditorDrawerProps) {
     const [value, setValue] = useState(props.value)
 
-    console.log(value)
-
     return <Box width='600px'>
         <Card>
             <CardHeader title={props.title}/>

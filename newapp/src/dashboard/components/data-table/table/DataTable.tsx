@@ -5,13 +5,13 @@ import Button from "@mui/material/Button";
 import {Domain, FilterList, Refresh, Remove, Search, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
-import {useConfirmation} from "../../modal/use-confirmation";
 import toast from "react-hot-toast";
 import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
 import {Sorting} from "./Sorting";
 import {useAnalytics} from "../../../hooks/use-analytics";
 import {useDrawer} from "../../../../hooks/use-drawer.tsx";
 import {handleErrorMessage} from "../../../../util/errors.ts";
+import {useConfirmation} from "../../../../components/modal/use-confirmation.tsx";
 
 export interface TableContainerProps {
     resource: Resource

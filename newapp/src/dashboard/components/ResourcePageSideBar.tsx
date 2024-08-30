@@ -12,10 +12,10 @@ import {openMultiDrawer} from "./multi-drawer/MultiDrawer.tsx";
 import {useState} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
-import {useConfirmation} from "./modal/use-confirmation.tsx";
 import {resourceDrawerMultiDrawer} from "./resource-drawer/ResourceDrawer.tsx";
 import toast from "react-hot-toast";
 import {handleErrorMessage} from "../../util/errors.ts";
+import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 
 export function ResourcePageSideBar() {
     const [wi, setWi] = useState<number>(0)
