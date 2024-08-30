@@ -1,6 +1,5 @@
 import {Resource} from "@apibrew/client/model";
 import {Add, Delete, Edit, Refresh, Search} from "@mui/icons-material";
-import {useModal} from "../modal/use-modal";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -15,8 +14,9 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
 import {TableContainer, TablePagination} from "@mui/material";
 import {ListRecordParams} from "@apibrew/client/list-record-params";
-import {useConfirmation} from "../modal/use-confirmation";
 import {useNavigate} from "react-router-dom";
+import {useModal} from "../../../components/modal/use-modal.tsx";
+import {useConfirmation} from "../../../components/modal/use-confirmation.tsx";
 
 export interface RecordListProps {
     resource: Resource

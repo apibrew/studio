@@ -5,7 +5,6 @@ import {Box, Stack, Typography} from "@mui/material";
 import {Direction, useWatcher} from "@apibrew/react";
 import Button from "@mui/material/Button";
 import {Refresh} from "@mui/icons-material";
-import {useState} from "react";
 import {useDataProvider} from "../../../dashboard/components/data-provider/use-data-provider.tsx";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {Invoice, InvoiceEntityInfo} from "../../model/invoice.ts";
@@ -31,19 +30,7 @@ export function InvoicesPage() {
 
     const data = useDataProvider<Invoice>(InvoiceEntityInfo, params, wi);
 
-    const [searchValue, setSearchValue] = useState('')
-
-    const invoices = (data.records || []).filter(item => {
-        if (searchValue === '') {
-            return true
-        }
-
-        // return item.name.indexOf(searchValue) !== -1
-        //     || (item.title && item.title?.indexOf(searchValue) !== -1)
-        //     || (item.description && item.description?.indexOf(searchValue) !== -1)
-        //     || (item.owner && item.owner?.indexOf(searchValue) !== -1)
-        return true
-    })
+    const invoices = data.records || []
 
     return <Box width='100%'>
         {drawer.render()}
