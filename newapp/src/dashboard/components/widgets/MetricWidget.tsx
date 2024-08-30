@@ -4,6 +4,7 @@ import {Duration, InstanceUsage, InstanceUsageEntityInfo, Metric} from "../../..
 import {useEffect, useState} from "react";
 import {LoadingOverlay} from "common";
 import {useConnection} from "../../context/ConnectionContext.tsx";
+import {useCurrentUser} from "../../../context/current-user.tsx";
 
 export interface MetricWidgetProps {
     duration: Duration
@@ -13,6 +14,7 @@ export interface MetricWidgetProps {
 
 export function MetricWidget(props: MetricWidgetProps) {
     const hostClient = useHostClient()
+    const currentUser = useCurrentUser()
     const instanceUsageRepository = hostClient.repository<InstanceUsage>(InstanceUsageEntityInfo)
     const [requestMetric, setRequestMetric] = useState<InstanceUsage>()
 
@@ -25,7 +27,7 @@ export function MetricWidget(props: MetricWidgetProps) {
             },
             duration: props.duration,
             metric: props.metric,
-            owner: connection.name,
+            owner: currentUser?.username,
         } as InstanceUsage).then(instanceUsage => {
             setRequestMetric(instanceUsage)
         })
