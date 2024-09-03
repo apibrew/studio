@@ -11,6 +11,8 @@ import {Duration, Metric} from "../../../cloud/model/metrics/instance-usage.ts";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {MetricsDrawer} from "../../components/metrics-drawer/MetricsDrawer.tsx";
 import {useCurrentInstance} from "../../../context/current-instance.tsx";
+import {ProjectStatusDrawer} from "../../components/project-status/ProjectStatusDrawer.tsx";
+import {ProjectConnectDrawer} from "../../components/project-connect/ProjectStatusDrawer.tsx";
 
 export default function HomePage() {
     const user = useCurrentUser()
@@ -88,6 +90,9 @@ export default function HomePage() {
                     <span className="m1-div2-sp1">{instance?.title || connection.title}</span>
                     <Button variant='contained'
                             size='large'
+                            onClick={() => {
+                                drawer.open(<ProjectStatusDrawer onClose={drawer.close}/>)
+                            }}
                             color='secondary'>
                         <FiberManualRecord color={switchCase({
                             'disabled': health === undefined,
@@ -101,6 +106,9 @@ export default function HomePage() {
                     </Button>
                     <Button variant='contained'
                             size='large'
+                            onClick={() => {
+                                drawer.open(<ProjectConnectDrawer onClose={drawer.close}/>)
+                            }}
                             color='primary'>
                         Connect
                     </Button>
