@@ -30,7 +30,8 @@ html, body, #root {
 
 }
 
-.row1_1-create_account, .row2_1-welcome_back, .row2_2-blank {
+.row1_1-create_account, .row2_1-welcome_back, .row2_2-blank, .row2_3-incorrect, .row3_1-reset-password,
+ .row3_3-change_password, .row3_3-change_password-3fld {
     height: inherit;
     display: flex;
 
@@ -48,9 +49,9 @@ html, body, #root {
 
 .r1-1-div1-1 {
     color: #212121;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    -webkit-text-stroke-width: 1;
-    -webkit-text-stroke-color: #000;
+    // text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    // -webkit-text-stroke-width: 1px;
+    // -webkit-text-stroke-color: #000;
     font-size: 34px;
     font-weight: 600;
 }
@@ -256,11 +257,12 @@ html, body, #root {
 
 }
 
-
-
-
 .row2_1-welcome_back .r1-1-div1, .row2_2-blank .r1-1-div1 {
     margin: 40px auto 0;
+}
+
+.row2_3-incorrect .r1-1-div1, .row3_1-reset-password .r1-1-div1, .row3_3-change_password .r1-1-div1 {
+    margin: 80px auto 0;
 }
 
 .r2_2-div1 {
@@ -286,9 +288,7 @@ html, body, #root {
     position: absolute;
     bottom: 20px;
     left: 50px;
-
 }
-
 
 .r2_2-d2-p1 {
     font-size: 20px;
@@ -301,6 +301,61 @@ html, body, #root {
     font-weight: 400;
     color: rgba(196, 212, 234, 0.87);
 }
+
+.r2_3-div1 {
+    position: relative;
+    min-width: 600px;
+}
+
+.row2_3-d1-1 {
+    width: 300px;
+    padding: 0 15px 10px;
+    border-radius: 4px;
+    background-color: #FF5252;
+    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.20), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: none;
+}
+
+.row2_3-d1-1.error_popup {
+    display: block;
+}
+
+.row2_3-d1-1 p {
+    font: 400 14px Roboto;
+    color: fff;
+}
+
+.row2_3-d1-1 button {
+    font: 500 14px Roboto;
+    color: fff;
+    margin-top: 20px;
+    float: right;
+}
+
+.r3-1-p1 {
+    font: 400 14px Roboto;
+    color: #6E7286;
+    margin-bottom: 30px;
+}
+
+
+
+
+.r3_3-div1 {
+    font: 400 12px Roboto;
+    margin-top: 10px;
+}
+
+.r1-1-i1.error-blank + .r2_2-div1 + .r3_3-div1 {
+    display: none;
+}
+
+
+
+
 
 
 

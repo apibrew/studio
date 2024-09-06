@@ -97,12 +97,12 @@ export default function HomePage() {
                             fontSize: 13,
                             marginRight: 5
                         }}/>
-                        Project Status
+                        <span>Project Status</span>
                     </Button>
                     <Button variant='contained'
                             size='large'
                             color='primary'>
-                        Connect
+                        <span>Connect</span>
                     </Button>
                 </div>
                 <div className="m1-div2-2">

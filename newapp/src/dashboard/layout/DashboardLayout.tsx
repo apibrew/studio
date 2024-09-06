@@ -27,13 +27,13 @@ export function DashboardLayout() {
                     <Breadcrumbs/>
                     <div className="mh-div2 flex-center">
                         <Button variant='text'>
-                            <NotificationsNoneOutlined/> Notifications
+                            <NotificationsNoneOutlined/> <span>Notifications</span>
                         </Button>
                         <Button variant='text'>
-                            <ChatOutlined/> Feedback
+                            <ChatOutlined/> <span>Feedback</span>
                         </Button>
                         <Button variant='text'>
-                            <HelpOutline/> Help
+                            <HelpOutline/> <span>Help</span>
                         </Button>
                     </div>
                 </div>

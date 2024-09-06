@@ -22,13 +22,17 @@
     font-weight: 600;
 }
 
-
 @font-face {
     font-family: Roboto;
     src: url(/Roboto-Regular.ttf);
     font-weight: 400;
 }
 
+@font-face {
+    font-family: Roboto;
+    src: url(Roboto-Medium.ttf);
+    font-weight: 500;
+}
 
 
 html, body, #root {
@@ -294,14 +298,33 @@ hr {
     flex-grow: 1;
 }
 
-.mh-div2 {
-    /* height: 40px; */
+.mh-div1 a svg {
+    color: #667085;
 }
 
-.mh-div2 img {
-    width: 20px;
-    height: 20px;
-    vertical-align: -6px;
+.mh-div1 > svg {
+    width: 16px;
+    height: 16px;
+    color: #D0D5DD;
+    margin: 0 10px;
+}
+
+.mh-div1 span:last-child {
+    padding: 4px 8px;
+    font-weight: 600;
+    color: #344054;
+    background-color: #F9FAFB;
+    border-radius: 6px;
+}
+
+.mh-div2 {
+
+}
+
+.mh-div2 svg {
+    width: 24px;
+    height: 24px;
+    color: #344054;
 }
 
 .mh-div2 span {
@@ -312,7 +335,7 @@ hr {
 }
 
 .mh-div2 button:not(:last-child) span {
-    margin-right: 42px;
+    margin-right: 30px;
 }
 
 .user-info {
@@ -323,15 +346,17 @@ hr {
 .user-info div:first-child {
     font-size: 30px;
     font-weight: 600;
+    color: #101828;
 }
 
 .user-info div:last-child {
     font-size: 16px;
     font-weight: 400;
+    color: #475467;
 }
 
 .m1-div1 {
-    margin-top: 16px;
+    margin-top: 20px;
     margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
@@ -354,14 +379,17 @@ hr {
     margin-right: 16px;
 }
 
-.m1-div1-1 button {
+.m1-div1-1 a {
     font-size: 16px;
     font-weight: 600;
+    text-decoration: none;
+    color: #7F56D9;
 }
 
 .m1-div1-1 span {
     font-size: 14px;
     font-weight: 400;
+    color: #475467;
 }
 
 .m1-div2 {
@@ -379,6 +407,7 @@ hr {
     font-size: 30px;
     font-weight: 600;
     flex-grow: 1;
+    color: #101828;
 }
 
 .m1-div2-sp2 {
@@ -496,6 +525,7 @@ hr {
 .m1-div3-1 {
     font-size: 30px;
     font-weight: 600;
+    color: #101828;
 }
 
 .m1-div3-2 {
@@ -522,6 +552,8 @@ hr {
 .m1-div3-2-1-1 span:first-child {
     font-size: 18px;
     font-weight: 600;
+    color: #101828;
+
 }
 
 .m1-div3-2-1-1 span:last-child {
@@ -529,6 +561,7 @@ hr {
     font-weight: 400;
     margin-top: 10px;
     display: inline-block;
+    color: #475467;
 }
 
 .m1-div3-2-2 {

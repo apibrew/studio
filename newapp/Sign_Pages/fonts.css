@@ -28,6 +28,11 @@
     font-weight: 400;
 }
 
+@font-face {
+    font-family: Roboto;
+    src: url(Roboto-Medium.ttf);
+    font-weight: 500;
+}
 
 
 
