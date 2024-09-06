@@ -1,0 +1,33 @@
+@font-face {
+    font-family: ClashDisplay;
+    src: url(ClashDisplay-Semibold.otf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url(Inter-Regular.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url(Inter-Medium.ttf);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url(Inter-SemiBold.ttf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url(Roboto-Regular.ttf);
+    font-weight: 400;
+}
+
+
+
+

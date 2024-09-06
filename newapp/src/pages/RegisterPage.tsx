@@ -1,13 +1,6 @@
 'use client';
 
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-
-import {GitHub} from "@mui/icons-material";
-import {Layout} from "./modern-layout";
+import {Layout} from "./outer-layout.tsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
@@ -49,87 +42,85 @@ export const RegisterPage = () => {
 
     return (
         <Layout>
-            <div>
-                <Stack
-                    sx={{mb: 4}}
-                    spacing={1}
-                >
-                    <Typography variant="h5">Register</Typography>
-                    <Typography
-                        color="text.secondary"
-                        variant="body2"
-                    >
-                        Already have an account? &nbsp;
-                        <Link
-                            href={'login'}
-                            underline="hover"
-                            variant="subtitle2"
-                        >
-                            Log in
-                        </Link>
-                    </Typography>
-                </Stack>
-                <Stack spacing={3}>
-                    <TextField
-                        autoFocus
-                        fullWidth
-                        helperText='Your name'
-                        label="Name"
-                        name="name"
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                    <TextField
-                        autoFocus
-                        fullWidth
-                        helperText='You can use your email or username'
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        fullWidth
-                        helperText='Your password'
-                        label="Password"
-                        name="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Stack>
-                <Button
-                    fullWidth
-                    sx={{mt: 3}}
-                    size="large"
-                    variant="contained"
-                    onClick={() => handleRegister()}
-                >
-                    Continue
-                </Button>
-                <Button
-                    fullWidth
-                    sx={{mt: 3}}
-                    size="small"
-                    type="button"
-                    variant="outlined"
-                    color='secondary'
-                    href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'
-                >
-                    <GitHub/>
-                    <span style={{marginLeft: '10px'}}>Continue with GitHub</span>
-                </Button>
-                {/*<Box sx={{mt: 3}}>*/}
-                {/*  <Link*/}
-                {/*    href="#"*/}
-                {/*    underline="hover"*/}
-                {/*    variant="subtitle2"*/}
-                {/*  >*/}
-                {/*    Forgot password?*/}
-                {/*  </Link>*/}
-                {/*</Box>*/}
+            <div className="row1_1-create_account">
+                <div>
+                    <a className="logo flex-center" href="">
+                        <img src="/tiapi.png" alt="png"/><span>APIBREW</span>
+                    </a>
+
+                    <div className="r1-1-div1">
+                        <div className="r1-1-div1-1">
+                            Create an account
+                        </div>
+
+                        <div className="r1-1-div1-2">
+                            Already have an account?
+                            <a className="r1-1-a1" href="/login">Log in</a>
+                        </div>
+
+                        <div className="r1-1-div1-3">
+                            Full Name
+                        </div>
+                        <input className="r1-1-i1"
+                               type="text"
+                               id="fname"
+                               name="fname"
+                               value={name}
+                               onChange={(e) => setName(e.target.value)}
+                               placeholder="Name"/>
+
+                        <div className="r1-1-div1-3">
+                            Email
+                        </div>
+                        <input className="r1-1-i1"
+                               type="email"
+                               id="fname"
+                               name="fname"
+                               value={email}
+                               onChange={(e) => setEmail(e.target.value)}
+                               placeholder="example@gmail.com"/>
+
+                        <div className="r1-1-div1-3">
+                            Password
+                        </div>
+                        <input className="r1-1-i1"
+                               type="password"
+                               id="fname"
+                               name="fname"
+                               value={password}
+                               onChange={(e) => setPassword(e.target.value)}
+                               placeholder="*** *** ***"/>
+
+                        <button className="r1-1-btn1" onClick={() => {
+                            handleRegister()
+                        }}>Get started
+                        </button>
+
+                        <div className="r1-1-div1-4">
+                            or
+                        </div>
+
+                        <a className="r1-1-btn2"
+                           href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'>
+                            <img className="sidebar-icon" src="/img2.png" alt="png"/>
+                            <span>Sign up with Google</span>
+                        </a>
+
+
+                        <a className="r1-1-btn3"
+                           href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'>
+                            <img className="sidebar-icon" src="/img3.png" alt="png"/>
+                            <span>Sign up with Github</span>
+                        </a>
+                    </div>
+
+
+                </div>
+
+                <div style={{
+                    backgroundImage: 'url("img1x.png")',
+                    backgroundSize: 'cover',
+                }}></div>
             </div>
         </Layout>
     );

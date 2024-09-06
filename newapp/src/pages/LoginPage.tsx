@@ -1,17 +1,11 @@
 'use client';
 
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-
-import {GitHub} from "@mui/icons-material";
-import {Layout} from "./modern-layout";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {useHostClient} from "../hooks/use-host-client.tsx";
+import './sign-pages.scss'
+import {Layout} from "./outer-layout.tsx";
 
 export const LoginPage = () => {
     const client = useHostClient();
@@ -41,77 +35,68 @@ export const LoginPage = () => {
 
     return (
         <Layout>
-            <div>
-                <Stack
-                    sx={{mb: 4}}
-                    spacing={1}
-                >
-                    <Typography variant="h5">Log in</Typography>
-                    <Typography
-                        color="text.secondary"
-                        variant="body2"
-                    >
-                        Don&apos;t have an account? &nbsp;
-                        <Link
-                            href={'register'}
-                            underline="hover"
-                            variant="subtitle2"
-                        >
-                            Register
-                        </Link>
-                    </Typography>
-                </Stack>
-                <Stack spacing={3}>
-                    <TextField
-                        autoFocus
-                        fullWidth
-                        helperText='You can use your email or username'
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        fullWidth
-                        helperText='Your password'
-                        label="Password"
-                        name="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Stack>
-                <Button
-                    fullWidth
-                    sx={{mt: 3}}
-                    size="large"
-                    variant="contained"
-                    onClick={() => handleLogin()}
-                >
-                    Continue
-                </Button>
-                <Button
-                    fullWidth
-                    sx={{mt: 3}}
-                    size="small"
-                    type="button"
-                    variant="outlined"
-                    color='secondary'
-                    href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'
-                >
-                    <GitHub/>
-                    <span style={{marginLeft: '10px'}}>Continue with GitHub</span>
-                </Button>
-                {/*<Box sx={{mt: 3}}>*/}
-                {/*  <Link*/}
-                {/*    href="#"*/}
-                {/*    underline="hover"*/}
-                {/*    variant="subtitle2"*/}
-                {/*  >*/}
-                {/*    Forgot password?*/}
-                {/*  </Link>*/}
-                {/*</Box>*/}
+            <div className="row2_1-welcome_back">
+
+                <div>
+                    <a className="logo flex-center" href="">
+                        <img src="/tiapi.png" alt="png"/><span>APIBREW</span>
+                    </a>
+
+                    <div className="r1-1-div1">
+
+                        <div className="r1-1-div1-1">
+                            Welcome back
+                        </div>
+                        <div className="r1-1-div1-2">
+                            Dont have an account?
+                            <a className="r1-1-a1" href="/register">Register</a>
+                        </div>
+
+                        <div className="r1-1-div1-3">
+                            Email
+                        </div>
+                        <input className="r1-1-i1" type="email" id="fname" name="fname"
+                               value={email}
+                               onChange={(e) => setEmail(e.target.value)}
+                               placeholder="example@gmail.com"/>
+                        <div className="r1-1-div1-3">
+                            Password
+                        </div>
+                        <input className="r1-1-i1" type="password" id="fname" name="fname"
+                               value={password}
+                               onChange={(e) => setPassword(e.target.value)}
+                               placeholder="*** *** ***"/>
+
+                        <button className="r1-1-btn1" onClick={() => {
+                            handleLogin()
+                        }}>Sign in
+                        </button>
+
+                        <div className="r1-1-div1-4">
+                            or
+                        </div>
+
+                        <a className="r1-1-btn2"
+                           href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'>
+                            <img className="sidebar-icon" src="/img2.png" alt="png"/>
+                            <span>Sign up with Google</span>
+                        </a>
+
+                        <a className="r1-1-btn3"
+                           href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'>
+                            <img className="sidebar-icon" src="/img3.png" alt="png"/>
+                            <span>Sign up with Github</span>
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div style={{
+                    backgroundImage: 'url("img1x.png")',
+                    backgroundSize: 'cover',
+                }}></div>
+
             </div>
         </Layout>
     );
