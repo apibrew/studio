@@ -28,7 +28,9 @@ export interface MultiDrawerProps<T> {
 export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
     const [currentTab, setCurrentTab] = useState<MultiDrawerTab<T>>(props.tabs[0])
     const [value, setValue] = useState<T>(props.initialValue as T)
-    const [isValid, setIsValid] = useState<{[tabName: string]: boolean}>(Object.fromEntries(props.tabs.map(tab => [tab.name, tab.isInitiallyValid ?? true])))
+    const [isValid, setIsValid] = useState<{
+        [tabName: string]: boolean
+    }>(Object.fromEntries(props.tabs.map(tab => [tab.name, tab.isInitiallyValid ?? true])))
     const currentTabIndex = props.tabs.indexOf(currentTab)
 
     const isAllTabsValid = props.tabs.every(tab => isValid[tab.name])
@@ -57,18 +59,18 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
             </Box>}
             <Box p={1} flexGrow={1}>
                 <span>{currentTab.name == '' ? props.title : currentTab.name}</span>
-               <Box minHeight='200px' mt={2}>
-                   {currentTab.component({
-                       value: value,
-                       onChange: (value, isTabValid) => {
-                           setValue(value)
-                           setIsValid({
-                               ...isValid,
-                               [currentTab.name]: isTabValid,
-                           })
-                       }
-                   })}
-               </Box>
+                <Box minHeight='200px' mt={2}>
+                    {currentTab.component({
+                        value: value,
+                        onChange: (value, isTabValid) => {
+                            setValue(value)
+                            setIsValid({
+                                ...isValid,
+                                [currentTab.name]: isTabValid,
+                            })
+                        }
+                    })}
+                </Box>
                 <Box mt={2} display='flex' flexDirection='row'>
                     {currentTabIndex > 0 && <Button variant='contained' onClick={() => {
                         setCurrentTab(props.tabs[currentTabIndex - 1])
@@ -90,21 +92,19 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                             }}>
                         Cancel
                     </Button>
-                    <Button disabled={!isAllTabsValid}
-                            sx={{marginLeft: 1}}
-                            variant='contained'
-                            color='primary'
-                            onClick={() => {
-                                if (!isAllTabsValid) {
-                                    toast.error('Form is not valid, please check the form fields')
-                                    return
-                                }
-                                if (props.onSave) {
-                                    props.onSave(value, props.onClose)
-                                }
-                            }}>
+                    {props.onSave && <Button disabled={!isAllTabsValid}
+                                             sx={{marginLeft: 1}}
+                                             variant='contained'
+                                             color='primary'
+                                             onClick={() => {
+                                                 if (!isAllTabsValid) {
+                                                     toast.error('Form is not valid, please check the form fields')
+                                                     return
+                                                 }
+                                                 props.onSave!(value, props.onClose)
+                                             }}>
                         Save
-                    </Button>
+                    </Button>}
                 </Box>
             </Box>
         </Box>

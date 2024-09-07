@@ -410,6 +410,20 @@ hr {
     color: #101828;
 }
 
+.home-project-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #101828;
+    margin-right: 10px;
+}
+
+.home-project-version {
+    font-size: 15px;
+    font-weight: 600;
+    color: darkgray;
+    margin-right: 10px;
+}
+
 .m1-div2-sp2 {
     width: 8px;
     height: 8px;
