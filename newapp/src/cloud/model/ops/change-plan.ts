@@ -2,11 +2,11 @@ import {AccountPlan} from '../account-plan';
 import {Account} from '../account';
 
 export interface ChangePlan {
-    version: number
     auditData?: AuditData
     id: string
     plan?: AccountPlan
     account?: Account
+    version: number
 }
 
 export const ChangePlanEntityInfo = {
@@ -16,10 +16,10 @@ export const ChangePlanEntityInfo = {
 }
 
 export interface AuditData {
-    createdBy: string
     createdOn: string
     updatedBy: string
     updatedOn: string
+    createdBy: string
 }
 
 export const ChangePlanResource = {
@@ -27,7 +27,7 @@ export const ChangePlanResource = {
     "createdBy": "admin",
     "updatedBy": "admin",
     "createdOn": "2024-08-29T11:24:38Z",
-    "updatedOn": "2024-08-29T11:27:55Z"
+    "updatedOn": "2024-08-29T11:30:50Z"
   },
   "name": "ChangePlan",
   "namespace": {
@@ -140,6 +140,7 @@ export const ChangePlanResource = {
     }
   ],
   "annotations": {
+    "AllowPublicCreateAccess": "true",
     "EnableAudit": "true"
   }
 } as unknown

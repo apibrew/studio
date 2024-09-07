@@ -1,12 +1,12 @@
 import {AccountPlan} from './account-plan';
 
 export interface Account {
-    email: string
     theme: Theme
     version: number
     id: string
     name?: string
     plan?: AccountPlan
+    email: string
 }
 
 export const AccountEntityInfo = {

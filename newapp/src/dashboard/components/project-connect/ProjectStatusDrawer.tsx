@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import {useConnection} from "../../context/ConnectionContext.tsx";
 import {useClient} from "@apibrew/react";
-import {Box, Typography} from "@mui/material";
+import {Box, Stack, Typography} from "@mui/material";
 
 function General(_: TabComponentProps<Instance>) {
     const connection = useConnection()
@@ -56,7 +56,7 @@ function General(_: TabComponentProps<Instance>) {
 function Apbr(_: TabComponentProps<Instance>) {
     const connection = useConnection()
 
-    return <>
+    return <Stack spacing={2}>
         <Typography>
             This project is now ready to be used with Api Brew Client (apbr).
         </Typography>
@@ -80,7 +80,7 @@ function Apbr(_: TabComponentProps<Instance>) {
                     toast.success('Copied to clipboard')
                 }}>Copy to clipboard</Button>
         </Box>
-    </>
+    </Stack>
 }
 
 export function projectConnectDrawer(instance: Instance): MultiDrawerProps<Instance> {

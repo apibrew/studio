@@ -1,13 +1,13 @@
 
 export interface AccountPlan {
+    attributes?: { [key: string]: string }
+    id: string
+    name: string
     amount: number
     limits?: PlanLimits
     version: number
     currency: string
     auditData?: AuditData
-    attributes?: { [key: string]: string }
-    id: string
-    name: string
 }
 
 export const AccountPlanEntityInfo = {
@@ -17,17 +17,17 @@ export const AccountPlanEntityInfo = {
 }
 
 export interface PlanLimits {
-    maxRecordCount: number
     maxResourceCount: number
     requestPerMinute: number
     maxNamespaceCount: number
+    maxRecordCount: number
 }
 
 export interface AuditData {
+    createdOn: string
     updatedBy: string
     updatedOn: string
     createdBy: string
-    createdOn: string
 }
 
 export const AccountPlanResource = {

@@ -23,10 +23,10 @@ export interface DbConfig {
 }
 
 export interface AuditData {
-    updatedOn: string
     createdBy: string
     createdOn: string
     updatedBy: string
+    updatedOn: string
 }
 
 export const DatabaseResource = {

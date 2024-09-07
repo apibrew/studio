@@ -1,14 +1,14 @@
-import {Instance} from '../instance';
+import {Instance} from './instance';
 
 export interface InstanceUsage {
+    version: number
+    duration: Duration
+    instance: Instance
     id: string
     debug?: string
     owner: string
     metric: Metric
     result?: MetricItem[]
-    version: number
-    duration: Duration
-    instance: Instance
 }
 
 export const InstanceUsageEntityInfo = {
@@ -18,15 +18,9 @@ export const InstanceUsageEntityInfo = {
 }
 
 export interface MetricItem {
-    tags: any
     time: string
     value: number
-}
-
-export enum Metric {
-    REQUEST = "REQUEST",
-    NANO_EXECUTION = "NANO_EXECUTION",
-    STORAGE = "STORAGE",
+    tags: any
 }
 
 export enum Duration {
@@ -36,6 +30,12 @@ export enum Duration {
     PAST_MONTH = "PAST_MONTH",
     LAST_6_MONTHS = "LAST_6_MONTHS",
     LAST_YEAR = "LAST_YEAR",
+}
+
+export enum Metric {
+    REQUEST = "REQUEST",
+    NANO_EXECUTION = "NANO_EXECUTION",
+    STORAGE = "STORAGE",
 }
 
 export const InstanceUsageResource = {

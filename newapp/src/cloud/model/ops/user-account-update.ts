@@ -1,31 +1,39 @@
+import {Account} from '../account';
 
-export interface ControllerAccessToken {
-    instance: string
-    username?: string
+export interface UserAccountUpdate {
+    password?: string
     id: string
-    token?: string
+    name?: string
+    owner: string
+    account?: Account
     version: number
 }
 
-export const ControllerAccessTokenEntityInfo = {
+export const UserAccountUpdateEntityInfo = {
     namespace: "ops",
-    resource: "ControllerAccessToken",
-    restPath: "ops-controller-access-token",
+    resource: "UserAccountUpdate",
+    restPath: "ops-user-account-update",
 }
 
-export const ControllerAccessTokenResource = {
+export const UserAccountUpdateResource = {
   "auditData": {
-    "createdBy": "admin@admin.com",
+    "createdBy": "admin",
     "updatedBy": "admin",
-    "createdOn": "2024-04-12T11:53:00Z",
-    "updatedOn": "2024-05-20T15:08:16Z"
+    "createdOn": "2024-08-30T09:03:53Z",
+    "updatedOn": "2024-08-30T09:15:11Z"
   },
-  "name": "ControllerAccessToken",
+  "name": "UserAccountUpdate",
   "namespace": {
     "name": "ops"
   },
-  "virtual": true,
   "properties": {
+    "account": {
+      "type": "REFERENCE",
+      "reference": "default/Account",
+      "annotations": {
+        "SourceMatchKey": "346aa9e14055"
+      }
+    },
     "id": {
       "type": "UUID",
       "primary": true,
@@ -34,31 +42,28 @@ export const ControllerAccessTokenResource = {
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
-        "Order": "0",
-        "SourceMatchKey": "2bf89d484358",
+        "SourceMatchKey": "8973c36ee184",
         "SpecialProperty": "true"
       }
     },
-    "instance": {
+    "name": {
+      "type": "STRING",
+      "annotations": {
+        "SourceMatchKey": "ce2537b16033"
+      }
+    },
+    "owner": {
       "type": "STRING",
       "required": true,
       "annotations": {
-        "Order": "1",
-        "SourceMatchKey": "2bb9f21aca35"
+        "SourceMatchKey": "a8f9eedcd68a"
       }
     },
-    "token": {
+    "password": {
       "type": "STRING",
+      "virtual": true,
       "annotations": {
-        "Order": "3",
-        "SourceMatchKey": "e68ca5cf1061"
-      }
-    },
-    "username": {
-      "type": "STRING",
-      "annotations": {
-        "Order": "2",
-        "SourceMatchKey": "a5f70bfa69f4"
+        "SourceMatchKey": "a2d2ac68ff0b"
       }
     },
     "version": {
@@ -70,13 +75,10 @@ export const ControllerAccessTokenResource = {
       "description": "The version of the resource/record. It is incremented on every update.",
       "annotations": {
         "AllowEmptyPrimitive": "true",
-        "SourceMatchKey": "70d751f40ff3",
+        "SourceMatchKey": "0b23f1f9d15d",
         "SpecialProperty": "true"
       }
     }
-  },
-  "annotations": {
-    "ActionApi": "true"
   }
 } as unknown
 
