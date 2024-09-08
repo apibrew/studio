@@ -575,6 +575,7 @@ hr {
     font-weight: 600;
     margin-right: 8px;
     padding: 10px 14px;
+    color: #475467;
 }
 
 .m1-div3-2-2 button {
@@ -583,6 +584,7 @@ hr {
     padding: 10px 14px;
     border: 1px solid #D0D5DD;
     border-radius: 8px;
+    color: #344054;
 }
 
 .div-flex-wrap {
@@ -594,12 +596,14 @@ hr {
     font-size: 30px;
     font-weight: 600;
     margin-bottom: 16px;
+    margin-top: 25px;
+    color: #101828;
 }
 
 .m1-div4-2 {
     width: 320px;
     padding: 16px 20px;
-    border: 1px solid;
+    border: 1px solid #EAECF0;
     border-radius: 8px;
     display: flex;
 }
@@ -618,6 +622,7 @@ hr {
     font-size: 14px;
     font-weight: 400;
     margin-top: 10px;
+    color: #475467;
     display: inline-block;
 }
 
@@ -629,6 +634,7 @@ hr {
     font-size: 18px;
     font-weight: 600;
     flex-grow: 1;
+    color: #101828;
 }
 
 .m1-div4-2-1-1 img {
@@ -791,10 +797,24 @@ hr {
     color: #6941C6;
 }
 
+
+
+.m2-div1-1 button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.m2-div1-1 button:not(:last-child) svg {
+    color: #475467;
+}
+
 .m2-div1-1 button span {
     font: 600 14px Inter;
 }
 
+.m2-div1-1 button:not(:last-child) span {
+    color: #475467;
+}
 
 
 
@@ -810,12 +830,12 @@ hr {
 
 
 
-/* .sidesection {
+.sidesection {
     display: none;
 }
 .sidebar {
     display: none;
-} */
+}
 
 
 

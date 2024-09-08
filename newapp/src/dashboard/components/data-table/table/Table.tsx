@@ -256,7 +256,8 @@ export function DataTableTable(props: DataTableTableProps) {
                     }}>Delete</MenuItem>
                 </Menu>
                 <Box width='40px' className='cell header-cell'>
-                    <IconButton
+                    <Button
+                        color='primary'
                         size='small'
                         onClick={() => {
                             analytics.click('action', 'add-column-open')
@@ -266,7 +267,7 @@ export function DataTableTable(props: DataTableTableProps) {
                             }))
                         }}>
                         <Add/>
-                    </IconButton>
+                    </Button>
                 </Box>
             </Box>
             {props.loading && <LoadingOverlay/>}

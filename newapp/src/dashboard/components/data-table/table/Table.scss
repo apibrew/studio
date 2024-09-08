@@ -21,19 +21,9 @@
 
 
 .check-icon1 svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
-
-
-//  .check-icon1:not(.Mui-checked) svg path {
-//     d: path("M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H14C17.0376 0.5 19.5 2.96243 19.5 6V14C19.5 17.0376 17.0376 19.5 14 19.5H6C2.96243 19.5 0.5 17.0376 0.5 14V6Z");
-//  }
-
-
-
-
-
 
 
 
@@ -118,6 +108,9 @@
 
   .property-name {
     padding-top: 8px !important;
+    font-size: 14px;
+    font-weight: 600;
+    color: #101828;
   }
 
   .property-th {
@@ -127,6 +120,7 @@
 
       button {
         padding-right: 0;
+        color: #D0D5DD;
       }
     }
 
