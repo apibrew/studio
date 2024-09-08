@@ -11,8 +11,9 @@ import {Duration, Metric} from "../../../cloud/model/metrics/instance-usage.ts";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {MetricsDrawer} from "../../components/metrics-drawer/MetricsDrawer.tsx";
 import {useCurrentInstance} from "../../../context/current-instance.tsx";
-import {ProjectStatusDrawer} from "../../components/project-status/ProjectStatusDrawer.tsx";
-import {ProjectConnectDrawer} from "../../components/project-connect/ProjectStatusDrawer.tsx";
+import {openMultiDrawer} from "../../components/multi-drawer/MultiDrawer.tsx";
+import {projectStatusDrawer} from "../../components/project-status/ProjectStatusDrawer.tsx";
+import {projectConnectDrawer} from "../../components/project-connect/ProjectStatusDrawer.tsx";
 
 export default function HomePage() {
     const user = useCurrentUser()
@@ -21,11 +22,12 @@ export default function HomePage() {
     const client = useClient()
     const drawer = useDrawer()
 
-    const [health, setHealth] = useState<{ status: string }>()
+    const [health, setHealth] = useState<boolean>()
+    const [version, setVersion] = useState<{ version: string, modules: {[key: string]: string} }>()
 
     useEffect(() => {
         fetch(
-            `${client.getUrl()}/health`,
+            `${client.getUrl()}/_version`,
             {
                 method: 'GET',
                 headers: {
@@ -33,7 +35,10 @@ export default function HomePage() {
                 },
             }
         ).then(response => response.json()).then(data => {
-            setHealth(data as any)
+            setVersion(data as any)
+            setHealth(true)
+        }).catch(() => {
+            setHealth(false)
         })
     }, []);
 
@@ -88,16 +93,18 @@ export default function HomePage() {
             <div className="m1-div2">
                 <div className="m1-div2-1">
                     <span className="m1-div2-sp1">{instance?.title || connection.title}</span>
+                    <span className="home-project-name">{connection.name}</span>
+                    <span className="home-project-version">{version?.version}</span>
                     <Button variant='contained'
                             size='large'
                             onClick={() => {
-                                drawer.open(<ProjectStatusDrawer onClose={drawer.close}/>)
+                                openMultiDrawer(drawer, projectStatusDrawer(instance!))
                             }}
                             color='secondary'>
                         <FiberManualRecord color={switchCase({
                             'disabled': health === undefined,
-                            'success': Boolean(health && health?.status === 'ok'),
-                            'error': Boolean(health && health?.status !== 'ok'),
+                            'success': Boolean(health),
+                            'error': Boolean(!health),
                         })} style={{
                             fontSize: 13,
                             marginRight: 5
@@ -107,7 +114,7 @@ export default function HomePage() {
                     <Button variant='contained'
                             size='large'
                             onClick={() => {
-                                drawer.open(<ProjectConnectDrawer onClose={drawer.close}/>)
+                                openMultiDrawer(drawer, projectConnectDrawer(instance!))
                             }}
                             color='primary'>
                         <span>Connect</span>

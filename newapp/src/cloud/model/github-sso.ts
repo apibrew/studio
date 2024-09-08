@@ -1,11 +1,11 @@
 
 export interface GithubSso {
-    email?: string
     details?: any
     version: number
     auditData?: AuditData
     id: string
     code?: string
+    email?: string
 }
 
 export const GithubSsoEntityInfo = {
@@ -15,10 +15,10 @@ export const GithubSsoEntityInfo = {
 }
 
 export interface AuditData {
-    updatedOn: string
     createdBy: string
     createdOn: string
     updatedBy: string
+    updatedOn: string
 }
 
 export const GithubSsoResource = {

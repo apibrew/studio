@@ -10,12 +10,17 @@ import Button from "@mui/material/Button";
 import {ChangePlan, ChangePlanEntityInfo} from "../model/ops/change-plan.ts";
 import toast from "react-hot-toast";
 import {handleErrorMessage} from "../../util/errors.ts";
+import {useModal} from "../../components/modal/use-modal.tsx";
+import {ProjectInlineInvoice} from "../components/ProjectInlineInvoice.tsx";
 
 export function BillingPage() {
     const account = useCurrentAccount()
-    const plans = useRecords<AccountPlan>(AccountPlanEntityInfo, {})
+    const plans = useRecords<AccountPlan>(AccountPlanEntityInfo, {
+        limit: 100,
+    })
     const [selectedPlan, setSelectedPlan] = useState<AccountPlan | null>(account?.plan || null)
     const changePlanRepository = useRepository<ChangePlan>(ChangePlanEntityInfo)
+    const modal = useModal()
 
     if (!account || !plans) {
         return <LoadingOverlay/>
@@ -38,7 +43,8 @@ export function BillingPage() {
     }
 
     return <Box>
-        Plan: {account?.plan?.name}
+        {modal.render()}
+        Plan: {account?.plan?.name} Until: {account?.planUntil}
         <br/>
         <br/>
         <br/>
@@ -54,7 +60,15 @@ export function BillingPage() {
         <br/>
 
         <Button onClick={() => {
-            changePlan()
+            if (selectedPlan?.name === 'free') {
+                changePlan()
+            } else if (selectedPlan) {
+                modal.open(<ProjectInlineInvoice account={account}
+                                                 plan={selectedPlan!}
+                                                 modal={modal}/>)
+            } else {
+                toast.error('Please select a plan')
+            }
         }}>
             Change Plan
         </Button>

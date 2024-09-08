@@ -17,10 +17,10 @@ export const InstanceHealthCheckEntityInfo = {
 }
 
 export interface AuditData {
-    updatedBy: string
     updatedOn: string
     createdBy: string
     createdOn: string
+    updatedBy: string
 }
 
 export enum Health {

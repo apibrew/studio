@@ -7,6 +7,7 @@ import {Outlet} from "react-router-dom";
 import {BillingPage} from "./pages/BillingPage.tsx";
 import {InvoicesPage} from "./pages/InvoicePage.tsx";
 import {AccountPage} from "./pages/AccountPage.tsx";
+import {PaymentPage} from "./pages/PaymentPage.tsx";
 
 export const cloudRoutes: RouteObject[] = [
     {
@@ -41,5 +42,9 @@ export const cloudRoutes: RouteObject[] = [
     {
         path: 'account',
         element: <AccountPage/>,
+    },
+    {
+        path: 'payment/:id',
+        element: <PaymentPage/>
     }
 ];

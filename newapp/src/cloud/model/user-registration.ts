@@ -1,11 +1,11 @@
 
 export interface UserRegistration {
+    name: string
+    version: number
     password: string
     auditData?: AuditData
     emailAddress: string
     id: string
-    name: string
-    version: number
 }
 
 export const UserRegistrationEntityInfo = {
@@ -15,10 +15,10 @@ export const UserRegistrationEntityInfo = {
 }
 
 export interface AuditData {
-    updatedOn: string
     createdBy: string
     createdOn: string
     updatedBy: string
+    updatedOn: string
 }
 
 export const UserRegistrationResource = {

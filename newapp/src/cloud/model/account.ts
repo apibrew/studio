@@ -1,12 +1,13 @@
 import {AccountPlan} from './account-plan';
 
 export interface Account {
-    email: string
-    theme: Theme
     version: number
+    planUntil?: string
     id: string
     name?: string
     plan?: AccountPlan
+    email: string
+    theme: Theme
 }
 
 export const AccountEntityInfo = {
@@ -26,7 +27,7 @@ export const AccountResource = {
     "createdBy": "admin",
     "updatedBy": "admin",
     "createdOn": "2024-01-06T21:56:16Z",
-    "updatedOn": "2024-08-30T08:49:45Z"
+    "updatedOn": "2024-09-07T19:42:21Z"
   },
   "name": "Account",
   "namespace": {
@@ -66,6 +67,12 @@ export const AccountResource = {
       "reference": "default/AccountPlan",
       "annotations": {
         "SourceMatchKey": "64acf811eed7"
+      }
+    },
+    "planUntil": {
+      "type": "DATE",
+      "annotations": {
+        "SourceMatchKey": "4d0522a10156"
       }
     },
     "theme": {

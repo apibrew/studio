@@ -1,12 +1,12 @@
 import {Instance} from './instance';
 
 export interface InstanceModuleOverride {
+    dependencyVersion: string
     id: string
     path: string
     enabled?: boolean
     version: number
     instance: Instance
-    dependencyVersion: string
 }
 
 export const InstanceModuleOverrideEntityInfo = {

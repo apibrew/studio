@@ -1,11 +1,11 @@
 import {Instance} from './instance';
 
 export interface Domain {
+    namespace: string
+    id: string
     host: string
     version: number
     instance: Instance
-    namespace: string
-    id: string
 }
 
 export const DomainEntityInfo = {

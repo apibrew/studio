@@ -1,7 +1,7 @@
 import {InstanceEntityInfo} from "../model/instance";
 import {LoadingOverlay} from "common";
 
-import {Box, Card, IconButton, Stack, Typography} from "@mui/material";
+import {Badge, Box, Card, IconButton, Stack, Typography} from "@mui/material";
 import {Direction, useWatcher} from "@apibrew/react";
 import Button from "@mui/material/Button";
 import {FileDownload, PictureAsPdf, Refresh} from "@mui/icons-material";
@@ -13,10 +13,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
+import {useNavigate} from "react-router-dom";
 
 export function InvoicesPage() {
     const drawer = useDrawer()
-
+    const navigate = useNavigate()
     const wi = useWatcher(InstanceEntityInfo)
 
     const params = {
@@ -69,16 +70,26 @@ export function InvoicesPage() {
                         {invoices.map((item) => {
                             return <TableRow key={item.id}>
                                 <TableCell>
-                                    <PictureAsPdf/> invoice-{item.id}.pdf
+                                    <PictureAsPdf color='error'/> Invoice {item.id.substring(0, 8)}
                                 </TableCell>
-                                <TableCell>{item.auditData?.createdOn}</TableCell>
+                                <TableCell>{new Date(Date.parse(item.auditData?.createdOn!)).toLocaleDateString('en-US', {
+                                    year: 'numeric', month: 'long', day: 'numeric'
+                                })}</TableCell>
                                 <TableCell>{item.amount / 100} USD</TableCell>
-                                <TableCell>{item.status}</TableCell>
                                 <TableCell>
-                                    {item.status === 'PENDING' && <IconButton>
+                                    <Badge color='error'>
+                                        {item.status}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell>
+                                    {item.status === 'PAID' && <IconButton>
                                         <FileDownload/>
                                     </IconButton>}
-                                    {item.status === 'PENDING' && <Button color='primary'>
+                                    {item.status === 'PENDING' && <Button
+                                        onClick={() => {
+                                            navigate(`/cloud/payment/${item?.payment!.id}`)
+                                        }}
+                                        color='primary'>
                                         Pay
                                     </Button>}
                                 </TableCell>

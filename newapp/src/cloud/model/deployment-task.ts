@@ -1,15 +1,15 @@
 import {Instance} from './instance';
 
 export interface DeploymentTask {
-    auditData?: AuditData
-    message?: string
-    id: string
-    params?: { [key: string]: string }
     version: number
     instance: Instance
+    auditData?: AuditData
+    id: string
     user: string
-    status: Status
+    message?: string
     kind: Kind
+    params?: { [key: string]: string }
+    status: Status
 }
 
 export const DeploymentTaskEntityInfo = {
@@ -19,10 +19,17 @@ export const DeploymentTaskEntityInfo = {
 }
 
 export interface AuditData {
+    createdBy: string
     createdOn: string
     updatedBy: string
     updatedOn: string
-    createdBy: string
+}
+
+export enum Kind {
+    DEPLOY = "DEPLOY",
+    UPGRADE = "UPGRADE",
+    DESTROY = "DESTROY",
+    RESTART = "RESTART",
 }
 
 export enum Status {
@@ -31,13 +38,6 @@ export enum Status {
     EXECUTED = "EXECUTED",
     FAILED = "FAILED",
     DONE = "DONE",
-}
-
-export enum Kind {
-    DEPLOY = "DEPLOY",
-    UPGRADE = "UPGRADE",
-    DESTROY = "DESTROY",
-    RESTART = "RESTART",
 }
 
 export const DeploymentTaskResource = {
