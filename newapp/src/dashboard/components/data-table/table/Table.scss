@@ -77,7 +77,7 @@
     border-color: #EAECF0;
 
     .cell-inner {
-      padding: 5px 10px;
+      padding: 0 10px;
     }
   }
 
@@ -93,7 +93,6 @@
   }
 
   .row {
-    height: 48px;
     align-items: center;
   }
 
@@ -169,7 +168,10 @@
   }
 }
 
-
+.cell-inner.add-new-record span {
+  color: #475467;
+  margin-left: 10px;
+}
 
 
 

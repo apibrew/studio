@@ -314,7 +314,7 @@ export function DataTableTable(props: DataTableTableProps) {
                                 })
                             }}>
                                 <Add/>
-                                Add new record
+                                <span>Add new record</span>
                             </Button>
                         </Box>
                     </Box>
