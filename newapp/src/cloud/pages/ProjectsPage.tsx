@@ -88,10 +88,16 @@ export function ProjectsPage() {
             || (item.owner && item.owner?.indexOf(searchValue) !== -1)
     })
 
-    return <Box width='100%'>
+
+
+
+
+
+
+    return <Box className='proj1' width='100%'>
         {drawer.render()}
         <Box justifyContent='space-between' display='flex'>
-            <Typography variant='h5'>Projects {!loading && '(' + projects.length + ')'}</Typography>
+            <Typography className='fnt-600-30-Inter clr101828' variant='h5'>Projects {!loading && '(' + projects.length + ')'}</Typography>
             <Stack spacing={2} direction='row'>
                 <Button
                     size='small'
@@ -101,8 +107,8 @@ export function ProjectsPage() {
                         load()
                     }}
                 >
-                    <Refresh/>
-                    Refresh
+                    <Refresh className="wh-20-20"/>
+                    <span className="spn1 fnt-600-16-Inter clr667085">Refresh</span>
                 </Button>
                 <Popover open={Boolean(searchAnchor)}
                          anchorOrigin={{
@@ -144,8 +150,8 @@ export function ProjectsPage() {
                         setSearchAnchor(e.currentTarget)
                     }}
                 >
-                    <Search/>
-                    Search Project
+                    <Search className="wh-20-20"/>
+                    <span className="spn1 fnt-600-16-Inter clr667085">Search Project</span>
                 </Button>
                 <Popover open={Boolean(filtersAnchor)}
                          anchorOrigin={{
@@ -173,10 +179,10 @@ export function ProjectsPage() {
                         setFiltersAnchor(e.currentTarget)
                     }}
                 >
-                    <FilterList/>
-                    Filters
+                    <FilterList className="wh-20-20"/>
+                    <span className="spn1 fnt-600-16-Inter clr667085">Filters</span>
                 </Button>
-                <Button
+                <Button className="fnt-600-14-Inter"
                     color='primary'
                     variant='contained'
                     onClick={() => {
@@ -194,10 +200,13 @@ export function ProjectsPage() {
         {loading && <LoadingOverlay/>}
 
         <Grid mt={2} container spacing={2}>
-            {projects.map((item) => <Grid item xs={12} sm={3} lg={3} xl={2}>
-                <Card key={item.name}>
-                    <Box flex={1} height={'168px'} display='flex' flexDirection='column'>
-                        <Box
+            {projects.map((item) => <Grid item xs={12} sm={6} lg={3} xl={2}>
+
+                <Card sx={{border: 0, background: 'unset'}} key={item.name}>
+
+                    <Box className="prj1-div1" flex={1} height={'168px'} display='flex' flexDirection='column'>
+                       {/* prj1-div1-1 */}
+                        <Box display='flex'
                             onClick={() => {
                                 navigate(`/cloud/projects/${item.id}/goto`)
                             }}
@@ -205,15 +214,25 @@ export function ProjectsPage() {
                             sx={{
                                 cursor: 'pointer',
                             }}>
-                            <Box display='flex' flexDirection='row' p={1}>
-                                <Typography variant="h5">{item.title || item.name}</Typography>
-                                <ArrowForwardIos/>
-                            </Box>
-                            <Typography variant="body2">{item.owner}</Typography>
-                            <Typography variant="body2">{item.description}</Typography>
+
+                            <div className="prj1-div1-1-1"></div>
+
+                            <div className="prj1-div1-1-2">
+
+                                <Box className="prj1-div1-1-2-1 flex-center">
+                                    <Typography className="fnt-600-18-Inter clr101828" variant="h5">{item.title || item.name}</Typography>
+                                    <ArrowForwardIos className="wh-20-20 clr344054"/>
+                                </Box>
+
+                                <Typography className="fnt-400-14-Inter clr475467" variant="body2">{item.owner}</Typography>
+                                <Typography className="fnt-400-14-Inter clr475467" variant="body2">{item.description}</Typography>
+
+                            </div>
                         </Box>
+
                         <hr/>
-                        <Box display='flex' flexDirection='row' p={1}>
+
+                        <Box className="prj1-div1-2 flex-center">
                             <IconButton
                                 onClick={() => {
                                     drawer.open(<EditProjectDrawer
@@ -227,7 +246,7 @@ export function ProjectsPage() {
                                 <Settings/>
                             </IconButton>
                             <Box flexGrow={1}/>
-                            <Typography variant="body2">{item.deploymentStatus}</Typography>
+                            <Typography className="fnt-500-12-Inter" sx={{color: '#6941C6'}} variant="body2">{item.deploymentStatus?.toLowerCase()}</Typography>
                             <IconButton
                                 onClick={() => {
                                     drawer.open(<ProjectInfoDrawer

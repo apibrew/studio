@@ -130,7 +130,7 @@ body * {
 }
 
 .sidebar .ul-buttons ul li {
-    margin-left: 28px;
+    margin-left: 38px;
 }
 
 .sidebar hr {
@@ -248,10 +248,15 @@ hr {
     background-color: #EAECF0;
 }
 
-.ul-buttons li.dropdown li span {
-    margin-left: 45px;
+
+.ul-buttons .dropdown > a svg {
+    color: #7F56D9;
 }
 
+.ul-buttons .dropdown > a span {
+    padding-left: 3px;
+    color: #7F56D9;
+}
 
 .sidebar-photo + span {
     font-size: 14px;
@@ -325,6 +330,11 @@ hr {
     width: 24px;
     height: 24px;
     color: #344054;
+    margin-right: 5px;
+}
+
+.mh-div2 button:not(:first-child) {
+    margin-left: 20px;
 }
 
 .mh-div2 span {
@@ -335,7 +345,7 @@ hr {
 }
 
 .mh-div2 button:not(:last-child) span {
-    margin-right: 30px;
+    margin-right: 20px;
 }
 
 .user-info {
@@ -1320,6 +1330,117 @@ hr {
 
 
 
+.proj1 .spn1 {
+    margin-left: 10px;
+}
+
+.prj1-div1 {
+    padding: 20px 12px 12px;
+    background-color: #fff;
+    border: 1px solid #EAECF0;
+    border-radius: 12px;
+}
+
+.prj1-div1 hr {
+    margin: 20px 0 10px;
+}
+
+.prj1-div1-1-1 {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background-color: #CEC5E0;
+}
+
+.prj1-div1-1-2 {
+    margin-left: 20px;
+    flex-grow: 1;
+}
+
+.prj1-div1-1-2-1 {
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.prj1-div1-1-2-1 h5 {
+    flex-grow: 1;
+}
+
+
+
+.prj1-div1-2 svg {
+    width: 20px;
+    height: 20px;
+    color: #98A2B3;
+}
+
+.prj1-div1-2 p {
+    padding: 2px 8px;
+    border: 1px solid #E9D7FE;
+    border-radius: 999px;
+    background-color: #F9F5FF;
+    margin-right: 10px;
+}
+
+
+
+
+
+
+
+/* ************   font     color    width/height   ******************************* */
+
+#root .fnt-400-14-Inter {
+    font: 400 14px Inter;
+}
+
+#root .fnt-500-12-Inter {
+    font: 500 12px Inter;
+}
+
+
+
+#root .fnt-600-14-Inter {
+    font: 600 14px Inter;
+}
+
+
+#root .fnt-600-16-Inter {
+    font: 600 16px Inter;
+}
+
+#root .fnt-600-18-Inter {
+    font: 600 18px Inter;
+}
+
+
+#root .fnt-600-30-Inter {
+    font: 600 30px Inter;
+}
+
+
+
+#root .clr101828 {
+    color: #101828;
+}
+
+#root .clr344054 {
+    color: #344054;
+}
+
+#root .clr475467 {
+    color: #344054;
+}
+
+
+#root .clr667085 {
+    color: #667085;
+}
+
+#root .clr98A2B3 {
+    color: #98A2B3;
+}
 
 
 
@@ -1328,6 +1449,14 @@ hr {
 
 
 
+
+
+
+
+#root .wh-20-20 {
+    width: 20px;
+    height: 20px;
+}
 
 
 
@@ -1340,6 +1469,25 @@ hr {
 } */
 
 
+
+
+/* ***************    mui  add     ***************** */
+
+.MuiTable-root thead tr th:first-child {
+    border-radius: 11px 0 0;
+}
+
+.MuiTable-root thead tr th:last-child {
+    border-radius: 0 11px 0 0;
+}
+
+
+
+
+/* *************  cloud --- corection             ???????????????????  ************ */
+.ul-buttons li.dropdown li span {
+    margin-left: 12px;
+}
 
 
 
