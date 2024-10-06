@@ -1,17 +1,18 @@
 'use client';
 
-import {useClient, useRepository} from "@apibrew/react";
+import {useRepository} from "@apibrew/react";
 import {useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
 import {LoadingOverlay} from "common";
 import {GithubSso, GithubSsoEntityInfo} from "../cloud/model/github-sso.ts";
+import {useHostClient} from "../hooks/use-host-client.tsx";
 
 export const GithubSsoPage = () => {
     const [searchParams] = useSearchParams();
     const code = searchParams.get('code');
 
     const githubSsoRepo = useRepository<GithubSso>(GithubSsoEntityInfo)
-    const client = useClient()
+    const client = useHostClient()
 
     useEffect(() => {
         githubSsoRepo.create({
