@@ -7,6 +7,7 @@ import {RegisterPage} from "./pages/RegisterPage.tsx";
 import {GithubSsoPage} from "./pages/GithubSso.tsx";
 import {NotFoundPage} from "./pages/NotFoundPage.tsx";
 import Index from "./pages/Index.tsx";
+import {Goto} from "./cloud/pages/Goto.tsx";
 
 export const index = createBrowserRouter([
     {
@@ -17,6 +18,13 @@ export const index = createBrowserRouter([
         path: "/cloud",
         element: <CloudIndex/>,
         children: cloudRoutes,
+    },
+    {
+        path: 'goto/:id',
+        element: <Goto/>,
+        handle: {
+            tab: 'goto'
+        }
     },
     {
         path: 'login',

@@ -37,6 +37,12 @@ export function EditProjectDrawer(props: EditProjectDrawerProps) {
         })
     }
 
+    function rebuildInstance() {
+        handleDeploymentTask(deploymentRepository, instance, Kind.DEPLOY).then(() => {
+            props.onClose()
+        })
+    }
+
     function destroyInstance() {
         handleDeploymentTask(deploymentRepository, instance, Kind.DESTROY).then(() => {
             props.onClose()
@@ -131,6 +137,18 @@ export function EditProjectDrawer(props: EditProjectDrawerProps) {
                 }}
             >
                 Cancel
+            </Button>
+            <Button
+                sx={{
+                    marginLeft: 2
+                }}
+                variant='contained'
+                color='warning'
+                onClick={() => {
+                    rebuildInstance()
+                }}
+            >
+                Rebuild Project
             </Button>
             <Button
                 sx={{

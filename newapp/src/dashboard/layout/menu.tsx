@@ -108,7 +108,7 @@ export const menuItems: MenuItem[] = [
         icon: <Monitor/>
     },
     {
-        title: 'Other Projects',
+        title: 'Back To Projects',
         path: '/cloud/projects',
         icon: <SettingsEthernet/>,
         conditional: (cp) => Boolean(cp.allowManageConnections)
