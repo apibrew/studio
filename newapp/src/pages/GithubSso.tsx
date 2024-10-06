@@ -10,9 +10,9 @@ import {useHostClient} from "../hooks/use-host-client.tsx";
 export const GithubSsoPage = () => {
     const [searchParams] = useSearchParams();
     const code = searchParams.get('code');
-
-    const githubSsoRepo = useRepository<GithubSso>(GithubSsoEntityInfo)
     const client = useHostClient()
+
+    const githubSsoRepo = client.repo<GithubSso>(GithubSsoEntityInfo)
 
     useEffect(() => {
         githubSsoRepo.create({

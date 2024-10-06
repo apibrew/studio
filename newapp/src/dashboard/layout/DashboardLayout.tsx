@@ -18,6 +18,8 @@ export function DashboardLayout() {
         isDarkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
     }
 
+    isDarkModeEnabled = false
+
     return <>
         <div className={`maindiv ${isDarkModeEnabled ? 'dark' : ''}`}>
             <AsideBar/>
