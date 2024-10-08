@@ -46,12 +46,12 @@ export function PropertyForm(props: PropertyFormProps) {
                         })
                     }}/>
             </FormControl>
-            {<PropertyExtras
+            <PropertyExtras
                 resource={props.resource}
                 property={props.property}
                 onChange={change => {
                     props.onChange(propertyName, change)
-                }}/>}
+                }}/>
         </Stack>
     )
 }

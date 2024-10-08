@@ -1,4 +1,4 @@
-import {ArrowLeft, ArrowRight, LogoutOutlined, Person, Settings} from "@mui/icons-material";
+import {ArrowLeft, ArrowRight, LogoutOutlined, Person, SettingsEthernet} from "@mui/icons-material";
 import {useState} from "react";
 import {MenuItem, menuItems} from "./menu.tsx";
 import {Link, useNavigate, useParams} from "react-router-dom";
@@ -6,6 +6,7 @@ import {getClassName} from "../../util/classes.ts";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {getUserDisplayName, useCurrentUser} from "../../context/current-user.tsx";
 import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
+import {Collapse} from "@mui/material";
 
 export function AsideBar() {
     const {activeItem, activeSubItem} = useActiveMenuItem()
@@ -27,7 +28,9 @@ export function AsideBar() {
         return activeSubItem == child
     }
 
-    const sideBarOpen = userSideBarOpen && (!activeItem || !activeItem.secondSideBar)
+    const [secondSideBarOpen, setSecondSideBarOpen] = useState<{ [key: string]: boolean }>({})
+
+    const sideBarOpen = userSideBarOpen && (!activeItem || !activeItem.secondSideBar) || Object.keys(secondSideBarOpen).some(key => secondSideBarOpen[key])
 
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
         {confirmation.render()}
@@ -47,36 +50,61 @@ export function AsideBar() {
                 const active = isActive(item)
 
                 return <li key={item.title}
+                           onMouseEnter={() => {
+                               if (item.children && item.children.length > 0) {
+                                   setSecondSideBarOpen({
+                                       ...secondSideBarOpen,
+                                       [item.title]: true
+                                   })
+                               }
+                           }}
+                           onMouseLeave={() => {
+                               if (item.children && item.children.length > 0) {
+                                   setSecondSideBarOpen({
+                                       ...secondSideBarOpen,
+                                       [item.title]: false
+                                   })
+                               }
+                           }}
                            className={getClassName({
-                               'active1': active,
-                               'dropdown': Boolean(item.children && active)
+                               'active1': secondSideBarOpen[item.title] || active,
+                               'dropdown': secondSideBarOpen[item.title],
                            })}>
-                    <Link className="flex-center" to={prepareItemPath(connectionName, item.path)}>
+                    <Link className="flex-center"
+                          onClick={(e) => {
+                              if (item.children && item.children.length > 0) {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                              }
+                          }}
+                          to={prepareItemPath(connectionName, item.path)}>
                         {item.icon}
                         <span>{item.title}</span>
                     </Link>
-                    {item.children && <ul>
-                        {item.children?.map(child => {
-                            const subActive = isSubActive(child)
+                    {item.children && <Collapse in={secondSideBarOpen[item.title]}>
+                        <ul>
+                            {item.children?.map(child => {
+                                const subActive = isSubActive(child)
 
-                            return <li
-                                key={child.title}
-                                className={getClassName({
-                                    'active2': subActive,
-                                })}>
-                                <Link to={prepareItemPath(connectionName, child.path)}>
-                                    <span>{child.title}</span>
-                                </Link>
-                            </li>
-                        })}
-                    </ul>}
+                                return <li
+                                    key={child.title}
+                                    className={getClassName({
+                                        'active2': subActive,
+                                    })}>
+                                    <Link to={prepareItemPath(connectionName, child.path)}>
+                                        <span>{child.title}</span>
+                                    </Link>
+                                </li>
+                            })}
+                        </ul>
+                    </Collapse>}
                 </li>
             })}
         </ul>
 
-        <Link className="flex-center" to={prepareItemPath(connectionName, '/dashboard/settings')}>
-            <Settings/>
-            <span>Settings</span>
+        <Link className="flex-center" to={prepareItemPath(connectionName, '/cloud/project')}>
+            <SettingsEthernet/>
+            <span>Back To Projects</span>
         </Link>
 
         <hr/>

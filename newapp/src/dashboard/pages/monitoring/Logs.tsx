@@ -30,12 +30,6 @@ export function LogsPage() {
     const [logs, setLogs] = useState<Log[]>([])
     const client = useClient()
 
-    const [counter, setCounter] = useState(0)
-
-    const triggerUpdate = () => {
-        setCounter((counter) => counter + 1)
-    }
-
     useEffect(() => {
         const controller = new AbortController()
 
@@ -104,9 +98,6 @@ export function LogsPage() {
                             }
 
                             setLogs((logs) => [...logs, ...linesToAppend])
-
-                            triggerUpdate()
-
                         } catch (e) {
                             console.error(e)
                             break
@@ -202,7 +193,6 @@ export function LogsPage() {
                         {fieldsMap[field].map(value => <MenuItem value={value}>{value}</MenuItem>)}
                     </Select>
                 </Box>)}
-                <span>{counter}</span>
             </Stack>
             <Box m={2}>
                 {logs.reverse()
