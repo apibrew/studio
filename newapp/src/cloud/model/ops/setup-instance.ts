@@ -1,9 +1,9 @@
-import {Instance} from '../instance';
+import {Instance} from './instance';
 
 export interface SetupInstance {
+    instance: Instance
     id: string
     version: number
-    instance: Instance
 }
 
 export const SetupInstanceEntityInfo = {

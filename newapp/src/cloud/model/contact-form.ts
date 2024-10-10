@@ -1,15 +1,15 @@
 
 export interface ContactForm {
-    auditData?: AuditData
+    email: string
+    subject?: string
     companyName?: string
     phoneNumber?: string
-    email: string
-    category?: string
     message?: string
     version: number
-    id: string
-    subject?: string
+    category?: string
     fullName: string
+    auditData?: AuditData
+    id: string
     source?: string
 }
 
@@ -20,10 +20,10 @@ export const ContactFormEntityInfo = {
 }
 
 export interface AuditData {
-    updatedOn: string
     createdBy: string
     createdOn: string
     updatedBy: string
+    updatedOn: string
 }
 
 export const ContactFormResource = {

@@ -1,13 +1,13 @@
 import {Instance} from './instance';
 
 export interface InstanceHealthCheck {
-    health: Health
     details?: any
     version: number
     instance: Instance
     username?: string
     auditData?: AuditData
     id: string
+    health: Health
 }
 
 export const InstanceHealthCheckEntityInfo = {
@@ -17,10 +17,10 @@ export const InstanceHealthCheckEntityInfo = {
 }
 
 export interface AuditData {
-    updatedOn: string
     createdBy: string
     createdOn: string
     updatedBy: string
+    updatedOn: string
 }
 
 export enum Health {

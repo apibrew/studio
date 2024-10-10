@@ -91,7 +91,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
         <Box display='flex' flexDirection='row' className='row row-body'>
             <Box width='75px' className='cell body-cell'>
                 <Box className='cell-inner'>
-                    {!edited && <Checkbox  className="check-icon1" checked={props.selected}
+                    {!edited && <Checkbox className="check-icon1" checked={props.selected}
                                           sx={{
                                               padding: 0
                                           }}
@@ -109,7 +109,11 @@ export function TableRecordLine(props: TableRecordLineProps) {
                     <IconButton onClick={() => {
                         drawer.open(<RecordExpand resource={props.resource}
                                                   title={'View ' + props.resource.name}
-                                                  value={{...props.record, ...props.updated}}/>)
+                                                  value={{...props.record, ...props.updated}}
+                                                  onChange={value => {
+                                                      props.onUpdate(value)
+                                                  }}
+                        />)
                     }}>
                         <OpenInFullRounded/>
                     </IconButton>

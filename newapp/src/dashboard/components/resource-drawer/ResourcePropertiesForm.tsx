@@ -123,23 +123,25 @@ export function ResourcePropertiesForm(props: ResourceFormProps) {
                                     }}/>
                             </TableCell>
                             <TableCell padding='none'>
-                                <PropertyTypeDropdown
-                                    variant='outlined'
-                                    size='small'
-                                    value={property.type}
-                                    onChange={e => {
-                                        updateProperty({type: e.target.value as Property['type']})
-                                    }}/>
-                                <Box maxWidth='200px'>
-                                    <PropertyExtras
-                                        sx={{
-                                            maxWidth: '150px'
-                                        }}
-                                        resource={props.value}
-                                        property={property}
-                                        onChange={change => {
-                                            updateProperty(change)
+                                <Box display='flex'>
+                                    <PropertyTypeDropdown
+                                        variant='outlined'
+                                        size='small'
+                                        value={property.type}
+                                        onChange={e => {
+                                            updateProperty({type: e.target.value as Property['type']})
                                         }}/>
+                                    <Box maxWidth='200px'>
+                                        <PropertyExtras
+                                            sx={{
+                                                maxWidth: '150px'
+                                            }}
+                                            resource={props.value}
+                                            property={property}
+                                            onChange={change => {
+                                                updateProperty(change)
+                                            }}/>
+                                    </Box>
                                 </Box>
                             </TableCell>
                             <TableCell padding='none'>

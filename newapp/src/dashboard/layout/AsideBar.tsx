@@ -104,7 +104,7 @@ export function AsideBar() {
 
         <Link className="flex-center" to={prepareItemPath(connectionName, '/cloud/projects')}>
             <SettingsEthernet/>
-            <span>Back To Projects</span>
+            <span>Back to projects</span>
         </Link>
 
         <hr/>

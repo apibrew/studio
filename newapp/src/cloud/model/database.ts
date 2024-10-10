@@ -1,10 +1,10 @@
 
 export interface Database {
-    auditData?: AuditData
     id: string
     name: string
     config: DbConfig
     version: number
+    auditData?: AuditData
 }
 
 export const DatabaseEntityInfo = {

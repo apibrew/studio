@@ -1,8 +1,8 @@
 
 export interface HealthCheck {
+    id: string
     version: number
     auditData?: AuditData
-    id: string
 }
 
 export const HealthCheckEntityInfo = {

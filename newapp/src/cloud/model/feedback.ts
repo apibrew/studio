@@ -1,11 +1,11 @@
 
 export interface Feedback {
+    version: number
     location?: string
     connection: string
     parameters?: any
     id: string
     message?: string
-    version: number
 }
 
 export const FeedbackEntityInfo = {
