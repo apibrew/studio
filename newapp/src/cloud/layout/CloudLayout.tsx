@@ -20,6 +20,8 @@ export function CloudLayout() {
         isDarkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
     }
 
+    isDarkModeEnabled = false
+
     return <>
         <div className={`cloud-layout ${isDarkModeEnabled ? 'dark' : ''}`}>
             <AsideBar/>

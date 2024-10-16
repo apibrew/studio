@@ -1,7 +1,17 @@
 import {Resource} from "@apibrew/react";
 import {Property} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {Box, FormControl, FormHelperText, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
+import {
+    Box,
+    BoxProps,
+    FormControl,
+    FormHelperText,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import {useEffect} from "react";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown";
 import {ResourceSelect} from "../ResourceSelect";
@@ -12,6 +22,7 @@ export interface PropertyExtrasProps {
     property: Property
     onChange: (updated: Property) => void
     disableHelperText?: boolean
+    sx?: BoxProps['sx']
 }
 
 export function PropertyExtras(props: PropertyExtrasProps) {
@@ -50,6 +61,7 @@ export function PropertyExtras(props: PropertyExtrasProps) {
             }
             return <>
                 <Stack
+                    sx={props.sx}
                     display='flex'
                     border='1 px solid black'>
                     <FormControl fullWidth>
@@ -84,7 +96,7 @@ export function PropertyExtras(props: PropertyExtrasProps) {
             </>
         case Type.STRUCT:
             return <>
-                <Box border={'1 px solid black'}>
+                <Box sx={props.sx} border={'1 px solid black'}>
                     <FormControl fullWidth>
                         <Select
                             value={props.property.typeRef}
@@ -112,7 +124,7 @@ export function PropertyExtras(props: PropertyExtrasProps) {
             </>
         case Type.STRING:
             return <>
-                <Box border={'1 px solid black'}>
+                <Box sx={props.sx} border={'1 px solid black'}>
                     <FormControl fullWidth>
                         <TextField
                             size='small'
@@ -139,6 +151,7 @@ export function PropertyExtras(props: PropertyExtrasProps) {
         case Type.ENUM:
             return <>
                 <TagInput
+                    sx={props.sx}
                     value={props.property.enumValues || []}
                     onChange={(newValue: any) => {
                         props.onChange({
@@ -151,6 +164,7 @@ export function PropertyExtras(props: PropertyExtrasProps) {
             </>
         case Type.REFERENCE:
             return <Box
+                sx={props.sx}
                 display='flex'
                 border={'1 px solid black'}>
                 <FormControl fullWidth>

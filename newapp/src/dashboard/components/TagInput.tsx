@@ -1,4 +1,4 @@
-import {Box, IconButton, Popover, TextField, TextFieldProps, Typography} from "@mui/material";
+import {Box, BoxProps, IconButton, Popover, TextField, TextFieldProps, Typography} from "@mui/material";
 import {label} from "../../util/record";
 import {Add, Edit, Remove} from "@mui/icons-material";
 import {useEffect, useRef, useState} from "react";
@@ -10,6 +10,7 @@ export interface TagInputProps<T> {
     autoOpen?: boolean
     onClose?: () => void
     inputPros: TextFieldProps
+    sx?: BoxProps['sx']
 }
 
 export function TagInput(props: TagInputProps<unknown>) {
@@ -26,7 +27,7 @@ export function TagInput(props: TagInputProps<unknown>) {
     }, []);
 
     return (
-        <Box ref={ref}
+        <Box sx={props.sx} ref={ref}
              display='flex'
              flexDirection='row'>
             <span style={{

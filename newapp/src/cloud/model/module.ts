@@ -1,10 +1,10 @@
 
 export interface Module {
+    path: string
     enabled?: boolean
     version: number
     dependencyVersion: string
     id: string
-    path: string
 }
 
 export const ModuleEntityInfo = {

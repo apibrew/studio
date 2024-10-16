@@ -23,7 +23,7 @@ export default function HomePage() {
     const drawer = useDrawer()
 
     const [health, setHealth] = useState<boolean>()
-    const [version, setVersion] = useState<{ version: string, modules: {[key: string]: string} }>()
+    const [version, setVersion] = useState<{ version: string, modules: { [key: string]: string } }>()
 
     useEffect(() => {
         fetch(
@@ -227,110 +227,107 @@ export default function HomePage() {
                 <div className="div-flex-wrap">
                     <div className="m1-div3-2">
                         <div className="m1-div3-2-1">
-                            <img src="/smvpic9.png" alt="png"/>
+                            <img src="/icons/js.png" alt="React"/>
                             <div className="m1-div3-2-1-1">
-                                <span>Java Script</span>
+                                <span>JavaScript / TypeScript</span>
                                 <br/>
                                 <span>
-                                  Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem
-                                  Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit Amet
+                                  Native JavaScript / TypeScript library for ApiBrew, you can use this library for easily managing apibrew in your client side and server side applications
                                 </span>
                             </div>
                         </div>
                         <hr/>
                         <div className="m1-div3-2-2">
-                            <span>Name 2</span>
-                            <button>Name 1</button>
+                            <a href='https://docs.apibrew.io/sdk/'>Documentation</a>
+                            <a href='https://docs.apibrew.io/sdk/'>Tutorials</a>
                         </div>
                     </div>
                     <div className="m1-div3-2">
                         <div className="m1-div3-2-1">
-                            <img src="/smvpic9.png" alt="png"/>
+                            <img src="/icons/react.png" alt="React"/>
                             <div className="m1-div3-2-1-1">
-                                <span>Java Script</span>
+                                <span>React</span>
                                 <br/>
                                 <span>
-                                  Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem
-                                  Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit Amet
+                                  Library for supporting react applications. You can easily connect apibrew react library and use it to develop frontend.
                                 </span>
                             </div>
                         </div>
                         <hr/>
                         <div className="m1-div3-2-2">
-                            <span>Name 2</span>
-                            <button>Name 1</button>
+                            <a href='https://docs.apibrew.io/sdk/'>Documentation</a>
+                            <a href='https://docs.apibrew.io/sdk/'>Tutorials</a>
                         </div>
                     </div>
                     <div className="m1-div3-2">
                         <div className="m1-div3-2-1">
-                            <img src="/smvpic9.png" alt="png"/>
+                            <img src="/icons/spring.png" alt="React"/>
                             <div className="m1-div3-2-1-1">
-                                <span>Java Script</span>
+                                <span>Spring Boot</span>
                                 <br/>
                                 <span>
-                  Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem
-                  Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-                </span>
+                                    Library for supporting spring boot applications. You can easily connect apibrew spring boot library and use it to develop backend.
+                                </span>
                             </div>
                         </div>
                         <hr/>
                         <div className="m1-div3-2-2">
-                            <span>Name 2</span>
-                            <button>Name 1</button>
+                            <a href='https://docs.apibrew.io/sdk/'>Documentation</a>
+                            <a href='https://docs.apibrew.io/sdk/'>Tutorials</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="m1-div4">
-                <div className="m1-div4-1">Example Projects</div>
-                <div className="div-flex-wrap">
-                    <div className="m1-div4-2">
-                        <img src="/smvpic9.png" alt="png"/>
-                        <div className="m1-div4-2-1">
-                            <div className="m1-div4-2-1-1">
-                                <span>Expo Starter</span>
-                                <button>
-                                    <img src="/smvpic1.png" alt="png"/>
-                                </button>
-                            </div>
-                            <span>
-                                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
-                                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-                            </span>
-                        </div>
-                    </div>
-                    <div className="m1-div4-2">
-                        <img src="/smvpic9.png" alt="png"/>
-                        <div className="m1-div4-2-1">
-                            <div className="m1-div4-2-1-1">
-                                <span>Expo Starter</span>
-                                <button>
-                                    <img src="/smvpic1.png" alt="png"/>
-                                </button>
-                            </div>
-                            <span>
-                                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
-                                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-                            </span>
-                        </div>
-                    </div>
-                    <div className="m1-div4-2">
-                        <img src="/smvpic9.png" alt="png"/>
-                        <div className="m1-div4-2-1">
-                            <div className="m1-div4-2-1-1">
-                                <span>Expo Starter</span>
-                                <button>
-                                    <img src="/smvpic1.png" alt="png"/>
-                                </button>
-                            </div>
-                            <span>
-                                Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum
-                                Dolor Sit AmetLorem Ipsum Dolor Sit Amet
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/*<div className="m1-div4">*/}
+            {/*    <div className="m1-div4-1">Example Projects</div>*/}
+            {/*    <div className="div-flex-wrap">*/}
+            {/*        <div className="m1-div4-2">*/}
+            {/*            <img src="/smvpic9.png" alt="png"/>*/}
+            {/*            <div className="m1-div4-2-1">*/}
+            {/*                <div className="m1-div4-2-1-1">*/}
+            {/*                    <span>Expo Starter</span>*/}
+            {/*                    <button>*/}
+            {/*                        <img src="/smvpic1.png" alt="png"/>*/}
+            {/*                    </button>*/}
+            {/*                </div>*/}
+            {/*                <span>*/}
+            {/*                    Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum*/}
+            {/*                    Dolor Sit AmetLorem Ipsum Dolor Sit Amet*/}
+            {/*                </span>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className="m1-div4-2">*/}
+            {/*            <img src="/smvpic9.png" alt="png"/>*/}
+            {/*            <div className="m1-div4-2-1">*/}
+            {/*                <div className="m1-div4-2-1-1">*/}
+            {/*                    <span>Expo Starter</span>*/}
+            {/*                    <button>*/}
+            {/*                        <img src="/smvpic1.png" alt="png"/>*/}
+            {/*                    </button>*/}
+            {/*                </div>*/}
+            {/*                <span>*/}
+            {/*                    Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum*/}
+            {/*                    Dolor Sit AmetLorem Ipsum Dolor Sit Amet*/}
+            {/*                </span>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className="m1-div4-2">*/}
+            {/*            <img src="/smvpic9.png" alt="png"/>*/}
+            {/*            <div className="m1-div4-2-1">*/}
+            {/*                <div className="m1-div4-2-1-1">*/}
+            {/*                    <span>Expo Starter</span>*/}
+            {/*                    <button>*/}
+            {/*                        <img src="/smvpic1.png" alt="png"/>*/}
+            {/*                    </button>*/}
+            {/*                </div>*/}
+            {/*                <span>*/}
+            {/*                    Lorem Ipsum Dolor Sit AmetLorem Ipsum Dolor Sit AmetLorem Ipsum*/}
+            {/*                    Dolor Sit AmetLorem Ipsum Dolor Sit Amet*/}
+            {/*                </span>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </Box>
     );
 }

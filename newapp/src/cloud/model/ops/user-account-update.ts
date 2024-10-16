@@ -1,12 +1,12 @@
-import {Account} from '../account';
+import {Account} from './account';
 
 export interface UserAccountUpdate {
+    account?: Account
+    version: number
     password?: string
     id: string
     name?: string
     owner: string
-    account?: Account
-    version: number
 }
 
 export const UserAccountUpdateEntityInfo = {

@@ -1,12 +1,4 @@
-import {
-    Dataset,
-    FunctionsTwoTone,
-    Group,
-    Home,
-    Monitor,
-    SettingsEthernet,
-    Storage
-} from "@mui/icons-material";
+import {Dataset, FunctionsTwoTone, Group, Home, Monitor, Storage} from "@mui/icons-material";
 import {ConnectionProvider} from "@apibrew/react";
 import {ReactNode} from "react";
 import {ResourcePageSideBar} from "../components/ResourcePageSideBar";
@@ -29,7 +21,7 @@ export const menuItems: MenuItem[] = [
         icon: <Home/>
     },
     {
-        title: 'Resources',
+        title: 'API Resources',
         path: '/dashboard/resources',
         secondSideBar: () => <ResourcePageSideBar/>,
         icon: <Dataset/>
@@ -84,18 +76,18 @@ export const menuItems: MenuItem[] = [
         title: 'Users & Roles',
         path: '/dashboard/users-and-roles',
         icon: <Group/>,
-        // children: [
-        //     {
-        //         title: 'Users',
-        //         path: '/dashboard/users-and-roles/users',
-        //         icon: <Group/>,
-        //     },
-        //     {
-        //         title: 'Groups',
-        //         path: '/dashboard/users-and-roles/roles',
-        //         icon: <Group/>,
-        //     },
-        // ]
+        children: [
+            {
+                title: 'Users',
+                path: '/dashboard/users-and-roles/users',
+                icon: <Group/>,
+            },
+            {
+                title: 'Groups',
+                path: '/dashboard/users-and-roles/roles',
+                icon: <Group/>,
+            },
+        ]
     },
     {
         title: 'Storage',
@@ -105,12 +97,14 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Monitoring',
         path: '/dashboard/monitoring',
-        icon: <Monitor/>
+        icon: <Monitor/>,
     },
-    {
-        title: 'Other Projects',
-        path: '/cloud/projects',
-        icon: <SettingsEthernet/>,
-        conditional: (cp) => Boolean(cp.allowManageConnections)
-    }
+    // {
+    //     title: 'Settings',
+    //     path: '/dashboard/settings',
+    //     icon: <Settings/>,
+    //     conditional: (cp) => Boolean(cp.allowManageConnections)
+    // }
 ]
+
+

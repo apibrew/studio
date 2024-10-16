@@ -1,11 +1,12 @@
 import {Resource} from "@apibrew/react";
-import {Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip,} from "@mui/material";
+import {Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip,} from "@mui/material";
 import {useEffect} from "react";
 import Button from "@mui/material/Button";
-import {Add, DragIndicator} from "@mui/icons-material";
+import {Add, DragIndicator, Remove} from "@mui/icons-material";
 import {Property} from "@apibrew/client/model";
 import TextField from "@mui/material/TextField";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown.tsx";
+import {PropertyExtras} from "../property-form/PropertyExtras.tsx";
 
 export interface ResourceFormProps {
     value: Resource
@@ -15,7 +16,6 @@ export interface ResourceFormProps {
 const propertyNameRegex = /^[a-z][A-Za-z0-9-]*$/;
 
 export function ResourcePropertiesForm(props: ResourceFormProps) {
-
     useEffect(() => {
         props.onChange(props.value, validate())
     }, [props.value]);
@@ -30,7 +30,7 @@ export function ResourcePropertiesForm(props: ResourceFormProps) {
     }
 
     return (
-        <Box width='600px'>
+        <Box width='100%'>
             <Box display='flex'
                  flexDirection='row-reverse'>
                 <Button size='small'
@@ -59,7 +59,6 @@ export function ResourcePropertiesForm(props: ResourceFormProps) {
                         <TableCell>Name</TableCell>
                         <TableCell>Type</TableCell>
                         <TableCell>Modifiers</TableCell>
-                        <TableCell>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -82,7 +81,25 @@ export function ResourcePropertiesForm(props: ResourceFormProps) {
 
                         return <TableRow key={propertyName}>
                             <TableCell padding='none'>
-                                <DragIndicator/>
+                                <IconButton size='small'
+                                            color='secondary'
+                                            onClick={() => {
+
+                                            }}>
+                                    <DragIndicator/>
+                                </IconButton>
+                                <IconButton size='small'
+                                            color='error'
+                                            onClick={() => {
+                                                let currentProperties = {...props.value.properties}
+                                                delete currentProperties[propertyName]
+                                                props.onChange({
+                                                    ...props.value,
+                                                    properties: currentProperties
+                                                }, validate())
+                                            }}>
+                                    <Remove/>
+                                </IconButton>
                             </TableCell>
                             <TableCell padding='none'>
                                 <TextField
@@ -106,12 +123,26 @@ export function ResourcePropertiesForm(props: ResourceFormProps) {
                                     }}/>
                             </TableCell>
                             <TableCell padding='none'>
-                                <PropertyTypeDropdown
-                                    size='small'
-                                    value={property.type}
-                                    onChange={e => {
-                                        updateProperty({type: e.target.value as Property['type']})
-                                    }}/>
+                                <Box display='flex'>
+                                    <PropertyTypeDropdown
+                                        variant='outlined'
+                                        size='small'
+                                        value={property.type}
+                                        onChange={e => {
+                                            updateProperty({type: e.target.value as Property['type']})
+                                        }}/>
+                                    <Box maxWidth='200px'>
+                                        <PropertyExtras
+                                            sx={{
+                                                maxWidth: '150px'
+                                            }}
+                                            resource={props.value}
+                                            property={property}
+                                            onChange={change => {
+                                                updateProperty(change)
+                                            }}/>
+                                    </Box>
+                                </Box>
                             </TableCell>
                             <TableCell padding='none'>
                                 <Tooltip title='Immutable'>
@@ -135,27 +166,6 @@ export function ResourcePropertiesForm(props: ResourceFormProps) {
                                                updateProperty({unique: e.target.checked})
                                            }}/>
                                 </Tooltip>
-                            </TableCell>
-                            <TableCell padding='none'>
-                                <Button size='small'
-                                        color='primary'
-                                        onClick={() => {
-
-                                        }}>
-                                    Edit
-                                </Button>
-                                <Button size='small'
-                                        color='primary'
-                                        onClick={() => {
-                                            let currentProperties = {...props.value.properties}
-                                            delete currentProperties[propertyName]
-                                            props.onChange({
-                                                ...props.value,
-                                                properties: currentProperties
-                                            }, validate())
-                                        }}>
-                                    Remove
-                                </Button>
                             </TableCell>
                         </TableRow>
                     })}

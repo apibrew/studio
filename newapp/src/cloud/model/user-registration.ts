@@ -1,11 +1,11 @@
 
 export interface UserRegistration {
+    id: string
     name: string
     version: number
     password: string
     auditData?: AuditData
     emailAddress: string
-    id: string
 }
 
 export const UserRegistrationEntityInfo = {

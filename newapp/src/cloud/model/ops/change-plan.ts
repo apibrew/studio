@@ -1,12 +1,12 @@
-import {AccountPlan} from '../account-plan';
-import {Account} from '../account';
+import {AccountPlan} from './account-plan';
+import {Account} from './account';
 
 export interface ChangePlan {
-    auditData?: AuditData
     id: string
     plan?: AccountPlan
     account?: Account
     version: number
+    auditData?: AuditData
 }
 
 export const ChangePlanEntityInfo = {
@@ -16,10 +16,10 @@ export const ChangePlanEntityInfo = {
 }
 
 export interface AuditData {
-    createdOn: string
     updatedBy: string
     updatedOn: string
     createdBy: string
+    createdOn: string
 }
 
 export const ChangePlanResource = {

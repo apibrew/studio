@@ -88,16 +88,11 @@ export function ProjectsPage() {
             || (item.owner && item.owner?.indexOf(searchValue) !== -1)
     })
 
-
-
-
-
-
-
     return <Box className='proj1' width='100%'>
         {drawer.render()}
         <Box justifyContent='space-between' display='flex'>
-            <Typography className='fnt-600-30-Inter clr101828' variant='h5'>Projects {!loading && '(' + projects.length + ')'}</Typography>
+            <Typography className='fnt-600-30-Inter clr101828'
+                        variant='h5'>Projects {!loading && '(' + projects.length + ')'}</Typography>
             <Stack spacing={2} direction='row'>
                 <Button
                     size='small'
@@ -183,14 +178,14 @@ export function ProjectsPage() {
                     <span className="spn1 fnt-600-16-Inter clr667085">Filters</span>
                 </Button>
                 <Button className="fnt-600-14-Inter"
-                    color='primary'
-                    variant='contained'
-                    onClick={() => {
-                        drawer.open(<NewProjectDrawer onClose={() => {
-                            drawer.close()
-                            load()
-                        }}/>)
-                    }}
+                        color='primary'
+                        variant='contained'
+                        onClick={() => {
+                            drawer.open(<NewProjectDrawer onClose={() => {
+                                drawer.close()
+                                load()
+                            }}/>)
+                        }}
                 >
                     New Project
                 </Button>
@@ -205,27 +200,30 @@ export function ProjectsPage() {
                 <Card sx={{border: 0, background: 'unset'}} key={item.name}>
 
                     <Box className="prj1-div1" flex={1} height={'168px'} display='flex' flexDirection='column'>
-                       {/* prj1-div1-1 */}
+                        {/* prj1-div1-1 */}
                         <Box display='flex'
-                            onClick={() => {
-                                navigate(`/cloud/projects/${item.id}/goto`)
-                            }}
-                            flexGrow={1}
-                            sx={{
-                                cursor: 'pointer',
-                            }}>
+                             onClick={() => {
+                                 navigate(`/goto/${item.id}`)
+                             }}
+                             flexGrow={1}
+                             sx={{
+                                 cursor: 'pointer',
+                             }}>
 
                             <div className="prj1-div1-1-1"></div>
 
                             <div className="prj1-div1-1-2">
 
                                 <Box className="prj1-div1-1-2-1 flex-center">
-                                    <Typography className="fnt-600-18-Inter clr101828" variant="h5">{item.title || item.name}</Typography>
+                                    <Typography className="fnt-600-18-Inter clr101828"
+                                                variant="h5">{item.title || item.name}</Typography>
                                     <ArrowForwardIos className="wh-20-20 clr344054"/>
                                 </Box>
 
-                                <Typography className="fnt-400-14-Inter clr475467" variant="body2">{item.owner}</Typography>
-                                <Typography className="fnt-400-14-Inter clr475467" variant="body2">{item.description}</Typography>
+                                <Typography className="fnt-400-14-Inter clr475467"
+                                            variant="body2">{item.owner}</Typography>
+                                <Typography className="fnt-400-14-Inter clr475467"
+                                            variant="body2">{item.description?.substr(0, 20)}</Typography>
 
                             </div>
                         </Box>
@@ -246,7 +244,8 @@ export function ProjectsPage() {
                                 <Settings/>
                             </IconButton>
                             <Box flexGrow={1}/>
-                            <Typography className="fnt-500-12-Inter" sx={{color: '#6941C6'}} variant="body2">{item.deploymentStatus?.toLowerCase()}</Typography>
+                            <Typography className="fnt-500-12-Inter" sx={{color: '#6941C6'}}
+                                        variant="body2">{item.deploymentStatus?.toLowerCase()}</Typography>
                             <IconButton
                                 onClick={() => {
                                     drawer.open(<ProjectInfoDrawer

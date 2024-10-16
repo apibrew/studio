@@ -1,15 +1,15 @@
 import {Instance} from './instance';
 
 export interface DeploymentTask {
-    version: number
-    instance: Instance
     auditData?: AuditData
     id: string
-    user: string
-    message?: string
     kind: Kind
     params?: { [key: string]: string }
+    message?: string
+    user: string
     status: Status
+    instance: Instance
+    version: number
 }
 
 export const DeploymentTaskEntityInfo = {

@@ -15,7 +15,7 @@ export function ProjectInfoDrawer(props: ProjectInfoDrawerProps) {
                 width='600px'>
         {confirmation.render()}
         <Typography variant='h5'>
-            Create a new project
+            Project Info: {props.instance.name}
         </Typography>
 
         <Box m={2}>

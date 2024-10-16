@@ -113,7 +113,7 @@ export function DataTable(props: TableContainerProps) {
             } catch (e: any) {
                 isSuccess = false
                 console.log(e)
-                toast.error('Failed to save record: ' + e.message)
+                toast.error(e.message)
             }
         }
         toast.dismiss(loadingId)

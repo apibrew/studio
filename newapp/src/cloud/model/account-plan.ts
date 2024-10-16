@@ -1,12 +1,18 @@
 
 export interface AccountPlan {
+    version: number
+    popular?: boolean
+    currency: string
     attributes?: { [key: string]: string }
-    id: string
+    limits?: PlanLimits
+    allowUserToChoose?: boolean
     name: string
     amount: number
-    limits?: PlanLimits
-    version: number
-    currency: string
+    order?: number
+    summary?: string
+    keyFeatures?: string[]
+    id: string
+    features?: string[]
     auditData?: AuditData
 }
 
@@ -17,36 +23,44 @@ export const AccountPlanEntityInfo = {
 }
 
 export interface PlanLimits {
+    maxRecordCount: number
     maxResourceCount: number
     requestPerMinute: number
     maxNamespaceCount: number
-    maxRecordCount: number
 }
 
 export interface AuditData {
+    createdBy: string
     createdOn: string
     updatedBy: string
     updatedOn: string
-    createdBy: string
 }
 
 export const AccountPlanResource = {
   "auditData": {
     "createdBy": "admin",
-    "updatedBy": "system",
+    "updatedBy": "admin",
     "createdOn": "2024-08-28T18:13:13Z",
-    "updatedOn": "2024-04-12T19:16:01Z"
+    "updatedOn": "2024-10-10T09:26:09Z"
   },
   "name": "AccountPlan",
   "namespace": {
     "name": "default"
   },
   "properties": {
+    "allowUserToChoose": {
+      "type": "BOOL",
+      "annotations": {
+        "Order": "4",
+        "SourceMatchKey": "877c95ae742c"
+      }
+    },
     "amount": {
       "type": "INT32",
       "required": true,
       "description": "The amount of the payment",
       "annotations": {
+        "Order": "2",
         "SourceMatchKey": "c32736b1050a"
       }
     },
@@ -56,6 +70,7 @@ export const AccountPlanResource = {
         "type": "STRING"
       },
       "annotations": {
+        "Order": "5",
         "SourceMatchKey": "7878061a4d34"
       }
     },
@@ -80,7 +95,19 @@ export const AccountPlanResource = {
       "required": true,
       "description": "The currency of the payment",
       "annotations": {
+        "Order": "3",
         "SourceMatchKey": "7b6b707fdab4"
+      }
+    },
+    "features": {
+      "type": "LIST",
+      "item": {
+        "type": "STRING",
+        "length": 255
+      },
+      "annotations": {
+        "Order": "6",
+        "SourceMatchKey": "eaf86c2032ea"
       }
     },
     "id": {
@@ -91,14 +118,27 @@ export const AccountPlanResource = {
       "exampleValue": "a39621a4-6d48-11ee-b962-0242ac120002",
       "description": "The unique identifier of the resource. It is randomly generated and immutable.",
       "annotations": {
+        "Order": "0",
         "SourceMatchKey": "475c7ce00c0c",
         "SpecialProperty": "true"
+      }
+    },
+    "keyFeatures": {
+      "type": "LIST",
+      "item": {
+        "type": "STRING",
+        "length": 1024
+      },
+      "annotations": {
+        "Order": "7",
+        "SourceMatchKey": "5f1d878e08dc"
       }
     },
     "limits": {
       "type": "STRUCT",
       "typeRef": "PlanLimits",
       "annotations": {
+        "Order": "8",
         "SourceMatchKey": "7ab3af2f6256"
       }
     },
@@ -108,7 +148,27 @@ export const AccountPlanResource = {
       "unique": true,
       "description": "The user of the payment",
       "annotations": {
+        "Order": "1",
         "SourceMatchKey": "c5108f7ca4cf"
+      }
+    },
+    "order": {
+      "type": "INT32",
+      "annotations": {
+        "SourceMatchKey": "bb0263845683"
+      }
+    },
+    "popular": {
+      "type": "BOOL",
+      "annotations": {
+        "SourceMatchKey": "ac9b089fdd8a"
+      }
+    },
+    "summary": {
+      "type": "STRING",
+      "length": 255,
+      "annotations": {
+        "SourceMatchKey": "2e61f6c0e885"
       }
     },
     "version": {
@@ -198,6 +258,7 @@ export const AccountPlanResource = {
     }
   ],
   "annotations": {
+    "AllowPublicGetAccess": "true",
     "EnableAudit": "true"
   }
 } as unknown

@@ -72,8 +72,8 @@ export function withPropertyOrder(property: Property, order: number): Property {
     return property
 }
 
-export function isSimpleProperty(property: Property): boolean {
-    return property.type === 'BOOL' || property.type === 'STRING' || property.type === 'INT32' || property.type === 'INT64' || property.type === 'FLOAT32' || property.type === 'FLOAT64';
+export function isSimpleProperty(propertyType: Property['type']): boolean {
+    return propertyType === 'BOOL' || propertyType === 'STRING' || propertyType === 'INT32' || propertyType === 'INT64' || propertyType === 'FLOAT32' || propertyType === 'FLOAT64';
 }
 
 export function makeProperties(properties: { [key: string]: Property }) {

@@ -1,9 +1,9 @@
 
 export interface DestroyAccount {
+    id: string
     email: string
     details?: any
     version: number
-    id: string
 }
 
 export const DestroyAccountEntityInfo = {
