@@ -48,6 +48,16 @@ body * {
     box-sizing: border-box;
 }
 
+button {
+    font-family: Inter;
+    background-color: unset;
+    border: unset;
+    padding: unset;
+    text-align: unset;
+    cursor: pointer;
+}
+
+
 .maindiv {
     height: 100%;
     width: 100%;
@@ -194,16 +204,6 @@ NEW
     height: 26px;
     display: flex;
     align-items: center;
-}
-
-
-button {
-    font-family: Inter;
-    background-color: unset;
-    border: unset;
-    padding: unset;
-    text-align: unset;
-    cursor: pointer;
 }
 
 .ul-buttons li:not(.dropdown) ul {
