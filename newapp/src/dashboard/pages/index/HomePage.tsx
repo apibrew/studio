@@ -46,16 +46,14 @@ export default function HomePage() {
     const [cumulative, setCumulative] = useState<boolean>(false)
 
     return (
-        <Box m={3} mt={0}>
+        <Box>
             {drawer.render()}
-            <div>
-                <hr/>
-            </div>
-            <div className="user-info">
+                <hr className="chr-EAECF0 m-20-32-20"/>
+            <div className="user-info m-0-32e">
                 <div>Welcome back, {getUserDisplayName(user)}</div>
                 <div>Let's build your backend with ApiBrew!</div>
             </div>
-            <div className="m1-div1">
+            <div className="m1-div1 m-32-32-24">
                 <div className="m1-div1-1">
                     <div/>
                     <div>
@@ -89,8 +87,8 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-            <hr/>
-            <div className="m1-div2">
+            <hr className="chr-EAECF0"/>
+            <div className="m1-div2 m-32-32e">
                 <div className="m1-div2-1">
                     <span className="m1-div2-sp1">{instance?.title || connection.title}</span>
                     <span className="home-project-name">{connection.name}</span>
@@ -120,7 +118,7 @@ export default function HomePage() {
                         <span>Connect</span>
                     </Button>
                 </div>
-                <div className="m1-div2-2">
+                <div className="m1-div2-2 m-24-0e">
                     <ButtonGroup
                         color='secondary'
                         variant="contained"
@@ -222,9 +220,9 @@ export default function HomePage() {
                     </Grid>
                 </Grid>
             </div>
-            <div className="m1-div3">
+            <div className="m1-div3 m-32-32e">
                 <div className="m1-div3-1">Client libraries</div>
-                <div className="div-flex-wrap">
+                <div className="div-flex-wrap m-24-32-32xxx">
                     <div className="m1-div3-2">
                         <div className="m1-div3-2-1">
                             <img src="/icons/js.png" alt="React"/>
