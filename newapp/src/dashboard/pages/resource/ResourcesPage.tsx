@@ -1,4 +1,4 @@
-import {Box, Stack, Tooltip, Typography} from "@mui/material";
+import {Alert, Box, Stack, Tooltip, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {getRestPath, Resource, useClient, useRepository} from "@apibrew/react";
 import {useEffect, useState} from "react";
@@ -41,9 +41,9 @@ export default function ResourcesPage() {
 
     if (resourceNotFound || !params.namespace || !params.resource) {
         return <Box m={1}>
-            <Typography>
+            <Alert color='warning'>
                 Please select a resource from the left panel
-            </Typography>
+            </Alert>
         </Box>
     }
 

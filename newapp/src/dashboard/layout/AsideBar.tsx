@@ -30,7 +30,9 @@ export function AsideBar() {
 
     const [secondSideBarOpen, setSecondSideBarOpen] = useState<{ [key: string]: boolean }>({})
 
-    const sideBarOpen = userSideBarOpen && (!activeItem || !activeItem.secondSideBar) || Object.keys(secondSideBarOpen).some(key => secondSideBarOpen[key])
+    const sideBarOpen = userSideBarOpen && ((!activeItem || !activeItem.secondSideBar)
+        || Object.keys(secondSideBarOpen).some(key => secondSideBarOpen[key])
+    )
 
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
         {confirmation.render()}
@@ -69,7 +71,7 @@ export function AsideBar() {
                            }}
                            className={getClassName({
                                'active1': secondSideBarOpen[item.title] || active,
-                               'dropdown': secondSideBarOpen[item.title],
+                               'dropdown': secondSideBarOpen[item.title] || active,
                            })}>
                     <Link className="flex-center"
                           onClick={(e) => {
@@ -82,7 +84,7 @@ export function AsideBar() {
                         {item.icon}
                         <span>{item.title}</span>
                     </Link>
-                    {item.children && <Collapse in={secondSideBarOpen[item.title]}>
+                    {item.children && <Collapse in={secondSideBarOpen[item.title] || active}>
                         <ul>
                             {item.children?.map(child => {
                                 const subActive = isSubActive(child)
