@@ -44,8 +44,8 @@ export const RegisterPage = () => {
         <Layout>
             <div className="row1_1-create_account">
                 <div>
-                    <a className="logo flex-center" href="">
-                        <img src="/tiapi.png" alt="png"/><span>APIBREW</span>
+                    <a className="logo flex-center" href="https://apibrew.io">
+                        <img src="/logo.png" alt="png"/>
                     </a>
 
                     <div className="r1-1-div1">

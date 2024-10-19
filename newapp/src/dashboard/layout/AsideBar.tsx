@@ -35,8 +35,7 @@ export function AsideBar() {
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
         {confirmation.render()}
         <Link to={prepareItemPath(connectionName, '')} className="logo flex-center">
-            <img src="/tiapi.png" alt="png"/>
-            <span>APIBREW</span>
+            <img src="/logo.png" alt="ApiBrew"/>
         </Link>
 
         <button className="sidebar-arrow" onClick={() => {

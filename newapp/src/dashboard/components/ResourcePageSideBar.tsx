@@ -18,6 +18,7 @@ import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 
 export function ResourcePageSideBar() {
     const [wi, setWi] = useState<number>(0)
+    const [searchValue, setSearchValue] = useState<string>('')
     const namespaceRepository = useRepository<Namespace>(NamespaceEntityInfo)
     const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const navigate = useNavigate()
@@ -70,7 +71,11 @@ export function ResourcePageSideBar() {
 
         <Box className='sidesect-div2'>
             <Search/>
-            <TextField placeholder="Search"/>
+            <TextField value={searchValue}
+                       onChange={e => {
+                           setSearchValue(e.target.value)
+                       }}
+                       placeholder="Search"/>
         </Box>
 
         <Box className='sidesect-div3'>
@@ -81,6 +86,7 @@ export function ResourcePageSideBar() {
 
         <List className='sidesect-ul'>
             {resources.filter(item => item.namespace.name === 'default')
+                .filter(item => searchValue === '' || item.name.indexOf(searchValue) !== -1)
                 .map(resource => {
                     return <ListItem sx={{display: 'list-item'}}>
                         <Button onClick={() => {
@@ -130,6 +136,7 @@ export function ResourcePageSideBar() {
 
                     <List>
                         {resources.filter(item => item.namespace.name === namespace)
+                            .filter(item => searchValue === '' || item.name.indexOf(searchValue) !== -1)
                             .map(resource => {
                                 return <ListItem>
                                     <Button
