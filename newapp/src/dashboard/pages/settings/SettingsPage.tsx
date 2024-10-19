@@ -5,10 +5,11 @@ import {PageLayout} from "../../../layout/PageLayout";
 import {useRouteTab} from "../../../hooks/use-route-tab";
 import {LoadingOverlay} from "common";
 import Button from "@mui/material/Button";
-import {Resource, useClient} from "@apibrew/react";
-import {Settings, SettingsEntityInfo, SettingsResource} from "../../model/settings.ts";
-import {ensureResource} from "../../../util/ensure-resource.ts";
+import {useClient} from "@apibrew/react";
+import {Settings, SettingsEntityInfo} from "../../model/settings.ts";
 import {StateContext} from "../../context/StateContext.tsx";
+import toast from "react-hot-toast";
+import {handleErrorMessage} from "../../../util/errors.ts";
 
 export default function SettingsPage() {
     const tab = useRouteTab()
@@ -38,10 +39,7 @@ export default function SettingsPage() {
     }
 
     useEffect(() => {
-        ensureResource(client, SettingsResource as Resource, true)
-            .then(() => {
-                return load()
-            })
+        load()
     }, []);
 
     useEffect(() => {
@@ -75,13 +73,19 @@ export default function SettingsPage() {
                     <Tab value='nano' label="Nano"/>
                     <Tab value='custom-attributes' label="Custom Attributes"/>
                     <Tab value='extensions' label="Extensions"/>
+                    <Tab value='custom-pages' label="Custom Pages"/>
                 </Tabs>
                 <Box flexGrow={1}/>
                 <Box>
                     <Stack direction='row' spacing={1}>
                         <Button
                             onClick={() => {
-
+                                const repo = client.repository<Settings>(SettingsEntityInfo)
+                                toast.promise(repo.update(settings), {
+                                    loading: 'Saving settings...',
+                                    success: 'Settings saved',
+                                    error: err => handleErrorMessage(err)
+                                })
                             }}
                             color='success'>Save</Button>
                         <Button

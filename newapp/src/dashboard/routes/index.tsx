@@ -9,6 +9,7 @@ import UserProfilePage from "../pages/user-profile/UserProfilePage.tsx";
 import {UserAndRolesRoutes} from "./user-and-roles.tsx";
 import {SettingsRoutes} from "./settings.tsx";
 import {MonitoringRoutes} from "./monitoring.tsx";
+import {CustomPagesPage} from "../pages/custom-pages/CustomPagesPage.tsx";
 
 const pageRoutes = listPageTypes().map(pageType => {
     return {
@@ -80,5 +81,12 @@ export const dashboardRote = {
         UserAndRolesRoutes,
         SettingsRoutes,
         MonitoringRoutes,
+        {
+            path: 'custom-pages/:route',
+            element: <CustomPagesPage/>,
+            handle: {
+                breadcrumb: 'Custom Pages'
+            }
+        }
     ]
 }

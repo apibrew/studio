@@ -6,7 +6,7 @@ import {ClientProvider, cloudConnectionProvider, Connection, LocalStorageTokenSt
 import toast from "react-hot-toast";
 import {DashboardLayout} from "./layout/DashboardLayout.tsx";
 import {ConnectionContext} from "./context/ConnectionContext";
-import {User} from "@apibrew/client/model";
+import {Resource, User} from "@apibrew/client/model";
 import {UserEntityInfo} from "@apibrew/client/model/user";
 import {handleErrorMessage} from "../util/errors.ts";
 import {useHostClient} from "../hooks/use-host-client.tsx";
@@ -15,6 +15,9 @@ import {CurrentAccountContext} from "../context/current-account.tsx";
 import {Account, AccountEntityInfo} from "../cloud/model/account.ts";
 import {CurrentInstanceContext} from "../context/current-instance.tsx";
 import {Instance, InstanceEntityInfo} from "../cloud/model/instance.ts";
+import {ensureResource} from "../util/ensure-resource.ts";
+import {Settings, SettingsEntityInfo, SettingsResource} from "./model/settings.ts";
+import {StudioSettingsContext} from "./context/studio-settings.tsx";
 
 
 export function DashboardPage() {
@@ -65,7 +68,39 @@ export function DashboardPage() {
             .catch(err => {
                 console.error(err)
             })
+
+
     }, [hostClient]);
+
+    const [settings, setSettings] = useState<Settings>()
+
+    const loadSettings = async (client: Client) => {
+        const repo = client.repository<Settings>(SettingsEntityInfo)
+
+        try {
+            const settings = await repo.load({
+                name: 'default'
+            })
+
+            setSettings(settings)
+        } catch (e) {
+            console.error('Failed to load settings', e)
+
+            const settings = await repo.create({
+                name: 'default'
+            } as Settings)
+
+            setSettings(settings)
+        }
+    }
+
+    useEffect(() => {
+        if (client) {
+            ensureResource(client, SettingsResource as Resource, true).then(() => {
+                return loadSettings(client)
+            })
+        }
+    }, [client])
 
     useEffect(() => {
         if (connectionName === 'manager') {
@@ -123,7 +158,9 @@ export function DashboardPage() {
                 <CurrentUserContext.Provider value={user}>
                     <CurrentAccountContext.Provider value={account}>
                         <CurrentInstanceContext.Provider value={instance}>
-                            {client && <DashboardLayout/>}
+                            {settings && <StudioSettingsContext.Provider value={settings}>
+                                {client && <DashboardLayout/>}
+                            </StudioSettingsContext.Provider>}
                         </CurrentInstanceContext.Provider>
                     </CurrentAccountContext.Provider>
                 </CurrentUserContext.Provider>

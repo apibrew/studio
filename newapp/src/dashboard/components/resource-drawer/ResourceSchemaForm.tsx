@@ -12,19 +12,30 @@ export interface ResourceFormProps {
 
 const propertyNameRegex = /^[a-z][A-Za-z0-9-]*$/;
 
-export function ResourceTypesForm(props: ResourceFormProps) {
-    const [selectedType, setSelectedType] = useState<SubType | undefined>(undefined)
-
+export function ResourceTypesFormWrapper(props: ResourceFormProps) {
     function validate(): boolean {
-        if (types.some(type => !propertyNameRegex.test(type.name))) {
-            return false
-        }
         return true
     }
 
     useEffect(() => {
         props.onChange(props.value, validate())
     }, [props.value]);
+
+    return (
+        <ResourceSchemaForm value={props.value} onChange={props.onChange}/>
+    )
+}
+
+export function ResourceSchemaForm(props: ResourceFormProps) {
+    function validate(): boolean {
+        return true
+    }
+
+    useEffect(() => {
+        props.onChange(props.value, validate())
+    }, [props.value]);
+
+    const [selectedType, setSelectedType] = useState<SubType | undefined>(undefined)
 
     const types = props.value.types || []
 
@@ -48,6 +59,7 @@ export function ResourceTypesForm(props: ResourceFormProps) {
                     <Add/> Add new
                 </Button>
             </Box>
+            <br/>
             <Table size='small'>
                 <TableHead>
                     <TableRow>
@@ -109,14 +121,16 @@ export function ResourceTypesForm(props: ResourceFormProps) {
             </Table>
             <hr/>
             {selectedType && <Box>
-                <ResourcePropertiesForm resource={props.value} value={selectedType} onChange={updated => {
-                    let updatedTypes = [...types]
-                    updatedTypes[types.indexOf(selectedType)] = updated
-                    props.onChange({
-                        ...props.value,
-                        types: updatedTypes
-                    }, validate())
-                }}/>
+                <ResourcePropertiesForm resource={props.value}
+                                        value={selectedType}
+                                        onChange={updated => {
+                                            let updatedTypes = [...types]
+                                            updatedTypes[types.indexOf(selectedType)] = updated
+                                            props.onChange({
+                                                ...props.value,
+                                                types: updatedTypes
+                                            }, validate())
+                                        }}/>
             </Box>}
         </Box>
     )

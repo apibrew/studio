@@ -7,11 +7,13 @@ import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {getUserDisplayName, useCurrentUser} from "../../context/current-user.tsx";
 import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 import {Collapse} from "@mui/material";
+import {useStudioSettings} from "../context/studio-settings.tsx";
 
 export function AsideBar() {
     const {activeItem, activeSubItem} = useActiveMenuItem()
     const currentUser = useCurrentUser()
     const navigate = useNavigate()
+    const settings = useStudioSettings()
 
     const [userSideBarOpen, setUserSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
@@ -34,6 +36,27 @@ export function AsideBar() {
         || Object.keys(secondSideBarOpen).some(key => secondSideBarOpen[key])
     )
 
+    let items = menuItems;
+
+    if (settings.customPages && settings.customPages.length > 0) {
+        items.forEach(item => {
+            if (item.key === 'custom-pages') {
+                item.hidden = false
+
+                item.children = []
+                settings.customPages?.forEach(page => {
+                    item.children?.push({
+                        title: page.name,
+                        path: '/dashboard/custom-pages/' + (page.route.startsWith('/') ? page.route.substring(1) : page.route),
+                        hidden: !page.showInMenu
+                    })
+                })
+            }
+        })
+    }
+
+    items = items.filter(item => !item.hidden)
+
     return <div className={`sidebar ${sideBarOpen ? 'extended' : ''}`}>
         {confirmation.render()}
         <Link to={prepareItemPath(connectionName, '')} className="logo flex-center">
@@ -49,60 +72,61 @@ export function AsideBar() {
             {!sideBarOpen && <ArrowRight/>}
         </button>
         <ul className="ul-buttons">
-            {menuItems.map((item) => {
-                const active = isActive(item)
+            {items
+                .map((item) => {
+                    const active = isActive(item)
 
-                return <li key={item.title}
-                           onMouseEnter={() => {
-                               if (item.children && item.children.length > 0) {
-                                   setSecondSideBarOpen({
-                                       ...secondSideBarOpen,
-                                       [item.title]: true
-                                   })
-                               }
-                           }}
-                           onMouseLeave={() => {
-                               if (item.children && item.children.length > 0) {
-                                   setSecondSideBarOpen({
-                                       ...secondSideBarOpen,
-                                       [item.title]: false
-                                   })
-                               }
-                           }}
-                           className={getClassName({
-                               'active1': secondSideBarOpen[item.title] || active,
-                               'dropdown': secondSideBarOpen[item.title] || active,
-                           })}>
-                    <Link className="flex-center"
-                          onClick={(e) => {
-                              if (item.children && item.children.length > 0) {
-                                  e.preventDefault()
-                                  e.stopPropagation()
-                              }
-                          }}
-                          to={prepareItemPath(connectionName, item.path)}>
-                        {item.icon}
-                        <span>{item.title}</span>
-                    </Link>
-                    {item.children && <Collapse in={secondSideBarOpen[item.title] || active}>
-                        <ul>
-                            {item.children?.map(child => {
-                                const subActive = isSubActive(child)
+                    return <li key={item.title}
+                               onMouseEnter={() => {
+                                   if (item.children && item.children.length > 0) {
+                                       setSecondSideBarOpen({
+                                           ...secondSideBarOpen,
+                                           [item.title]: true
+                                       })
+                                   }
+                               }}
+                               onMouseLeave={() => {
+                                   if (item.children && item.children.length > 0) {
+                                       setSecondSideBarOpen({
+                                           ...secondSideBarOpen,
+                                           [item.title]: false
+                                       })
+                                   }
+                               }}
+                               className={getClassName({
+                                   'active1': secondSideBarOpen[item.title] || active,
+                                   'dropdown': secondSideBarOpen[item.title] || active,
+                               })}>
+                        <Link className="flex-center"
+                              onClick={(e) => {
+                                  if (item.children && item.children.length > 0) {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+                                  }
+                              }}
+                              to={prepareItemPath(connectionName, item.path)}>
+                            {item.icon}
+                            <span>{item.title}</span>
+                        </Link>
+                        {item.children && <Collapse in={secondSideBarOpen[item.title] || active}>
+                            <ul>
+                                {item.children?.map(child => {
+                                    const subActive = isSubActive(child)
 
-                                return <li
-                                    key={child.title}
-                                    className={getClassName({
-                                        'active2': subActive,
-                                    })}>
-                                    <Link to={prepareItemPath(connectionName, child.path)}>
-                                        <span>{child.title}</span>
-                                    </Link>
-                                </li>
-                            })}
-                        </ul>
-                    </Collapse>}
-                </li>
-            })}
+                                    return <li
+                                        key={child.title}
+                                        className={getClassName({
+                                            'active2': subActive,
+                                        })}>
+                                        <Link to={prepareItemPath(connectionName, child.path)}>
+                                            <span>{child.title}</span>
+                                        </Link>
+                                    </li>
+                                })}
+                            </ul>
+                        </Collapse>}
+                    </li>
+                })}
         </ul>
 
         <Link className="flex-center" to={prepareItemPath(connectionName, '/cloud/projects')}>

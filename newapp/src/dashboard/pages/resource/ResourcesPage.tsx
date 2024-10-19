@@ -44,6 +44,21 @@ export default function ResourcesPage() {
             <Alert color='warning'>
                 Please select a resource from the left panel
             </Alert>
+            <Button variant='outlined' color='primary'
+                    onClick={() => {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, true, {
+                            name: 'MyFirstResource',
+                            namespace: {
+                                name: params.namespace || 'default'
+                            }
+                        } as Resource, () => {
+                            window.location.reload()
+                        }))
+                    }}
+                    style={{marginTop: '10px'}}>
+                Create New Resource
+            </Button>
+            {drawer.render()}
         </Box>
     }
 
@@ -54,8 +69,8 @@ export default function ResourcesPage() {
     return <>
         {drawer.render()}
         <Box className="m2-div1" display='flex'
-            height='100%'
-            flexDirection='column'>
+             height='100%'
+             flexDirection='column'>
             <Stack className="m2-div1-1" direction='row' spacing={2} p={1}>
                 <Typography variant='h5'>
                     {params.namespace !== 'default' && params.namespace + ' / '}
@@ -68,34 +83,35 @@ export default function ResourcesPage() {
                                     toast.success('Copied to clipboard')
                                 }}>#{resource.id.substring(0, 8)}</Typography>
                 </Tooltip>
-                <Box flexGrow={1} />
+                <Box flexGrow={1}/>
                 <Typography ml={10} variant='body2'>
                     GET /{getRestPath(resource)}
                 </Typography>
                 <Button variant='text' size='small' onClick={() => {
                     drawer.open(<ApiDocModal onClose={drawer.close}/>)
                 }}>
-                    <CircleOutlined />
-                    <span style={{ marginLeft: '3px' }}>Api Doc</span>
+                    <CircleOutlined/>
+                    <span style={{marginLeft: '3px'}}>Api Doc</span>
                 </Button>
                 <Button variant='text' size='small' onClick={() => {
-                    drawer.open(<ResourceNanoDrawer resource={resource.name} namespace={resource.namespace.name} onClose={drawer.close}/>)
+                    drawer.open(<ResourceNanoDrawer resource={resource.name} namespace={resource.namespace.name}
+                                                    onClose={drawer.close}/>)
                 }}>
-                    <Code />
-                    <span style={{ marginLeft: '3px' }}>Nano Code</span>
+                    <Code/>
+                    <span style={{marginLeft: '3px'}}>Nano Code</span>
                 </Button>
                 <Button variant='outlined' color='primary' size='small' onClick={() => {
                     openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, false, resource, () => {
                         setWi(wi + 1)
                     }))
                 }}>
-                    <CalendarViewMonth />
-                    <span style={{ marginLeft: '3px' }}>Update Resource</span>
+                    <CalendarViewMonth/>
+                    <span style={{marginLeft: '3px'}}>Update Resource</span>
                 </Button>
             </Stack>
             <DataTable reloadResource={() => {
                 setWi(wi + 1)
-            }} resource={resource} />
+            }} resource={resource}/>
         </Box>
     </>
 }

@@ -1,4 +1,4 @@
-import {Dataset, FunctionsTwoTone, Group, Home, Monitor, Storage} from "@mui/icons-material";
+import {Dataset, FunctionsTwoTone, Group, Home, Monitor, Pages, Settings, Storage} from "@mui/icons-material";
 import {ConnectionProvider} from "@apibrew/react";
 import {ReactNode} from "react";
 import {ResourcePageSideBar} from "../components/ResourcePageSideBar";
@@ -6,6 +6,8 @@ import {ResourcePageSideBar} from "../components/ResourcePageSideBar";
 export interface MenuItem {
     title: string;
     icon?: ReactNode;
+    hidden?: boolean;
+    key?: string;
     path?: string;
     secondSideBar?: () => ReactNode;
     grow?: boolean;
@@ -99,12 +101,19 @@ export const menuItems: MenuItem[] = [
         path: '/dashboard/monitoring',
         icon: <Monitor/>,
     },
-    // {
-    //     title: 'Settings',
-    //     path: '/dashboard/settings',
-    //     icon: <Settings/>,
-    //     conditional: (cp) => Boolean(cp.allowManageConnections)
-    // }
+    {
+        title: 'Custom Pages',
+        path: '/dashboard/pages',
+        hidden: true,
+        key: 'custom-pages',
+        icon: <Pages/>,
+        children: []
+    },
+    {
+        title: 'Settings',
+        path: '/dashboard/settings',
+        icon: <Settings/>,
+    }
 ]
 
 

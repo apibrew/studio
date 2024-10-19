@@ -1,12 +1,13 @@
 import {Outlet} from "react-router-dom";
 import SettingsPage from "../pages/settings/SettingsPage.tsx";
 import {GeneralSettingsPage} from "../pages/settings/GeneralSettingsPage.tsx";
+import {CustomPagesPage} from "../pages/settings/CustomPagesPage.tsx";
 
 export const SettingsRoutes = {
     path: "settings",
     element: <SettingsPage/>,
     handle: {
-        breadcrumb: 'Users & Roles'
+        breadcrumb: 'Settings'
     },
     children: [
         {
@@ -47,6 +48,14 @@ export const SettingsRoutes = {
             handle: {
                 tab: 'extensions',
                 breadcrumb: 'Extensions'
+            }
+        },
+        {
+            path: "custom-pages",
+            element: <CustomPagesPage/>,
+            handle: {
+                tab: 'custom-pages',
+                breadcrumb: 'Custom Pages'
             }
         }
     ]

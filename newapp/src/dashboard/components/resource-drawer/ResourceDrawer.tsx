@@ -7,7 +7,7 @@ import {handleErrorMessage} from "../../../util/errors.ts";
 import {ResourceMainForm} from "./ResourceMainForm.tsx";
 import {ResourceAdvancedForm} from "./ResourceAdvancedForm.tsx";
 import {ResourcePropertiesForm} from "./ResourcePropertiesForm.tsx";
-import {ResourceSourceForm} from "./ResourceSourceForm.tsx";
+import {ResourceSourceFormWrapper} from "./ResourceSourceForm.tsx";
 
 export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNew: boolean, initialValue: Partial<Resource>, onClose?: () => void): MultiDrawerProps<Resource> {
     return {
@@ -23,8 +23,8 @@ export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNe
                 component: props => ResourcePropertiesForm({...props, resource: props.value})
             },
             // {
-            //     name: 'Sub Types',
-            //     component: ResourceTypesForm
+            //     name: 'Schema',
+            //     component: ResourceSchemaForm
             // },
             {
                 name: 'Advanced',
@@ -32,7 +32,7 @@ export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNe
             },
             {
                 name: 'Source',
-                component: ResourceSourceForm
+                component: ResourceSourceFormWrapper
             }
         ],
         initialValue: initialValue,

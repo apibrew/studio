@@ -1,0 +1,70 @@
+id: 76b9e52f-b86b-4f1e-b160-b2e6795c80bc
+version: 13
+auditData:
+  createdBy: controller
+  updatedBy: controller
+  createdOn: '2024-10-08T12:15:58Z'
+  updatedOn: '2024-10-19T18:04:15Z'
+name: Settings
+namespace:
+  name: studio
+types:
+  - name: CustomPage
+    properties:
+      route:
+        type: string
+        required: true
+      name:
+        type: string
+        required: true
+      location:
+        type: string
+        required: true
+      showInMenu:
+        type: boolean
+        required: true
+        defaultValue: true
+properties:
+  id:
+    type: UUID
+    primary: true
+    required: true
+    immutable: true
+    exampleValue: a39621a4-6d48-11ee-b962-0242ac120002
+    description: >-
+      The unique identifier of the resource. It is randomly generated and
+      immutable.
+    annotations:
+      SourceMatchKey: 920c7a0fcbc6
+      SpecialProperty: 'true'
+  name:
+    type: STRING
+    required: true
+    unique: true
+    length: 255
+    title: Name
+    description: Name
+    annotations:
+      SourceMatchKey: 9e11c371e5fa
+  customPages:
+    type: list
+    item:
+      type: struct
+      typeRef: CustomPage
+  version:
+    type: INT32
+    required: true
+    defaultValue: 1
+    exampleValue: 1
+    title: Version
+    description: The version of the resource/record. It is incremented on every update.
+    annotations:
+      AllowEmptyPrimitive: 'true'
+      SourceMatchKey: b1aaf7de5ead
+      SpecialProperty: 'true'
+dataSource:
+  name: default
+entity: studio_settings
+catalog: ''
+annotations:
+  NormalizedResource: 'true'
