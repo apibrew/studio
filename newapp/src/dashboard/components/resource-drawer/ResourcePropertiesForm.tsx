@@ -7,15 +7,17 @@ import {Property} from "@apibrew/client/model";
 import TextField from "@mui/material/TextField";
 import {PropertyTypeDropdown} from "../PropertyTypeDropdown.tsx";
 import {PropertyExtras} from "../property-form/PropertyExtras.tsx";
+import {SubType} from "@apibrew/client/model/resource";
 
-export interface ResourceFormProps {
-    value: Resource
-    onChange: (Resource: Resource, isValid: boolean) => void
+export interface ResourceFormProps<T extends Resource | SubType> {
+    resource: Resource
+    value: T
+    onChange: (Resource: T, isValid: boolean) => void
 }
 
 const propertyNameRegex = /^[a-z][A-Za-z0-9-]*$/;
 
-export function ResourcePropertiesForm(props: ResourceFormProps) {
+export function ResourcePropertiesForm<T extends Resource | SubType>(props: ResourceFormProps<T>) {
     useEffect(() => {
         props.onChange(props.value, validate())
     }, [props.value]);
@@ -136,7 +138,7 @@ export function ResourcePropertiesForm(props: ResourceFormProps) {
                                             sx={{
                                                 maxWidth: '150px'
                                             }}
-                                            resource={props.value}
+                                            resource={props.resource}
                                             property={property}
                                             onChange={change => {
                                                 updateProperty(change)

@@ -9,8 +9,6 @@ import {ResourceAdvancedForm} from "./ResourceAdvancedForm.tsx";
 import {ResourcePropertiesForm} from "./ResourcePropertiesForm.tsx";
 import {ResourceSourceForm} from "./ResourceSourceForm.tsx";
 
-// import {ResourceTypesForm} from "./ResourceTypesForm.tsx";
-
 export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNew: boolean, initialValue: Partial<Resource>, onClose?: () => void): MultiDrawerProps<Resource> {
     return {
         title: isNew ? 'New Resource' : '' + initialValue.name,
@@ -22,10 +20,10 @@ export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNe
             },
             {
                 name: 'Properties',
-                component: ResourcePropertiesForm
+                component: props => ResourcePropertiesForm({...props, resource: props.value})
             },
             // {
-            //     name: 'Types',
+            //     name: 'Sub Types',
             //     component: ResourceTypesForm
             // },
             {
