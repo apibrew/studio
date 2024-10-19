@@ -76,19 +76,14 @@ export function Breadcrumbs() {
 
     return <>
         <div className="mh-div1 flex-center">
-            <Link to={'./'} style={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                color: 'inherit'
-            }}>
-                <Home/>
+            <Link to={'./'} className="mh-div1-a1">
+                <Home className="wh-20-20 c-667085"/>
             </Link>
 
             {breadcrumbs.map((breadcrumb, index) => {
                 return <Fragment key={index}>
                     <ArrowForwardIos/>
-                    <span className='mh-text'>{breadcrumb.title}</span>
+                    <span>{breadcrumb.title}</span>
                 </Fragment>
             })}
         </div>
