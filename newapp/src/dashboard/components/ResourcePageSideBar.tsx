@@ -1,7 +1,6 @@
 import {Box, Button, List, ListItem, Menu, TextField, Typography} from "@mui/material";
 import {Add, FolderOutlined, MoreVert, Search, TableChart} from "@mui/icons-material";
 import {useRecords, useRepository} from "@apibrew/react";
-import {LoadingOverlay} from "common";
 import {useNavigate} from "react-router-dom";
 import {isUserNamespace} from "../../util/namespace.ts";
 import {useDrawer} from "../../hooks/use-drawer.tsx";
@@ -22,8 +21,8 @@ export function ResourcePageSideBar() {
     const namespaceRepository = useRepository<Namespace>(NamespaceEntityInfo)
     const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const navigate = useNavigate()
-    const resources = useRecords<Resource>(ResourceEntityInfo, {limit: 1000}, wi)
-    const allNamespaces = useRecords<Resource>(NamespaceEntityInfo, {limit: 1000}, wi)
+    const resources = useRecords<Resource>(ResourceEntityInfo, {limit: 1000}, wi) || []
+    const allNamespaces = useRecords<Resource>(NamespaceEntityInfo, {limit: 1000}, wi) || []
     const drawer = useDrawer()
     const confirmation = useConfirmation()
 
@@ -32,10 +31,6 @@ export function ResourcePageSideBar() {
     const [selectedNamespace, setSelectedNamespace] = useState<Namespace | null>(null)
     const [resourceMenuAnchor, setResourceMenuAnchor] = useState<null | HTMLElement>(null)
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
-
-    if (!resources || !allNamespaces) {
-        return <LoadingOverlay/>
-    }
 
     function reload() {
         setWi(wi => wi + 1)
@@ -81,6 +76,8 @@ export function ResourcePageSideBar() {
         <Box className='sidesect-div3'>
             <Typography variant='body2'>Default</Typography>
         </Box>
+
+        {resources.length === 0 && <Typography variant='body2'>Loading...</Typography>}
 
         <List className='sidesect-ul'>
             {resources.filter(item => item.namespace.name === 'default')
