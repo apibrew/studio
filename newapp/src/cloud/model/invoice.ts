@@ -1,6 +1,5 @@
 import {AccountPlan} from './account-plan';
 import {Payment} from './payment';
-import {InstancePlan} from './instance-plan';
 import {Instance} from './instance';
 
 export interface Invoice {
@@ -28,7 +27,6 @@ export const InvoiceEntityInfo = {
 export interface InvoiceItem {
     instancePreviousPlanName: string
     instancePreviousPlanUntil: string
-    plan: InstancePlan
     instance: Instance
     monthCount: number
 }

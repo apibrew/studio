@@ -21,7 +21,7 @@ export const menuItems: MenuItem[] = [
         icon: <Home/>
     },
     {
-        title: 'API Resources',
+        title: 'Builder',
         path: '/dashboard/resources',
         secondSideBar: () => <ResourcePageSideBar/>,
         icon: <Dataset/>

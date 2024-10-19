@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import {useHostClient} from "../hooks/use-host-client.tsx";
 import './sign-pages.scss'
 import {Layout} from "./outer-layout.tsx";
+import {googleAuthUrl} from "./sso-config.ts";
 
 export const LoginPage = () => {
     const client = useHostClient();
@@ -77,7 +78,7 @@ export const LoginPage = () => {
                         </div>
 
                         <a className="r1-1-btn2"
-                           href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'>
+                           href={googleAuthUrl()}>
                             <img className="sidebar-icon" src="/img2.png" alt="png"/>
                             <span>Sign up with Google</span>
                         </a>

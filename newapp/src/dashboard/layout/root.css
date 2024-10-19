@@ -90,6 +90,10 @@ button {
     margin-bottom: -10px;
 }
 
+.sidebar .logo img.close {
+    width: 45px!important;
+}
+
 .flex-center {
     display: flex;
     align-items: center;

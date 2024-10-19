@@ -8,6 +8,7 @@ import {GithubSsoPage} from "./pages/GithubSso.tsx";
 import {NotFoundPage} from "./pages/NotFoundPage.tsx";
 import Index from "./pages/Index.tsx";
 import {Goto} from "./cloud/pages/Goto.tsx";
+import {GoogleSsoPage} from "./pages/GoogleSso.tsx";
 
 export const index = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ export const index = createBrowserRouter([
     {
         path: 'github-sso',
         element: <GithubSsoPage/>
+    },
+    {
+        path: 'google-sso',
+        element: <GoogleSsoPage/>
     },
     dashboardRote,
 

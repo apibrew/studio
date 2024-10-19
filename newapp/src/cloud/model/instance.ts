@@ -1,5 +1,4 @@
 import {Database} from './database';
-import {InstancePlan} from './instance-plan';
 
 export interface Instance {
     auditData?: AuditData
@@ -14,7 +13,6 @@ export interface Instance {
     id: string
     version: number
     disableBuiltinNanoEngine?: boolean
-    plan?: InstancePlan
     adminPassword?: string
     deploymentStatus: DeploymentStatus
     name: string
