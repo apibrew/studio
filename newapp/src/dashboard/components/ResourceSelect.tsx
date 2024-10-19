@@ -2,7 +2,6 @@ import {ListSubheader, MenuItem, Select} from "@mui/material";
 import {SelectProps} from "@mui/material/Select/Select";
 import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {Resource, useRecords} from "@apibrew/react";
-import {LoadingOverlay} from "common";
 import {SelectChangeEvent} from "@mui/material/Select/SelectInput";
 
 export interface ResourceSelectProps extends Omit<SelectProps<string>, "onChange"> {
@@ -11,11 +10,7 @@ export interface ResourceSelectProps extends Omit<SelectProps<string>, "onChange
 }
 
 export function ResourceSelect(props: ResourceSelectProps) {
-    const resources = useRecords<Resource>(ResourceEntityInfo)
-
-    if (!resources) {
-        return <LoadingOverlay/>
-    }
+    const resources = useRecords<Resource>(ResourceEntityInfo) || []
 
     const namespaces = resources.map(r => r.namespace.name).filter((v, i, a) => a.indexOf(v) === i)
 

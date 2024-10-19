@@ -1,11 +1,9 @@
 import {Resource} from "@apibrew/react";
-import {Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip,} from "@mui/material";
-import {useEffect} from "react";
-import Button from "@mui/material/Button";
-import {Add, DragIndicator} from "@mui/icons-material";
-import {Property} from "@apibrew/client/model";
-import TextField from "@mui/material/TextField";
-import {PropertyTypeDropdown} from "../PropertyTypeDropdown.tsx";
+import {useEffect, useState} from "react";
+import {Box, Button, IconButton, Table, TableBody, TableCell, TableHead, TableRow, TextField} from "@mui/material";
+import {Add, DragIndicator, Remove, Search} from "@mui/icons-material";
+import {SubType} from "@apibrew/client/model/resource";
+import {ResourcePropertiesForm} from "./ResourcePropertiesForm.tsx";
 
 export interface ResourceFormProps {
     value: Resource
@@ -15,21 +13,23 @@ export interface ResourceFormProps {
 const propertyNameRegex = /^[a-z][A-Za-z0-9-]*$/;
 
 export function ResourceTypesForm(props: ResourceFormProps) {
-    useEffect(() => {
-        props.onChange(props.value, validate())
-    }, [props.value]);
-
-    const properties = Object.keys(props.value.properties || {})
+    const [selectedType, setSelectedType] = useState<SubType | undefined>(undefined)
 
     function validate(): boolean {
-        if (properties.some(propertyName => !propertyNameRegex.test(propertyName))) {
+        if (types.some(type => !propertyNameRegex.test(type.name))) {
             return false
         }
         return true
     }
 
+    useEffect(() => {
+        props.onChange(props.value, validate())
+    }, [props.value]);
+
+    const types = props.value.types || []
+
     return (
-        <Box width='600px'>
+        <Box width='100%'>
             <Box display='flex'
                  flexDirection='row-reverse'>
                 <Button size='small'
@@ -37,15 +37,12 @@ export function ResourceTypesForm(props: ResourceFormProps) {
                         onClick={() => {
                             props.onChange({
                                 ...props.value,
-                                properties: {
-                                    ...props.value.properties,
-                                    ['new-property-' + properties.length]: {
-                                        type: 'STRING',
-                                        required: false,
-                                        immutable: false,
-                                        unique: false,
-                                    } as Property
-                                }
+                                types: [
+                                    ...props.value.types || [],
+                                    {
+                                        name: 'new-type-' + types.length,
+                                    } as SubType
+                                ],
                             }, validate())
                         }}>
                     <Add/> Add new
@@ -56,110 +53,71 @@ export function ResourceTypesForm(props: ResourceFormProps) {
                     <TableRow>
                         <TableCell></TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Type</TableCell>
-                        <TableCell>Modifiers</TableCell>
-                        <TableCell>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {properties.map(propertyName => {
-                        const property = props.value.properties![propertyName]
-
-                        function updateProperty(update: Partial<Property>) {
-                            let updatedProperties = {...props.value.properties}
-
-                            updatedProperties[propertyName] = {
-                                ...property,
-                                ...update,
-                            }
-
-                            props.onChange({
-                                ...props.value,
-                                properties: updatedProperties
-                            }, validate())
-                        }
-
-                        return <TableRow key={propertyName}>
+                    {types.map((type, index) => {
+                        return <TableRow key={type.name}>
                             <TableCell padding='none'>
-                                <DragIndicator/>
+                                <IconButton size='small'
+                                            color='secondary'
+                                            onClick={() => {
+
+                                            }}>
+                                    <DragIndicator/>
+                                </IconButton>
+                                <IconButton size='small'
+                                            color='secondary'
+                                            onClick={() => {
+                                                setSelectedType(type)
+                                            }}>
+                                    <Search/>
+                                </IconButton>
+                                <IconButton size='small'
+                                            color='error'
+                                            onClick={() => {
+                                                props.onChange({
+                                                    ...props.value,
+                                                    types: types.filter(t => t !== type)
+                                                }, validate())
+                                            }}>
+                                    <Remove/>
+                                </IconButton>
                             </TableCell>
                             <TableCell padding='none'>
                                 <TextField
                                     size='small'
-                                    defaultValue={propertyName}
+                                    defaultValue={type.name}
                                     label='Name'
-                                    error={!propertyNameRegex.test(propertyName)}
+                                    error={!propertyNameRegex.test(type.name)}
                                     variant='outlined'
                                     onBlur={(event) => {
-                                        if (event.target.value !== propertyName) {
-                                            let currentProperties = {...props.value.properties}
-                                            delete currentProperties[propertyName]
-                                            props.onChange({
-                                                ...props.value,
-                                                properties: {
-                                                    ...currentProperties,
-                                                    [event.target.value]: property
-                                                }
-                                            }, validate())
+                                        let updatedTypes = [...types]
+                                        updatedTypes[index] = {
+                                            ...type,
+                                            name: event.target.value
                                         }
+                                        props.onChange({
+                                            ...props.value,
+                                            types: updatedTypes
+                                        }, validate())
                                     }}/>
-                            </TableCell>
-                            <TableCell padding='none'>
-                                <PropertyTypeDropdown
-                                    size='small'
-                                    value={property.type}
-                                    onChange={e => {
-                                        updateProperty({type: e.target.value as Property['type']})
-                                    }}/>
-                            </TableCell>
-                            <TableCell padding='none'>
-                                <Tooltip title='Immutable'>
-                                    <input type='checkbox'
-                                           checked={property.immutable}
-                                           onChange={(e) => {
-                                               updateProperty({immutable: e.target.checked})
-                                           }}/>
-                                </Tooltip>
-                                <Tooltip title='Required'>
-                                    <input type='checkbox'
-                                           checked={property.required}
-                                           onChange={(e) => {
-                                               updateProperty({required: e.target.checked})
-                                           }}/>
-                                </Tooltip>
-                                <Tooltip title='Unique'>
-                                    <input type='checkbox'
-                                           checked={property.unique}
-                                           onChange={(e) => {
-                                               updateProperty({unique: e.target.checked})
-                                           }}/>
-                                </Tooltip>
-                            </TableCell>
-                            <TableCell padding='none'>
-                                <Button size='small'
-                                        color='primary'
-                                        onClick={() => {
-
-                                        }}>
-                                    Edit
-                                </Button>
-                                <Button size='small'
-                                        color='primary'
-                                        onClick={() => {
-                                            let currentProperties = {...props.value.properties}
-                                            delete currentProperties[propertyName]
-                                            props.onChange({
-                                                ...props.value,
-                                                properties: currentProperties
-                                            }, validate())
-                                        }}>
-                                    Remove
-                                </Button>
                             </TableCell>
                         </TableRow>
                     })}
                 </TableBody>
             </Table>
+            <hr/>
+            {selectedType && <Box>
+                <ResourcePropertiesForm resource={props.value} value={selectedType} onChange={updated => {
+                    let updatedTypes = [...types]
+                    updatedTypes[types.indexOf(selectedType)] = updated
+                    props.onChange({
+                        ...props.value,
+                        types: updatedTypes
+                    }, validate())
+                }}/>
+            </Box>}
         </Box>
     )
 }
