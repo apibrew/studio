@@ -82,7 +82,7 @@ export const dashboardRote = {
         SettingsRoutes,
         MonitoringRoutes,
         {
-            path: 'custom-pages/:route',
+            path: 'custom-pages/:route*',
             element: <CustomPagesPage/>,
             handle: {
                 breadcrumb: 'Custom Pages'
