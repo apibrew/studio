@@ -44,7 +44,7 @@ export default function SettingsPage() {
 
     useEffect(() => {
         if (!tab) {
-            navigate('general')
+            navigate('custom-pages')
         }
     }, [tab]);
 
@@ -68,11 +68,11 @@ export default function SettingsPage() {
 
                         navigate(newValue)
                     }}>
-                    <Tab value='general' label="General"/>
-                    <Tab value='resource' label="Resource"/>
-                    <Tab value='nano' label="Nano"/>
-                    <Tab value='custom-attributes' label="Custom Attributes"/>
-                    <Tab value='extensions' label="Extensions"/>
+                    {/*<Tab value='general' label="General"/>*/}
+                    {/*<Tab value='resource' label="Resource"/>*/}
+                    {/*<Tab value='nano' label="Nano"/>*/}
+                    {/*<Tab value='custom-attributes' label="Custom Attributes"/>*/}
+                    {/*<Tab value='extensions' label="Extensions"/>*/}
                     <Tab value='custom-pages' label="Custom Pages"/>
                 </Tabs>
                 <Box flexGrow={1}/>

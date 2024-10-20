@@ -2,7 +2,7 @@ import {Instance, InstanceEntityInfo} from "../model/instance";
 import {LoadingOverlay} from "common";
 
 import {Box, Card, Grid, IconButton, Popover, Stack, Typography} from "@mui/material";
-import {Direction, useRepository, useWatcher} from "@apibrew/react";
+import {Direction, useRecords, useRepository, useWatcher} from "@apibrew/react";
 import {BooleanExpression} from "@apibrew/client/model/permission";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
@@ -15,6 +15,7 @@ import {NewProjectDrawer} from "../components/NewProjectDrawer.tsx";
 import {EditProjectDrawer} from "../components/EditProjectDrawer.tsx";
 import {ListRecordParams} from "@apibrew/client";
 import {ProjectInfoDrawer} from "../components/ProjectInfoDrawer.tsx";
+import {HostedInstance, HostedInstanceEntityInfo} from "../model/hosted-instance.ts";
 
 export function ProjectsPage() {
     const navigate = useNavigate()
@@ -76,6 +77,7 @@ export function ProjectsPage() {
     const [filtersAnchor, setFiltersAnchor] = useState<null | HTMLElement>(null)
     const [searchValueLocal, setSearchValueLocal] = useState('')
     const [searchValue, setSearchValue] = useState('')
+    const hostedInstances = useRecords<HostedInstance>(HostedInstanceEntityInfo)
 
     const projects = (data || []).filter(item => {
         if (searchValue === '') {
@@ -194,11 +196,41 @@ export function ProjectsPage() {
 
         {loading && <LoadingOverlay/>}
 
+        {hostedInstances && hostedInstances.length > 0 && <Grid mt={2} container spacing={2}>
+            {hostedInstances && hostedInstances.map(item => <Grid item xs={12} sm={6} lg={3} xl={2}>
+                <Card sx={{border: 0, background: 'unset'}} key={item.name}>
+                    <Box className="prj1-div1" flex={1} height={'168px'} display='flex' flexDirection='column'>
+                        {/* prj1-div1-1 */}
+                        <Box display='flex'
+                             onClick={() => {
+                                 navigate(`/${item.name}/dashboard`)
+                             }}
+                             flexGrow={1}
+                             sx={{
+                                 cursor: 'pointer',
+                             }}>
+
+                            <div className="prj1-div1-1-1"></div>
+
+                            <div className="prj1-div1-1-2">
+
+                                <Box className="prj1-div1-1-2-1 flex-center">
+                                    <Typography className="fnt-600-18-Inter clr101828"
+                                                variant="h5">{item.name}</Typography>
+                                    <ArrowForwardIos className="wh-20-20 clr344054"/>
+                                </Box>
+
+                                <Typography className="fnt-400-14-Inter clr475467"
+                                            variant="body2">{item.owner}</Typography>
+                            </div>
+                        </Box>
+                    </Box>
+                </Card>
+            </Grid>)}
+        </Grid>}
         <Grid mt={2} container spacing={2}>
             {projects.map((item) => <Grid item xs={12} sm={6} lg={3} xl={2}>
-
                 <Card sx={{border: 0, background: 'unset'}} key={item.name}>
-
                     <Box className="prj1-div1" flex={1} height={'168px'} display='flex' flexDirection='column'>
                         {/* prj1-div1-1 */}
                         <Box display='flex'

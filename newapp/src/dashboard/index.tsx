@@ -18,6 +18,7 @@ import {Instance, InstanceEntityInfo} from "../cloud/model/instance.ts";
 import {ensureResource} from "../util/ensure-resource.ts";
 import {Settings, SettingsEntityInfo, SettingsResource} from "./model/settings.ts";
 import {StudioSettingsContext} from "./context/studio-settings.tsx";
+import {HostedInstance, HostedInstanceEntityInfo} from "../cloud/model/hosted-instance.ts";
 
 
 export function DashboardPage() {
@@ -31,9 +32,11 @@ export function DashboardPage() {
     const userRepository = hostClient.repository<User>(UserEntityInfo)
     const accountRepository = hostClient.repository<Account>(AccountEntityInfo)
     const instanceRepository = hostClient.repository<Instance>(InstanceEntityInfo)
+    const hostedInstanceRepository = hostClient.repository<HostedInstance>(HostedInstanceEntityInfo)
     const [user, setUser] = useState<User>()
     const [account, setAccount] = useState<Account>()
     const [instance, setInstance] = useState<Instance>()
+    const [hostedInstance, setHostedInstance] = useState<HostedInstance>()
 
     useEffect(() => {
         const username = hostClient.getTokenBody()?.username
@@ -53,23 +56,24 @@ export function DashboardPage() {
             console.error(err)
             toast.error(handleErrorMessage(err))
         })
-        accountRepository.load({
-            email: username
-        }, ['$.plan']).then(account => {
-            setAccount(account)
-        }).catch(err => {
-            console.error(err)
-            toast.error(handleErrorMessage(err))
-        })
-        instanceRepository.load({
-            name: connectionName,
-            owner: username
-        }).then(setInstance)
-            .catch(err => {
-                console.error(err)
+        if (connectionName.startsWith('project-')) {
+            instanceRepository.load({
+                name: connectionName,
+                owner: username
+            }).then(setInstance)
+                .catch(err => {
+                    console.error(err)
+                })
+        } else {
+            hostedInstanceRepository.load({
+                name: connectionName
+            }).then(hostedInstance => {
+                setHostedInstance(hostedInstance)
             })
-
-
+                .catch(err => {
+                    console.error(err)
+                })
+        }
     }, [hostClient]);
 
     const [settings, setSettings] = useState<Settings>()
@@ -126,31 +130,61 @@ export function DashboardPage() {
             return;
         }
 
-        const connection = cloudConnectionProvider.getConnection(connectionName)
-
-        connection.then(connection => {
-            if (!connection) {
-                console.log('no connection found')
-                alert('No connection found')
-                window.location.href = '/connections'
-                return;
+        if (hostedInstance) {
+            let url = hostedInstance.host + ":" + hostedInstance.port
+            if (hostedInstance.secure) {
+                url = 'https://' + url
+            } else {
+                url = 'http://' + url
             }
 
-            setConnection(connection)
+            const client = new ClientImpl(url)
+            client.useTokenStorage(new LocalStorageTokenStorage(hostedInstance.name))
+            if (!client.isAuthenticated()) {
+                client.authenticateWithToken(hostedInstance.token)
+            }
+            setClient(client)
+            setConnection({
+                name: hostedInstance.name,
+                serverConfig: {
+                    port: hostedInstance.port,
+                    host: hostedInstance.host,
+                    authentication: {
+                        token: hostedInstance.token
+                    },
+                    insecure: !hostedInstance.secure
+                }
+            } as Connection)
+            return;
+        }
 
-            connection.serverConfig.httpPort = 443
+        if (instance) {
+            const connection = cloudConnectionProvider.getConnection(connectionName)
 
-            newClientByServerConfig(connection.serverConfig).then(client => {
-                setClient(client)
-                client.useTokenStorage(new LocalStorageTokenStorage(connection.name))
-            }, err => {
-                toast.error(err.message)
+            connection.then(connection => {
+                if (!connection) {
+                    console.log('no connection found')
+                    alert('No connection found')
+                    window.location.href = '/connections'
+                    return;
+                }
 
-                window.location.href = '/connections'
-                return;
+                setConnection(connection)
+
+                connection.serverConfig.httpPort = 443
+
+                newClientByServerConfig(connection.serverConfig).then(client => {
+                    setClient(client)
+                    client.useTokenStorage(new LocalStorageTokenStorage(connection.name))
+                }, err => {
+                    toast.error(err.message)
+
+                    window.location.href = '/connections'
+                    return;
+                })
             })
-        })
-    }, [connectionName])
+        }
+    }, [connectionName, instance, hostedInstance])
 
     return <>
         <ClientProvider value={client}>
