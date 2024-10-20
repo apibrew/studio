@@ -29,15 +29,18 @@ function General(_: TabComponentProps<Instance>) {
                 }}>Copy to clipboard</Button>
             </li>
             <li>
-                <b>host:</b> - {url.hostname}
+                <b>http host:</b> - {url.hostname}
             </li>
             <li>
-                <b>port (grpc):</b> - 9443
+                <b>grpc host:</b> - {url.hostname.replace('.apibrew.io', '-grpc.apibrew.io')}
+            </li>
+            <li>
+                <b>port (grpc):</b> - 443
                 <br/>
                 Grpc is mainly used by apbr itself and golang sdk
             </li>
             <li>
-                <b>port (http(s)):</b> - {url.port}
+                <b>port (http(s)):</b> - 443
                 <br/>
                 Https is mainly used by other sdks and for REST api
             </li>

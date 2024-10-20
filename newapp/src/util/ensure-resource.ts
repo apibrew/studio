@@ -4,7 +4,7 @@ import {NamespaceEntityInfo} from "@apibrew/client/model/namespace";
 import {useEffect} from "react";
 
 export async function ensureResource(client: Client, resource: Resource, override?: boolean): Promise<void> {
-    client.getResourceByName(resource.namespace.name, resource.name)
+    await client.getResourceByName(resource.namespace.name, resource.name)
         .then((existing) => {
             resource.id = existing.id
             // already exists

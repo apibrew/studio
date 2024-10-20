@@ -1,5 +1,5 @@
 const systemNamespace: string[] = [
-    'nano', 'storage', 'studio', 'system', 'actions'
+    'nano', 'storage', 'studioX', 'system', 'actions'
 ]
 
 export function isUserNamespace(namespace: string) {

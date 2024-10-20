@@ -19,6 +19,7 @@ import {ensureResource} from "../util/ensure-resource.ts";
 import {Settings, SettingsEntityInfo, SettingsResource} from "./model/settings.ts";
 import {StudioSettingsContext} from "./context/studio-settings.tsx";
 import {HostedInstance, HostedInstanceEntityInfo} from "../cloud/model/hosted-instance.ts";
+import {LoadingOverlay} from "common";
 
 
 export function DashboardPage() {
@@ -100,7 +101,9 @@ export function DashboardPage() {
 
     useEffect(() => {
         if (client) {
+            console.log('ensure settings')
             ensureResource(client, SettingsResource as Resource, true).then(() => {
+                console.log('settings ensured')
                 return loadSettings(client)
             })
         }
@@ -185,6 +188,10 @@ export function DashboardPage() {
             })
         }
     }, [connectionName, instance, hostedInstance])
+
+    if (!settings || !client) {
+        return <LoadingOverlay/>
+    }
 
     return <>
         <ClientProvider value={client}>
