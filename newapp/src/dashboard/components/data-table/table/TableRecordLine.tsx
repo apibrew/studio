@@ -3,12 +3,13 @@ import {PropertyCell} from "./PropertyCell";
 import {MouseEvent, useState} from "react";
 import {Entity} from "@apibrew/client";
 import {Resource} from "@apibrew/react";
-import {DeleteForever, OpenInFullRounded} from "@mui/icons-material";
+import {DeleteForever, Edit, EditAttributes, EditNote, OpenInFullRounded} from "@mui/icons-material";
 import {Schema} from "../../../../types/schema";
 import {useDrawer} from "../../../../hooks/use-drawer";
-import {RecordExpand} from "./RecordExpand";
+import {resourceDrawerMultiDrawer} from "./RecordExpand";
 import {PropertyEditor} from "../../property-editor/PropertyEditor";
 import {coalesce} from "./util";
+import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
 
 export interface TableRecordLineProps {
     index: number
@@ -89,7 +90,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
             }}>Revert</MenuItem>
         </Menu>
         <Box display='flex' flexDirection='row' className='row row-body'>
-            <Box width='75px' className='cell body-cell'>
+            <Box width='75px' className='cell body-cell action-cell'>
                 <Box className='cell-inner'>
                     {!edited && <Checkbox className="check-icon1" checked={props.selected}
                                           sx={{
@@ -107,15 +108,12 @@ export function TableRecordLine(props: TableRecordLineProps) {
                         <DeleteForever/>
                     </IconButton>}
                     <IconButton onClick={() => {
-                        drawer.open(<RecordExpand resource={props.resource}
-                                                  title={'View ' + props.resource.name}
-                                                  value={{...props.record, ...props.updated}}
-                                                  onChange={value => {
-                                                      props.onUpdate(value)
-                                                  }}
-                        />)
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer('View ' + props.resource.name, props.resource, {...props.record, ...props.updated}, () => {
+                        }, updated => {
+                            props.onUpdate(updated)
+                        }))
                     }}>
-                        <OpenInFullRounded/>
+                        <EditNote/>
                     </IconButton>
                 </Box>
             </Box>

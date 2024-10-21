@@ -42,7 +42,8 @@ export function PropertyCell(props: PropertyCellProps) {
             onContextMenu={props.openContextMenu}
             style={{
                 backgroundColor: edited ? 'lightcyan' : 'transparent',
-                flexBasis: props.width
+                flexBasis: props.width,
+                flexShrink: 0
             }}
             onBlur={() => {
                 // setInlineEdit(false)

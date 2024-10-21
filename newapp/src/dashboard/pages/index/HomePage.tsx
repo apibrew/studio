@@ -95,6 +95,13 @@ export default function HomePage() {
                     <span className="home-project-version">{version?.version}</span>
                     <Button variant='contained'
                             size='large'
+                            target='_blank'
+                            href={client.getUrl() + '/docs/swagger'}
+                            color='secondary'>
+                        Api Docs
+                    </Button>
+                    <Button variant='contained'
+                            size='large'
                             onClick={() => {
                                 openMultiDrawer(drawer, projectStatusDrawer(instance!))
                             }}

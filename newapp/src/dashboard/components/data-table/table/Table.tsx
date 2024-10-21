@@ -105,7 +105,7 @@ export function DataTableTable(props: DataTableTableProps) {
             ...modifiedWidth
         })
 
-        setTableWidth(Object.values(modifiedWidth).reduce((acc, item) => acc + item, 0))
+        setTableWidth(Object.values(modifiedWidth).reduce((acc, item) => acc + item, 0) + 65)
     }, [properties]);
 
     const tableDnd = useMemo(() => {
@@ -128,7 +128,7 @@ export function DataTableTable(props: DataTableTableProps) {
             [property]: width
         })
 
-        setTableWidth(Object.values(columnWidths).reduce((acc, item) => acc + item, 0))
+        setTableWidth(Object.values(columnWidths).reduce((acc, item) => acc + item, 0) + 65)
     })
 
     const selectionIdMap = useMemo<{ [key: string]: boolean }>(() => {
@@ -146,7 +146,7 @@ export function DataTableTable(props: DataTableTableProps) {
         <Box display='flex' flexDirection='column' height='100%' minWidth={Math.max(500, 100 * properties.length + 85)}
              width={(tableWidth + 85) + 'px'}>
             <Box display='flex' flexDirection='row' className='row row-header'>
-                <Box width='82px' className='cell header-cell'>
+                <Box width='82px' className='cell header-cell action-cell'>
                     <Box className='cell-inner'>
                         <Checkbox className="check-icon1"
                                   checked={props.selectedItems.length > 0 && props.selectedItems.length === props.records.length}
@@ -182,7 +182,8 @@ export function DataTableTable(props: DataTableTableProps) {
                                 onDragOver={tableDnd.onDragOver.bind(tableDnd)}
                                 onDrop={tableDnd.onDrop.bind(tableDnd)}
                                 style={{
-                                    flexBasis: columnWidths[property] + 'px'
+                                    flexBasis: columnWidths[property] + 'px',
+                                    flexShrink: 0
                                 }}
                                 key={property}>
                         <>
@@ -271,7 +272,7 @@ export function DataTableTable(props: DataTableTableProps) {
                 </Box>
             </Box>
             {props.loading && <LoadingOverlay/>}
-            <Box display='flex' flexDirection='column' overflow='auto'>
+            <Box display='flex' flexDirection='column'>
                 {props.records.map((record, index) => (
                     <TableRecordLine key={record.id}
                                      new={record.id === 'new'}

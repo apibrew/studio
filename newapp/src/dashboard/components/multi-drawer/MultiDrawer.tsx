@@ -18,6 +18,7 @@ export interface MultiDrawerTab<T> {
 
 export interface MultiDrawerProps<T> {
     title: string
+    saveText?: string
     tabs: MultiDrawerTab<T>[]
     sx?: SxProps
     initialValue: Partial<T>
@@ -103,7 +104,7 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                                                  }
                                                  props.onSave!(value, props.onClose)
                                              }}>
-                        Save
+                        {props.saveText ?? 'Save'}
                     </Button>}
                 </Box>
             </Box>

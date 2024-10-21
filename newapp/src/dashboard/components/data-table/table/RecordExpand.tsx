@@ -1,41 +1,88 @@
-import {Resource} from "@apibrew/react";
-import {Box, Tab, Tabs} from "@mui/material";
+import {Alert, Box, Tab, Tabs} from "@mui/material";
 import {useState} from "react";
-import yaml from 'js-yaml';
 import {JsonEditor} from "json-edit-react";
+import YamlEditor from "@focus-reactive/react-yaml";
+import {MultiDrawerProps} from "../../multi-drawer/MultiDrawer.tsx";
+import {Resource} from "@apibrew/client/model";
+import {ValidateRecords} from "../../../../util/record-validate.ts";
 
-export interface RecordExpandProps {
+export interface RecordExpandProps<T> {
     resource: Resource
-    title: string
-    value: any
-    onChange: (value: any) => void
+    value: T
+    onChange: (updated: T, isValid: boolean) => void
 }
 
-export function RecordExpand(props: RecordExpandProps) {
-    const [mode, setMode] = useState<string>('json')
+export function RecordExpand<T>(props: RecordExpandProps<T>) {
 
-    return <Box width='600px' p={2}>
+    const [mode, setMode] = useState<string>('JSON')
+    const [error, setError] = useState<string | null>()
+
+    function validate(value: T) {
+        const errors = ValidateRecords(props.resource, [value], true)
+
+        if (errors.length > 0) {
+            setError(errors.map(item => `${item.property}-${item.message}`).join('; '))
+            return false
+        } else {
+            setError(null)
+            return true
+        }
+    }
+
+    return <Box>
         <Tabs value={mode}
               onChange={(_, tab) => {
                   setMode(tab)
               }}>
-            <Tab value='json-edit' label='Json Editor'/>
-            <Tab value='json' label='Json'/>
-            <Tab value='yaml' label='Yaml'/>
+            <Tab value='JSON' label='JSON'/>
+            <Tab value='YAML' label='YAML'/>
         </Tabs>
-        {mode === 'json-edit' && <Box>
-                   <JsonEditor data={props.value}
-                               setData={data => {
-                                      props.onChange(data)
-                               }}/>
-                </Box>}
-        {mode === 'json' && <pre>
-                    {JSON.stringify(props.value, null, 2)}
-                </pre>}
-        {mode === 'yaml' && <pre>
-                    {yaml.dump(props.value, {
-                        indent: 2
-                    })}
-                </pre>}
+        {mode === 'JSON' && <Box>
+            <JsonEditor data={props.value as any}
+                        onError={err => {
+                            setError(err.error.message)
+                        }}
+                        setData={data => {
+                            props.onChange(data as T, validate(data as T))
+                        }}/>
+        </Box>}
+        {mode === 'YAML' && <YamlEditor
+            json={props.value as any}
+            onChange={update => {
+                props.onChange(update.json as T, validate(update.json as T))
+            }}
+            onError={(error: any) => {
+                if (error !== true) {
+                    setError(error.message)
+                }
+            }}
+        />}
+        <br/>
+        {error && <Alert severity='error'>{error}</Alert>}
     </Box>
+}
+
+export function resourceDrawerMultiDrawer<T extends unknown>(title: string, resource: Resource, value: T, onClose: () => void, onSave: (value: T) => void): MultiDrawerProps<T> {
+    return {
+        title: title,
+        tabs: [
+            {
+                name: title,
+                component: props => <RecordExpand resource={resource} value={props.value} onChange={props.onChange}/>,
+                isInitiallyValid: false
+            },
+        ],
+        saveText: 'Update',
+        initialValue: value,
+        sx: {
+            width: '1000px'
+        },
+        onClose: onClose,
+        onSave: (value, onClose) => {
+            onSave(value)
+            if (onClose) {
+                onClose()
+            }
+        }
+    }
 }
