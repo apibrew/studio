@@ -3,7 +3,7 @@ import {PropertyCell} from "./PropertyCell";
 import {MouseEvent, useState} from "react";
 import {Entity} from "@apibrew/client";
 import {Resource} from "@apibrew/react";
-import {DeleteForever, Edit, EditAttributes, EditNote, OpenInFullRounded} from "@mui/icons-material";
+import {DeleteForever, EditNote} from "@mui/icons-material";
 import {Schema} from "../../../../types/schema";
 import {useDrawer} from "../../../../hooks/use-drawer";
 import {resourceDrawerMultiDrawer} from "./RecordExpand";

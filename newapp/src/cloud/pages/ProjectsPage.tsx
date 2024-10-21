@@ -6,7 +6,7 @@ import {Direction, useRecords, useRepository, useWatcher} from "@apibrew/react";
 import {BooleanExpression} from "@apibrew/client/model/permission";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
-import {ArrowForwardIos, FilterList, Info, Refresh, Remove, Search, Settings} from "@mui/icons-material";
+import {ArrowForwardIos, Info, Refresh, Remove, Search, Settings} from "@mui/icons-material";
 import {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
@@ -139,17 +139,17 @@ export function ProjectsPage() {
                         </Button>
                     </Stack>
                 </Popover>
-                <Button
-                    size='small'
-                    color='secondary'
-                    variant='contained'
-                    onClick={(e) => {
-                        setSearchAnchor(e.currentTarget)
-                    }}
-                >
-                    <Search className="wh-20-20"/>
-                    <span className="spn1 fnt-600-16-Inter clr667085">Search Project</span>
-                </Button>
+                {/*<Button*/}
+                {/*    size='small'*/}
+                {/*    color='secondary'*/}
+                {/*    variant='contained'*/}
+                {/*    onClick={(e) => {*/}
+                {/*        setSearchAnchor(e.currentTarget)*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    <Search className="wh-20-20"/>*/}
+                {/*    <span className="spn1 fnt-600-16-Inter clr667085">Search Project</span>*/}
+                {/*</Button>*/}
                 <Popover open={Boolean(filtersAnchor)}
                          anchorOrigin={{
                              vertical: 'bottom',
@@ -169,16 +169,16 @@ export function ProjectsPage() {
                     }}/>
                     </Stack>
                 </Popover>
-                <Button
-                    color='secondary'
-                    variant='contained'
-                    onClick={(e) => {
-                        setFiltersAnchor(e.currentTarget)
-                    }}
-                >
-                    <FilterList className="wh-20-20"/>
-                    <span className="spn1 fnt-600-16-Inter clr667085">Filters</span>
-                </Button>
+                {/*<Button*/}
+                {/*    color='secondary'*/}
+                {/*    variant='contained'*/}
+                {/*    onClick={(e) => {*/}
+                {/*        setFiltersAnchor(e.currentTarget)*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    <FilterList className="wh-20-20"/>*/}
+                {/*    <span className="spn1 fnt-600-16-Inter clr667085">Filters</span>*/}
+                {/*</Button>*/}
                 <Button className="fnt-600-14-Inter"
                         color='primary'
                         variant='contained'
@@ -211,9 +211,7 @@ export function ProjectsPage() {
                              }}>
 
                             <div className="prj1-div1-1-1"></div>
-
                             <div className="prj1-div1-1-2">
-
                                 <Box className="prj1-div1-1-2-1 flex-center">
                                     <Typography className="fnt-600-18-Inter clr101828"
                                                 variant="h5">{item.name}</Typography>

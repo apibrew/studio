@@ -27,9 +27,9 @@ export function EditProjectDrawer(props: EditProjectDrawerProps) {
 
     function updateInstance() {
         toast.promise(repository.update(instance), {
-            loading: 'Creating project...',
-            success: (createdInstance) => {
-                return `Instance ${createdInstance.name} updated`
+            loading: 'Updating project...',
+            success: (updatedInstance) => {
+                return `Instance ${updatedInstance.name} updated`
             },
             error: err => handleErrorMessage(err)
         }).then(() => {
@@ -53,7 +53,7 @@ export function EditProjectDrawer(props: EditProjectDrawerProps) {
                 width='600px'>
         {confirmation.render()}
         <Typography variant='h5'>
-            Create a new project
+            Update project: {instance.name}
         </Typography>
 
         <Box m={2}>
