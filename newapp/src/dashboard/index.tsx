@@ -60,7 +60,6 @@ export function DashboardPage() {
         if (connectionName.startsWith('project-')) {
             instanceRepository.load({
                 name: connectionName,
-                owner: username
             }).then(setInstance)
                 .catch(err => {
                     console.error(err)
@@ -190,6 +189,7 @@ export function DashboardPage() {
     }, [connectionName, instance, hostedInstance])
 
     if (!settings || !client) {
+        console.log(settings, client)
         return <LoadingOverlay/>
     }
 
