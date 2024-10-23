@@ -167,7 +167,7 @@ export function DataTable(props: TableContainerProps) {
     return <>
         {drawer.render()}
         {confirmation.render()}
-        <Box className='action-bar' display='flex' p={1}>
+        <Box className='action-bar' display='flex'>
             <Stack direction='row' width='100%' spacing={1}>
                 <Button size='medium' onClick={() => {
                     refresh()
@@ -181,7 +181,6 @@ export function DataTable(props: TableContainerProps) {
                     <Search fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Search</span>
                 </Button>
-
                 {!resource.immutable && selectedItems.length > 0 && <>
                     <Button color='error' size='medium' onClick={() => {
                         handleDelete()
@@ -279,8 +278,15 @@ export function DataTable(props: TableContainerProps) {
                          refresh()
                      }}/>
         </Popover>
-        <Box display='flex' flexDirection='row' flexGrow={1} className='data-table' marginLeft={2}
+
+
+
+
+        <Box display='flex' flexDirection='row' flexGrow={1} className='data-table'
              style={{overflow: 'auto'}}>
+
+
+                
             <DataTableTable
                 offset={listParams.offset ?? 0}
                 selectedItems={selectedItems}
@@ -304,6 +310,11 @@ export function DataTable(props: TableContainerProps) {
                 records={records}
             />
         </Box>
+
+
+
+
+
         <TablePagination component="div"
                          count={total || 0}
                          showFirstButton={true}

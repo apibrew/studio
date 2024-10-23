@@ -68,10 +68,8 @@ export default function ResourcesPage() {
 
     return <>
         {drawer.render()}
-        <Box className="m2-div1" display='flex'
-             height='100%'
-             flexDirection='column'>
-            <Stack className="m2-div1-1" direction='row' spacing={2} p={1}>
+        <Box className="m2-div1">
+            <Stack className="m2-div1-1 flex-center" direction='row' spacing={2}>
                 <Typography variant='h5'>
                     {params.namespace !== 'default' && params.namespace + ' / '}
                     {params.resource}
@@ -87,18 +85,19 @@ export default function ResourcesPage() {
                 <Typography ml={10} variant='body2'>
                     GET /{getRestPath(resource)}
                 </Typography>
+
                 <Button variant='text' size='small' onClick={() => {
                     drawer.open(<ApiDocModal onClose={drawer.close}/>)
                 }}>
                     <CircleOutlined/>
-                    <span style={{marginLeft: '3px'}}>Api Doc</span>
+                    <span >Api Doc</span>
                 </Button>
                 <Button variant='text' size='small' onClick={() => {
                     drawer.open(<ResourceNanoDrawer resource={resource.name} namespace={resource.namespace.name}
                                                     onClose={drawer.close}/>)
                 }}>
                     <Code/>
-                    <span style={{marginLeft: '3px'}}>Nano Code</span>
+                    <span >Nano Code</span>
                 </Button>
                 <Button variant='outlined' color='primary' size='small' onClick={() => {
                     openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, false, resource, () => {
@@ -106,12 +105,16 @@ export default function ResourcesPage() {
                     }))
                 }}>
                     <CalendarViewMonth/>
-                    <span style={{marginLeft: '3px'}}>Update Resource</span>
+                    <span >Update Resource</span>
                 </Button>
             </Stack>
+
+
             <DataTable reloadResource={() => {
                 setWi(wi + 1)
             }} resource={resource}/>
+
+
         </Box>
     </>
 }

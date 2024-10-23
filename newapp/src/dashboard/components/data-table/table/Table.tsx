@@ -145,6 +145,9 @@ export function DataTableTable(props: DataTableTableProps) {
         {confirmation.render()}
         <Box display='flex' flexDirection='column' height='100%' minWidth={Math.max(500, 100 * properties.length + 85)}
              width={(tableWidth + 85) + 'px'}>
+
+
+
             <Box display='flex' flexDirection='row' className='row row-header'>
                 <Box width='82px' className='cell header-cell action-cell'>
                     <Box className='cell-inner'>
@@ -256,7 +259,7 @@ export function DataTableTable(props: DataTableTableProps) {
                         setSelectedProperty(null)
                     }}>Delete</MenuItem>
                 </Menu>
-                <Box width='40px' className='cell header-cell'>
+                <Box width='40px' className='plus-icon1 cell header-cell'>
                     <Button
                         color='primary'
                         size='small'
@@ -271,6 +274,7 @@ export function DataTableTable(props: DataTableTableProps) {
                     </Button>
                 </Box>
             </Box>
+
             {props.loading && <LoadingOverlay/>}
             <Box display='flex' flexDirection='column'>
                 {props.records.map((record, index) => (
@@ -304,6 +308,10 @@ export function DataTableTable(props: DataTableTableProps) {
                                      updated={props.updates[record.id] ?? {}}
                                      record={record}/>
                 ))}
+
+
+
+
                 <Box display='flex' flexDirection='row' className='row row-body'>
                     <Box width='300px' className='cell body-cell'>
                         <Box className='cell-inner add-new-record'>
