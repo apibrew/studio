@@ -105,7 +105,7 @@ export function DataTableTable(props: DataTableTableProps) {
             ...modifiedWidth
         })
 
-        setTableWidth(Object.values(modifiedWidth).reduce((acc, item) => acc + item, 0) + 65)
+        setTableWidth(Object.values(modifiedWidth).reduce((acc, item) => acc + item, 0) + 115)
     }, [properties]);
 
     const tableDnd = useMemo(() => {
@@ -145,7 +145,6 @@ export function DataTableTable(props: DataTableTableProps) {
         {confirmation.render()}
         <Box display='flex' flexDirection='column' height='100%' minWidth={Math.max(500, 100 * properties.length + 85)}
              width={(tableWidth + 85) + 'px'}>
-
 
 
             <Box display='flex' flexDirection='row' className='row row-header'>
@@ -310,18 +309,18 @@ export function DataTableTable(props: DataTableTableProps) {
                 ))}
 
 
-
-
-                <Box display='flex' flexDirection='row' className='row row-body'>
+                <Box display='flex' flexDirection='row' className='row row-body footer-row'>
                     <Box width='300px' className='cell body-cell'>
                         <Box className='cell-inner add-new-record'>
-                            <Button size='small' onClick={() => {
-                                props.records.unshift({id: 'new', properties: {}})
-                                props.setUpdates({
-                                    ...props.updates,
-                                    'new': {}
-                                })
-                            }}>
+                            <Button size='small'
+                                    variant='text'
+                                    onClick={() => {
+                                        props.records.unshift({id: 'new', properties: {}})
+                                        props.setUpdates({
+                                            ...props.updates,
+                                            'new': {}
+                                        })
+                                    }}>
                                 <Add/>
                                 <span>Add new record</span>
                             </Button>
