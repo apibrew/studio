@@ -98,9 +98,8 @@ export function TableRecordLine(props: TableRecordLineProps) {
                                           onChange={() => props.onSelected(!props.selected)}
                                           size='small'/>}
                     {edited && <IconButton size='small' sx={{
-                        padding: 0,
-                        marginLeft: '-1px',
-                        marginRight: '-2px',
+                        padding: '6px',
+                        marginLeft: '-8px',
                     }} onClick={() => {
                         props.onUpdate(undefined)
                     }}>
@@ -115,7 +114,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
                                                   }}
                         />)
                     }}>
-                        <OpenInFullRounded/>
+                        <OpenInFullRounded className="data-icon2"/>
                     </IconButton>
                 </Box>
             </Box>

@@ -1,31 +1,98 @@
-.data-table {
-  //min-width: 800px;
-}
-
-
 .action-bar {
   margin-top: 20px;
 }
+
 .action-bar button {
   padding: 10px 14px;
   border-radius: 8px;
   font: 600 14px Inter;
   color: #344054;
 }
+
 .action-bar button:not(:first-child) {
   margin-left: 16px;
 }
-.main .data-table {
-    margin: 10px 0 0;
-}
 
+.main .data-table {
+    margin-top: 12px;
+}
 
 .check-icon1 svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 
+
+
+// ****************************************   new    *********************************
+
+.data-table .row-header {
+  height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #101828;
+  background-color: #F9FAFB;
+  border: 1px solid #EAECF0;
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+
+
+}
+
+.data-table .row-body {
+  height: 48px;
+  border-width: 1px 1px 0;
+  border-style: solid;
+  border-color: #EAECF0;
+
+}
+
+.data-table .row .cell:first-child {
+  padding: 12px 24px;
+  width: 82px;
+  min-width: 82px;
+}
+
+.data-table .row .cell {
+  padding: 0 12px;
+}
+
+.data-table .data-icon2 {
+  width: 20px;
+  height: 20px;
+}
+
+.data-table .row:last-child {
+  height: 65px;
+  border-bottom: 1px solid #EAECF0;
+  border-radius: 0 0 12px 12px;
+}
+
+.data-table .row:last-child .cell {
+  width: unset;
+}
+
+.data-table .header-cell.plus-icon1 {
+  min-width: 66px;
+  padding: 0;
+
+  flex-grow: 1;
+  justify-content: end;
+}
+
+
+
+.row .cell {
+  min-width: 150px;
+}
+
+
+
+
+
+
+// ****************************  old  *********************************************
 
 
 
@@ -34,55 +101,14 @@
   max-width: 1588px;
   flex-grow: 1;
 
-  * {
-//    box-sizing: border-box;
-  }
   .data-table-table {
     flex-grow: 1;
 
     > div {
-      //box-shadow: 0px 8px 26px 0px #DDD;
-
       width: 100%;
 
-      > div:first-child > div:last-child{
-        flex-grow: 1;
-        justify-content: end;
-      }
     }
 
-
-  }
-
-
-  .row.row-header {
-    background-color: #F9FAFB;
-    border-radius: 12px 12px 0 0;
-    height: 44px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #101828;
-    border: 2px solid #EAECF0;
-    border-bottom: 0;
-
-    .cell-inner {
-      padding: 0 10px;
-    }
-  }
-
-
-  .row-body {
-    border-width: 1px 2px 0;
-    border-style: solid;
-    border-color: #EAECF0;
-
-    .cell-inner {
-      padding: 0 10px;
-    }
-  }
-
-  .row-body:last-child {
-    border-bottom: 2px solid #EAECF0;
   }
 
   .cell {
@@ -97,12 +123,13 @@
   }
 
   .row:last-child {
+    border-bottom: 1px solid #EAECF0;
     border-radius: 0 0 12px 12px;
   }
 
   .cell-inner {
-    display: flex;
     width: 100%;
+    display: flex;
   }
 
   .property-name {
@@ -118,7 +145,7 @@
       margin-right: -7px;
 
       button {
-        padding-right: 0;
+        // padding-right: 0;
         color: #D0D5DD;
       }
     }
