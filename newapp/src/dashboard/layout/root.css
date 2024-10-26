@@ -220,9 +220,9 @@ NEW
     align-items: center;
 }
 
-.ul-buttons li:not(.dropdown) ul {
-    /* display: none; */
-}
+/* .ul-buttons li:not(.dropdown) ul {
+    display: none;
+} */
 
 
 /*
@@ -245,7 +245,6 @@ OLD
     margin-top: 16px;
 }
 
-
 .ul-buttons li.active1 {
     background-color: #F9FAFB;
 }
@@ -257,7 +256,6 @@ OLD
 .ul-buttons li.active2 {
     background-color: #EAECF0;
 }
-
 
 .ul-buttons .dropdown > a svg {
     color: #7F56D9;
@@ -273,8 +271,7 @@ OLD
 }
 
 
-/* SIDEBAR-END *******************************************************************************
-*********************************************************************************************** */
+/* SIDEBAR-END *******************************************************************************  */
 
 
 .main {
@@ -397,10 +394,6 @@ OLD
     font-size: 14px;
     font-weight: 400;
     color: #475467;
-}
-
-.m1-div2-1 {
-    display: flex;
 }
 
 .m1-div2-sp1 {
@@ -684,6 +677,11 @@ OLD
     color: #667085;
 }
 
+#root .sidesection ul li.active button {
+    padding: 4px 0 !important;
+    background-color: #EAECF0;
+}
+
 .sidesect-div0 {
     margin: 0 8px;
     display: flex;
@@ -832,7 +830,6 @@ OLD
 .m2-div1-1 button:not(:last-child) span {
     color: #475467;
 }
-
 
 /* *************   Billing    *************** */
 
@@ -1369,10 +1366,81 @@ OLD
 }
 
 
+/* **************************       MultiDrawer             ***************************************** */
+
+div.MltDrw {
+    height: 100%;
+    margin: 0;
+
+
+    width: unset;
+}
+
+.MD-dv1 {
+    margin: 24px 16px;
+}
+
+
+.MD-dv2 {
+    margin-top: 16px;
+}
+
+.MD-dv2 button {
+    padding: 0 8px;
+    font: 600 16px Inter;
+    border-radius: 6px;
+    align-items: start;
+    min-height: 40px;
+}
+
+
+.MD-hr1 {
+    margin: 0;
+    border: 0;
+    border-left: 1px solid #EAECF0;
+    box-shadow: -8px 0px 8px 4px #10182808, -20px 0px 24px 4px #10182814;
+}
+
+
+.MD-dv3 {
+    margin: 24px;
+}
+
+.MD-dv4 {
+    font-family: Inter !important;
+}
+
+.MD-dv4 label {
+    font-family: 'Inter';
+    color: #344054;
+}
+
+.MD-dv4 input {
+    font-family: 'Inter';
+    color: #101828 !important;
+}
+
+.MD-dv4 p {
+    font: 400 14px Inter;
+    color: #344054;
+    margin: 4px 0 8px 14px;
+}
+
+.MD-dv4 textarea {
+    font-family: 'Inter';
+    color: #667085;
+}
 
 
 
 
+
+
+
+.MD-dv4 fieldset legend {
+    font-family: 'Inter';
+    color: #101828 !important;
+}
 
 
 
@@ -1463,7 +1531,7 @@ OLD
 
 
 
-#root .fnt-600-14-Inter {
+#root .fnt-600-14-Inter, .fnt-600-14-Inter {
     font: 600 14px Inter;
 }
 
@@ -1476,6 +1544,9 @@ OLD
     font: 600 18px Inter;
 }
 
+.fnt-600-20-Inter {
+    font: 600 20px Inter;
+}
 
 #root .fnt-600-30-Inter {
     font: 600 30px Inter;
@@ -1483,7 +1554,7 @@ OLD
 
 
 
-#root .clr101828 {
+#root .clr101828, .clr101828 {
     color: #101828;
 }
 
@@ -1513,8 +1584,8 @@ OLD
 }
 .sidebar {
     display: none;
-}
- */
+} */
+
 
 
 

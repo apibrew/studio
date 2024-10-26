@@ -41,13 +41,13 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
     }
 
     return (
-        <Box sx={{
+        <Box className='MltDrw' sx={{
             margin: 3,
             ...props.sx,
         }} display='flex' flexDirection='row'>
-            {props.tabs.length > 1 && <Box width='160px'>
-                <span>{props.title}</span>
-                <Tabs
+            {props.tabs.length > 1 && <Box className='MD-dv1' width='280px'>
+                <div className="fnt-600-20-Inter clr101828">{props.title}</div>
+                <Tabs className="MD-dv2"
                     orientation="vertical"
                     value={currentTabIndex}
                     onChange={(_, tab) => {
@@ -58,9 +58,12 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                     })}
                 </Tabs>
             </Box>}
-            <Box p={1} flexGrow={1}>
-                <span>{currentTab.name == '' ? props.title : currentTab.name}</span>
-                <Box minHeight='200px' mt={2}>
+
+            <hr className="MD-hr1"></hr>
+
+            <Box className="MD-dv3" flexGrow={1}>
+                <div className="fnt-600-20-Inter clr101828">{currentTab.name == '' ? props.title : currentTab.name}</div>
+                <Box className="MD-dv4" minHeight='200px' mt={3}>
                     {currentTab.component({
                         value: value,
                         onChange: (value, isTabValid) => {
@@ -72,7 +75,7 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                         }
                     })}
                 </Box>
-                <Box mt={2} display='flex' flexDirection='row'>
+                <Box className="MD-dv5" mt={3} display='flex' flexDirection='row'>
                     {currentTabIndex > 0 && <Button variant='contained' onClick={() => {
                         setCurrentTab(props.tabs[currentTabIndex - 1])
                     }}>

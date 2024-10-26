@@ -89,7 +89,7 @@ export default function HomePage() {
             </div>
             <hr className="chr-EAECF0"/>
             <div className="m1-div2 m-32-32e">
-                <div className="m1-div2-1">
+                <div className="m1-div2-1 flex-center">
                     <span className="m1-div2-sp1">{instance?.title || connection.title}</span>
                     <span className="home-project-name">{connection.name}</span>
                     <span className="home-project-version">{version?.version}</span>

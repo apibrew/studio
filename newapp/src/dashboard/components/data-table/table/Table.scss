@@ -15,6 +15,7 @@
 
 .main .data-table {
   margin-top: 12px;
+  border-radius: 12px 12px 0 0;
 }
 
 .check-icon1 svg {
@@ -34,12 +35,9 @@
   border: 1px solid #EAECF0;
   border-bottom: 0;
   border-radius: 12px 12px 0 0;
-}
-
-.row.row-header {
-  .action-cell {
-    min-width: 60px;
-  }
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .data-table .row-body {
@@ -57,7 +55,7 @@
 }
 
 .data-table .row .cell {
-  padding: 0 12px;
+  padding: 13px 12px;
 }
 
 .data-table .data-icon2 {
@@ -75,18 +73,43 @@
   width: unset;
 }
 
-.data-table .header-cell.plus-icon1 {
+.data-table .row-header .plus-icon1 {
   min-width: 66px;
   padding: 0;
-
   flex-grow: 1;
   justify-content: end;
 }
 
-
-.row .cell {
-  min-width: 150px;
+.data-table .plus-icon1 svg {
+  width: 20px;
+  height: 20px;
+  color: #F2F4F7;
 }
+
+.data-table .plus-icon1 button {
+  padding: 12px 0 11px;
+  border-radius: 0 12px 0 0;
+  border: 1px solid #7F56D9;
+}
+
+.data-table .row .cell:not(:last-child) {
+  border-left: 1px solid #D0D5DD;
+}
+
+.data-table .row .cell:first-child, .data-table .row .cell:nth-child(2) {
+  border-left: unset;
+}
+
+
+.row-body .body-cell:not(:first-child) .cell-inner {
+  overflow: hidden;
+}
+
+.row-body .body-cell:first-child .cell-inner {
+  align-items: center;
+}
+
+
 
 
 // ****************************  old  *********************************************
@@ -99,20 +122,10 @@
   .data-table-table {
     flex-grow: 1;
 
-    > div {
-      //width: 100%;
-
-
-      .action-cell {
-        min-width: 60px;
-      }
-    }
-
   }
 
   .cell {
     white-space: nowrap;
-    //    border-right: 1px solid #DEE1E5;
     display: flex;
     overflow: hidden;
   }
@@ -140,8 +153,8 @@
 
   .property-th {
     .property-actions {
-      margin-top: -1px;
-      margin-right: -7px;
+      // margin-top: -1px;
+      // margin-right: -7px;
 
       button {
         // padding-right: 0;
@@ -192,6 +205,12 @@
   .cell-hand {
     cursor: pointer;
   }
+}
+
+.cell-inner.add-new-record svg {
+  width: 20px;
+  height: 20px;
+  color: #475467;
 }
 
 .cell-inner.add-new-record span {

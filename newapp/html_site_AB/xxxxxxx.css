@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+}
+
+.dv1-1, .dv1-2-1  {
+    display: flex;
+}
+
+.dv1-1 div, .dv1-2-1 div {
+    width: 200px;
+    padding: 6px;
+    flex-shrink: 0;
+}
+
+.dv1 {
+    /* width: calc(100vw - 48px); */
+    margin: 5px 24px;
+
+
+    display: none;
+}
+
+.dv1-1 {
+    /* width: calc(100vw - 48px); */
+    background-color: beige;
+}
+
+.dv1-2 {
+    /* width: calc(100vw - 48px); */
+    height: 250px;
+}
+
+
+
+.dvx {
+    width: 100%;
+    overflow: auto;
+
+
+    display: none;
+}
+
+.tb1 {
+    width: 100%;
+    overflow: auto;
+}
+
+th, td {
+    min-width: 200px;
+    padding: 6px;
+}
+
+tbody {
+
+}
+
+
+/* *************************************************************** */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
