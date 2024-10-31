@@ -4,6 +4,7 @@ import {Box, Tab, Tabs} from "@mui/material";
 import {SxProps} from "@mui/system/styleFunctionSx";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
+import { Close } from "@mui/icons-material";
 
 export interface TabComponentProps<T> {
     value: T
@@ -47,7 +48,7 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
         }} display='flex' flexDirection='row'>
             {props.tabs.length > 1 && <Box className='MD-dv1' width='280px'>
                 <div className="fnt-600-20-Inter clr101828">{props.title}</div>
-                <Tabs className="MD-dv2"
+                <Tabs className="MD-dv1-1"
                     orientation="vertical"
                     value={currentTabIndex}
                     onChange={(_, tab) => {
@@ -61,9 +62,16 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
 
             <hr className="MD-hr1"></hr>
 
-            <Box className="MD-dv3" flexGrow={1}>
-                <div className="fnt-600-20-Inter clr101828">{currentTab.name == '' ? props.title : currentTab.name}</div>
-                <Box className="MD-dv4" minHeight='200px' mt={3}>
+            <Box className="MD-dv2" flexGrow={1}>
+
+                <div className="MD-dv2-add">
+                    <div className="fnt-600-20-Inter clr101828">{currentTab.name == '' ? props.title : currentTab.name}</div>
+                    <Button>
+                        <Close />   
+                    </Button>
+                </div>
+
+                <Box minHeight='200px' mt={3}>
                     {currentTab.component({
                         value: value,
                         onChange: (value, isTabValid) => {
@@ -75,20 +83,24 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                         }
                     })}
                 </Box>
-                <Box className="MD-dv5" mt={3} display='flex' flexDirection='row'>
-                    {currentTabIndex > 0 && <Button variant='contained' onClick={() => {
-                        setCurrentTab(props.tabs[currentTabIndex - 1])
-                    }}>
-                        Prev
-                    </Button>}
-                    {currentTabIndex < props.tabs.length - 1 && props.tabs.length > 1 &&
-                        <Button sx={{marginLeft: 1}} variant='contained' onClick={() => {
-                            setCurrentTab(props.tabs[currentTabIndex + 1])
+                <Box className="MD-dv3" display='flex' flexDirection='row'>
+
+                    <div className="MD-dv3-1">
+                        {currentTabIndex > 0 && <Button className="MD-dv3-btn1" variant='contained' onClick={() => {
+                            setCurrentTab(props.tabs[currentTabIndex - 1])
                         }}>
-                            Next
+                            Prev
                         </Button>}
+                        {currentTabIndex < props.tabs.length - 1 && props.tabs.length > 1 &&
+                        <Button className="MD-dv3-btn1" sx={{ marginLeft: 1 }} variant='contained' onClick={() => {
+                                setCurrentTab(props.tabs[currentTabIndex + 1])
+                            }}>
+                                Next
+                        </Button>}
+                    </div>
+
                     <Box flexGrow={1}/>
-                    <Button variant='text'
+                    <Button className="MD-dv3-btn2" variant='text'
                             onClick={() => {
                                 if (props.onClose) {
                                     props.onClose()
@@ -96,7 +108,7 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                             }}>
                         Cancel
                     </Button>
-                    {props.onSave && <Button disabled={!isAllTabsValid}
+                    {props.onSave && <Button className="MD-dv3-btn2" disabled={!isAllTabsValid}
                                              sx={{marginLeft: 1}}
                                              variant='contained'
                                              color='primary'

@@ -50,7 +50,7 @@ export function ReferenceValueSelector(props: ReferenceValueSelectorProps & Sele
 
     const byId = (id: string) => records.find(record => record.id === id)
 
-    return <Select
+    return <Select className="select-div1"
         size='small'
         {...props as any}
         value={selected?.id || []}

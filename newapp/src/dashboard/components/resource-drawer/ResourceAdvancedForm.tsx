@@ -31,7 +31,7 @@ export function ResourceAdvancedForm(props: ResourceFormProps) {
     }, [props.value]);
 
     return (
-        <Stack width='600px' m={1} spacing={2}>
+        <Stack spacing={2}>
             <FormControl fullWidth>
                 <TextField
                     size='small'

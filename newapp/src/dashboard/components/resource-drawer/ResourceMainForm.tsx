@@ -2,6 +2,7 @@ import {Resource} from "@apibrew/react";
 import {FormControl, FormHelperText, Stack, TextField} from "@mui/material";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
 import {useEffect} from "react";
+import { Padding } from "@mui/icons-material";
 
 export interface ResourceFormProps {
     value: Resource
@@ -24,7 +25,7 @@ export function ResourceMainForm(props: ResourceFormProps) {
     }, [props.value]);
 
     return (
-        <Stack width='600px' m={1} spacing={2}>
+        <Stack className="MD-mf-dv1" spacing={3}>
             <FormControl fullWidth>
                 <TextField
                     size='small'

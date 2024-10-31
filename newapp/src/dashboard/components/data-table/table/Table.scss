@@ -58,6 +58,11 @@
   padding: 13px 12px;
 }
 
+.data-table .row-header .property-th {
+  padding-right: 0;
+}
+
+
 .data-table .data-icon2 {
   width: 20px;
   height: 20px;
@@ -98,6 +103,11 @@
 
 .data-table .row .cell:first-child, .data-table .row .cell:nth-child(2) {
   border-left: unset;
+}
+
+.row-body .cell-inner p {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

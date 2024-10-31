@@ -1368,31 +1368,40 @@ OLD
 
 /* **************************       MultiDrawer             ***************************************** */
 
+
+.MltDrw * {
+    box-sizing: border-box;
+}
+
 div.MltDrw {
     height: 100%;
     margin: 0;
+
 
 
     width: unset;
 }
 
 .MD-dv1 {
-    margin: 24px 16px;
+    padding: 24px 16px;
 }
 
-
-.MD-dv2 {
+.MD-dv1-1 {
     margin-top: 16px;
 }
 
-.MD-dv2 button {
+.MD-dv1-1 button {
     padding: 0 8px;
+    margin-top: 2px;
     font: 600 16px Inter;
     border-radius: 6px;
     align-items: start;
     min-height: 40px;
 }
 
+.MD-dv1-1 button.Mui-selected, .MD-dv1-1 button:hover {
+    background-color: #F9FAFB;
+}
 
 .MD-hr1 {
     margin: 0;
@@ -1401,34 +1410,143 @@ div.MltDrw {
     box-shadow: -8px 0px 8px 4px #10182808, -20px 0px 24px 4px #10182814;
 }
 
+.MD-dv2 {
+    height: 100%;
+    padding: 24px;
+    overflow-y: auto;
 
-.MD-dv3 {
-    margin: 24px;
+
+
+    width: 600px;
 }
 
-.MD-dv4 {
-    font-family: Inter !important;
+.MD-dv2-add {
+    position: relative;
 }
 
-.MD-dv4 label {
-    font-family: 'Inter';
+.MD-dv2 .MD-dv2-add button {
+    min-width: unset;
+    padding: 8px;
+    border: 0;
+    border-radius: 8px;
+    position: absolute;
+    right: -8px;
+    top: -16px;
+}
+
+.MD-dv2-add svg {
+    color: #98A2B3;
+}
+
+.MD-mf-dv1 label {
+    font: 400 16px Inter;
     color: #344054;
 }
 
-.MD-dv4 input {
-    font-family: 'Inter';
+.MD-mf-dv1 div input {
+    font: 400 16px Inter;
     color: #101828 !important;
 }
 
-.MD-dv4 p {
+.MD-mf-dv1 p {
     font: 400 14px Inter;
     color: #344054;
     margin: 4px 0 8px 14px;
 }
 
-.MD-dv4 textarea {
-    font-family: 'Inter';
-    color: #667085;
+.MD-mf-dv1 .select-div1, .MD-mf-dv1 div textarea {
+    font: 400 16px Inter;
+    color: #101828;
+}
+
+.MD-dv3 {
+    margin: 24px 0;
+}
+
+.MD-dv3 .MD-dv3-btn1 {
+    padding: 8px 16px;
+    border: 0;
+    border-radius: unset;
+    /* align-self: center; */
+}
+
+.MD-dv3 .MD-dv3-btn1:first-child {
+    margin: unset;
+}
+
+.MD-dv3 .MD-dv3-btn1:last-child {
+    border-left: 1px solid #D0D5DD;
+    margin: -1px;
+}
+
+.MD-dv3 .MD-dv3-btn2 {
+    font: 600 16px Inter !important;
+    padding: 10px 16px;
+    border-radius: 8px;
+}
+
+.MD-dv3-1 {
+    border: 1px solid #D0D5DD;
+    border-radius: 8px;
+    overflow: hidden;
+    align-self: center;
+}
+
+.MD-pf-dv1 .MD-pf-dv1-1 {
+    margin-bottom: 12px;
+}
+
+.MD-pf-dv1 .MD-pf-dv1-1 button {
+    font: 600 16px Inter !important;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 8px;
+
+}
+
+.MD-pf-dv1-1 button svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+}
+
+
+.MD-pf-tbl th {
+    font: 600 14px Inter;
+    color: #101828;
+    text-align: center;
+}
+
+.MD-pf-tbl th, .MD-pf-tbl td {
+    padding: 12px;
+}
+
+.MD-pf-tbl th:first-child {
+    width: 48px;
+}
+
+.MD-pf-tbl input, .MD-pf-tbl .MD-pf-tbl-tp1 {
+    font-family: Inter;
+    color: #475467;
+}
+
+.MD-pf-tbl td:nth-child(2) input {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.MD-pf-tbl-tp1 {
+    align-self: center;
+}
+
+.MD-pf-tbl-tp2 {
+    margin: -1px 0 0 6px;
+}
+
+
+.MD-pf-tbl-mdfr {
+    display: flex;
+    justify-content: space-evenly;
 }
 
 
@@ -1437,10 +1555,7 @@ div.MltDrw {
 
 
 
-.MD-dv4 fieldset legend {
-    font-family: 'Inter';
-    color: #101828 !important;
-}
+
 
 
 
@@ -1592,11 +1707,11 @@ div.MltDrw {
 /* ***************    mui  add     ***************** */
 
 .MuiTable-root thead tr th:first-child {
-    border-radius: 11px 0 0;
+    border-radius: 12px 0 0;
 }
 
 .MuiTable-root thead tr th:last-child {
-    border-radius: 0 11px 0 0;
+    border-radius: 0 12px 0 0;
 }
 
 

@@ -279,13 +279,8 @@ export function DataTable(props: TableContainerProps) {
                      }}/>
         </Popover>
 
-
-
-
         <Box display='flex' flexDirection='row' flexGrow={1} className='data-table'
              style={{overflow: 'auto'}}>
-
-
                 
             <DataTableTable
                 offset={listParams.offset ?? 0}
@@ -310,10 +305,6 @@ export function DataTable(props: TableContainerProps) {
                 records={records}
             />
         </Box>
-
-
-
-
 
         <TablePagination component="div"
                          count={total || 0}

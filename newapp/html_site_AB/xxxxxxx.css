@@ -50,24 +50,38 @@ th, td {
     padding: 6px;
 }
 
-tbody {
-
-}
 
 
 /* *************************************************************** */
 
 
 
+.dv0 {
+    border: 1px solid red;
+    border-radius: 10px;
+    display: inline-flex;
+    overflow: hidden;
 
+    margin: 50px;
+}
 
+.dv0 button {
+    padding: 10px;
+    background-color: #fff;
+    border: 0;
+}
 
+.dv0 button:last-child {
+    border-left: 1px solid red;
+}
 
+.dv0 button:not(.active) {
+    display: none;
+}
 
-
-
-
-
+.dv0 button:first-child:not(.active) + button {
+    border-left: 0;
+}
 
 
 

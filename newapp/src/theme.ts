@@ -94,7 +94,6 @@ export const theme = createTheme({
                 color: 'primary',
                 margin: 'dense',
                 style: {
-                    padding: '3px',
                     margin: 0,
                 }
             },

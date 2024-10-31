@@ -32,8 +32,8 @@ export function ResourcePropertiesForm<T extends Resource | SubType>(props: Reso
     }
 
     return (
-        <Box width='100%'>
-            <Box display='flex'
+        <Box className="MD-pf-dv1" width='100%'>
+            <Box className="MD-pf-dv1-1" display='flex'
                  flexDirection='row-reverse'>
                 <Button size='small'
                         color='primary'
@@ -54,7 +54,8 @@ export function ResourcePropertiesForm<T extends Resource | SubType>(props: Reso
                     <Add/> Add new
                 </Button>
             </Box>
-            <Table size='small'>
+
+            <Table className="MD-pf-tbl" size='small'>
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -63,6 +64,7 @@ export function ResourcePropertiesForm<T extends Resource | SubType>(props: Reso
                         <TableCell>Modifiers</TableCell>
                     </TableRow>
                 </TableHead>
+
                 <TableBody>
                     {properties.map(propertyName => {
                         const property = props.value.properties![propertyName]
@@ -124,16 +126,17 @@ export function ResourcePropertiesForm<T extends Resource | SubType>(props: Reso
                                         }
                                     }}/>
                             </TableCell>
+
                             <TableCell padding='none'>
                                 <Box display='flex'>
-                                    <PropertyTypeDropdown
+                                    <PropertyTypeDropdown className="MD-pf-tbl-tp1"
                                         variant='outlined'
                                         size='small'
                                         value={property.type}
                                         onChange={e => {
                                             updateProperty({type: e.target.value as Property['type']})
                                         }}/>
-                                    <Box maxWidth='200px'>
+                                    <Box className="MD-pf-tbl-tp2" maxWidth='200px'>
                                         <PropertyExtras
                                             sx={{
                                                 maxWidth: '150px'
@@ -146,28 +149,36 @@ export function ResourcePropertiesForm<T extends Resource | SubType>(props: Reso
                                     </Box>
                                 </Box>
                             </TableCell>
+
+
                             <TableCell padding='none'>
-                                <Tooltip title='Immutable'>
-                                    <input type='checkbox'
-                                           checked={property.immutable}
-                                           onChange={(e) => {
-                                               updateProperty({immutable: e.target.checked})
-                                           }}/>
-                                </Tooltip>
-                                <Tooltip title='Required'>
-                                    <input type='checkbox'
-                                           checked={property.required}
-                                           onChange={(e) => {
-                                               updateProperty({required: e.target.checked})
-                                           }}/>
-                                </Tooltip>
-                                <Tooltip title='Unique'>
-                                    <input type='checkbox'
-                                           checked={property.unique}
-                                           onChange={(e) => {
-                                               updateProperty({unique: e.target.checked})
-                                           }}/>
-                                </Tooltip>
+
+                                <div className="MD-pf-tbl-mdfr">
+
+                                    <Tooltip title='Immutable'>
+                                        <input type='checkbox'
+                                            checked={property.immutable}
+                                            onChange={(e) => {
+                                                updateProperty({ immutable: e.target.checked })
+                                            }} />
+                                    </Tooltip>
+                                    <Tooltip title='Required'>
+                                        <input type='checkbox'
+                                            checked={property.required}
+                                            onChange={(e) => {
+                                                updateProperty({ required: e.target.checked })
+                                            }} />
+                                    </Tooltip>
+                                    <Tooltip title='Unique'>
+                                        <input type='checkbox'
+                                            checked={property.unique}
+                                            onChange={(e) => {
+                                                updateProperty({ unique: e.target.checked })
+                                            }} />
+                                    </Tooltip>
+
+                                </div>
+
                             </TableCell>
                         </TableRow>
                     })}
