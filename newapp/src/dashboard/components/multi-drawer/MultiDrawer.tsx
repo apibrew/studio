@@ -4,7 +4,7 @@ import {Box, Tab, Tabs} from "@mui/material";
 import {SxProps} from "@mui/system/styleFunctionSx";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import { Close } from "@mui/icons-material";
+import {Close} from "@mui/icons-material";
 
 export interface TabComponentProps<T> {
     value: T
@@ -49,13 +49,13 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
             {props.tabs.length > 1 && <Box className='MD-dv1' width='280px'>
                 <div className="fnt-600-20-Inter clr101828">{props.title}</div>
                 <Tabs className="MD-dv1-1"
-                    orientation="vertical"
-                    value={currentTabIndex}
-                    onChange={(_, tab) => {
-                        setCurrentTab(props.tabs[tab])
-                    }}>
+                      orientation="vertical"
+                      value={currentTabIndex}
+                      onChange={(_, tab) => {
+                          setCurrentTab(props.tabs[tab])
+                      }}>
                     {props.tabs.map(tab => {
-                        return <Tab label={tab.name + (isValid[tab.name] ? '' : '❌')}/>
+                        return <Tab label={tab.name} className={`${!isValid[tab.name] ? 'invalid' : ''} `}/>
                     })}
                 </Tabs>
             </Box>}
@@ -65,9 +65,14 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
             <Box className="MD-dv2" flexGrow={1}>
 
                 <div className="MD-dv2-add">
-                    <div className="fnt-600-20-Inter clr101828">{currentTab.name == '' ? props.title : currentTab.name}</div>
-                    <Button>
-                        <Close />   
+                    <div
+                        className="fnt-600-20-Inter clr101828">{currentTab.name == '' ? props.title : currentTab.name}</div>
+                    <Button onClick={() => {
+                        if (props.onClose) {
+                            props.onClose()
+                        }
+                    }}>
+                        <Close/>
                     </Button>
                 </div>
 
@@ -92,11 +97,11 @@ export function MultiDrawer<T>(props: MultiDrawerProps<T>) {
                             Prev
                         </Button>}
                         {currentTabIndex < props.tabs.length - 1 && props.tabs.length > 1 &&
-                        <Button className="MD-dv3-btn1" sx={{ marginLeft: 1 }} variant='contained' onClick={() => {
+                            <Button className="MD-dv3-btn1" sx={{marginLeft: 1}} variant='contained' onClick={() => {
                                 setCurrentTab(props.tabs[currentTabIndex + 1])
                             }}>
                                 Next
-                        </Button>}
+                            </Button>}
                     </div>
 
                     <Box flexGrow={1}/>

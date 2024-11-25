@@ -17,7 +17,7 @@ export interface ModalOptions {
 export function useDrawer(): useDrawerResult {
     const [open, setOpen] = useState<boolean>(false)
     const [content, setContent] = useState<ReactNode>()
-    const [options, setOptions] = useState<ModalOptions>({allowClose: true})
+    const [options, setOptions] = useState<ModalOptions>({allowClose: false})
 
     return {
         render: () => {
@@ -28,12 +28,12 @@ export function useDrawer(): useDrawerResult {
                             setOpen(false)
                             setContent(undefined)
                         } else {
-                            toast.error('This modal cannot be closed outside')
+                            toast.error('Please press the close button to close the drawer')
                         }
                     }}
                     anchor='right'
                     open={open}
-                    variant='temporary'>{content}</Drawer>
+                    >{content}</Drawer>
             </>
         },
         open: (content: ReactNode, options?: ModalOptions) => {
@@ -45,7 +45,6 @@ export function useDrawer(): useDrawerResult {
         },
         close: () => {
             setOpen(false)
-            setContent(undefined)
         }
     }
 }

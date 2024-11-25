@@ -1,8 +1,7 @@
 import {Resource} from "@apibrew/react";
-import {FormControl, FormHelperText, Stack, TextField} from "@mui/material";
+import {FormControl, FormHelperText, Stack, TextField, Tooltip} from "@mui/material";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
 import {useEffect} from "react";
-import { Padding } from "@mui/icons-material";
 
 export interface ResourceFormProps {
     value: Resource
@@ -27,6 +26,7 @@ export function ResourceMainForm(props: ResourceFormProps) {
     return (
         <Stack className="MD-mf-dv1" spacing={3}>
             <FormControl fullWidth>
+                <Tooltip title={'Name must start with a capital letter and contain only letters, numbers and dashes. Minimum length is 3 characters.'}>
                 <TextField
                     size='small'
                     value={props.value.name}
@@ -39,12 +39,10 @@ export function ResourceMainForm(props: ResourceFormProps) {
                             name: event.target.value
                         }, validate())
                     }}/>
+                </Tooltip>
                 <FormHelperText>
                     The name of the resource.
                 </FormHelperText>
-                {!resourceNameRegex.test(props.value.name) && <span style={{display: 'block', color: 'red'}}>
-                    Name must start with a capital letter and contain only letters, numbers and dashes. Minimum length is 3 characters.
-                </span>}
             </FormControl>
             <FormControl fullWidth>
                 <ReferenceValueSelector

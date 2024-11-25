@@ -1,35 +1,26 @@
-import {Property} from "@apibrew/client/model";
+import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
-import {useState} from "react";
+import {IconButton} from "@mui/material";
+import {EditNote} from "@mui/icons-material";
+import {File} from "../../model/file.ts";
+import {FileUploadDrawer} from "../storage/FileUpload.tsx";
+import {isAnnotationEnabled} from "../../../util/annotation.ts";
+import {PropertyNanoDrawer} from "../property-nano-drawer/PropertyNanoDrawer.tsx";
+import {useDrawer} from "../../../hooks/use-drawer.tsx";
+import {PropertyEditor} from "../property-editor/PropertyEditor.tsx";
 
 export interface PropertyValueEditProps {
+    resource: Resource
     property: Property
+    propertyName: string
     value: any
     onChange: (value: any) => void
     autoOpen?: boolean
 }
 
-export function isInlineEditSupported(property: Property): boolean {
-    switch (property.type) {
-        case Type.BOOL:
-        case Type.INT32:
-        case Type.INT64:
-        case Type.FLOAT32:
-        case Type.FLOAT64:
-        case Type.STRING:
-        case Type.DATE:
-        case Type.TIME:
-        case Type.TIMESTAMP:
-        case Type.ENUM:
-        case Type.REFERENCE:
-            return true
-    }
-    return false
-}
-
 export function PropertyValueEdit(props: PropertyValueEditProps) {
-    const [updated, setUpdated] = useState<any>(props.value)
+    const drawer = useDrawer()
 
     switch (props.property.type) {
         case Type.BOOL:
@@ -37,141 +28,187 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           style={{
                               width: '25px',
                           }}
-                          checked={updated}
+                          checked={props.value}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              setUpdated(e.target.checked)
-                          }}
-                          onBlur={_ => {
-                              props.onChange(updated)
+                              props.onChange(e.target.checked)
                           }}/>
         case Type.INT32:
         case Type.INT64:
-            return <input type='number' value={updated || ''}
+            return <input type='number'
+                          value={props.value || '0'}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              setUpdated(e.target.value)
-                          }}
-                          onBlur={_ => {
-                              if (!updated) {
-                                  setUpdated(undefined)
-                                  return
-                              }
-
-                              props.onChange(parseInt(updated))
+                              props.onChange(parseInt(e.target.value))
                           }}/>
         case Type.FLOAT32:
         case Type.FLOAT64:
-            return <input type='number' value={updated || ''}
+            return <input type='number'
+                          value={props.value || '0.0'}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              setUpdated(e.target.value)
-                          }}
-                          onBlur={_ => {
-                              if (!updated) {
-                                  setUpdated(undefined)
-                                  return
-                              }
-                              props.onChange(parseFloat(updated))
-                              setUpdated(parseFloat(updated))
+                              props.onChange(parseFloat(e.target.value))
                           }}/>
         case Type.STRING:
-            return <input value={updated || ''}
+            let isNanoProperty = false
+
+            if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
+                isNanoProperty = true
+            }
+
+            if (props.resource.namespace.name === 'nano') {
+                if (props.resource.name === 'Function' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+                if (props.resource.name === 'Function' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+                if (props.resource.name === 'CronJob' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+                if (props.resource.name === 'Module' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+            }
+
+            if (isNanoProperty) {
+                drawer.open(<PropertyNanoDrawer
+                    code={props.value}
+                    onClose={() => {
+                        drawer.close()
+                    }}
+                    onChange={updated => {
+                        props.onChange(updated)
+                    }}/>)
+                return
+            }
+            return <input type='text'
+                          value={props.value || ''}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              setUpdated(e.target.value)
-                          }}
-                          onBlur={_ => {
-                              props.onChange(updated)
+                              props.onChange(e.target.value)
                           }}/>
         case Type.DATE:
-            return <input type='date' value={updated || ''}
+            return <input type='date'
+                          value={props.value || ''}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              setUpdated(e.target.value)
-                          }}
-                          onBlur={_ => {
-                              props.onChange(updated)
+                              props.onChange(e.target.value)
                           }}/>
         case Type.TIME:
-            return <input type='time' value={updated || ''}
+            return <input type='time'
+                          value={props.value || ''}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              setUpdated(e.target.value)
+                              props.onChange(e.target.value)
                           }}
                           onBlur={_ => {
-                              if (!updated) {
-                                  props.onChange(undefined)
-                                  return
-                              }
-
-                              let value = updated
-
-                              if (value.length === 5) {
-                                  value = value + ':00'
-                              }
-
-                              props.onChange(value)
+                              // if (!updated) {
+                              //     props.onChange(undefined)
+                              //     return
+                              // }
+                              //
+                              // let value = updated
+                              //
+                              // if (value.length === 5) {
+                              //     value = value + ':00'
+                              // }
+                              //
+                              // props.onChange(value)
                           }}/>
         case Type.TIMESTAMP:
-            return <input type='datetime-local' value={updated || ''}
+            return <input type='datetime-local'
+                          value={props.value || ''}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              setUpdated(e.target.value)
+                              props.onChange(e.target.value)
                           }}
                           onBlur={_ => {
-                              if (!updated) {
-                                  props.onChange(undefined)
-                                  return
-                              }
-
-                              let value = updated
-
-                              if (value.length === 16) {
-                                  value = value + ':00Z'
-                              }
-
-                              props.onChange(value)
+                              // if (!updated) {
+                              //     props.onChange(undefined)
+                              //     return
+                              // }
+                              //
+                              // let value = updated
+                              //
+                              // if (value.length === 16) {
+                              //     value = value + ':00Z'
+                              // }
+                              //
+                              // props.onChange(value)
                           }}/>
         case Type.ENUM:
-            return <select value={updated || ''}
+            return <select value={props.value || ''}
                            autoFocus={Boolean(props.autoOpen)}
                            style={{
                                height: '30px',
                            }}
                            className='property-edit-input'
                            onChange={e => {
-                               setUpdated(e.target.value)
+                               props.onChange(e.target.value)
                            }}
                            onBlur={_ => {
-                               if (!updated) {
-                                   props.onChange(undefined)
-                                   return
-                               }
-
-                               let value = updated
-
-                               if (value.length === 0) {
-                                   props.onChange(undefined)
-                               } else {
-                                   props.onChange(value)
-                               }
+                               // if (!updated) {
+                               //     props.onChange(undefined)
+                               //     return
+                               // }
+                               //
+                               // let value = updated
+                               //
+                               // if (value.length === 0) {
+                               //     props.onChange(undefined)
+                               // } else {
+                               //     props.onChange(value)
+                               // }
                            }}>
                 <option value={undefined}>---</option>
                 {props.property.enumValues?.map((v, i) => {
                     return <option key={i} value={v}>{v}</option>
                 })}
             </select>
+        case Type.OBJECT:
+        case Type.BYTES:
+        case Type.LIST:
+            return <>
+                {drawer.render()}
+                <IconButton onClick={() => {
+                    drawer.open(<PropertyEditor
+                        resource={props.resource}
+                        property={props.property}
+                        title={'Edit Object'}
+                        value={props.value}
+                        onClose={() => drawer.close()}
+                        onApply={updated => {
+                            props.onChange(updated)
+                        }}/>)
+                }}>
+                    <EditNote/>
+                </IconButton>
+            </>
         case Type.REFERENCE:
             if (!props.property.reference) {
                 return <>Reference is not specified yet</>
+            }
+            if (props.property.reference === 'storage/File') {
+                let file = (props.value) as File
+
+                drawer.open(<FileUploadDrawer
+                    title={'Upload File'}
+                    value={file}
+                    onChange={updated => {
+                        props.onChange(updated)
+                    }}
+                    onClose={() => {
+                        drawer.close()
+                    }}/>)
+                return
             }
             return <ReferenceValueSelector
                 autoFocus={Boolean(props.autoOpen)}
@@ -185,12 +222,9 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                         margin: 0,
                     }
                 }}
-                value={updated}
+                value={props.value || ''}
                 onChange={e => {
-                    setUpdated(e)
-                }}
-                onBlur={() => {
-                    props.onChange(updated)
+                    props.onChange(e)
                 }}
                 reference={props.property.reference}
                 required={props.property.required}

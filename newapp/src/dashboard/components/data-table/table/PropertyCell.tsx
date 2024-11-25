@@ -1,15 +1,9 @@
 import {Box} from "@mui/material";
-import {useState, MouseEvent} from "react";
+import {MouseEvent, useState} from "react";
 import {Property} from "@apibrew/client/model";
 import {Resource} from "@apibrew/react";
-import toast from "react-hot-toast";
 import {PropertyValueView} from "../../property-value-view/PropertyValueView";
-import {isInlineEditSupported, PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit";
-import {useDrawer} from "../../../../hooks/use-drawer";
-import {isAnnotationEnabled} from "../../../../util/annotation";
-import {PropertyNanoDrawer} from "../../property-nano-drawer/PropertyNanoDrawer";
-import {FileUploadDrawer} from "../../storage/FileUpload";
-import {File} from '../../../model/file'
+import {PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit";
 
 export interface PropertyCellProps {
     resource: Resource
@@ -25,7 +19,6 @@ export interface PropertyCellProps {
 
 export function PropertyCell(props: PropertyCellProps) {
     const [inlineEdit, setInlineEdit] = useState<boolean>(false)
-    const drawer = useDrawer()
 
     const edited = props.updated !== undefined && props.updated !== props.value
 
@@ -35,8 +28,18 @@ export function PropertyCell(props: PropertyCellProps) {
         value = props.value
     }
 
+    let alwaysInlineEdit = false
+
+    switch (props.property.type) {
+        case 'BOOL':
+        case 'OBJECT':
+        case 'BYTES':
+        case 'STRUCT':
+            alwaysInlineEdit = true
+            break
+    }
+
     return <>
-        {drawer.render()}
         <Box
             className='cell body-cell'
             onContextMenu={props.openContextMenu}
@@ -45,84 +48,29 @@ export function PropertyCell(props: PropertyCellProps) {
                 flexBasis: props.width,
                 flexShrink: 0
             }}
-            onBlur={() => {
-                // setInlineEdit(false)
-            }}
-            onDoubleClick={(e) => {
-                if (!isInlineEditSupported(props.property)) {
-                    if (props.openContextMenu) {
-                        props.openContextMenu(e)
-                    } else {
-                        toast.error('Cannot edit complex types, please expand the row to edit')
-                    }
-                } else {
-                    if (!props.new && (props.property.immutable || props.resource.immutable)) {
-                        return
-                    }
-
-                    let isNanoProperty = false
-
-                    if (props.property.reference === 'storage/File') {
-                        let file = (props.updated || props.value) as File
-
-                        drawer.open(<FileUploadDrawer
-                            title={'Upload File'}
-                            value={file}
-                            onChange={updated => {
-                                props.onUpdate(updated)
-                            }}
-                            onClose={() => {
-                                drawer.close()
-                            }}/>)
-                        return
-                    }
-
-                    if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
-                        isNanoProperty = true
-                    }
-
-                    if (props.resource.namespace.name === 'nano') {
-                        if (props.resource.name === 'Function' && props.propertyName === 'source') {
-                            isNanoProperty = true
-                        }
-                        if (props.resource.name === 'Function' && props.propertyName === 'source') {
-                            isNanoProperty = true
-                        }
-                        if (props.resource.name === 'CronJob' && props.propertyName === 'source') {
-                            isNanoProperty = true
-                        }
-                        if (props.resource.name === 'Module' && props.propertyName === 'source') {
-                            isNanoProperty = true
-                        }
-                    }
-
-                    if (isNanoProperty) {
-                        drawer.open(<PropertyNanoDrawer
-                            code={props.updated || props.value}
-                            onClose={() => {
-                                drawer.close()
-                            }}
-                            onChange={updated => {
-                                props.onUpdate(updated)
-                            }}/>)
-                        return
-                    }
-
-                    setInlineEdit(true)
+            onMouseEnter={() => {
+                if (!props.new && (props.property.immutable || props.resource.immutable)) {
+                    return false;
                 }
+
+                setInlineEdit(true)
+            }}
+            onMouseLeave={() => {
+                setInlineEdit(false)
             }}>
             <Box className='cell-inner'>
-                {!inlineEdit && <PropertyValueView
+                {!(inlineEdit || alwaysInlineEdit) && <PropertyValueView
                     property={props.property}
                     value={value}
                 />}
-                {inlineEdit && <PropertyValueEdit
+                {(inlineEdit || alwaysInlineEdit) && <PropertyValueEdit
+                    resource={props.resource}
                     autoOpen={true}
                     property={props.property}
+                    propertyName={props.propertyName}
                     value={value}
                     onChange={value => {
                         props.onUpdate(value)
-                        setInlineEdit(false)
                     }}
                 />}
             </Box>

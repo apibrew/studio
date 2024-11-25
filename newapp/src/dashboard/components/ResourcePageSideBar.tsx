@@ -1,7 +1,7 @@
 import {Box, Button, List, ListItem, Menu, TextField, Typography} from "@mui/material";
 import {Add, FolderOutlined, MoreVert, Search, TableChart} from "@mui/icons-material";
 import {useRecords, useRepository} from "@apibrew/react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {isUserNamespace} from "../../util/namespace.ts";
 import {useDrawer} from "../../hooks/use-drawer.tsx";
 import {namespaceDrawerMultiDrawer} from "./namespace-drawer/NamespaceDrawer.tsx";
@@ -18,6 +18,9 @@ import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 
 export function ResourcePageSideBar() {
     const [wi, setWi] = useState<number>(0)
+    const params = useParams()
+    const paramsNamespace = params.namespace
+    const paramsResource = params.resource
     const [searchValue, setSearchValue] = useState<string>('')
     const namespaceRepository = useRepository<Namespace>(NamespaceEntityInfo)
     const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
@@ -32,6 +35,7 @@ export function ResourcePageSideBar() {
     const [selectedNamespace, setSelectedNamespace] = useState<Namespace | null>(null)
     const [resourceMenuAnchor, setResourceMenuAnchor] = useState<null | HTMLElement>(null)
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
+
 
     function reload() {
         setWi(wi => wi + 1)
@@ -53,31 +57,31 @@ export function ResourcePageSideBar() {
                 <Button onClick={() => {
                     openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, true, {
                         name: '',
-                        namespace: { name: 'default' }
+                        namespace: {name: 'default'}
                     } as Resource, () => {
                         reload()
                     }))
                 }}>
-                    <Add />
+                    <Add/>
                     <span>Resource</span>
                 </Button>
                 <Button onClick={() => {
-                    openMultiDrawer(drawer, namespaceDrawerMultiDrawer(namespaceRepository, true, { name: '' } as Namespace, () => {
+                    openMultiDrawer(drawer, namespaceDrawerMultiDrawer(namespaceRepository, true, {name: ''} as Namespace, () => {
                         reload()
                     }))
                 }}>
-                    <Add />
+                    <Add/>
                     <span>Folder</span>
                 </Button>
             </Box>
 
             <Box className='sidesect-div2'>
-                <Search />
+                <Search/>
                 <TextField value={searchValue}
-                       onChange={e => {
-                           setSearchValue(e.target.value)
-                       }}
-                       placeholder="Search" />
+                           onChange={e => {
+                               setSearchValue(e.target.value)
+                           }}
+                           placeholder="Search"/>
             </Box>
 
             <Box className='sidesect-div3'>
@@ -89,12 +93,14 @@ export function ResourcePageSideBar() {
             <List className='sidesect-ul'>
                 {resources.filter(item => item.namespace.name === 'default')
                     .filter(item => searchValue === '' || item.name.indexOf(searchValue) !== -1)
-                .map(resource => {
-                        return <ListItem sx={{ display: 'list-item' }}>
+                    .map(resource => {
+                        const isActive = paramsNamespace === resource.namespace.name && resource.name === paramsResource
+
+                        return <ListItem sx={{display: 'list-item'}} className={`${isActive ? 'active' : ''}`}>
                             <Button onClick={() => {
                                 navigate(`resources/default/${resource.name}`)
                             }}>
-                                <TableChart />
+                                <TableChart/>
                                 <span>
                                     {resource.name}
                                 </span>
@@ -106,7 +112,7 @@ export function ResourcePageSideBar() {
                                         setSelectedResource(resource)
                                         setResourceMenuAnchor(e.currentTarget as any);
                                         e.stopPropagation()
-                                    }} />
+                                    }}/>
                             </Button>
                         </ListItem>
                     })}
@@ -120,7 +126,7 @@ export function ResourcePageSideBar() {
                 {namespaces.map(namespace => {
                     return <ListItem>
                         <Button>
-                            <FolderOutlined />
+                            <FolderOutlined/>
                             <span>
                                 {namespace}
                             </span>
@@ -132,19 +138,20 @@ export function ResourcePageSideBar() {
                                     setSelectedNamespace(allNamespaces.find(item => item.name === namespace) as Namespace)
                                     setNamespaceMenuAnchor(e.currentTarget as any);
                                     e.stopPropagation()
-                                }} />
+                                }}/>
                         </Button>
 
                         <List>
                             {resources.filter(item => item.namespace.name === namespace)
                                 .filter(item => searchValue === '' || item.name.indexOf(searchValue) !== -1)
-                            .map(resource => {
-                                    return <ListItem>
+                                .map(resource => {
+                                    const isActive = paramsNamespace === resource.namespace.name && resource.name === paramsResource
+                                    return <ListItem className={`${isActive ? 'active' : ''}`}>
                                         <Button
                                             onClick={() => {
                                                 navigate(`resources/${namespace}/${resource.name}`)
                                             }}>
-                                            <TableChart />
+                                            <TableChart/>
                                             <span>
                                                 {resource.name}
                                             </span>
@@ -156,7 +163,7 @@ export function ResourcePageSideBar() {
                                                     setSelectedResource(resource)
                                                     setResourceMenuAnchor(e.currentTarget as any);
                                                     e.stopPropagation()
-                                                }} />
+                                                }}/>
                                         </Button>
                                     </ListItem>
                                 })}

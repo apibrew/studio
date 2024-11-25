@@ -1,5 +1,13 @@
-import {ArrowLeft, ArrowRight, LogoutOutlined, Person, SettingsEthernet} from "@mui/icons-material";
-import {useState} from "react";
+import {
+    ArrowLeft,
+    ArrowRight,
+    ExpandLess,
+    ExpandMore,
+    LogoutOutlined,
+    Person,
+    SettingsEthernet
+} from "@mui/icons-material";
+import {useEffect, useState} from "react";
 import {MenuItem, menuItems} from "./menu.tsx";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {getClassName} from "../../util/classes.ts";
@@ -15,7 +23,7 @@ export function AsideBar() {
     const navigate = useNavigate()
     const settings = useStudioSettings()
 
-    const [userSideBarOpen, setUserSideBarOpen] = useState(true)
+    const [sideBarOpen, setSideBarOpen] = useState(true)
     const [activeMenu, _] = useState<MenuItem | undefined>(undefined)
     const params = useParams()
 
@@ -32,9 +40,19 @@ export function AsideBar() {
 
     const [secondSideBarOpen, setSecondSideBarOpen] = useState<{ [key: string]: boolean }>({})
 
-    const sideBarOpen = userSideBarOpen && ((!activeItem || !activeItem.secondSideBar)
-        || Object.keys(secondSideBarOpen).some(key => secondSideBarOpen[key])
-    )
+    useEffect(() => {
+        if (activeItem?.secondSideBar) {
+            setSideBarOpen(false)
+        }
+    }, [activeItem?.secondSideBar]);
+
+    useEffect(() => {
+        if (activeItem && activeItem.children) {
+            setSecondSideBarOpen({
+                [activeItem.title]: true
+            })
+        }
+    }, [activeItem]);
 
     let items = menuItems;
 
@@ -66,7 +84,7 @@ export function AsideBar() {
         </Link>
 
         <button className="sidebar-arrow" onClick={() => {
-            sideBarOpen ? setUserSideBarOpen(false) : setUserSideBarOpen(true)
+            sideBarOpen ? setSideBarOpen(false) : setSideBarOpen(true)
         }}>
             {sideBarOpen && <ArrowLeft/>}
             {!sideBarOpen && <ArrowRight/>}
@@ -77,22 +95,6 @@ export function AsideBar() {
                     const active = isActive(item)
 
                     return <li key={item.title}
-                               onMouseEnter={() => {
-                                   if (item.children && item.children.length > 0) {
-                                       setSecondSideBarOpen({
-                                           ...secondSideBarOpen,
-                                           [item.title]: true
-                                       })
-                                   }
-                               }}
-                               onMouseLeave={() => {
-                                   if (item.children && item.children.length > 0) {
-                                       setSecondSideBarOpen({
-                                           ...secondSideBarOpen,
-                                           [item.title]: false
-                                       })
-                                   }
-                               }}
                                className={getClassName({
                                    'active1': secondSideBarOpen[item.title] || active,
                                    'dropdown': secondSideBarOpen[item.title] || active,
@@ -102,11 +104,18 @@ export function AsideBar() {
                                   if (item.children && item.children.length > 0) {
                                       e.preventDefault()
                                       e.stopPropagation()
+                                      setSideBarOpen(true)
+                                      setSecondSideBarOpen({
+                                          [item.title]: !secondSideBarOpen[item.title]
+                                      })
                                   }
                               }}
                               to={prepareItemPath(connectionName, item.path)}>
                             {item.icon}
                             <span>{item.title}</span>
+                            {sideBarOpen && item.children && <span className='second-side-bar-open-button'>
+                                {secondSideBarOpen[item.title] ? <ExpandLess/> : <ExpandMore/>}
+                            </span>}
                         </Link>
                         {item.children && <Collapse in={secondSideBarOpen[item.title] || active}>
                             <ul>

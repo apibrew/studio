@@ -1,5 +1,4 @@
 import {Dataset, FunctionsTwoTone, Group, Home, Monitor, Pages, Settings, Storage} from "@mui/icons-material";
-import {ConnectionProvider} from "@apibrew/react";
 import {ReactNode} from "react";
 import {ResourcePageSideBar} from "../components/ResourcePageSideBar";
 
@@ -13,7 +12,6 @@ export interface MenuItem {
     grow?: boolean;
     delimiter?: boolean;
     children?: MenuItem[]
-    conditional?: (connectionProvider: ConnectionProvider) => boolean
 }
 
 export const menuItems: MenuItem[] = [

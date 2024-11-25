@@ -55,7 +55,9 @@ export function PropertyDetailsForm(props: PropertyFormProps) {
             <FormControl fullWidth>
                 <FormLabel>Default Value</FormLabel>
                 <PropertyValueEdit
+                    resource={props.resource}
                     property={props.property}
+                    propertyName={''}
                     value={props.property.defaultValue}
                     onChange={value => {
                         if (!value) {
@@ -70,7 +72,9 @@ export function PropertyDetailsForm(props: PropertyFormProps) {
             <FormControl fullWidth>
                 <FormLabel>Example Value</FormLabel>
                 <PropertyValueEdit
+                    resource={props.resource}
                     property={props.property}
+                    propertyName={''}
                     value={props.property.exampleValue}
                     onChange={value => {
                         if (!value) {
