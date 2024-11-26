@@ -6,6 +6,7 @@ import {Property} from "@apibrew/client/model";
 import {label} from "../../../util/record";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
+import dayjs from "dayjs";
 
 export interface PropertyValueViewProps {
     property: Property
@@ -36,6 +37,11 @@ export function PropertyValueView(props: PropertyValueViewProps) {
             value = Object.keys(value).map((item: string) => {
                 return `${item}: ${label(value[item])}`
             }).join(';')
+            break;
+        case Type.DATE:
+        case Type.TIME:
+        case Type.TIMESTAMP:
+            value = dayjs(value).format('YYYY-MM-DD HH:mm:ss')
             break;
         case Type.REFERENCE:
         case Type.STRUCT:

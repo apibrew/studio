@@ -28,9 +28,18 @@ export function PropertyCell(props: PropertyCellProps) {
         value = props.value
     }
 
+    if (props.property.type === 'FLOAT32' || props.property.type === 'FLOAT64') {
+        if (value !== undefined) {
+            value = Math.round(value * 100000) / 100000
+        }
+    }
+
     let alwaysInlineEdit = false
 
     switch (props.property.type) {
+        // case 'TIMESTAMP':
+        // case 'TIME':
+        // case 'DATE':
         case 'BOOL':
         case 'OBJECT':
         case 'BYTES':

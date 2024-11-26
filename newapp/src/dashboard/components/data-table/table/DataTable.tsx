@@ -182,9 +182,12 @@ export function DataTable(props: TableContainerProps) {
                     <span style={{marginLeft: '3px'}}>Search</span>
                 </Button>
                 {!resource.immutable && selectedItems.length > 0 && <>
-                    <Button color='error' size='medium' onClick={() => {
-                        handleDelete()
-                    }}>
+                    <Button color='error'
+                            size='medium'
+                            variant='outlined'
+                            onClick={() => {
+                                handleDelete()
+                            }}>
                         <Remove fontSize='small'/>
                         <span style={{marginLeft: '3px'}}>Delete</span>
                     </Button>
@@ -198,12 +201,15 @@ export function DataTable(props: TableContainerProps) {
                             handleSave()
                         }}
                         color='success'
+                        variant='outlined'
                         size='medium'>
                         <Domain fontSize='small'/>
                         <span style={{marginLeft: '3px'}}>Save</span>
                         <span style={{marginLeft: '3px'}}>({Object.keys(updates).length})</span>
                     </Button>
-                    <Button color='warning' size='medium'
+                    <Button color='warning'
+                            size='medium'
+                            variant='outlined'
                             onClick={() => {
                                 setUpdates({})
                             }}>
@@ -281,7 +287,7 @@ export function DataTable(props: TableContainerProps) {
 
         <Box display='flex' flexDirection='row' flexGrow={1} className='data-table'
              style={{overflow: 'auto'}}>
-                
+
             <DataTableTable
                 offset={listParams.offset ?? 0}
                 selectedItems={selectedItems}

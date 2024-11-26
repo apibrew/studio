@@ -6,8 +6,10 @@
   }
 
   &.MuiButton-text {
+    padding: 8px 10px;
+
     &.MuiButton-colorPrimary {
-      color: #0070D2;
+      color: #6941C6;
     }
 
     &.MuiButton-colorSecondary {
@@ -15,7 +17,34 @@
     }
   }
 
+  &.MuiButton-outlined {
+    padding: 8px 10px;
+
+    &.MuiButton-colorPrimary {
+      color: #6941C6;
+    }
+
+    &.MuiButton-colorSecondary {
+      color: black;
+    }
+
+    &.MuiButton-colorSuccess {
+      color: #00A343;
+    }
+
+    &.MuiButton-colorWarning {
+      color: #FFAA16;
+    }
+
+    &.MuiButton-colorDanger {
+      color: #FF4D4F;
+    }
+  }
+
   &.MuiButton-contained {
+    padding: 8px 10px;
+    border: 1px solid #D0D5DD;
+
     &.MuiButton-colorSecondary {
       background-color: white;
       color: #344054;
@@ -26,17 +55,12 @@
     }
   }
 
-  &.MuiButton-contained {
-    padding: 8px 10px;
-    border: 1px solid #D0D5DD;
-  }
-
   &:hover:not(.MuiButton-colorPrimary) {
     background-color: rgb(240, 240, 240) !important;
   }
 
   box-shadow: none !important;
-  font: 600 14px Inter!important;
+  font: 600 14px Inter !important;
 }
 
 .MuiTable-root {

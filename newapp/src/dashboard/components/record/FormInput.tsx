@@ -122,6 +122,7 @@ const DateTimeInput: FormInputType<string> = props => {
             <TimePicker value={props.value ? dayjs(props.value, 'HH:mm:ss') : null}
                         sx={props.sx}
                         disabled={props.readOnly}
+                        format={'HH:mm'}
                         onChange={e => {
                             props.onChange(e?.format('HH:mm:00'))
                         }}/>
@@ -131,6 +132,7 @@ const DateTimeInput: FormInputType<string> = props => {
             <DatePicker value={props.value ? dayjs(props.value) : null}
                         sx={props.sx}
                         disabled={props.readOnly}
+                        format={'YYYY-MM-DD'}
                         onChange={e => {
                             props.onChange(e?.format('YYYY-MM-DD'))
                         }}/>
@@ -140,6 +142,7 @@ const DateTimeInput: FormInputType<string> = props => {
             <DateTimePicker value={props.value ? dayjs(props.value) : null}
                             sx={props.sx}
                             disabled={props.readOnly}
+                            format={'YYYY-MM-DD HH:mm:ss'}
                             onChange={e => {
                                 props.onChange(e?.toISOString())
                             }}/>

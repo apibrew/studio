@@ -47,10 +47,14 @@ export function AsideBar() {
     }, [activeItem?.secondSideBar]);
 
     useEffect(() => {
-        if (activeItem && activeItem.children) {
-            setSecondSideBarOpen({
-                [activeItem.title]: true
-            })
+        if (activeItem) {
+            if (activeItem.children) {
+                setSecondSideBarOpen({
+                    [activeItem.title]: true
+                })
+            } else {
+                setSecondSideBarOpen({})
+            }
         }
     }, [activeItem]);
 
@@ -106,7 +110,7 @@ export function AsideBar() {
                                       e.stopPropagation()
                                       setSideBarOpen(true)
                                       setSecondSideBarOpen({
-                                          [item.title]: !secondSideBarOpen[item.title]
+                                          [item.title]: !secondSideBarOpen[item.title] || active
                                       })
                                   }
                               }}

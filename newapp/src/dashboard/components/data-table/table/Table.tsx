@@ -82,10 +82,14 @@ export function DataTableTable(props: DataTableTableProps) {
                         defaultWidth = 150
                         break;
                     case Type.ENUM:
+                        defaultWidth = 150
+                        break;
                     case Type.DATE:
                     case Type.TIME:
-                    case Type.TIMESTAMP:
                         defaultWidth = 150
+                        break;
+                    case Type.TIMESTAMP:
+                        defaultWidth = 250
                         break;
                 }
 

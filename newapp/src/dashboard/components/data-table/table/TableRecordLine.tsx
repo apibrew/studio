@@ -134,6 +134,10 @@ export function TableRecordLine(props: TableRecordLineProps) {
                             const update = {...props.updated}
                             delete update[property]
                             props.onUpdate(update);
+                        } else if (value === props.record[property]) {
+                            const update = {...props.updated}
+                            delete update[property]
+                            props.onUpdate(update);
                         } else {
                             props.onUpdate({
                                 ...props.updated,

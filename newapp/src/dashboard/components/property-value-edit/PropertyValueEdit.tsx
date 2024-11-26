@@ -9,6 +9,8 @@ import {isAnnotationEnabled} from "../../../util/annotation.ts";
 import {PropertyNanoDrawer} from "../property-nano-drawer/PropertyNanoDrawer.tsx";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {PropertyEditor} from "../property-editor/PropertyEditor.tsx";
+import {coalesce} from "../data-table/table/util.ts";
+import {FormInput} from "../record/FormInput.tsx";
 
 export interface PropertyValueEditProps {
     resource: Resource
@@ -37,20 +39,28 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.INT32:
         case Type.INT64:
             return <input type='number'
-                          value={props.value || '0'}
+                          value={coalesce(props.value, '')}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              props.onChange(parseInt(e.target.value))
+                              if (e.target.value === '') {
+                                  props.onChange(undefined)
+                              } else {
+                                  props.onChange(parseInt(e.target.value))
+                              }
                           }}/>
         case Type.FLOAT32:
         case Type.FLOAT64:
             return <input type='number'
-                          value={props.value || '0.0'}
+                          value={coalesce(props.value, '')}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
-                              props.onChange(parseFloat(e.target.value))
+                              if (e.target.value === '') {
+                                  props.onChange(undefined)
+                              } else {
+                                  props.onChange(parseFloat(e.target.value))
+                              }
                           }}/>
         case Type.STRING:
             let isNanoProperty = false
@@ -86,66 +96,30 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                 return
             }
             return <input type='text'
-                          value={props.value || ''}
+                          value={coalesce(props.value, '')}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
                           onChange={e => {
                               props.onChange(e.target.value)
                           }}/>
         case Type.DATE:
-            return <input type='date'
-                          value={props.value || ''}
-                          autoFocus={Boolean(props.autoOpen)}
-                          className='property-edit-input'
-                          onChange={e => {
-                              props.onChange(e.target.value)
-                          }}/>
         case Type.TIME:
-            return <input type='time'
-                          value={props.value || ''}
-                          autoFocus={Boolean(props.autoOpen)}
-                          className='property-edit-input'
-                          onChange={e => {
-                              props.onChange(e.target.value)
-                          }}
-                          onBlur={_ => {
-                              // if (!updated) {
-                              //     props.onChange(undefined)
-                              //     return
-                              // }
-                              //
-                              // let value = updated
-                              //
-                              // if (value.length === 5) {
-                              //     value = value + ':00'
-                              // }
-                              //
-                              // props.onChange(value)
-                          }}/>
         case Type.TIMESTAMP:
-            return <input type='datetime-local'
-                          value={props.value || ''}
-                          autoFocus={Boolean(props.autoOpen)}
-                          className='property-edit-input'
-                          onChange={e => {
-                              props.onChange(e.target.value)
-                          }}
-                          onBlur={_ => {
-                              // if (!updated) {
-                              //     props.onChange(undefined)
-                              //     return
-                              // }
-                              //
-                              // let value = updated
-                              //
-                              // if (value.length === 16) {
-                              //     value = value + ':00Z'
-                              // }
-                              //
-                              // props.onChange(value)
-                          }}/>
+            return <FormInput
+                sx={{
+                }}
+                resource={props.resource}
+                property={props.property}
+                readOnly={false}
+                required={props.property.required}
+                depth={0}
+                value={props.value}
+                onChange={value => {
+                    props.onChange(value)
+                }}
+            />
         case Type.ENUM:
-            return <select value={props.value || ''}
+            return <select value={coalesce(props.value, '')}
                            autoFocus={Boolean(props.autoOpen)}
                            style={{
                                height: '30px',
@@ -153,20 +127,6 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                            className='property-edit-input'
                            onChange={e => {
                                props.onChange(e.target.value)
-                           }}
-                           onBlur={_ => {
-                               // if (!updated) {
-                               //     props.onChange(undefined)
-                               //     return
-                               // }
-                               //
-                               // let value = updated
-                               //
-                               // if (value.length === 0) {
-                               //     props.onChange(undefined)
-                               // } else {
-                               //     props.onChange(value)
-                               // }
                            }}>
                 <option value={undefined}>---</option>
                 {props.property.enumValues?.map((v, i) => {
@@ -174,6 +134,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                 })}
             </select>
         case Type.OBJECT:
+        case Type.STRUCT:
         case Type.BYTES:
         case Type.LIST:
             return <>
@@ -222,7 +183,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                         margin: 0,
                     }
                 }}
-                value={props.value || ''}
+                value={coalesce(props.value, '')}
                 onChange={e => {
                     props.onChange(e)
                 }}
