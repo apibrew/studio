@@ -2,9 +2,6 @@ import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
-
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker, DateTimePicker, TimePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {Entity} from "@apibrew/client";
@@ -118,35 +115,29 @@ const BooleanInput: FormInputType<boolean> = props => {
 
 const DateTimeInput: FormInputType<string> = props => {
     if (props.property.type === 'TIME') {
-        return <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker value={props.value ? dayjs(props.value, 'HH:mm:ss') : null}
-                        sx={props.sx}
-                        disabled={props.readOnly}
-                        format={'HH:mm'}
-                        onChange={e => {
-                            props.onChange(e?.format('HH:mm:00'))
-                        }}/>
-        </LocalizationProvider>
+        return <TimePicker value={props.value ? dayjs(props.value, 'HH:mm:ss') : null}
+                           sx={props.sx}
+                           disabled={props.readOnly}
+                           format={'HH:mm'}
+                           onChange={e => {
+                               props.onChange(e?.format('HH:mm:00'))
+                           }}/>
     } else if (props.property.type === 'DATE') {
-        return <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker value={props.value ? dayjs(props.value) : null}
-                        sx={props.sx}
-                        disabled={props.readOnly}
-                        format={'YYYY-MM-DD'}
-                        onChange={e => {
-                            props.onChange(e?.format('YYYY-MM-DD'))
-                        }}/>
-        </LocalizationProvider>
+        return <DatePicker value={props.value ? dayjs(props.value) : null}
+                           sx={props.sx}
+                           disabled={props.readOnly}
+                           format={'YYYY-MM-DD'}
+                           onChange={e => {
+                               props.onChange(e?.format('YYYY-MM-DD'))
+                           }}/>
     } else if (props.property.type === 'TIMESTAMP') {
-        return <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker value={props.value ? dayjs(props.value) : null}
-                            sx={props.sx}
-                            disabled={props.readOnly}
-                            format={'YYYY-MM-DD HH:mm:ss'}
-                            onChange={e => {
-                                props.onChange(e?.toISOString())
-                            }}/>
-        </LocalizationProvider>
+        return <DateTimePicker value={props.value ? dayjs(props.value) : null}
+                               sx={props.sx}
+                               disabled={props.readOnly}
+                               format={'YYYY-MM-DD HH:mm:ss'}
+                               onChange={e => {
+                                   props.onChange(e?.toISOString())
+                               }}/>
     } else {
         return <>Unknown type: {props.property.type}</>
     }
