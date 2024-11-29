@@ -41,7 +41,7 @@ export function PropertyExtras(props: PropertyExtrasProps) {
     }
 
     useEffect(() => {
-        if (props.property.type === Type.LIST) {
+        if (props.property.type === Type.LIST || props.property.type === Type.MAP) {
             if (props.property.item === undefined) {
                 props.onChange({
                     ...props.property,

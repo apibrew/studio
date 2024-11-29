@@ -3,8 +3,10 @@ import {useMemo, useState} from "react";
 import {Add, Clear} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {PairExpression, Resource} from "@apibrew/react";
-import {isComparableProperty} from "../../../../util/property";
+import {defaultNativeValue, isComparableProperty, isFilterableProperty} from "../../../../util/property";
 import {BooleanExpression} from "@apibrew/client/model/permission";
+import {PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit.tsx";
+import {Property} from "@apibrew/client/model";
 
 export interface Filter {
     property: string
@@ -22,7 +24,7 @@ export function Filters(props: FiltersProps) {
     const [filters, setFilters] = useState<Filter[]>(prepareFiltersFromBooleanExpression(props.query))
     const [changed, setChanged] = useState<boolean>(false)
 
-    const properties = useMemo(() => Object.keys(props.resource.properties), [props.resource])
+    const properties = useMemo(() => filterableProperties(props.resource.properties), [props.resource])
 
     return <Box p={1} width='800px'>
         {filters.length === 0 && <Typography fontSize={14}>
@@ -33,6 +35,21 @@ export function Filters(props: FiltersProps) {
 
         {filters.map((filter, index) => {
             const property = props.resource.properties[filter.property]
+            const operators: { value: string, label: string }[] = [
+                {value: '=', label: '='},
+                {value: '!=', label: '!='},
+            ]
+
+            if (property && isComparableProperty(property)) {
+                operators.push({value: '>=', label: '>='})
+                operators.push({value: '<=', label: '<='})
+                operators.push({value: '>', label: '>'})
+                operators.push({value: '<', label: '<'})
+            }
+
+            operators.push({value: 'is-null', label: 'is null'})
+            operators.push({value: 'is-not-null', label: 'is not null'})
+
             return <Box key={index} p={1} display='flex' alignItems='center'>
                 <Box flex={1} marginRight={1}>
                     <TextField
@@ -43,6 +60,7 @@ export function Filters(props: FiltersProps) {
                         value={filter.property}
                         onChange={e => {
                             filter.property = e.target.value as string
+                            filter.value = defaultNativeValue(props.resource.properties[filter.property].type)
                             setFilters([...filters])
                             setChanged(true)
                         }}
@@ -64,30 +82,20 @@ export function Filters(props: FiltersProps) {
                             setChanged(true)
                         }}
                         size='small'>
-                        <MenuItem value='='>=</MenuItem>
-                        <MenuItem value='!='>!=</MenuItem>
-                        {property && isComparableProperty(property) && <>
-                            <MenuItem value='>='>&gt;=</MenuItem>
-                            <MenuItem value='<='>&lt;=</MenuItem>
-                            <MenuItem value='>'>&gt;</MenuItem>
-                            <MenuItem value='<'>&lt;</MenuItem>
-                        </>}
-                        <MenuItem value='is-null'>is null</MenuItem>
-                        <MenuItem value='is-not-null'>is not null</MenuItem>
+                        {operators.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
                     </TextField>
                 </Box>
                 <Box flex={4}>
-                    <TextField
-                        label='Value'
-                        className='filter-value'
-                        fullWidth
-                        size='small'
+                    {property && <PropertyValueEdit
+                        resource={props.resource}
+                        property={property}
+                        propertyName={''}
                         value={filter.value}
-                        onChange={e => {
-                            filter.value = e.target.value
+                        onChange={value => {
+                            filter.value = value
                             setFilters([...filters])
                             setChanged(true)
-                        }}/>
+                        }}/>}
                 </Box>
                 <Box marginLeft={1}>
                     <IconButton size='small' onClick={() => {
@@ -119,22 +127,22 @@ export function Filters(props: FiltersProps) {
                 <Add/>
                 <span style={{marginLeft: '3px'}}>Add Filter</span>
             </Button>
-            <Button
-                color='primary'
-                variant='text'
-                size='small'
-                onClick={() => {
-                    // setFilters([...filters, {
-                    //     property: '',
-                    //     operator: '=',
-                    //     value: ''
-                    // } as any])
-                    // setChanged(true)
-                    alert('Not implemented')
-                }}>
-                <Add/>
-                <span style={{marginLeft: '3px'}}>Add Group</span>
-            </Button>
+            {/*<Button*/}
+            {/*    color='primary'*/}
+            {/*    variant='text'*/}
+            {/*    size='small'*/}
+            {/*    onClick={() => {*/}
+            {/*        // setFilters([...filters, {*/}
+            {/*        //     property: '',*/}
+            {/*        //     operator: '=',*/}
+            {/*        //     value: ''*/}
+            {/*        // } as any])*/}
+            {/*        // setChanged(true)*/}
+            {/*        alert('Not implemented')*/}
+            {/*    }}>*/}
+            {/*    <Add/>*/}
+            {/*    <span style={{marginLeft: '3px'}}>Add Group</span>*/}
+            {/*</Button>*/}
             <Box flexGrow={1}/>
 
             <Button color='secondary'
@@ -171,65 +179,65 @@ function prepareBooleanExpressionFromFilters(filters: Filter[]): BooleanExpressi
             }
         } as PairExpression
 
-        if (filter.property && filter.operator && filter.value) {
-            let exp: BooleanExpression
+        let exp: BooleanExpression
 
-            switch (filter.operator) {
-                case '=':
-                    exp = {
+        switch (filter.operator) {
+            case '=':
+                exp = {
+                    equal: pairExp
+                } as BooleanExpression
+                break;
+            case '!=':
+                exp = {
+                    not: {
                         equal: pairExp
-                    } as BooleanExpression
-                    break;
-                case '!=':
-                    exp = {
-                        not: {
-                            equal: pairExp
-                        }
-                    } as BooleanExpression
-                    break;
-                case '>=':
-                    exp = {
-                        greaterThanOrEqual: pairExp
-                    } as BooleanExpression
-                    break;
-                case '<=':
-                    exp = {
-                        lessThanOrEqual: pairExp
-                    } as BooleanExpression
-                    break;
-                case '>':
-                    exp = {
-                        greaterThan: pairExp
-                    } as BooleanExpression
-                    break;
-                case '<':
-                    exp = {
-                        lessThan: pairExp
-                    } as BooleanExpression
-                    break;
-                case 'is-null':
-                    exp = {
+                    }
+                } as BooleanExpression
+                break;
+            case '>=':
+                exp = {
+                    greaterThanOrEqual: pairExp
+                } as BooleanExpression
+                break;
+            case '<=':
+                exp = {
+                    lessThanOrEqual: pairExp
+                } as BooleanExpression
+                break;
+            case '>':
+                exp = {
+                    greaterThan: pairExp
+                } as BooleanExpression
+                break;
+            case '<':
+                exp = {
+                    lessThan: pairExp
+                } as BooleanExpression
+                break;
+            case 'is-null':
+                exp = {
+                    isNull: {
+                        property: filter.property
+                    }
+                } as BooleanExpression
+                break;
+            case 'is-not-null':
+                exp = {
+                    not: {
                         isNull: {
                             property: filter.property
                         }
-                    } as BooleanExpression
-                    break;
-                case 'is-not-null':
-                    exp = {
-                        not: {
-                            isNull: {
-                                property: filter.property
-                            }
-                        }
-                    } as BooleanExpression
-                    break;
-                default:
-                    throw new Error('Unknown operator: ' + filter.operator)
-            }
-
-            list.push(exp)
+                    }
+                } as BooleanExpression
+                break;
+            default:
+                throw new Error('Unknown operator: ' + filter.operator)
         }
+
+        list.push(exp)
     })
+
+    console.log(filters, list);
 
     if (list.length === 0) {
         return undefined
@@ -302,6 +310,18 @@ function prepareFiltersFromBooleanExpression(expression?: BooleanExpression): Fi
             })
         }
     })
+
+    return result
+}
+
+function filterableProperties(properties: { [p: string]: Property }): string[] {
+    const result: string[] = [];
+
+    for (const key in properties) {
+        if (properties.hasOwnProperty(key) && isFilterableProperty(properties[key])) {
+            result.push(key)
+        }
+    }
 
     return result
 }

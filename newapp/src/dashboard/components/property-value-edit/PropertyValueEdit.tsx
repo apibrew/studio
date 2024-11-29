@@ -1,6 +1,5 @@
 import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {ReferenceValueSelector} from "../ReferenceValueSelector";
 import {IconButton} from "@mui/material";
 import {EditNote} from "@mui/icons-material";
 import {File} from "../../model/file.ts";
@@ -11,6 +10,7 @@ import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {PropertyEditor} from "../property-editor/PropertyEditor.tsx";
 import {coalesce} from "../data-table/table/util.ts";
 import {FormInput} from "../record/FormInput.tsx";
+import {ReferenceValueSelectorSimple} from "../ReferenceValueSelectorSimple.tsx";
 
 export interface PropertyValueEditProps {
     resource: Resource
@@ -63,6 +63,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                               }
                           }}/>
         case Type.STRING:
+        case Type.UUID:
             let isNanoProperty = false
 
             if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
@@ -96,6 +97,9 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                 return
             }
             return <input type='text'
+                          style={{
+                                width: '100%',
+                          }}
                           value={coalesce(props.value, '')}
                           autoFocus={Boolean(props.autoOpen)}
                           className='property-edit-input'
@@ -137,6 +141,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.STRUCT:
         case Type.BYTES:
         case Type.LIST:
+        case Type.MAP:
             return <>
                 {drawer.render()}
                 <IconButton onClick={() => {
@@ -171,15 +176,14 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                     }}/>)
                 return
             }
-            return <ReferenceValueSelector
+            return <ReferenceValueSelectorSimple
                 autoFocus={Boolean(props.autoOpen)}
+                className='property-edit-input-reference'
                 sx={{
                     margin: 0,
-                    padding: 0,
                     display: 'inline-block',
                     verticalAlign: 'text-bottom',
                     '& .MuiSelect-select': {
-                        padding: 0,
                         margin: 0,
                     }
                 }}

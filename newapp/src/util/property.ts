@@ -62,6 +62,26 @@ export function isComparableProperty(property: Property): boolean {
     return false
 }
 
+export function isFilterableProperty(property: Property): boolean {
+    switch (property.type) {
+        case Type.BOOL:
+        case Type.STRING:
+        case Type.ENUM:
+        case Type.FLOAT32:
+        case Type.FLOAT64:
+        case Type.INT32:
+        case Type.INT64:
+        case Type.UUID:
+        case Type.DATE:
+        case Type.TIME:
+        case Type.TIMESTAMP:
+        case Type.REFERENCE:
+            return true;
+    }
+
+    return false;
+}
+
 export function withPropertyOrder(property: Property, order: number): Property {
     if (!property.annotations) {
         property.annotations = {}
@@ -109,4 +129,36 @@ export function makeProperties(properties: { [key: string]: Property }) {
             return item
         })
         .sort((a, b) => getPropertyOrder(a.name, a.property) - getPropertyOrder(a.name, b.property))
+}
+
+export function defaultNativeValue(type: Property["type"]): any {
+    switch (type) {
+        case Type.BOOL:
+            return false
+        case Type.STRING:
+        case Type.ENUM:
+            return ''
+        case Type.FLOAT32:
+        case Type.FLOAT64:
+        case Type.INT32:
+        case Type.INT64:
+            return 0
+        case Type.BYTES:
+            return ''
+        case Type.UUID:
+            return '00000000-0000-0000-0000-000000000000'
+        case Type.DATE:
+        case Type.TIME:
+        case Type.TIMESTAMP:
+            return new Date(0).toUTCString()
+        case Type.OBJECT:
+        case Type.MAP:
+        case Type.LIST:
+        case Type.STRUCT:
+            return {}
+        case Type.REFERENCE:
+            return { id: '00000000-0000-0000-0000-000000000000' }
+        default:
+            return '';
+    }
 }
