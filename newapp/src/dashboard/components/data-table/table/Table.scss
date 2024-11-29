@@ -46,6 +46,13 @@
   border-style: solid;
   border-color: #EAECF0;
 
+  &.new {
+    background-color: #efefe7;
+  }
+
+  &:nth-child(2n) {
+    background-color: #F9FAFB;
+  }
 }
 
 .data-table .row .cell:first-child {

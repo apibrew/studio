@@ -1,7 +1,7 @@
-import {fromResource, Resource, useRecords} from "@apibrew/react";
-import {LoadingOverlay} from "common";
+import {fromResource, Resource} from "@apibrew/react";
 import {label} from "../../util/record";
 import {SelectProps} from "@mui/material/Select/Select";
+import {useCachedRecords} from "../hooks/use-cached-records.ts";
 
 export interface ReferenceValueSelectorSimpleProps {
     required: boolean
@@ -17,17 +17,17 @@ export function ReferenceValueSelectorSimple(props: ReferenceValueSelectorSimple
 
     const resourceName = referenceParts.length === 1 ? referenceParts[0] : referenceParts[1]
 
-    const records = useRecords<any>(fromResource({
+    const records = useCachedRecords<any>(fromResource({
         namespace: {
             name: namespace
         },
         name: resourceName,
     } as Resource), {
         limit: 1000,
-    })
+    }, 10000)
 
     if (!records) {
-        return <LoadingOverlay/>
+        return '...loading'
     }
 
     const selected = records.find(record => {
@@ -49,16 +49,14 @@ export function ReferenceValueSelectorSimple(props: ReferenceValueSelectorSimple
 
     const byId = (id: string) => records.find(record => record.id === id)
 
-    return <select className="select-div1"
-        style={{
-            width: '100%',
-            height: '30px',
-        }}
-        {...props as any}
-        value={selected?.id || []}
-        onChange={e => {
-            props.onChange(byId(e.target.value as string))
-        }}
+    return <select className="property-edit-input"
+                   style={{
+                       height: '30px',
+                   }}
+                   value={selected?.id || []}
+                   onChange={e => {
+                       props.onChange(byId(e.target.value as string))
+                   }}
     >
         {records.map(record => (
             <option

@@ -1,6 +1,6 @@
 import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {IconButton} from "@mui/material";
+import {Box, IconButton, Popover} from "@mui/material";
 import {EditNote} from "@mui/icons-material";
 import {File} from "../../model/file.ts";
 import {FileUploadDrawer} from "../storage/FileUpload.tsx";
@@ -11,6 +11,8 @@ import {PropertyEditor} from "../property-editor/PropertyEditor.tsx";
 import {coalesce} from "../data-table/table/util.ts";
 import {FormInput} from "../record/FormInput.tsx";
 import {ReferenceValueSelectorSimple} from "../ReferenceValueSelectorSimple.tsx";
+import {PropertyValueView} from "../property-value-view/PropertyValueView.tsx";
+import {useState} from "react";
 
 export interface PropertyValueEditProps {
     resource: Resource
@@ -18,11 +20,14 @@ export interface PropertyValueEditProps {
     propertyName: string
     value: any
     onChange: (value: any) => void
+    onForceOpenChange?: (forceOpen: boolean) => void
     autoOpen?: boolean
 }
 
 export function PropertyValueEdit(props: PropertyValueEditProps) {
     const drawer = useDrawer()
+
+    const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement>()
 
     switch (props.property.type) {
         case Type.BOOL:
@@ -98,7 +103,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
             }
             return <input type='text'
                           style={{
-                                width: '100%',
+                              width: '100%',
                           }}
                           value={coalesce(props.value, '')}
                           autoFocus={Boolean(props.autoOpen)}
@@ -110,8 +115,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.TIME:
         case Type.TIMESTAMP:
             return <FormInput
-                sx={{
-                }}
+                sx={{}}
                 resource={props.resource}
                 property={props.property}
                 readOnly={false}
@@ -142,22 +146,41 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.BYTES:
         case Type.LIST:
         case Type.MAP:
-            return <>
+            return <Box display='flex'
+                        width='100%'
+                        justifyContent='space-between'>
+                <PropertyValueView
+                    property={props.property}
+                    value={props.value}
+                />
                 {drawer.render()}
-                <IconButton onClick={() => {
-                    drawer.open(<PropertyEditor
-                        resource={props.resource}
-                        property={props.property}
-                        title={'Edit Object'}
-                        value={props.value}
-                        onClose={() => drawer.close()}
-                        onApply={updated => {
-                            props.onChange(updated)
-                        }}/>)
+                <IconButton onClick={(event) => {
+                    setPopoverAnchor(event.currentTarget)
                 }}>
                     <EditNote/>
                 </IconButton>
-            </>
+                <Popover
+                    open={Boolean(popoverAnchor)}
+                    anchorEl={popoverAnchor}
+                    onClose={() => setPopoverAnchor(undefined)}
+                    anchorPosition={{
+                        top: 200,
+                        left: 200
+                    }}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                >
+                    <PropertyEditor
+                        resource={props.resource}
+                        property={props.property}
+                        value={props.value}
+                        onApply={updated => {
+                            props.onChange(updated)
+                        }}/>
+                </Popover>
+            </Box>
         case Type.REFERENCE:
             if (!props.property.reference) {
                 return <>Reference is not specified yet</>

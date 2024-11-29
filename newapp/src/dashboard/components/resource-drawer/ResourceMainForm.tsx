@@ -2,6 +2,7 @@ import {Resource} from "@apibrew/react";
 import {FormControl, FormHelperText, Stack, TextField, Tooltip} from "@mui/material";
 import {ReferenceValueSelector} from "../ReferenceValueSelector";
 import {useEffect} from "react";
+import {isUserNamespace} from "../../../util/namespace.ts";
 
 export interface ResourceFormProps {
     value: Resource
@@ -48,6 +49,7 @@ export function ResourceMainForm(props: ResourceFormProps) {
                 <ReferenceValueSelector
                     required={true}
                     reference={'system/Namespace'}
+                    filter={record => isUserNamespace(record.name)}
                     value={props.value.namespace}
                     onChange={namespace => {
                         props.onChange({

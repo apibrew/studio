@@ -44,6 +44,8 @@ export function PropertyCell(props: PropertyCellProps) {
         case 'OBJECT':
         case 'BYTES':
         case 'STRUCT':
+        case 'LIST':
+        case 'MAP':
             alwaysInlineEdit = true
             break
     }

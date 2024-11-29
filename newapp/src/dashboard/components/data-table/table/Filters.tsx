@@ -4,9 +4,10 @@ import {Add, Clear} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {PairExpression, Resource} from "@apibrew/react";
 import {defaultNativeValue, isComparableProperty, isFilterableProperty} from "../../../../util/property";
-import {BooleanExpression} from "@apibrew/client/model/permission";
 import {PropertyValueEdit} from "../../property-value-edit/PropertyValueEdit.tsx";
 import {Property} from "@apibrew/client/model";
+import toast from "react-hot-toast";
+import {BooleanExpression} from "@apibrew/client/model/extension";
 
 export interface Filter {
     property: string
@@ -22,7 +23,6 @@ export interface FiltersProps {
 
 export function Filters(props: FiltersProps) {
     const [filters, setFilters] = useState<Filter[]>(prepareFiltersFromBooleanExpression(props.query))
-    const [changed, setChanged] = useState<boolean>(false)
 
     const properties = useMemo(() => filterableProperties(props.resource.properties), [props.resource])
 
@@ -46,6 +46,12 @@ export function Filters(props: FiltersProps) {
                 operators.push({value: '>', label: '>'})
                 operators.push({value: '<', label: '<'})
             }
+            if (property && property.type === 'STRING') {
+                operators.push({value: 'like', label: 'like'})
+                operators.push({value: 'ilike', label: 'case insensitive like'})
+                operators.push({value: 'not-like', label: 'not like'})
+                operators.push({value: 'not-ilike', label: 'not case insensitive like'})
+            }
 
             operators.push({value: 'is-null', label: 'is null'})
             operators.push({value: 'is-not-null', label: 'is not null'})
@@ -62,7 +68,6 @@ export function Filters(props: FiltersProps) {
                             filter.property = e.target.value as string
                             filter.value = defaultNativeValue(props.resource.properties[filter.property].type)
                             setFilters([...filters])
-                            setChanged(true)
                         }}
                         size='small'>
                         <MenuItem/>
@@ -79,7 +84,6 @@ export function Filters(props: FiltersProps) {
                         onChange={e => {
                             filter.operator = e.target.value as string
                             setFilters([...filters])
-                            setChanged(true)
                         }}
                         size='small'>
                         {operators.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
@@ -94,14 +98,12 @@ export function Filters(props: FiltersProps) {
                         onChange={value => {
                             filter.value = value
                             setFilters([...filters])
-                            setChanged(true)
                         }}/>}
                 </Box>
                 <Box marginLeft={1}>
                     <IconButton size='small' onClick={() => {
                         filters.splice(index, 1)
                         setFilters([...filters])
-                        setChanged(true)
                     }}>
                         <Clear/>
                     </IconButton>
@@ -122,7 +124,6 @@ export function Filters(props: FiltersProps) {
                         operator: '=',
                         value: ''
                     } as any])
-                    setChanged(true)
                 }}>
                 <Add/>
                 <span style={{marginLeft: '3px'}}>Add Filter</span>
@@ -147,23 +148,34 @@ export function Filters(props: FiltersProps) {
 
             <Button color='secondary'
                     variant='text'
-                    disabled={!changed} onClick={() => {
-                props.onApply(undefined)
-                setChanged(false)
-            }}>
+                    onClick={() => {
+                        props.onApply(undefined)
+                    }}>
                 <span style={{marginLeft: '3px'}}>Reset</span>
             </Button>
 
             <Button color='primary'
-                    disabled={!changed}
                     onClick={() => {
+                        if (!validate(filters)) {
+                            return;
+                        }
                         props.onApply(prepareBooleanExpressionFromFilters(filters))
-                        setChanged(false)
                     }}>
                 <span style={{marginLeft: '3px'}}>Filter</span>
             </Button>
         </Box>
     </Box>
+}
+
+function validate(filters: Filter[]): boolean {
+    for (const filter of filters) {
+        if (filter.property === '') {
+            toast.error('Property is required')
+            return false
+        }
+    }
+
+    return true;
 }
 
 function prepareBooleanExpressionFromFilters(filters: Filter[]): BooleanExpression | undefined {
@@ -230,6 +242,30 @@ function prepareBooleanExpressionFromFilters(filters: Filter[]): BooleanExpressi
                     }
                 } as BooleanExpression
                 break;
+            case 'like':
+                exp = {
+                    like: pairExp
+                } as unknown as BooleanExpression
+                break;
+            case 'ilike':
+                exp = {
+                    ilike: pairExp
+                } as unknown as BooleanExpression
+                break;
+            case 'not-like':
+                exp = {
+                    not: {
+                        like: pairExp
+                    }
+                } as unknown as BooleanExpression
+                break;
+            case 'not-ilike':
+                exp = {
+                    not: {
+                        ilike: pairExp
+                    }
+                } as unknown as BooleanExpression
+                break;
             default:
                 throw new Error('Unknown operator: ' + filter.operator)
         }
@@ -237,17 +273,13 @@ function prepareBooleanExpressionFromFilters(filters: Filter[]): BooleanExpressi
         list.push(exp)
     })
 
-    console.log(filters, list);
-
     if (list.length === 0) {
         return undefined
-    } else if (list.length === 1) {
-        return list[0]
-    } else {
-        return {
-            and: list
-        } as BooleanExpression
     }
+
+    return {
+        and: list
+    } as BooleanExpression
 }
 
 function prepareFiltersFromBooleanExpression(expression?: BooleanExpression): Filter[] {
@@ -307,6 +339,18 @@ function prepareFiltersFromBooleanExpression(expression?: BooleanExpression): Fi
                 property: exp.not.isNull.property,
                 operator: 'is-not-null',
                 value: ''
+            })
+        } else if ((exp as any).like) {
+            result.push({
+                property: (exp as any).like.left.property,
+                operator: 'like',
+                value: (exp as any).like.right.value
+            })
+        } else if ((exp as any).ilike) {
+            result.push({
+                property: (exp as any).ilike.left.property,
+                operator: 'ilike',
+                value: (exp as any).ilike.right.value
             })
         }
     })

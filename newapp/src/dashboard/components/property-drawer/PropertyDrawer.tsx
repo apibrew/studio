@@ -1,7 +1,6 @@
-import {Resource} from "@apibrew/react";
 import toast from "react-hot-toast";
-import {Property} from "@apibrew/client/model";
-import {Repository} from "@apibrew/client";
+import {Property, Resource} from "@apibrew/client/model";
+import {Repository} from "@apibrew/react";
 import {PropertyForm} from "../property-form/PropertyForm.tsx";
 import {handleErrorMessage} from "../../../util/errors.ts";
 import {MultiDrawerProps, TabComponentProps} from "../multi-drawer/MultiDrawer.tsx";

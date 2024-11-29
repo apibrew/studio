@@ -13,6 +13,8 @@ export function ApiDocModal(props: ApiDocModalProps) {
     const client = useClient()
     const [loading, setLoading] = useState(true)
 
+    const iframeSrc = `${client.getUrl()}/docs/swagger/index.html?token=${client.getCurrentToken()}`
+
     return <Box width={'1000px'}>
         <Box display='flex' justifyContent='space-between' m={1} >
             <div
@@ -32,6 +34,6 @@ export function ApiDocModal(props: ApiDocModalProps) {
                 width: '100%',
                 height: '100vh'
             }}
-            src={client.getUrl() + '/docs/swagger/index.html'}/>
+            src={iframeSrc}/>
     </Box>
 }

@@ -82,6 +82,26 @@ export function isFilterableProperty(property: Property): boolean {
     return false;
 }
 
+export function isSortableProperty(property: Property): boolean {
+    switch (property.type) {
+        case Type.BOOL:
+        case Type.STRING:
+        case Type.ENUM:
+        case Type.FLOAT32:
+        case Type.FLOAT64:
+        case Type.INT32:
+        case Type.INT64:
+        case Type.UUID:
+        case Type.DATE:
+        case Type.TIME:
+        case Type.TIMESTAMP:
+        case Type.REFERENCE:
+            return true;
+    }
+
+    return false;
+}
+
 export function withPropertyOrder(property: Property, order: number): Property {
     if (!property.annotations) {
         property.annotations = {}

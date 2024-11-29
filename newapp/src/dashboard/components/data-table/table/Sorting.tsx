@@ -4,6 +4,9 @@ import {Add, Clear} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {Resource, SortingItem} from "@apibrew/react";
 import TextField from "@mui/material/TextField";
+import {Property} from "@apibrew/client/model";
+import {isSortableProperty} from "../../../../util/property.ts";
+import toast from "react-hot-toast";
 
 export interface SortingProps {
     resource: Resource
@@ -13,9 +16,8 @@ export interface SortingProps {
 
 export function Sorting(props: SortingProps) {
     const [sorts, setSorts] = useState<SortingItem[]>(props.sorts || [])
-    const [changed, setChanged] = useState<boolean>(false)
 
-    const properties = useMemo(() => Object.keys(props.resource.properties), [props.resource])
+    const properties = useMemo(() => sortableProperties(props.resource.properties), [props.resource])
 
     return <Box p={1} width='400px'>
         {sorts.length === 0 && <Typography fontSize={14}>
@@ -36,7 +38,6 @@ export function Sorting(props: SortingProps) {
                         onChange={e => {
                             sort.property = e.target.value as string
                             setSorts([...sorts])
-                            setChanged(true)
                         }}>
                         <MenuItem/>
                         {properties.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
@@ -53,7 +54,6 @@ export function Sorting(props: SortingProps) {
                         onChange={e => {
                             sort.direction = e.target.value as any
                             setSorts([...sorts])
-                            setChanged(true)
                         }}>
                         <MenuItem value='ASC'>ASC</MenuItem>
                         <MenuItem value='DESC'>DESC</MenuItem>
@@ -63,7 +63,6 @@ export function Sorting(props: SortingProps) {
                     <IconButton size='small' onClick={() => {
                         sorts.splice(index, 1)
                         setSorts([...sorts])
-                        setChanged(true)
                     }}>
                         <Clear/>
                     </IconButton>
@@ -77,7 +76,6 @@ export function Sorting(props: SortingProps) {
                     property: '',
                     direction: 'ASC'
                 } as SortingItem])
-                setChanged(true)
             }}>
                 <Add/>
                 <span style={{marginLeft: '3px'}}>Add</span>
@@ -86,19 +84,44 @@ export function Sorting(props: SortingProps) {
 
             <Button color='secondary'
                     variant='text'
-                    disabled={!changed} onClick={() => {
-                props.onApply(sorts)
-                setChanged(false)
-            }}>
+                    onClick={() => {
+                        props.onApply([])
+                    }}>
                 <span style={{marginLeft: '3px'}}>Reset</span>
             </Button>
 
-            <Button color='primary' disabled={!changed} onClick={() => {
-                props.onApply(sorts)
-                setChanged(false)
-            }}>
+            <Button color='primary'
+                    onClick={() => {
+                        if (!validate(sorts)) {
+                            return;
+                        }
+                        props.onApply(sorts)
+                    }}>
                 <span style={{marginLeft: '3px'}}>Sort</span>
             </Button>
         </Box>
     </Box>
+}
+
+function validate(sorts: SortingItem[]): boolean {
+    for (const item of sorts) {
+        if (item.property === '') {
+            toast.error('Property is required')
+            return false
+        }
+    }
+
+    return true;
+}
+
+function sortableProperties(properties: { [p: string]: Property }): string[] {
+    const result: string[] = [];
+
+    for (const key in properties) {
+        if (properties.hasOwnProperty(key) && isSortableProperty(properties[key])) {
+            result.push(key)
+        }
+    }
+
+    return result
 }

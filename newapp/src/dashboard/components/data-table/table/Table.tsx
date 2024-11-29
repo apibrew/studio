@@ -1,6 +1,5 @@
 import {Box, Checkbox, IconButton, Menu} from "@mui/material";
 import {useEffect, useMemo, useState} from "react";
-import {Resource, useRepository} from "@apibrew/react";
 import {Add, MoreVert} from "@mui/icons-material";
 import {TableDnd} from "./TableDnd";
 import {TableResize} from "./TableResize";
@@ -20,6 +19,9 @@ import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
 import {propertyDrawerMultiDrawer} from "../../property-drawer/PropertyDrawer.tsx";
 import {useAnalytics} from "../../../hooks/use-analytics.ts";
 import {useConfirmation} from "../../../../components/modal/use-confirmation.tsx";
+import {Resource} from "@apibrew/client/model";
+import {useRepository} from "@apibrew/react";
+import toast from "react-hot-toast";
 
 export interface DataTableTableProps {
     resource: Resource
@@ -319,7 +321,11 @@ export function DataTableTable(props: DataTableTableProps) {
                             <Button size='small'
                                     variant='text'
                                     onClick={() => {
-                                        props.records.unshift({id: 'new', properties: {}})
+                                        if (props.records.some(item => item.id === 'new')) {
+                                            toast.error('You already have a new record, please save it first')
+                                            return
+                                        }
+                                        props.records.push({id: 'new', properties: {}})
                                         props.setUpdates({
                                             ...props.updates,
                                             'new': {}

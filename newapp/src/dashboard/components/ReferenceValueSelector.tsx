@@ -9,6 +9,7 @@ export interface ReferenceValueSelectorProps {
     reference: string
     value: any
     onChange: (value: any) => void
+    filter?: (record: any) => boolean
 }
 
 export function ReferenceValueSelector(props: ReferenceValueSelectorProps & SelectProps<any>) {
@@ -51,14 +52,19 @@ export function ReferenceValueSelector(props: ReferenceValueSelectorProps & Sele
     const byId = (id: string) => records.find(record => record.id === id)
 
     return <Select className="select-div1"
-        size='small'
-        {...props as any}
-        value={selected?.id || []}
-        onChange={e => {
-            props.onChange(byId(e.target.value as string))
-        }}
+                   size='small'
+                   {...props as any}
+                   value={selected?.id || []}
+                   onChange={e => {
+                       props.onChange(byId(e.target.value as string))
+                   }}
     >
-        {records.map(record => (
+        {records.filter(item => {
+            if (props.filter) {
+                return props.filter(item)
+            }
+            return true
+        }).map(record => (
             <MenuItem
                 key={record.id}
                 value={record.id}>{label(record)}</MenuItem>

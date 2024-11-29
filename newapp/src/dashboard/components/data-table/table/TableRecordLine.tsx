@@ -7,8 +7,6 @@ import {DeleteForever, EditNote} from "@mui/icons-material";
 import {Schema} from "../../../../types/schema";
 import {useDrawer} from "../../../../hooks/use-drawer";
 import {resourceDrawerMultiDrawer} from "./RecordExpand";
-import {PropertyEditor} from "../../property-editor/PropertyEditor";
-import {coalesce} from "./util";
 import {openMultiDrawer} from "../../multi-drawer/MultiDrawer.tsx";
 
 export interface TableRecordLineProps {
@@ -60,20 +58,6 @@ export function TableRecordLine(props: TableRecordLineProps) {
             }
         >
             <MenuItem onClick={() => {
-                drawer.open(<PropertyEditor resource={props.resource}
-                                            property={props.schema.properties[chosenProperty!]}
-                                            title={chosenProperty!}
-                                            value={coalesce(props.updated[chosenProperty!], props.record[chosenProperty!])}
-                                            onClose={() => drawer.close()}
-                                            onApply={updated => {
-                                                props.onUpdate({
-                                                    ...props.updated,
-                                                    [chosenProperty!]: updated
-                                                })
-                                            }}/>)
-                handleClose()
-            }}>Edit</MenuItem>
-            <MenuItem onClick={() => {
                 props.onUpdate({
                     ...props.updated,
                     [chosenProperty!]: null
@@ -89,7 +73,7 @@ export function TableRecordLine(props: TableRecordLineProps) {
                 handleClose()
             }}>Revert</MenuItem>
         </Menu>
-        <Box display='flex' flexDirection='row' className='row row-body'>
+        <Box display='flex' flexDirection='row' className={`row row-body ${props.new ? 'new' : ''}`}>
             <Box width='75px' className='cell body-cell action-cell'>
                 <Box className='cell-inner'>
                     {!edited && <Checkbox className="check-icon1" checked={props.selected}

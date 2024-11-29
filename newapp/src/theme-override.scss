@@ -5,21 +5,8 @@
     }
   }
 
-  &.MuiButton-text {
-    padding: 8px 10px;
-
-    &.MuiButton-colorPrimary {
-      color: #6941C6;
-    }
-
-    &.MuiButton-colorSecondary {
-      color: black;
-    }
-  }
-
-  &.MuiButton-outlined {
-    padding: 8px 10px;
-
+  // colors
+  &.MuiButton-text, &.MuiButton-outlined {
     &.MuiButton-colorPrimary {
       color: #6941C6;
     }
@@ -39,6 +26,18 @@
     &.MuiButton-colorDanger {
       color: #FF4D4F;
     }
+
+    &.MuiButton-colorInfo {
+      color: #00A3FF;
+    }
+  }
+
+  &.MuiButton-text {
+    padding: 8px 10px;
+  }
+
+  &.MuiButton-outlined {
+    padding: 8px 10px;
   }
 
   &.MuiButton-contained {
