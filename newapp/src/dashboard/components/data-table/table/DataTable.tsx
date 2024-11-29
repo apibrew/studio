@@ -2,7 +2,7 @@ import {fromResource, Resource, useQueryListParams, useRepository} from "@apibre
 import {useEffect, useState} from "react";
 import {Box, Popover, Stack, TablePagination} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Domain, FilterList, Help, Refresh, Remove, Search, Sort} from "@mui/icons-material";
+import {Domain, FilterList, Refresh, Remove, Search, Sort} from "@mui/icons-material";
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import toast from "react-hot-toast";
@@ -13,6 +13,7 @@ import {useDrawer} from "../../../../hooks/use-drawer.tsx";
 import {handleErrorMessage} from "../../../../util/errors.ts";
 import {useConfirmation} from "../../../../components/modal/use-confirmation.tsx";
 import {QuickSearch} from "./QuickSearch.tsx";
+import {HelpButton} from "../../help/HelpButton.tsx";
 
 export interface TableContainerProps {
     resource: Resource
@@ -169,7 +170,7 @@ export function DataTable(props: TableContainerProps) {
         <Box className='action-bar' display='flex'>
             <Stack direction='row' width='100%'>
                 <Button size='medium'
-                        variant='text'
+                        variant='outlined'
                         onClick={() => {
                             refresh()
                         }}>
@@ -177,7 +178,7 @@ export function DataTable(props: TableContainerProps) {
                     <span style={{marginLeft: '3px'}}>Refresh</span>
                 </Button>
                 <Button size='medium'
-                        variant='text'
+                        variant='outlined'
                         color={listParams.query?.or ? 'info' : 'secondary'}
                         onClick={(event) => {
                             setQuickSearchAnchor(event.currentTarget);
@@ -186,16 +187,7 @@ export function DataTable(props: TableContainerProps) {
                     <Search fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Search</span>
                 </Button>
-                <Button size='medium'
-                        variant='text'
-                        color={'success'}
-                        onClick={(event) => {
-                            setSortingAnchor(event.currentTarget);
-                            analytics.click('action', 'help-open')
-                        }}>
-                    <Help fontSize='small'/>
-                    <span style={{marginLeft: '3px'}}>Help</span>
-                </Button>
+                <HelpButton/>
                 {!resource.immutable && selectedItems.length > 0 && <>
                     <Button color='error'
                             size='medium'
@@ -216,7 +208,7 @@ export function DataTable(props: TableContainerProps) {
                             handleSave()
                         }}
                         color='success'
-                        variant='text'
+                        variant='outlined'
                         size='medium'>
                         <Domain fontSize='small'/>
                         <span style={{marginLeft: '3px'}}>Save</span>
@@ -224,7 +216,7 @@ export function DataTable(props: TableContainerProps) {
                     </Button>
                     <Button color='warning'
                             size='medium'
-                            variant='text'
+                            variant='outlined'
                             onClick={() => {
                                 setUpdates({})
                             }}>
@@ -232,9 +224,43 @@ export function DataTable(props: TableContainerProps) {
                         <span style={{marginLeft: '3px'}}>Revert</span>
                     </Button>
                 </>}
+                {listParams.query?.or && <Button
+                    style={{
+                        marginLeft: '40px'
+                    }}
+                    color='warning'
+                    size='medium'
+                    variant='outlined'
+                    onClick={() => {
+                        setListParams({
+                            ...listParams,
+                            query: undefined
+                        })
+                        refresh()
+                    }}>
+                    <Remove fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Reset Search</span>
+                </Button>}
+                {listParams.query?.and && <Button
+                    style={{
+                        marginLeft: '40px'
+                    }}
+                    color='warning'
+                    size='medium'
+                    variant='outlined'
+                    onClick={() => {
+                        setListParams({
+                            ...listParams,
+                            query: undefined
+                        })
+                        refresh()
+                    }}>
+                    <Remove fontSize='small'/>
+                    <span style={{marginLeft: '3px'}}>Reset Filters</span>
+                </Button>}
                 <Box flexGrow={1}/>
                 <Button size='medium'
-                        variant='text'
+                        variant='outlined'
                         color={listParams.query?.and ? 'info' : 'secondary'}
                         onClick={(event) => {
                             setFiltersAnchor(event.currentTarget);
@@ -244,7 +270,7 @@ export function DataTable(props: TableContainerProps) {
                     <span style={{marginLeft: '3px'}}>Filter</span>
                 </Button>
                 <Button size='medium'
-                        variant='text'
+                        variant='outlined'
                         color={listParams.sorting?.length ? 'info' : 'secondary'}
                         onClick={(event) => {
                             setSortingAnchor(event.currentTarget);

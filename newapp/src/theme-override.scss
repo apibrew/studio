@@ -8,7 +8,7 @@
   // colors
   &.MuiButton-text, &.MuiButton-outlined {
     &.MuiButton-colorPrimary {
-      color: #6941C6;
+      color: #2d068e;
     }
 
     &.MuiButton-colorSecondary {
@@ -38,6 +38,7 @@
 
   &.MuiButton-outlined {
     padding: 8px 10px;
+    border: 1px solid #D0D5DD;
   }
 
   &.MuiButton-contained {

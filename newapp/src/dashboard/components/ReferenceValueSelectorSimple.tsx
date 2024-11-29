@@ -58,6 +58,7 @@ export function ReferenceValueSelectorSimple(props: ReferenceValueSelectorSimple
                        props.onChange(byId(e.target.value as string))
                    }}
     >
+        <option value={''}>Select...</option>
         {records.map(record => (
             <option
                 key={record.id}
