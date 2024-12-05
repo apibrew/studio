@@ -14,7 +14,6 @@ import {isSpecialProperty, sortedProperties} from "@apibrew/client/util/property
 import {getPropertyFormByProperty} from "core";
 import toast from "react-hot-toast";
 import {openMultiDrawer} from "../multi-drawer/MultiDrawer.tsx";
-import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 
 const emptyResource = {
     namespace: {name: ''},
@@ -24,7 +23,6 @@ const emptyResource = {
 export function ActionResourcePage() {
     const [wi, setWi] = useState<number>(0)
     const [resource, setResource] = useState<Resource>()
-    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const [actionData, setActionData] = useState<any>({})
     const client = useClient()
     const drawer = useDrawer()
@@ -68,7 +66,7 @@ export function ActionResourcePage() {
             <Button color='secondary'
                     size='small'
                     onClick={() => {
-                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, false, resource, () => {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, false, resource, () => {
                             setWi(wi + 1)
                         }))
 

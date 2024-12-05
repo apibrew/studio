@@ -1,7 +1,7 @@
 import {Resource} from "@apibrew/react";
 
 import toast from "react-hot-toast";
-import {Repository} from "@apibrew/client";
+import {Client} from "@apibrew/client";
 import {MultiDrawerProps} from "../multi-drawer/MultiDrawer.tsx";
 import {handleErrorMessage} from "../../../util/errors.ts";
 import {ResourceMainForm} from "./ResourceMainForm.tsx";
@@ -9,7 +9,7 @@ import {ResourceAdvancedForm} from "./ResourceAdvancedForm.tsx";
 import {ResourcePropertiesForm} from "./ResourcePropertiesForm.tsx";
 import {ResourceSourceFormWrapper} from "./ResourceSourceForm.tsx";
 
-export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNew: boolean, initialValue: Partial<Resource>, onClose?: () => void): MultiDrawerProps<Resource> {
+export function resourceDrawerMultiDrawer(client: Client, isNew: boolean, initialValue: Partial<Resource>, onClose?: () => void): MultiDrawerProps<Resource> {
     return {
         title: isNew ? 'New Resource' : '' + initialValue.name,
         tabs: [
@@ -42,7 +42,7 @@ export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNe
         onClose: onClose,
         onSave: (resource, onClose) => {
             if (isNew) {
-                toast.promise(repository.create(resource), {
+                toast.promise(client.createResource(resource, true), {
                     loading: 'Creating resource...',
                     success: 'Resource created',
                     error: err => handleErrorMessage(err)
@@ -52,7 +52,7 @@ export function resourceDrawerMultiDrawer(repository: Repository<Resource>, isNe
                     }
                 }, console.error)
             } else {
-                toast.promise(repository.update(resource), {
+                toast.promise(client.updateResource(resource, true), {
                     loading: 'Updating resource...',
                     success: 'Resource updated',
                     error: err => handleErrorMessage(err)

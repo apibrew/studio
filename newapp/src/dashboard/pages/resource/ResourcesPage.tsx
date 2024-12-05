@@ -1,6 +1,6 @@
 import {Alert, Box, Stack, Tooltip, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
-import {getRestPath, Resource, useClient, useRepository} from "@apibrew/react";
+import {getRestPath, Resource, useClient} from "@apibrew/react";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {DataTable} from "../../components/data-table/table/DataTable.tsx";
@@ -9,7 +9,6 @@ import {CalendarViewMonth, CircleOutlined, Code} from "@mui/icons-material";
 import {openMultiDrawer} from "../../components/multi-drawer/MultiDrawer.tsx";
 import {resourceDrawerMultiDrawer} from "../../components/resource-drawer/ResourceDrawer.tsx";
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
-import {ResourceEntityInfo} from "@apibrew/client/model/resource";
 import {ApiDocModal} from "../../components/api-doc/ApiDocModal.tsx";
 import {ResourceNanoDrawer} from "../../components/resource-nano-drawer/ResourceNanoDrawer.tsx";
 
@@ -19,7 +18,6 @@ export default function ResourcesPage() {
     const [resource, setResource] = useState<Resource>()
     const [resourceNotFound, setResourceNotFound] = useState<boolean>(false)
     const drawer = useDrawer()
-    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
 
     const [wi, setWi] = useState<number>(0)
 
@@ -46,7 +44,7 @@ export default function ResourcesPage() {
             </Alert>
             <Button variant='outlined' color='primary'
                     onClick={() => {
-                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, true, {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, true, {
                             name: 'MyFirstResource',
                             namespace: {
                                 name: params.namespace || 'default'
@@ -90,22 +88,22 @@ export default function ResourcesPage() {
                     drawer.open(<ApiDocModal onClose={drawer.close}/>)
                 }}>
                     <CircleOutlined/>
-                    <span >Api Doc</span>
+                    <span>Api Doc</span>
                 </Button>
                 <Button variant='text' size='small' onClick={() => {
                     drawer.open(<ResourceNanoDrawer resource={resource.name} namespace={resource.namespace.name}
                                                     onClose={drawer.close}/>)
                 }}>
                     <Code/>
-                    <span >Nano Code</span>
+                    <span>Nano Code</span>
                 </Button>
                 <Button variant='outlined' color='primary' size='small' onClick={() => {
-                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(resourceRepository, false, resource, () => {
+                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, false, resource, () => {
                         setWi(wi + 1)
                     }))
                 }}>
                     <CalendarViewMonth/>
-                    <span >Update Resource</span>
+                    <span>Update Resource</span>
                 </Button>
             </Stack>
 
