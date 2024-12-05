@@ -5,6 +5,7 @@ import {useRepository, useResourceByName} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {LoadingOverlay} from "common";
 import {MonacoNanoForm} from "../nano-form/MonacoNanoForm";
+import {HelpButton} from "../help/HelpButton.tsx";
 
 export interface ResourceNanoDrawerProps {
     resource: string
@@ -97,34 +98,35 @@ ${props.resource}.beforeCreate(record => {
                             <MenuItem value='JAVASCRIPT'>JavaScript</MenuItem>
                             <MenuItem value='TYPESCRIPT'>Typescript</MenuItem>
                         </Select>
+                        <HelpButton category='nano-code'/>
                     </>}/>
                 </Card>
                 <CardContent>
                     {!resource && <LoadingOverlay/>}
-                    {resource &&  <MonacoNanoForm code={code.content}
-                                                  language={code.language}
-                                                  onChange={updated => {
-                                                      setCode({
-                                                          ...code,
-                                                          content: updated
-                                                      })
-                                                  }}/>}
+                    {resource && <MonacoNanoForm code={code.content}
+                                                 language={code.language}
+                                                 onChange={updated => {
+                                                     setCode({
+                                                         ...code,
+                                                         content: updated
+                                                     })
+                                                 }}/>}
                 </CardContent>
                 <CardActions>
-                   <Box marginLeft={5}>
-                       <Stack direction='row' spacing={1}>
-                           <Button variant='contained'
-                                   size='small'
-                                   color='success'
-                                   onClick={() => {
-                                       handleSave()
-                                   }}>Save</Button>
-                           <Button variant='outlined'
-                                   size='medium'
-                                   color='primary'
-                                   onClick={() => props.onClose()}>Close</Button>
-                       </Stack>
-                   </Box>
+                    <Box marginLeft={5}>
+                        <Stack direction='row' spacing={1}>
+                            <Button variant='contained'
+                                    size='small'
+                                    color='success'
+                                    onClick={() => {
+                                        handleSave()
+                                    }}>Save</Button>
+                            <Button variant='outlined'
+                                    size='medium'
+                                    color='primary'
+                                    onClick={() => props.onClose()}>Close</Button>
+                        </Stack>
+                    </Box>
                 </CardActions>
             </Box>
         </>

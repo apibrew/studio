@@ -4,10 +4,11 @@ import {AsideBar} from "./AsideBar.tsx";
 import {useActiveMenuItem} from "../hooks/active-menu-item.tsx";
 import {Outlet} from "react-router-dom";
 import Button from "@mui/material/Button";
-import {ChatOutlined, HelpOutline, NotificationsNoneOutlined} from "@mui/icons-material";
+import {ChatOutlined} from "@mui/icons-material";
 import {Breadcrumbs} from "../components/Breadcrumbs.tsx";
 import {Theme} from "../../cloud/model/account.ts";
 import {useCurrentAccount} from "../../context/current-account.tsx";
+import {HelpButton} from "../components/help/HelpButton.tsx";
 
 export function DashboardLayout() {
     const {activeItem} = useActiveMenuItem()
@@ -28,15 +29,13 @@ export function DashboardLayout() {
                 <div className="main-header flex-center">
                     <Breadcrumbs/>
                     <div className="mh-div2 flex-center">
-                        <Button variant='text'>
-                            <NotificationsNoneOutlined/> <span>Notifications</span>
-                        </Button>
+                        {/*<Button variant='text'>*/}
+                        {/*    <NotificationsNoneOutlined/> <span>Notifications</span>*/}
+                        {/*</Button>*/}
                         <Button variant='text'>
                             <ChatOutlined/> <span>Feedback</span>
                         </Button>
-                        <Button variant='text'>
-                            <HelpOutline/> <span>Help</span>
-                        </Button>
+                        <HelpButton category='general'/>
                     </div>
                 </div>
                 <Outlet/>

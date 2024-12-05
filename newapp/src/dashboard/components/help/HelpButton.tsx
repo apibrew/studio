@@ -1,22 +1,25 @@
 import Button from "@mui/material/Button";
-import {Help} from "@mui/icons-material";
+import {HelpOutline} from "@mui/icons-material";
 import {useState} from "react";
 import {Box, Popover, Tooltip} from "@mui/material";
+import {Category, helpItems} from "./items.ts";
 
-export function HelpButton() {
+export interface HelpButtonProps {
+    category: Category
+}
+
+export function HelpButton(props: HelpButtonProps) {
     const [helpAnchor, setHelpAnchor] = useState<HTMLElement>();
 
     return <>
         <Tooltip title='Show help materials for this page.'>
-            <Button size='medium'
-                    variant='outlined'
-                    color={'success'}
-                    onClick={(event) => {
-                        setHelpAnchor(event.currentTarget);
+            <Button
+                variant='text'
+                onClick={(event) => {
+                    setHelpAnchor(event.currentTarget);
 
-                    }}>
-                <Help fontSize='small'/>
-                <span style={{marginLeft: '3px'}}>Help</span>
+                }}>
+                <HelpOutline/> <span>Help</span>
             </Button>
         </Tooltip>
         <Popover
@@ -32,11 +35,15 @@ export function HelpButton() {
                 horizontal: 'left',
             }}
         >
-            <Box m={2}
-                 width='500px'
+            <Box width='300px'
                  height='400px'>
-                <a target='_blank'
-                   href='https://www.google.com'>How to create first API?</a>
+                <ul>
+                    {helpItems.filter(item => item.category === props.category)
+                        .map(item => <li>
+                            <a target='_blank'
+                               href={item.link}>{item.title}</a>
+                        </li>)}
+                </ul>
             </Box>
         </Popover>
     </>

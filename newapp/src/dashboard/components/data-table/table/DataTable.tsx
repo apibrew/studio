@@ -187,7 +187,7 @@ export function DataTable(props: TableContainerProps) {
                     <Search fontSize='small'/>
                     <span style={{marginLeft: '3px'}}>Search</span>
                 </Button>
-                <HelpButton/>
+                <HelpButton category='resources'/>
                 {!resource.immutable && selectedItems.length > 0 && <>
                     <Button color='error'
                             size='medium'
