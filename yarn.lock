@@ -18,7 +18,15 @@
     axios "^1.6.1"
     js-yaml "^4.1.0"
 
-"@apibrew/client@1.1.73", "@apibrew/client@^1.1.67", "@apibrew/client@^1.1.73":
+"@apibrew/client@1.1.74":
+  version "1.1.74"
+  resolved "https://registry.yarnpkg.com/@apibrew/client/-/client-1.1.74.tgz#1d228728188f86dbe45a18f38548612102edab11"
+  integrity sha512-DCMepCeyxiqvxB2cTrWZpIBDuHmNf7ve8v+e9diSe1H9HtRtphe7VboEEp26UHCVl6ubAG+W9dvTRyr3GGzgkQ==
+  dependencies:
+    axios "^1.6.1"
+    js-yaml "^4.1.0"
+
+"@apibrew/client@^1.1.67", "@apibrew/client@^1.1.73":
   version "1.1.73"
   resolved "https://registry.yarnpkg.com/@apibrew/client/-/client-1.1.73.tgz#80788cd1405fad361f7c3fa7f262c519627e4a7b"
   integrity sha512-0qwTnEEhGtWr1dVKHyNycKR2o+h92DuYMDKZM4TxuBlpV9S8Duy2s3y8F5Pyg0/B1jh/7FB0R/ymgwIc1R56Vw==

@@ -14,6 +14,7 @@ import {isSpecialProperty, sortedProperties} from "@apibrew/client/util/property
 import {getPropertyFormByProperty} from "core";
 import toast from "react-hot-toast";
 import {openMultiDrawer} from "../multi-drawer/MultiDrawer.tsx";
+import {useResourceService} from "../../../hooks/use-resource-service.ts";
 
 const emptyResource = {
     namespace: {name: ''},
@@ -25,6 +26,7 @@ export function ActionResourcePage() {
     const [resource, setResource] = useState<Resource>()
     const [actionData, setActionData] = useState<any>({})
     const client = useClient()
+    const service = useResourceService()
     const drawer = useDrawer()
     const analytics = useAnalytics()
 
@@ -66,7 +68,7 @@ export function ActionResourcePage() {
             <Button color='secondary'
                     size='small'
                     onClick={() => {
-                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, false, resource, () => {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(service, false, resource, () => {
                             setWi(wi + 1)
                         }))
 

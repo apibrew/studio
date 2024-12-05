@@ -22,6 +22,7 @@ import {useConfirmation} from "../../../../components/modal/use-confirmation.tsx
 import {Resource} from "@apibrew/client/model";
 import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
+import {useResourceService} from "../../../../hooks/use-resource-service.ts";
 
 export interface DataTableTableProps {
     resource: Resource
@@ -44,7 +45,7 @@ export function DataTableTable(props: DataTableTableProps) {
     const confirmation = useConfirmation()
     const analytics = useAnalytics()
     const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({} as any)
-    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
+    const service = useResourceService()
 
     const properties = useMemo(() => {
         const newProperties = sortedProperties(props.schema.properties).filter(property => !isSpecialProperty(props.schema.properties[property]))
@@ -237,7 +238,7 @@ export function DataTableTable(props: DataTableTableProps) {
                     }}
                 >
                     <MenuItem onClick={() => {
-                        openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, selectedProperty!, false, props.resource, () => {
+                        openMultiDrawer(drawer, propertyDrawerMultiDrawer(service, selectedProperty!, false, props.resource, () => {
                             props.reload()
                             setWi(wi + 1)
                         }))
@@ -270,7 +271,7 @@ export function DataTableTable(props: DataTableTableProps) {
                         size='small'
                         onClick={() => {
                             analytics.click('action', 'add-column-open')
-                            openMultiDrawer(drawer, propertyDrawerMultiDrawer(resourceRepository, 'prop-' + Object.keys(props.resource.properties).length + 1, true, props.resource, () => {
+                            openMultiDrawer(drawer, propertyDrawerMultiDrawer(service, 'prop-' + Object.keys(props.resource.properties).length + 1, true, props.resource, () => {
                                 props.reload()
                                 setWi(wi + 1)
                             }))

@@ -25,7 +25,7 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
     const [records, setRecords] = useState<any[]>([])
     const [total, setTotal] = useState<number>()
     const loading = total === undefined
-    const [wi, setWi] = useState(gwi || 0)
+    const [wi, setWi] = useState( 0)
 
     useEffect(() => {
         setRecords([])
@@ -36,7 +36,7 @@ export function useDataProvider<T>(entityInfo: EntityInfo, defaultParams?: Parti
         }, err => {
             toast.error(err.message)
         })
-    }, [entityInfo.restPath, listParams, wi]);
+    }, [entityInfo.restPath, listParams, wi, gwi]);
 
     return {
         updateParams: (params: Partial<ListRecordParams>) => {

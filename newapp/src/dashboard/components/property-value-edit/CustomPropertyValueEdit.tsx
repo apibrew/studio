@@ -8,6 +8,7 @@ import {File} from "../../model/file.ts";
 import {FileUploadDrawer} from "../storage/FileUpload.tsx";
 import {isAnnotationEnabled} from "../../../util/annotation.ts";
 import {PropertyNanoDrawer} from "../property-nano-drawer/PropertyNanoDrawer.tsx";
+import {isFileProperty} from "../../../util/property.ts";
 
 export interface CustomPropertyValueEditProps {
     resource: any
@@ -24,6 +25,12 @@ export function CustomPropertyValueEdit(props: CustomPropertyValueEditProps) {
 
     return <Box display='flex'
                 width='100%'
+                onClick={ e => {
+                    e.stopPropagation()
+                }}
+                onContextMenu={ e => {
+                    e.stopPropagation()
+                }}
                 justifyContent='space-between'>
         <PropertyValueView
             property={props.property}
@@ -63,7 +70,7 @@ export function CustomPropertyValueEdit(props: CustomPropertyValueEditProps) {
                     }}/>)
                 return
             }
-            if (props.property.reference === 'storage/File') {
+            if (isFileProperty(props.property)) {
                 let file = (props.value) as File
 
                 drawer.open(<FileUploadDrawer

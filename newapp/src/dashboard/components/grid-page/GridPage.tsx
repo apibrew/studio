@@ -1,4 +1,4 @@
-import {ComponentType} from "react";
+import {ComponentType, useState} from "react";
 import {PageLayout} from "../../../layout/PageLayout.tsx";
 import {Box, Stack, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Button from "@mui/material/Button";
@@ -12,6 +12,7 @@ import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {ValueDrawerComponent, ValueDrawerComponentFormProps} from "../common/ValueDrawerComponent.tsx";
 import {label} from "../../../util/record.ts";
 import {useConfirmation} from "../../../components/modal/use-confirmation.tsx";
+import {Refresh, Search} from "@mui/icons-material";
 
 export interface GridPageProps<T> {
     entityInfo: EntityInfo
@@ -22,12 +23,13 @@ export interface GridPageProps<T> {
 export function GridPage<T>(props: GridPageProps<T>) {
     const confirmation = useConfirmation()
     const drawer = useDrawer()
+    const [wi, setWi] = useState<number>(0)
 
     const resource = useResourceByName(props.entityInfo.resource, props.entityInfo.namespace)
-    const data = useDataProvider<Entity>(props.entityInfo)
+    const data = useDataProvider<Entity>(props.entityInfo, undefined, wi)
     const repository = useRepository<Entity>(props.entityInfo)
 
-    if (data.loading || !resource) {
+    if (!resource) {
         return <LoadingOverlay/>
     }
 
@@ -42,6 +44,7 @@ export function GridPage<T>(props: GridPageProps<T>) {
                         data.refresh()
                         toast.success('Code deleted successfully')
                     }, err => {
+                        console.log(err)
                         toast.error(err.message)
                     })
             }
@@ -78,6 +81,15 @@ export function GridPage<T>(props: GridPageProps<T>) {
                             component={props.recordForm}/>)
                     }}
                     color='success'>New</Button>
+                <Button
+                    onClick={() => {
+                        setWi(wi + 1)
+                    }}
+                    color='secondary'>
+                    Refresh
+                    {!data.loading && <Search/>}
+                    {data.loading && <Refresh/>}
+                </Button>
             </Stack>
             <Box mt={3}>
                 <Table>
@@ -89,7 +101,7 @@ export function GridPage<T>(props: GridPageProps<T>) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.records.map(item => (
+                        {!data.loading && data.records.map(item => (
                             <TableRow key={item.id}>
                                 <TableCell>{item.id}</TableCell>
                                 {props.gridColumns.map(column => <TableCell>

@@ -6,7 +6,7 @@ import {Domain, FilterList, Refresh, Remove, Search, Sort} from "@mui/icons-mate
 import {DataTableTable} from "./Table";
 import {Filters} from "./Filters";
 import toast from "react-hot-toast";
-import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
+import {Type} from "@apibrew/client/model/resource";
 import {Sorting} from "./Sorting";
 import {useAnalytics} from "../../../hooks/use-analytics";
 import {useDrawer} from "../../../../hooks/use-drawer.tsx";
@@ -14,6 +14,7 @@ import {handleErrorMessage} from "../../../../util/errors.ts";
 import {useConfirmation} from "../../../../components/modal/use-confirmation.tsx";
 import {QuickSearch} from "./QuickSearch.tsx";
 import {HelpButton} from "../../help/HelpButton.tsx";
+import {useResourceService} from "../../../../hooks/use-resource-service.ts";
 
 export interface TableContainerProps {
     resource: Resource
@@ -27,8 +28,8 @@ const defaultListParams = {
 
 export function DataTable(props: TableContainerProps) {
     const [resource, setResource] = useState<Resource>(props.resource)
-    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const repository = useRepository(fromResource(resource))
+    const service = useResourceService()
     const [refreshIndex, setRefreshIndex] = useState<number>(0)
     const [listParams, setListParams] = useQueryListParams(defaultListParams)
     const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement>()
@@ -365,7 +366,7 @@ export function DataTable(props: TableContainerProps) {
                 resource={resource}
                 schema={resource}
                 updateSchema={resource => {
-                    toast.promise(resourceRepository.update(resource as Resource), {
+                    toast.promise(service.updateResource(resource as Resource), {
                         loading: 'Updating resource...',
                         success: 'Resource updated',
                         error: err => handleErrorMessage(err)

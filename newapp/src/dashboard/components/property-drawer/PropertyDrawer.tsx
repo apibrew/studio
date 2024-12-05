@@ -1,6 +1,5 @@
 import toast from "react-hot-toast";
 import {Property, Resource} from "@apibrew/client/model";
-import {Repository} from "@apibrew/react";
 import {PropertyForm} from "../property-form/PropertyForm.tsx";
 import {handleErrorMessage} from "../../../util/errors.ts";
 import {MultiDrawerProps, TabComponentProps} from "../multi-drawer/MultiDrawer.tsx";
@@ -8,9 +7,10 @@ import {PropertyDetailsForm} from "../property-form/PropertyDetailsForm.tsx";
 import {PropertyAdvancedForm} from "../property-form/PropertyAdvancedForm.tsx";
 import {getAnnotation, withAnnotation} from "../../../util/annotation.ts";
 import {SourceMatchKey} from "../../../util/base-annotations.ts";
+import {ResourceService} from "../../../service/resource-service.ts";
 
 
-export function propertyDrawerMultiDrawer(repository: Repository<Resource>, propertyPath: string, isNew: boolean, initialValue: Partial<Resource>, onClose?: () => void): MultiDrawerProps<Resource> {
+export function propertyDrawerMultiDrawer(service: ResourceService, propertyPath: string, isNew: boolean, initialValue: Partial<Resource>, onClose?: () => void): MultiDrawerProps<Resource> {
     function handleLocalPropertyUpdate(properties: Resource['properties'], propertyName: string, property: Property) {
         const updatedProperties = {...properties}
 
@@ -82,7 +82,7 @@ export function propertyDrawerMultiDrawer(repository: Repository<Resource>, prop
         },
         onClose: onClose,
         onSave: async (resource, onClose) => {
-            toast.promise(repository.update(resource), {
+            toast.promise(service.updateResource(resource), {
                 loading: 'Updating resource...',
                 success: 'Resource updated',
                 error: err => handleErrorMessage(err)

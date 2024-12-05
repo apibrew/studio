@@ -11,10 +11,12 @@ import {resourceDrawerMultiDrawer} from "../../components/resource-drawer/Resour
 import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {ApiDocModal} from "../../components/api-doc/ApiDocModal.tsx";
 import {ResourceNanoDrawer} from "../../components/resource-nano-drawer/ResourceNanoDrawer.tsx";
+import {useResourceService} from "../../../hooks/use-resource-service.ts";
 
 export default function ResourcesPage() {
     const params = useParams()
     const client = useClient()
+    const service = useResourceService()
     const [resource, setResource] = useState<Resource>()
     const [resourceNotFound, setResourceNotFound] = useState<boolean>(false)
     const drawer = useDrawer()
@@ -44,7 +46,7 @@ export default function ResourcesPage() {
             </Alert>
             <Button variant='outlined' color='primary'
                     onClick={() => {
-                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, true, {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(service, true, {
                             name: 'MyFirstResource',
                             namespace: {
                                 name: params.namespace || 'default'
@@ -98,7 +100,7 @@ export default function ResourcesPage() {
                     <span>Nano Code</span>
                 </Button>
                 <Button variant='outlined' color='primary' size='small' onClick={() => {
-                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, false, resource, () => {
+                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(service, false, resource, () => {
                         setWi(wi + 1)
                     }))
                 }}>

@@ -6,6 +6,10 @@ export function isSpecialProperty(property: Property): boolean {
     return isAnnotationEnabled(property.annotations as any, 'SpecialProperty');
 }
 
+export function isFileProperty(property: Property): boolean {
+    return property.type == Type.REFERENCE && property.reference === 'storage/File'
+}
+
 export function getPropertyOrder(name: string, property: Property): number {
     const order = parseInt(getAnnotation(property.annotations as any, 'Order', '0'));
 

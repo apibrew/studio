@@ -15,10 +15,12 @@ import {resourceDrawerMultiDrawer} from "./resource-drawer/ResourceDrawer.tsx";
 import toast from "react-hot-toast";
 import {handleErrorMessage} from "../../util/errors.ts";
 import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
+import {useResourceService} from "../../hooks/use-resource-service.ts";
 
 export function ResourcePageSideBar() {
     const [wi, setWi] = useState<number>(0)
     const client = useClient()
+    const service = useResourceService()
     const params = useParams()
     const paramsNamespace = params.namespace
     const paramsResource = params.resource
@@ -55,7 +57,7 @@ export function ResourcePageSideBar() {
 
             <Box className='sidesect-div1 flex-center'>
                 <Button onClick={() => {
-                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, true, {
+                    openMultiDrawer(drawer, resourceDrawerMultiDrawer(service, true, {
                         name: '',
                         namespace: {name: 'default'}
                     } as Resource, () => {
@@ -189,7 +191,7 @@ export function ResourcePageSideBar() {
                     }}
                 >
                     <MenuItem onClick={() => {
-                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, true, {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(service, true, {
                             name: '',
                             namespace: selectedNamespace as Namespace
                         } as Resource, () => {
@@ -245,7 +247,7 @@ export function ResourcePageSideBar() {
                     }}
                 >
                     <MenuItem onClick={() => {
-                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, false, selectedResource as Resource, () => {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(service, false, selectedResource as Resource, () => {
                             reload()
                         }))
                         setResourceMenuAnchor(null)
@@ -272,7 +274,7 @@ export function ResourcePageSideBar() {
                         setSelectedResource(null)
                     }}>Delete</MenuItem>
                     <MenuItem onClick={() => {
-                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(client, true, {
+                        openMultiDrawer(drawer, resourceDrawerMultiDrawer(service, true, {
                             ...selectedResource,
                             id: undefined,
                         }, () => {
