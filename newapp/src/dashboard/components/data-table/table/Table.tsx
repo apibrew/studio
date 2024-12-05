@@ -9,7 +9,7 @@ import {isSpecialProperty, sortedProperties} from "../../../../util/property";
 import './Table.scss'
 import {Schema} from "../../../../types/schema";
 import {ensureGivenPropertiesOrder} from "../../../../util/resource";
-import {ResourceEntityInfo, Type} from "@apibrew/client/model/resource";
+import {Type} from "@apibrew/client/model/resource";
 import {LoadingOverlay} from "common";
 import {toTitleCase} from "../../../../util/case.ts";
 import Button from "@mui/material/Button";
@@ -20,7 +20,6 @@ import {propertyDrawerMultiDrawer} from "../../property-drawer/PropertyDrawer.ts
 import {useAnalytics} from "../../../hooks/use-analytics.ts";
 import {useConfirmation} from "../../../../components/modal/use-confirmation.tsx";
 import {Resource} from "@apibrew/client/model";
-import {useRepository} from "@apibrew/react";
 import toast from "react-hot-toast";
 import {useResourceService} from "../../../../hooks/use-resource-service.ts";
 
