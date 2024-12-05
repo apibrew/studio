@@ -1,9 +1,5 @@
 import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {File} from "../../model/file.ts";
-import {FileUploadDrawer} from "../storage/FileUpload.tsx";
-import {isAnnotationEnabled} from "../../../util/annotation.ts";
-import {PropertyNanoDrawer} from "../property-nano-drawer/PropertyNanoDrawer.tsx";
 import {coalesce} from "../data-table/table/util.ts";
 import {FormInput} from "../record/FormInput.tsx";
 import {ReferenceValueSelectorSimple} from "../ReferenceValueSelectorSimple.tsx";
@@ -60,38 +56,6 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           }}/>
         case Type.STRING:
         case Type.UUID:
-            let isNanoProperty = false
-
-            if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
-                isNanoProperty = true
-            }
-
-            if (props.resource.namespace.name === 'nano') {
-                if (props.resource.name === 'Function' && props.propertyName === 'source') {
-                    isNanoProperty = true
-                }
-                if (props.resource.name === 'Function' && props.propertyName === 'source') {
-                    isNanoProperty = true
-                }
-                if (props.resource.name === 'CronJob' && props.propertyName === 'source') {
-                    isNanoProperty = true
-                }
-                if (props.resource.name === 'Module' && props.propertyName === 'source') {
-                    isNanoProperty = true
-                }
-            }
-
-            if (isNanoProperty) {
-                drawer.open(<PropertyNanoDrawer
-                    code={props.value}
-                    onClose={() => {
-                        drawer.close()
-                    }}
-                    onChange={updated => {
-                        props.onChange(updated)
-                    }}/>)
-                return
-            }
             return <input type='text'
                           style={{
                               width: '100%',
@@ -140,6 +104,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
             return <CustomPropertyValueEdit
                 resource={props.resource}
                 property={props.property}
+                propertyName={props.propertyName}
                 value={props.value}
                 onChange={props.onChange}
             />
@@ -151,6 +116,7 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                 return <CustomPropertyValueEdit
                     resource={props.resource}
                     property={props.property}
+                    propertyName={props.propertyName}
                     value={props.value}
                     onChange={props.onChange}
                 />

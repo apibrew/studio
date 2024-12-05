@@ -6,10 +6,13 @@ import {useDrawer} from "../../../hooks/use-drawer.tsx";
 import {useState} from "react";
 import {File} from "../../model/file.ts";
 import {FileUploadDrawer} from "../storage/FileUpload.tsx";
+import {isAnnotationEnabled} from "../../../util/annotation.ts";
+import {PropertyNanoDrawer} from "../property-nano-drawer/PropertyNanoDrawer.tsx";
 
 export interface CustomPropertyValueEditProps {
     resource: any
     property: any
+    propertyName: string
     value: any
     onChange: (value: any) => void
 }
@@ -28,6 +31,38 @@ export function CustomPropertyValueEdit(props: CustomPropertyValueEditProps) {
         />
         {drawer.render()}
         <IconButton onClick={(event) => {
+            let isNanoProperty = false
+
+            if (props.property.type === 'STRING' && isAnnotationEnabled(props.property.annotations, 'NanoCode')) {
+                isNanoProperty = true
+            }
+
+            if (props.resource.namespace.name === 'nano') {
+                if (props.resource.name === 'Function' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+                if (props.resource.name === 'Function' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+                if (props.resource.name === 'CronJob' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+                if (props.resource.name === 'Module' && props.propertyName === 'source') {
+                    isNanoProperty = true
+                }
+            }
+
+            if (isNanoProperty) {
+                drawer.open(<PropertyNanoDrawer
+                    code={props.value}
+                    onClose={() => {
+                        drawer.close()
+                    }}
+                    onChange={updated => {
+                        props.onChange(updated)
+                    }}/>)
+                return
+            }
             if (props.property.reference === 'storage/File') {
                 let file = (props.value) as File
 
