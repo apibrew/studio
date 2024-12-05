@@ -3,7 +3,7 @@ import {LoadingOverlay} from "common";
 
 import {Box, Card, Grid, IconButton, Popover, Stack, Typography} from "@mui/material";
 import {Direction, useRecords, useRepository, useWatcher} from "@apibrew/react";
-import {BooleanExpression} from "@apibrew/client/model/permission";
+import {BooleanExpression} from "@apibrew/client/model/extension";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import {ArrowForwardIos, Info, Refresh, Remove, Search, Settings} from "@mui/icons-material";
