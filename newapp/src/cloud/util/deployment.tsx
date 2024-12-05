@@ -36,6 +36,6 @@ export const handleDeploymentTask = (deploymentTaskRepository: Repository<Deploy
     return toast.promise(promise, {
         loading: loadingMessage,
         success: <b>{successMessage} </b>,
-        error: 'Failed to save settings - todo fix',
+        error: err => 'Build failed: ' + err.message,
     })
 }

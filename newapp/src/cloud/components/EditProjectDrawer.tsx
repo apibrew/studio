@@ -38,7 +38,7 @@ export function EditProjectDrawer(props: EditProjectDrawerProps) {
     }
 
     function rebuildInstance() {
-        handleDeploymentTask(deploymentRepository, instance, Kind.DEPLOY).then(() => {
+        handleDeploymentTask(deploymentRepository, instance, Kind.UPGRADE).then(() => {
             props.onClose()
         })
     }
