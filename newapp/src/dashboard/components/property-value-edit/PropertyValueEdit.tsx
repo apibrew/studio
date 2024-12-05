@@ -1,18 +1,13 @@
 import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
-import {Box, IconButton, Popover} from "@mui/material";
-import {EditNote} from "@mui/icons-material";
 import {File} from "../../model/file.ts";
 import {FileUploadDrawer} from "../storage/FileUpload.tsx";
 import {isAnnotationEnabled} from "../../../util/annotation.ts";
 import {PropertyNanoDrawer} from "../property-nano-drawer/PropertyNanoDrawer.tsx";
-import {useDrawer} from "../../../hooks/use-drawer.tsx";
-import {PropertyEditor} from "../property-editor/PropertyEditor.tsx";
 import {coalesce} from "../data-table/table/util.ts";
 import {FormInput} from "../record/FormInput.tsx";
 import {ReferenceValueSelectorSimple} from "../ReferenceValueSelectorSimple.tsx";
-import {PropertyValueView} from "../property-value-view/PropertyValueView.tsx";
-import {useState} from "react";
+import {CustomPropertyValueEdit} from "./CustomPropertyValueEdit.tsx";
 
 export interface PropertyValueEditProps {
     resource: Resource
@@ -25,10 +20,6 @@ export interface PropertyValueEditProps {
 }
 
 export function PropertyValueEdit(props: PropertyValueEditProps) {
-    const drawer = useDrawer()
-
-    const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement>()
-
     switch (props.property.type) {
         case Type.BOOL:
             return <input type='checkbox'
@@ -146,58 +137,23 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.BYTES:
         case Type.LIST:
         case Type.MAP:
-            return <Box display='flex'
-                        width='100%'
-                        justifyContent='space-between'>
-                <PropertyValueView
-                    property={props.property}
-                    value={props.value}
-                />
-                {drawer.render()}
-                <IconButton onClick={(event) => {
-                    setPopoverAnchor(event.currentTarget)
-                }}>
-                    <EditNote/>
-                </IconButton>
-                <Popover
-                    open={Boolean(popoverAnchor)}
-                    anchorEl={popoverAnchor}
-                    onClose={() => setPopoverAnchor(undefined)}
-                    anchorPosition={{
-                        top: 200,
-                        left: 200
-                    }}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                >
-                    <PropertyEditor
-                        resource={props.resource}
-                        property={props.property}
-                        value={props.value}
-                        onApply={updated => {
-                            props.onChange(updated)
-                        }}/>
-                </Popover>
-            </Box>
+            return <CustomPropertyValueEdit
+                resource={props.resource}
+                property={props.property}
+                value={props.value}
+                onChange={props.onChange}
+            />
         case Type.REFERENCE:
             if (!props.property.reference) {
                 return <>Reference is not specified yet</>
             }
             if (props.property.reference === 'storage/File') {
-                let file = (props.value) as File
-
-                drawer.open(<FileUploadDrawer
-                    title={'Upload File'}
-                    value={file}
-                    onChange={updated => {
-                        props.onChange(updated)
-                    }}
-                    onClose={() => {
-                        drawer.close()
-                    }}/>)
-                return
+                return <CustomPropertyValueEdit
+                    resource={props.resource}
+                    property={props.property}
+                    value={props.value}
+                    onChange={props.onChange}
+                />
             }
             return <ReferenceValueSelectorSimple
                 autoFocus={Boolean(props.autoOpen)}

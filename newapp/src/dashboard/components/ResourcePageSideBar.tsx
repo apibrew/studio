@@ -24,7 +24,6 @@ export function ResourcePageSideBar() {
     const paramsResource = params.resource
     const [searchValue, setSearchValue] = useState<string>('')
     const namespaceRepository = useRepository<Namespace>(NamespaceEntityInfo)
-    const resourceRepository = useRepository<Resource>(ResourceEntityInfo)
     const navigate = useNavigate()
     const resources = useRecords<Resource>(ResourceEntityInfo, {limit: 1000}, wi) || []
     const allNamespaces = useRecords<Resource>(NamespaceEntityInfo, {limit: 1000}, wi) || []
