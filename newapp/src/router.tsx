@@ -44,7 +44,6 @@ export const index = createBrowserRouter([
         element: <GoogleSsoPage/>
     },
     dashboardRote,
-
     // 404
     {
         path: '*',

@@ -1,11 +1,10 @@
 import {Instance, InstanceEntityInfo} from "../model/instance";
-import {LoadingOverlay} from "common";
 
 import {Box, Card, Grid, IconButton, Popover, Stack, Typography} from "@mui/material";
 import {Direction, useRecords, useRepository, useWatcher} from "@apibrew/react";
 import {BooleanExpression} from "@apibrew/client/model/extension";
 import Button from "@mui/material/Button";
-import {useNavigate} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {ArrowForwardIos, Info, Refresh, Remove, Search, Settings} from "@mui/icons-material";
 import {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
@@ -193,8 +192,8 @@ export function ProjectsPage() {
                 </Button>
             </Stack>
         </Box>
-
-        {loading && <LoadingOverlay/>}
+        <Outlet/>
+        {/*{loading && <LoadingOverlay/>}*/}
 
         {hostedInstances && hostedInstances.length > 0 && <Grid mt={2} container spacing={2}>
             {hostedInstances && hostedInstances.map(item => <Grid item xs={12} sm={6} lg={3} xl={2}>
@@ -233,7 +232,7 @@ export function ProjectsPage() {
                         {/* prj1-div1-1 */}
                         <Box display='flex'
                              onClick={() => {
-                                 navigate(`/goto/${item.id}`)
+                                 navigate(`goto/${item.id}`)
                              }}
                              flexGrow={1}
                              sx={{

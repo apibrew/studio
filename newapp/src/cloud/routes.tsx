@@ -2,11 +2,11 @@ import {RouteObject} from "react-router/dist/lib/context";
 import {IndexPage} from "./pages/IndexPage";
 
 import {ProjectsPage} from "./pages/ProjectsPage.tsx";
-import {Outlet} from "react-router-dom";
 import {BillingPage} from "./pages/BillingPage.tsx";
 import {InvoicesPage} from "./pages/InvoicePage.tsx";
 import {AccountPage} from "./pages/AccountPage.tsx";
 import {PaymentPage} from "./pages/PaymentPage.tsx";
+import {Goto} from "./pages/Goto.tsx";
 
 export const cloudRoutes: RouteObject[] = [
     {
@@ -15,11 +15,14 @@ export const cloudRoutes: RouteObject[] = [
     },
     {
         path: 'projects',
-        element: <Outlet/>,
+        element: <ProjectsPage/>,
         children: [
             {
-                path: '',
-                element: <ProjectsPage/>
+                path: 'goto/:id',
+                element: <Goto/>,
+                handle: {
+                    tab: 'goto'
+                }
             },
         ]
     },

@@ -25,6 +25,6 @@ export async function useEnsureResource(resource: Resource, override?: boolean) 
     const client = useClient()
 
     useEffect(() => {
-        ensureResource(client, resource, override)
+        ensureResource(client as Client, resource, override)
     }, []);
 }
