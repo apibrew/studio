@@ -33,6 +33,9 @@ export function CustomPropertyValueEdit(props: CustomPropertyValueEditProps) {
                 }}
                 justifyContent='space-between'>
         <PropertyValueView
+            sx={{
+                marginTop: '6px'
+            }}
             property={props.property}
             value={props.value}
         />
