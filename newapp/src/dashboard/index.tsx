@@ -189,7 +189,6 @@ export function DashboardPage() {
     }, [connectionName, instance, hostedInstance])
 
     if (!settings || !client) {
-        console.log(settings, client)
         return <LoadingOverlay/>
     }
 

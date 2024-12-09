@@ -4,6 +4,8 @@ import {Box} from "@mui/material";
 import {useState} from "react";
 import {getPropertyFormByProperty, listCustomPropertyForms} from "core";
 import toast from "react-hot-toast";
+import {StaticDatePicker, StaticDateTimePicker, StaticTimePicker} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 export interface PropertyEditorProps {
     resource: Resource
@@ -19,6 +21,29 @@ export function getPropertyEditorList(property: Property): string[] {
 
 export function PropertyEditor(props: PropertyEditorProps) {
     const [value, setValue] = useState(props.value)
+
+    if (props.property.type === 'DATE') {
+        return <StaticDatePicker
+            value={props.value ? dayjs(props.value) : undefined}
+            onAccept={(e: any) => {
+                props.onApply(e.format('YYYY-MM-DD'))
+            }}
+        />
+    } else if (props.property.type === 'TIME') {
+        return <StaticTimePicker
+            value={props.value ? dayjs(props.value) : undefined}
+            onAccept={(e: any) => {
+                props.onApply(e.format('HH:mm:ss'))
+            }}
+        />
+    } else if (props.property.type === 'TIMESTAMP') {
+        return <StaticDateTimePicker
+            value={props.value ? dayjs(props.value) : undefined}
+            onAccept={(e: any) => {
+                props.onApply(e.format('YYYY-MM-DDTHH:mm:ssZ'))
+            }}
+        />
+    }
 
     const Form = getPropertyFormByProperty<unknown>(props.property, props.resource)
 

@@ -83,7 +83,7 @@ export const menuItems: MenuItem[] = [
                 icon: <Group/>,
             },
             {
-                title: 'Groups',
+                title: 'Roles',
                 path: '/dashboard/users-and-roles/roles',
                 icon: <Group/>,
             },

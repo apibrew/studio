@@ -91,7 +91,7 @@ export function DataTableTable(props: DataTableTableProps) {
                         defaultWidth = 150
                         break;
                     case Type.TIMESTAMP:
-                        defaultWidth = 250
+                        defaultWidth = 200
                         break;
                 }
 

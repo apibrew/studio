@@ -39,7 +39,10 @@ export function PropertyValueView(props: PropertyValueViewProps) {
             }).join(';')
             break;
         case Type.DATE:
+            value = dayjs(value).format('YYYY-MM-DD')
+            break;
         case Type.TIME:
+            break;
         case Type.TIMESTAMP:
             value = dayjs(value).format('YYYY-MM-DD HH:mm:ss')
             break;

@@ -107,6 +107,7 @@ export function CustomPropertyValueEdit(props: CustomPropertyValueEditProps) {
                 value={props.value}
                 onApply={updated => {
                     props.onChange(updated)
+                    setPopoverAnchor(undefined)
                 }}/>
         </Popover>
     </Box>

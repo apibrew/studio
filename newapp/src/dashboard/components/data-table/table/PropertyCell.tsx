@@ -37,9 +37,9 @@ export function PropertyCell(props: PropertyCellProps) {
     let alwaysInlineEdit = false
 
     switch (props.property.type) {
-        // case 'TIMESTAMP':
-        // case 'TIME':
-        // case 'DATE':
+        case 'TIMESTAMP':
+        case 'TIME':
+        case 'DATE':
         case 'BOOL':
         case 'OBJECT':
         case 'BYTES':

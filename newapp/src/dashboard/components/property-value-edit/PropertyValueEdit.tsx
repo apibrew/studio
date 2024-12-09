@@ -1,7 +1,6 @@
 import {Property, Resource} from "@apibrew/client/model";
 import {Type} from "@apibrew/client/model/resource";
 import {coalesce} from "../data-table/table/util.ts";
-import {FormInput} from "../record/FormInput.tsx";
 import {ReferenceValueSelectorSimple} from "../ReferenceValueSelectorSimple.tsx";
 import {CustomPropertyValueEdit} from "./CustomPropertyValueEdit.tsx";
 
@@ -66,21 +65,6 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
                           onChange={e => {
                               props.onChange(e.target.value)
                           }}/>
-        case Type.DATE:
-        case Type.TIME:
-        case Type.TIMESTAMP:
-            return <FormInput
-                sx={{}}
-                resource={props.resource}
-                property={props.property}
-                readOnly={false}
-                required={props.property.required}
-                depth={0}
-                value={props.value}
-                onChange={value => {
-                    props.onChange(value)
-                }}
-            />
         case Type.ENUM:
             return <select value={coalesce(props.value, '')}
                            autoFocus={Boolean(props.autoOpen)}
@@ -100,7 +84,10 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
         case Type.STRUCT:
         case Type.BYTES:
         case Type.LIST:
+        case Type.DATE:
         case Type.MAP:
+        case Type.TIME:
+        case Type.TIMESTAMP:
             return <CustomPropertyValueEdit
                 resource={props.resource}
                 property={props.property}
@@ -141,5 +128,4 @@ export function PropertyValueEdit(props: PropertyValueEditProps) {
             />
     }
 
-    return <></>
 }
