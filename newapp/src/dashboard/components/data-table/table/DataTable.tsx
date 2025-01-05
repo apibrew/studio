@@ -141,7 +141,7 @@ export function DataTable(props: TableContainerProps) {
 
         const resolveReferences: string[] = []
 
-        for (const property of Object.keys(resource.properties)) {
+        for (const property of Object.keys(resource.properties || {})) {
             if (resource.properties[property].type === Type.REFERENCE) {
                 resolveReferences.push(`$.${property}`)
             }

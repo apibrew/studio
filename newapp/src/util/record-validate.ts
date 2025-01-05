@@ -12,7 +12,7 @@ export function ValidateRecords(resource: Resource, list: Record[], isUpdate: bo
 
     const PropertyExists: { [key: string]: boolean } = {};
 
-    const propertyNames = Object.keys(resource.properties)
+    const propertyNames = Object.keys(resource.properties || {})
     const properties = propertyNames.map(item => ({
         name: item,
         ...resource.properties[item]

@@ -36,7 +36,7 @@ const File = resource('storage/File')
 
         `
 
-        const properties = Object.keys(resource.properties)
+        const properties = Object.keys(resource.properties || {})
 
         for (const propertyName of properties) {
             const property = resource.properties[propertyName]
