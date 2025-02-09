@@ -1,20 +1,9 @@
 # Determine current Git branch
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# Set the image tag based on the branch
-if [ "$BRANCH" = "develop" ]; then
-  TAG="studio-dev"
-elif [ "$BRANCH" = "newapp" ]; then
-  TAG="studio-new"
-else
-  TAG="studio"
-fi
-
 echo Building and deploying $TAG
 
 # Build and push Docker image
-docker build -f Dockerfile . -t docker-registry.apibrew.io/$TAG:latest --platform linux/amd64 || exit 1
-docker push docker-registry.apibrew.io/$TAG:latest  || exit 1
+docker build -f Dockerfile . -t tislib/apibrew-studio:latest --platform linux/amd64 || exit 1
+docker push tislib/apibrew-studio:latest  || exit 1
 
-# Restart deployment
-kubectl rollout restart deployment $TAG  || exit 1
