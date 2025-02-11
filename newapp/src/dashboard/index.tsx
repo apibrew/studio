@@ -4,7 +4,6 @@ import {Client, ClientImpl} from "@apibrew/client";
 import {newClientByServerConfig} from "@apibrew/client/client";
 import {ClientProvider, cloudConnectionProvider, Connection, LocalStorageTokenStorage} from "@apibrew/react";
 import toast from "react-hot-toast";
-import {DashboardLayout} from "./layout/DashboardLayout.tsx";
 import {ConnectionContext} from "./context/ConnectionContext";
 import {Resource, User} from "@apibrew/client/model";
 import {UserEntityInfo} from "@apibrew/client/model/user";
@@ -20,9 +19,12 @@ import {Settings, SettingsEntityInfo, SettingsResource} from "./model/settings.t
 import {StudioSettingsContext} from "./context/studio-settings.tsx";
 import {HostedInstance, HostedInstanceEntityInfo} from "../cloud/model/hosted-instance.ts";
 import {LoadingOverlay} from "common";
-
+import {backendMode} from "../config";
+import {DashboardLayout} from "./layout/DashboardLayout.tsx";
 
 export function DashboardPage() {
+    const mode = backendMode
+
     const params = useParams()
     const connectionName = params['connectionName']!
 
@@ -118,6 +120,15 @@ export function DashboardPage() {
             return;
         }
 
+        if (connectionName === 'hosted') {
+            setClient(hostClient)
+            setConnection({
+                name: 'hosted',
+                serverConfig: {}
+            } as Connection)
+            return;
+        }
+
         if (connectionName === 'local') {
             const client = new ClientImpl('http://localhost:9009')
             client.useTokenStorage(new LocalStorageTokenStorage('local'))
@@ -200,6 +211,7 @@ export function DashboardPage() {
                         <CurrentInstanceContext.Provider value={instance}>
                             {settings && <StudioSettingsContext.Provider value={settings}>
                                 {client && <DashboardLayout/>}
+                                {mode}
                             </StudioSettingsContext.Provider>}
                         </CurrentInstanceContext.Provider>
                     </CurrentAccountContext.Provider>
