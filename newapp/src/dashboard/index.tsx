@@ -19,12 +19,11 @@ import {Settings, SettingsEntityInfo, SettingsResource} from "./model/settings.t
 import {StudioSettingsContext} from "./context/studio-settings.tsx";
 import {HostedInstance, HostedInstanceEntityInfo} from "../cloud/model/hosted-instance.ts";
 import {LoadingOverlay} from "common";
-import {backendMode} from "../config";
 import {DashboardLayout} from "./layout/DashboardLayout.tsx";
+import {backendMode} from "../config";
 
 export function DashboardPage() {
     const mode = backendMode
-
     const params = useParams()
     const connectionName = params['connectionName']!
 
@@ -43,38 +42,40 @@ export function DashboardPage() {
 
     useEffect(() => {
         const username = hostClient.getTokenBody()?.username
-        userRepository.load({
-            username: username
-        }).then(user => {
-            setUser(user)
-        }).catch(err => {
-            console.error(err)
-            toast.error(handleErrorMessage(err))
-        })
-        accountRepository.load({
-            email: username
-        }, ['$.plan']).then(account => {
-            setAccount(account)
-        }).catch(err => {
-            console.error(err)
-            toast.error(handleErrorMessage(err))
-        })
-        if (connectionName.startsWith('project-')) {
-            instanceRepository.load({
-                name: connectionName,
-            }).then(setInstance)
-                .catch(err => {
-                    console.error(err)
-                })
-        } else {
-            hostedInstanceRepository.load({
-                name: connectionName
-            }).then(hostedInstance => {
-                setHostedInstance(hostedInstance)
+        if (mode === 'cloud') {
+            userRepository.load({
+                username: username
+            }).then(user => {
+                setUser(user)
+            }).catch(err => {
+                console.error(err)
+                toast.error(handleErrorMessage(err))
             })
-                .catch(err => {
-                    console.error(err)
+            accountRepository.load({
+                email: username
+            }, ['$.plan']).then(account => {
+                setAccount(account)
+            }).catch(err => {
+                console.error(err)
+                toast.error(handleErrorMessage(err))
+            })
+            if (connectionName.startsWith('project-')) {
+                instanceRepository.load({
+                    name: connectionName,
+                }).then(setInstance)
+                    .catch(err => {
+                        console.error(err)
+                    })
+            } else {
+                hostedInstanceRepository.load({
+                    name: connectionName
+                }).then(hostedInstance => {
+                    setHostedInstance(hostedInstance)
                 })
+                    .catch(err => {
+                        console.error(err)
+                    })
+            }
         }
     }, [hostClient]);
 
@@ -126,6 +127,9 @@ export function DashboardPage() {
                 name: 'hosted',
                 serverConfig: {}
             } as Connection)
+            setUser({
+                username: hostClient.getTokenBody()?.username,
+            } as User)
             return;
         }
 
@@ -211,7 +215,6 @@ export function DashboardPage() {
                         <CurrentInstanceContext.Provider value={instance}>
                             {settings && <StudioSettingsContext.Provider value={settings}>
                                 {client && <DashboardLayout/>}
-                                {mode}
                             </StudioSettingsContext.Provider>}
                         </CurrentInstanceContext.Provider>
                     </CurrentAccountContext.Provider>

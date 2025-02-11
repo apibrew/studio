@@ -16,8 +16,15 @@ import {getUserDisplayName, useCurrentUser} from "../../context/current-user.tsx
 import {useConfirmation} from "../../components/modal/use-confirmation.tsx";
 import {Collapse} from "@mui/material";
 import {useStudioSettings} from "../context/studio-settings.tsx";
+import {backendMode} from "../../config";
+import {useClient} from "@apibrew/react";
+import {useHostClient} from "../../hooks/use-host-client.tsx";
 
 export function AsideBar() {
+    const client = useClient()
+    const hostClient = useHostClient()
+
+    const mode = backendMode
     const {activeItem, activeSubItem} = useActiveMenuItem()
     const currentUser = useCurrentUser()
     const navigate = useNavigate()
@@ -142,10 +149,10 @@ export function AsideBar() {
                 })}
         </ul>
 
-        <Link className="flex-center" to={prepareItemPath(connectionName, '/cloud/projects')}>
+        {mode == 'cloud' && <Link className="flex-center" to={prepareItemPath(connectionName, '/cloud/projects')}>
             <SettingsEthernet/>
             <span>Back to projects</span>
-        </Link>
+        </Link>}
 
         <hr/>
 
@@ -170,7 +177,8 @@ export function AsideBar() {
                     kind: 'confirm',
                     message: 'Are you sure you want to logout?',
                     onConfirm: () => {
-                        localStorage.removeItem('@apibrew/client/manager/token')
+                        client.invalidateAuthentication()
+                        hostClient.invalidateAuthentication()
                         window.location.href = '/login'
                     }
                 })

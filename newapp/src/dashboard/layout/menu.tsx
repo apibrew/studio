@@ -1,6 +1,7 @@
 import {Dataset, FunctionsTwoTone, Group, Home, Monitor, Pages, Settings, Storage} from "@mui/icons-material";
 import {ReactNode} from "react";
 import {ResourcePageSideBar} from "../components/ResourcePageSideBar";
+import {backendMode} from "../../config";
 
 export interface MenuItem {
     title: string;
@@ -92,7 +93,9 @@ export const menuItems: MenuItem[] = [
     {
         title: 'Storage',
         path: '/dashboard/storage',
-        icon: <Storage/>
+        icon: <Storage/>,
+        hidden: backendMode !== 'cloud'
+
     },
     {
         title: 'Monitoring',

@@ -7,10 +7,12 @@ import {useHostClient} from "../hooks/use-host-client.tsx";
 import './sign-pages.scss'
 import {Layout} from "./outer-layout.tsx";
 import {googleAuthUrl} from "./sso-config.ts";
+import {backendMode} from "../config";
 
 export const LoginPage = () => {
     const client = useHostClient();
     const navigate = useNavigate()
+    const mode = backendMode
 
     useEffect(() => {
         if (client.isAuthenticated()) {
@@ -44,14 +46,24 @@ export const LoginPage = () => {
                     </a>
 
                     <div className="r1-1-div1">
+                        {mode == 'cloud' && <div style={{
+                            marginTop: '100px'
+                        }}>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>}
 
                         <div className="r1-1-div1-1">
                             Welcome back
                         </div>
-                        <div className="r1-1-div1-2">
+                        {mode == 'cloud' && <div className="r1-1-div1-2">
                             Dont have an account?
                             <a className="r1-1-a1" href="/register">Register</a>
-                        </div>
+                        </div>}
 
                         <div className="r1-1-div1-3">
                             Email
@@ -73,21 +85,23 @@ export const LoginPage = () => {
                         }}>Sign in
                         </button>
 
-                        <div className="r1-1-div1-4">
-                            or
-                        </div>
+                        {mode == 'cloud' && <>
+                            <div className="r1-1-div1-4">
+                                or
+                            </div>
 
-                        <a className="r1-1-btn2"
-                           href={googleAuthUrl()}>
-                            <img className="sidebar-icon" src="/img2.png" alt="png"/>
-                            <span>Sign up with Google</span>
-                        </a>
+                            <a className="r1-1-btn2"
+                               href={googleAuthUrl()}>
+                                <img className="sidebar-icon" src="/img2.png" alt="png"/>
+                                <span>Sign up with Google</span>
+                            </a>
 
-                        <a className="r1-1-btn3"
-                           href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'>
-                            <img className="sidebar-icon" src="/img3.png" alt="png"/>
-                            <span>Sign up with Github</span>
-                        </a>
+                            <a className="r1-1-btn3"
+                               href='https://github.com/login/oauth/authorize?client_id=a89380772432d652a35b&scope=user:email'>
+                                <img className="sidebar-icon" src="/img3.png" alt="png"/>
+                                <span>Sign up with Github</span>
+                            </a>
+                        </>}
 
                     </div>
 

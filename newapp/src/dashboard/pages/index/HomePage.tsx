@@ -14,8 +14,10 @@ import {useCurrentInstance} from "../../../context/current-instance.tsx";
 import {openMultiDrawer} from "../../components/multi-drawer/MultiDrawer.tsx";
 import {projectStatusDrawer} from "../../components/project-status/ProjectStatusDrawer.tsx";
 import {projectConnectDrawer} from "../../components/project-connect/ProjectStatusDrawer.tsx";
+import {backendMode} from "../../../config";
 
 export default function HomePage() {
+    const mode = backendMode
     const user = useCurrentUser()
     const connection = useConnection()
     const instance = useCurrentInstance()
@@ -48,7 +50,7 @@ export default function HomePage() {
     return (
         <Box>
             {drawer.render()}
-                <hr className="chr-EAECF0 m-20-32-20"/>
+            <hr className="chr-EAECF0 m-20-32-20"/>
             <div className="user-info m-0-32e">
                 <div>Welcome back, {getUserDisplayName(user)}</div>
                 <div>Let's build your backend with ApiBrew!</div>
@@ -125,107 +127,109 @@ export default function HomePage() {
                         <span>Connect</span>
                     </Button>
                 </div>
-                <div className="m1-div2-2 m-24-0e">
-                    <ButtonGroup
-                        color='secondary'
-                        variant="contained"
-                        aria-label="Metric Duration">
-                        <Button color={metricsDuration == Duration.LAST_YEAR ? 'success' : 'secondary'}
-                                onClick={() => {
-                                    setMetricsDuration(Duration.LAST_YEAR)
-                                }}>Last Year</Button>
-                        <Button color={metricsDuration == Duration.LAST_6_MONTHS ? 'success' : 'secondary'}
-                                onClick={() => {
-                                    setMetricsDuration(Duration.LAST_6_MONTHS)
-                                }}>Last 6 Month</Button>
-                        <Button color={metricsDuration == Duration.THIS_MONTH ? 'success' : 'secondary'}
-                                onClick={() => {
-                                    setMetricsDuration(Duration.THIS_MONTH)
-                                }}>This Month</Button>
-                        <Button color={metricsDuration == Duration.THIS_WEEK ? 'success' : 'secondary'}
-                                onClick={() => {
-                                    setMetricsDuration(Duration.THIS_WEEK)
-                                }}>This Week</Button>
-                        <Button color={metricsDuration == Duration.TODAY ? 'success' : 'secondary'}
-                                onClick={() => {
-                                    setMetricsDuration(Duration.TODAY)
-                                }}>Today</Button>
-                    </ButtonGroup>
+                {mode == 'cloud' && <>
+                    <div className="m1-div2-2 m-24-0e">
+                        <ButtonGroup
+                            color='secondary'
+                            variant="contained"
+                            aria-label="Metric Duration">
+                            <Button color={metricsDuration == Duration.LAST_YEAR ? 'success' : 'secondary'}
+                                    onClick={() => {
+                                        setMetricsDuration(Duration.LAST_YEAR)
+                                    }}>Last Year</Button>
+                            <Button color={metricsDuration == Duration.LAST_6_MONTHS ? 'success' : 'secondary'}
+                                    onClick={() => {
+                                        setMetricsDuration(Duration.LAST_6_MONTHS)
+                                    }}>Last 6 Month</Button>
+                            <Button color={metricsDuration == Duration.THIS_MONTH ? 'success' : 'secondary'}
+                                    onClick={() => {
+                                        setMetricsDuration(Duration.THIS_MONTH)
+                                    }}>This Month</Button>
+                            <Button color={metricsDuration == Duration.THIS_WEEK ? 'success' : 'secondary'}
+                                    onClick={() => {
+                                        setMetricsDuration(Duration.THIS_WEEK)
+                                    }}>This Week</Button>
+                            <Button color={metricsDuration == Duration.TODAY ? 'success' : 'secondary'}
+                                    onClick={() => {
+                                        setMetricsDuration(Duration.TODAY)
+                                    }}>Today</Button>
+                        </ButtonGroup>
 
-                    <span style={{
-                        marginLeft: 30
-                    }}>Cumulative:</span>
-                    <Switch
-                        checked={cumulative}
-                        onChange={(_, value) => {
-                            setCumulative(value)
-                        }}/>
-                </div>
-                <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        <Card>
-                            <CardHeader title={<Box display='flex'>
-                                <span>Requests</span>
-                                <Box flexGrow={1}/>
-                                <IconButton onClick={() => {
-                                    drawer.open(<MetricsDrawer
-                                        metric={Metric.REQUEST}
-                                        title='Request Metrics'
-                                        onClose={drawer.close}/>)
-                                }}>
-                                    <MoreVert/>
-                                </IconButton>
-                            </Box>}/>
-                            <MetricWidget
-                                metric={Metric.REQUEST}
-                                duration={metricsDuration}
-                                cumulative={cumulative}
-                            />
-                        </Card>
+                        <span style={{
+                            marginLeft: 30
+                        }}>Cumulative:</span>
+                        <Switch
+                            checked={cumulative}
+                            onChange={(_, value) => {
+                                setCumulative(value)
+                            }}/>
+                    </div>
+                    <Grid container spacing={2}>
+                        <Grid item xs={4}>
+                            <Card>
+                                <CardHeader title={<Box display='flex'>
+                                    <span>Requests</span>
+                                    <Box flexGrow={1}/>
+                                    <IconButton onClick={() => {
+                                        drawer.open(<MetricsDrawer
+                                            metric={Metric.REQUEST}
+                                            title='Request Metrics'
+                                            onClose={drawer.close}/>)
+                                    }}>
+                                        <MoreVert/>
+                                    </IconButton>
+                                </Box>}/>
+                                <MetricWidget
+                                    metric={Metric.REQUEST}
+                                    duration={metricsDuration}
+                                    cumulative={cumulative}
+                                />
+                            </Card>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Card>
+                                <CardHeader title={<Box display='flex'>
+                                    <span>Nano Executions</span>
+                                    <Box flexGrow={1}/>
+                                    <IconButton onClick={() => {
+                                        drawer.open(<MetricsDrawer
+                                            metric={Metric.NANO_EXECUTION}
+                                            title='Nano Metrics'
+                                            onClose={drawer.close}/>)
+                                    }}>
+                                        <MoreVert/>
+                                    </IconButton>
+                                </Box>}/>
+                                <MetricWidget
+                                    metric={Metric.NANO_EXECUTION}
+                                    duration={metricsDuration}
+                                    cumulative={cumulative}
+                                />
+                            </Card>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Card>
+                                <CardHeader title={<Box display='flex'>
+                                    <span>Storage</span>
+                                    <Box flexGrow={1}/>
+                                    <IconButton onClick={() => {
+                                        drawer.open(<MetricsDrawer
+                                            metric={Metric.STORAGE}
+                                            title='Storage Metrics'
+                                            onClose={drawer.close}/>)
+                                    }}>
+                                        <MoreVert/>
+                                    </IconButton>
+                                </Box>}/>
+                                <MetricWidget
+                                    metric={Metric.STORAGE}
+                                    duration={metricsDuration}
+                                    cumulative={cumulative}
+                                />
+                            </Card>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={4}>
-                        <Card>
-                            <CardHeader title={<Box display='flex'>
-                                <span>Nano Executions</span>
-                                <Box flexGrow={1}/>
-                                <IconButton onClick={() => {
-                                    drawer.open(<MetricsDrawer
-                                        metric={Metric.NANO_EXECUTION}
-                                        title='Nano Metrics'
-                                        onClose={drawer.close}/>)
-                                }}>
-                                    <MoreVert/>
-                                </IconButton>
-                            </Box>}/>
-                            <MetricWidget
-                                metric={Metric.NANO_EXECUTION}
-                                duration={metricsDuration}
-                                cumulative={cumulative}
-                            />
-                        </Card>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Card>
-                            <CardHeader title={<Box display='flex'>
-                                <span>Storage</span>
-                                <Box flexGrow={1}/>
-                                <IconButton onClick={() => {
-                                    drawer.open(<MetricsDrawer
-                                        metric={Metric.STORAGE}
-                                        title='Storage Metrics'
-                                        onClose={drawer.close}/>)
-                                }}>
-                                    <MoreVert/>
-                                </IconButton>
-                            </Box>}/>
-                            <MetricWidget
-                                metric={Metric.STORAGE}
-                                duration={metricsDuration}
-                                cumulative={cumulative}
-                            />
-                        </Card>
-                    </Grid>
-                </Grid>
+                </>}
             </div>
             <div className="m1-div3 m-32-32e">
                 <div className="m1-div3-1">Client libraries</div>

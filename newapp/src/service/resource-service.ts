@@ -33,8 +33,9 @@ export class ResourceService {
         let nanoCode = `
 const ${resource.name} = resource('${resource.namespace.name}/${resource.name}')
 const File = resource('storage/File')
-
         `
+
+        let isAutoNanoCodeNeeded = false
 
         const properties = Object.keys(resource.properties || {})
 
@@ -53,14 +54,17 @@ ${Resource}.postModifier(record => {
 })
 
                 `
+                isAutoNanoCodeNeeded = true
             }
         }
 
-        const codeName = 'ResourceNanoAuto/' + resource.namespace.name + '/' + resource.name
-        await this.nanoRepository.apply({
-            name: codeName,
-            content: nanoCode,
-            language: Language.JAVASCRIPT,
-        })
+        if (isAutoNanoCodeNeeded) {
+            const codeName = 'ResourceNanoAuto/' + resource.namespace.name + '/' + resource.name
+            await this.nanoRepository.apply({
+                name: codeName,
+                content: nanoCode,
+                language: Language.JAVASCRIPT,
+            })
+        }
     }
 }

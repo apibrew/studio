@@ -52,9 +52,17 @@ export default function () {
     const [user, setUser] = useState<User>()
     const [account, setAccount] = useState<Account>()
 
+
+    useEffect(() => {
+        if (backendMode !== 'cloud') {
+            if (backendMode === 'single') {
+                navigate('/hosted/dashboard');
+            }
+        }
+    }, []);
+
     if (backendMode !== 'cloud') {
         if (backendMode === 'single') {
-            navigate('/hosted/dashboard');
             return <></>;
         }
     }
